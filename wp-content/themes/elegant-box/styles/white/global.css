@@ -1,0 +1,6 @@
+#style-white a img {
+	background:#ddd;
+}
+#style-white a:hover img {
+	background:#fff;
+}

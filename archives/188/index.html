@@ -1,0 +1,475 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head profile="http://gmpg.org/xfn/11">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+
+	<title>plist简单的读写方法 | Only For Sunshine~</title>
+	<link rel="alternate" type="application/rss+xml" title="RSS 2.0 - 所有文章" href="../../feed/index.html" />
+	<link rel="alternate" type="application/rss+xml" title="RSS 2.0 - 所有评论" href="../../comments/feed/index.html" />
+	<link rel="pingback" href="../../xmlrpc.php" />
+
+	<!-- style START -->
+	<link rel="stylesheet" href="../../wp-content/themes/elegant-box/style.css" type="text/css" media="screen" />
+			<link rel="stylesheet" href="../../wp-content/themes/elegant-box/chinese.css" type="text/css" media="screen" />
+		<!--[if IE]>
+		<link rel="stylesheet" href="http://imzc.net/wp-content/themes/elegant-box/ie.css" type="text/css" media="screen" />
+	<![endif]-->
+
+	<!-- default style -->
+			<link rel="stylesheet" href="../../wp-content/themes/elegant-box/styles/blue/default.css" type="text/css" media="screen" title="blue" />
+		<link rel="stylesheet" href="../../wp-content/themes/elegant-box/styles/blue/global.css" type="text/css" media="screen" />
+	
+	<!-- others styles -->
+	<link rel="stylesheet" href="../../wp-content/themes/elegant-box/styles/green/default.css" type="text/css" media="screen" title="green" />
+	<link rel="stylesheet" href="../../wp-content/themes/elegant-box/styles/green/global.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="../../wp-content/themes/elegant-box/styles/purple/default.css" type="text/css" media="screen" title="purple" />
+	<link rel="stylesheet" href="../../wp-content/themes/elegant-box/styles/purple/global.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="../../wp-content/themes/elegant-box/styles/brown/default.css" type="text/css" media="screen" title="brown" />
+	<link rel="stylesheet" href="../../wp-content/themes/elegant-box/styles/brown/global.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="../../wp-content/themes/elegant-box/styles/white/default.css" type="text/css" media="screen" title="white" />
+	<link rel="stylesheet" href="../../wp-content/themes/elegant-box/styles/white/global.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="../../wp-content/themes/elegant-box/styles/black/default.css" type="text/css" media="screen" title="black" />
+	<link rel="stylesheet" href="../../wp-content/themes/elegant-box/styles/black/global.css" type="text/css" media="screen" />
+	<!-- style END -->
+
+	<!-- javascript START -->
+			<script type="text/javascript" src="../../wp-content/themes/elegant-box/js/styleswitcher.js"></script>
+		<script type="text/javascript" src="../../wp-content/themes/elegant-box/js/base.js"></script>
+	<script type="text/javascript" src="../../wp-content/themes/elegant-box/js/menu.js"></script>
+	<!-- javascript END -->
+
+		<link rel='stylesheet' id='jquery.slimbox-css'  href='../../wp-content/plugins/slimbox/stylesheets/jquery.slimbox.css?ver=2.03' type='text/css' media='all' />
+<link rel='stylesheet' id='wp-pagenavi-css'  href='../../wp-content/themes/elegant-box/pagenavi-css.css?ver=2.70' type='text/css' media='all' />
+<script type='text/javascript' src='../../wp-includes/js/jquery/jquery.js?ver=1.7.2'></script>
+<script type='text/javascript' src='../../wp-content/plugins/slimbox/javascript/jquery.slimbox.js?ver=2.03'></script>
+<script type='text/javascript' src='../../wp-includes/js/json2.js?ver=2011-02-23'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var live_blogging = {"ajaxurl":"http:\/\/imzc.net\/wp-admin\/admin-ajax.php","update_effect":"top"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='../../wp-content/plugins/live-blogging/live-blogging.js?ver=3.4.1'></script>
+<script type='text/javascript' src='../../wp-includes/js/comment-reply.js?ver=3.4.1'></script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="../../xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="../../wp-includes/wlwmanifest.xml" /> 
+<link rel='prev' title='解析pcap文件及读取实现源码' href='../181/index.html' />
+<link rel='next' title='UIView使用图片为背景和图片适应屏幕' href='../190/index.html' />
+<meta name="generator" content="WordPress 3.4.1" />
+<link rel='shortlink' href='http://wp.me/p19waf-32' />
+
+<!-- All in One SEO Pack 1.6.14.5 by Michael Torbert of Semper Fi Web Design[343,403] -->
+<meta name="description" content="plist简单的读写方法，NSSearchPathForDirectoriesInDomains，writeToFile" />
+<meta name="keywords" content="writetofile,nssearchpathfordirectoriesindomains, nsmutabledictionary" />
+<link rel="canonical" href="index.html" />
+<!-- /all in one seo pack -->
+<script type="text/javascript">
+	jQuery(document).ready(function($){	
+	    var select = $('a[href$=".bmp"],a[href$=".gif"],a[href$=".jpg"],a[href$=".jpeg"], a[href$=".png"],a[href$=".BMP"],a[href$=".GIF"],a[href$=".JPG"],a[href$=".JPEG"],a[href$=".PNG"]');
+		select.slimbox();
+	});
+</script>
+
+<link rel="stylesheet" href="../../wp-content/themes/elegant-box/wp-syntax.css" type="text/css" media="screen" />
+</head>
+
+
+<body>
+	<!-- header START -->
+	<div id="header">
+		<div class="inner">
+			<div class="content">
+				<div class="caption">
+					<h1 id="title"><a href="../../index.html" title="-More Thinking,And Then Just do it~~~">Only For Sunshine~</a></h1>
+					<div id="tagline">-More Thinking,And Then Just do it~~~</div>
+				</div>
+
+				<!-- search box -->
+									<form action="http://www.google.com/cse" id="search_box" method="get">
+						<div id="searchbox">
+							<input type="text" id="searchtxt" class="textfield" name="q" size="24" />
+							<input type="hidden" name="cx" value="007838838681523399853:u4canb53vle" />
+							<input type="hidden" name="ie" value="UTF-8" />
+						</div>
+					</form>
+				<script type="text/javascript">
+//<![CDATA[
+	var searchbox = document.getElementById("searchbox");
+	var searchtxt = document.getElementById("searchtxt");
+	var tiptext = "请输入关键字...";
+	if(searchtxt.value == "" || searchtxt.value == tiptext) {
+		searchtxt.className += " searchtip";
+		searchtxt.value = tiptext;
+	}
+	searchtxt.onfocus = function(e) {
+		if(searchtxt.value == tiptext) {
+			searchtxt.value = "";
+			searchtxt.className = searchtxt.className.replace(" searchtip", "");
+		}
+	}
+	searchtxt.onblur = function(e) {
+		if(searchtxt.value == "") {
+			searchtxt.className += " searchtip";
+			searchtxt.value = tiptext;
+		}
+	}
+//]]>
+</script>
+
+				<!-- navigation START -->
+				<ul id="navigation">
+
+					<li class="page_item"><a href="../../index.html">首页</a></li>
+					<li class="page_item page-item-260"><a href="../../ios/index.html">IOS_PROJ</a></li>
+<li class="page_item page-item-164"><a href="../../wp_otp/index.html">WP_OTP</a></li>
+<li class="page_item page-item-180"><a href="../../vps-recommended/index.html">vps推荐</a></li>
+<li class="page_item page-item-139"><a href="../../mysites/index.html">我的站点</a></li>
+<li class="page_item page-item-2"><a href="../../aboutme/index.html">关于</a></li>
+					<li id="subscribe">
+						<a rel="external nofollow" title="订阅这个博客的文章" id="feed" href="../../feed/index.html"><img src="../../wp-content/themes/elegant-box/images/transparent.gif" alt="RSS 订阅" /></a>
+													<ul>
+								<li class="first"><a rel="external nofollow" title="订阅到有道" href="http://reader.youdao.com/b.do?url=http://imzc.net/feed/"> 有道</a></li>
+								<li><a rel="external nofollow" title="订阅到鲜果" href="http://www.xianguo.com/subscribe.php?url=http://imzc.net/feed/"> 鲜果</a></li>
+								<li><a rel="external nofollow" title="订阅到抓虾" href="http://www.zhuaxia.com/add_channel.php?url=http://imzc.net/feed/"> 抓虾</a></li>
+								<li><a rel="external nofollow" title="订阅到 Google" href="http://fusion.google.com/add?feedurl=http://imzc.net/feed/">  Google</a></li>
+								<li><a rel="external nofollow" title="订阅到 My Yahoo!" href="http://add.my.yahoo.com/rss?url=http://imzc.net/feed/">  My Yahoo!</a></li>
+								<li><a rel="external nofollow" title="订阅到 newsgator" href="http://www.newsgator.com/ngs/subscriber/subfext.aspx?url=http://imzc.net/feed/">  newsgator</a></li>
+								<li><a rel="external nofollow" title="订阅到 Bloglines" href="http://www.bloglines.com/sub/http://imzc.net/feed/">  Bloglines</a></li>
+								<li><a rel="external nofollow" title="订阅到 哪吒" href="http://inezha.com/add?url=http://imzc.net/feed/">  哪吒</a></li>
+							</ul>
+											</li>
+
+				</ul>
+				<!-- navigation END -->
+
+			</div>
+		</div>
+	</div>
+	<!-- header END -->
+
+	<div id="container">
+		<div id="content">
+			<div id="main">
+
+		
+			<div class="post">
+				<div class="title">
+					<h2>plist简单的读写方法</h2>
+					<div class="fixed"></div>
+				</div>
+
+				<div class="info">
+					
+					<span>2012年2月11日</span>
+											<span> | 分类: <a href="../category/ios-dev/index.html" title="查看 IOSDev 中的全部文章" rel="category tag">IOSDev</a></span>
+																<span> | 标签: </span>
+					
+					<div class="fixed"></div>
+				</div>
+
+				<div class="content">
+<div style=”padding:3px 0″>
+<script type="text/javascript"><!--
+google_ad_client = "pub-7220882232307827";
+/* blog_468x15, Created @09-2-19 */
+google_ad_slot = "1127450986";
+google_ad_width = 468;
+google_ad_height = 15;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+</div>
+<br />	
+					<p>//获取应用程序沙盒的Documents目录(<strong><span style="color: #ff0000;">ios程序仅能读取app自己目录内的文件</span></strong>)<br />
+NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);<br />
+NSString *documentsDirectory = [paths objectAtIndex:0];<br />
+//得到完整的文件名<br />
+NSString *plistFilePath = [documentsDirectory stringByAppendingPathComponent:@"cfg.plist"];</p>
+<p>另外要注意一点，如果最开始不存在plist文件，则需要手动初始化NSMutableDictionary<br />
+NSMutableDictionary* dict = [ [ NSMutableDictionary alloc ] initWithContentsOfFile:CFG_FILE];<br />
+<span style="color: #ff0000;"><strong> if (dict==nil) {<br />
+NSArray * key = [[NSArray alloc] initWithObjects:@&#8221;shakehandKey&#8221;,nil];<br />
+NSArray * val = [[NSArray alloc] initWithObjects:@&#8221;val&#8221;,nil];<br />
+dict = [[ NSMutableDictionary alloc ] initWithObjects:key forKeys:val];<br />
+}</strong></span></p>
+<p>[ dict setObject:shakehandKey forKey:@"shakehandKey" ];<br />
+代码片段见下：</p>
+
+<div class="wp_syntax"><table><tr><td class="line_numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+</pre></td><td class="code"><pre class="c_mac" style="font-family:monospace;"><span style="color: #ff0000;">//读取plist中的数据</span>
+<span style="color: #000000;">-</span><span style="color: #000000;">&#40;</span>NSString <span style="color: #000000;">*</span><span style="color: #000000;">&#41;</span>getShakehandkey<span style="color: #000000;">&#123;</span>
+	NSMutableDictionary<span style="color: #000000;">*</span> dict <span style="color: #000000;">=</span>  <span style="color: #000000;">&#91;</span> <span style="color: #000000;">&#91;</span> NSMutableDictionary alloc <span style="color: #000000;">&#93;</span> initWithContentsOfFile<span style="color: #000000;">:</span>CFG_FILE<span style="color: #000000;">&#93;</span>;
+	<span style="color: #0000ff;">if</span> <span style="color: #000000;">&#40;</span>dict<span style="color: #000000;">==</span>nil<span style="color: #000000;">&#41;</span> <span style="color: #000000;">&#123;</span>
+		<span style="color: #0000ff;">return</span> nil;
+	<span style="color: #000000;">&#125;</span>
+	NSString<span style="color: #000000;">*</span> shakehandKey <span style="color: #000000;">=</span> <span style="color: #000000;">&#91;</span> dict objectForKey<span style="color: #000000;">:</span>@<span style="color: #666666;">&quot;shakehandKey&quot;</span> <span style="color: #000000;">&#93;</span>;
+	<span style="color: #0000ff;">return</span> shakehandKey;
+<span style="color: #000000;">&#125;</span>
+&nbsp;
+<span style="color: #ff0000;">//保存数据到plist文件中</span>
+<span style="color: #000000;">-</span><span style="color: #000000;">&#40;</span>BOOL<span style="color: #000000;">&#41;</span>saveShakehandkey<span style="color: #000000;">:</span><span style="color: #000000;">&#40;</span>NSString<span style="color: #000000;">*</span><span style="color: #000000;">&#41;</span>shakehandKey<span style="color: #000000;">&#123;</span>
+	<span style="color: #ff0000; font-style: italic;">/*
+	 #define CFG_FILE  [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@&quot;cfg.plist&quot;]
+	 */</span>
+	NSMutableDictionary<span style="color: #000000;">*</span> dict <span style="color: #000000;">=</span> <span style="color: #000000;">&#91;</span> <span style="color: #000000;">&#91;</span> NSMutableDictionary alloc <span style="color: #000000;">&#93;</span> initWithContentsOfFile<span style="color: #000000;">:</span>CFG_FILE<span style="color: #000000;">&#93;</span>;
+	<span style="color: #0000ff;">if</span> <span style="color: #000000;">&#40;</span>dict<span style="color: #000000;">==</span>nil<span style="color: #000000;">&#41;</span> <span style="color: #000000;">&#123;</span>
+		NSArray <span style="color: #000000;">*</span> key <span style="color: #000000;">=</span> <span style="color: #000000;">&#91;</span><span style="color: #000000;">&#91;</span>NSArray alloc<span style="color: #000000;">&#93;</span> initWithObjects<span style="color: #000000;">:</span>@<span style="color: #666666;">&quot;shakehandKey&quot;</span>,nil<span style="color: #000000;">&#93;</span>;
+		NSArray <span style="color: #000000;">*</span> val <span style="color: #000000;">=</span> <span style="color: #000000;">&#91;</span><span style="color: #000000;">&#91;</span>NSArray alloc<span style="color: #000000;">&#93;</span> initWithObjects<span style="color: #000000;">:</span>@<span style="color: #666666;">&quot;val&quot;</span>,nil<span style="color: #000000;">&#93;</span>;
+		dict <span style="color: #000000;">=</span> <span style="color: #000000;">&#91;</span><span style="color: #000000;">&#91;</span> NSMutableDictionary alloc <span style="color: #000000;">&#93;</span> initWithObjects<span style="color: #000000;">:</span>key forKeys<span style="color: #000000;">:</span>val<span style="color: #000000;">&#93;</span>;
+	<span style="color: #000000;">&#125;</span>
+&nbsp;
+ 	<span style="color: #000000;">&#91;</span> dict setObject<span style="color: #000000;">:</span>shakehandKey forKey<span style="color: #000000;">:</span>@<span style="color: #666666;">&quot;shakehandKey&quot;</span> <span style="color: #000000;">&#93;</span>;
+	<span style="color: #0000ff;">if</span> <span style="color: #000000;">&#40;</span>dict<span style="color: #000000;">==</span>nil<span style="color: #000000;">&#41;</span> <span style="color: #000000;">&#123;</span>
+		NSLog<span style="color: #000000;">&#40;</span>@<span style="color: #666666;">&quot;NSMutableDictionary nill 2&quot;</span><span style="color: #000000;">&#41;</span>;
+	<span style="color: #000000;">&#125;</span>
+&nbsp;
+	NSLog<span style="color: #000000;">&#40;</span>@<span style="color: #666666;">&quot;path:%@&quot;</span>,CFG_FILE<span style="color: #000000;">&#41;</span>;
+&nbsp;
+	<span style="color: #0000ff;">return</span> <span style="color: #000000;">&#91;</span> dict writeToFile<span style="color: #000000;">:</span>CFG_FILE atomically<span style="color: #000000;">:</span>YES <span style="color: #000000;">&#93;</span>;
+<span style="color: #000000;">&#125;</span></pre></td></tr></table></div>
+
+					<div class="fixed"></div>
+				</div>
+
+				<div class="comments comments_single">
+					<a href="index.html#respond">发表评论</a>
+									</div>
+
+				<!-- related posts START -->
+								<!-- related posts END -->
+			</div>
+
+
+<script type="text/javascript" src="../../wp-content/themes/elegant-box/js/comment.js"></script>
+
+
+	<div class="messagebox">
+		<div class="content small">
+			本文的评论功能被关闭了.		</div>
+	</div>
+
+
+			
+
+	</div>
+
+	<!-- sidebar START -->
+<div id="sidebar">
+
+<!-- Style Switcher START -->
+<div class="widget">
+	<div id="styleswitcher">
+		<span id="style-text">主题风格: </span>
+			<span id="style-green" class="color"><a onclick="TSS.setActiveStyleSheet('green');" href="javascript:void(0);" title="将主题风格更换为green"><img src="../../wp-content/themes/elegant-box/images/transparent.gif" alt="" /></a></span>
+			<span id="style-purple" class="color"><a onclick="TSS.setActiveStyleSheet('purple');" href="javascript:void(0);" title="将主题风格更换为purple"><img src="../../wp-content/themes/elegant-box/images/transparent.gif" alt="" /></a></span>
+			<span id="style-brown" class="color"><a onclick="TSS.setActiveStyleSheet('brown');" href="javascript:void(0);" title="将主题风格更换为brown"><img src="../../wp-content/themes/elegant-box/images/transparent.gif" alt="" /></a></span>
+			<span id="style-blue" class="color"><a onclick="TSS.setActiveStyleSheet('blue');" href="javascript:void(0);" title="将主题风格更换为blue"><img src="../../wp-content/themes/elegant-box/images/transparent.gif" alt="" /></a></span>
+			<span id="style-white" class="color"><a onclick="TSS.setActiveStyleSheet('white');" href="javascript:void(0);" title="将主题风格更换为white"><img src="../../wp-content/themes/elegant-box/images/transparent.gif" alt="" /></a></span>
+			<span id="style-black" class="color"><a onclick="TSS.setActiveStyleSheet('black');" href="javascript:void(0);" title="将主题风格更换为black"><img src="../../wp-content/themes/elegant-box/images/transparent.gif" alt="" /></a></span>
+		<div class="fixed"></div>
+	</div>
+</div>
+<!-- Style Switcher END -->
+
+		<!-- showcase -->
+		
+		<ul id="widgets">
+
+<li class="widget widget_calendar"><h3>Archives</h3><div id="calendar_wrap"><table id="wp-calendar">
+	<caption>2012 年七月</caption>
+	<thead>
+	<tr>
+		<th scope="col" title="星期日">日</th>
+		<th scope="col" title="星期一">一</th>
+		<th scope="col" title="星期二">二</th>
+		<th scope="col" title="星期三">三</th>
+		<th scope="col" title="星期四">四</th>
+		<th scope="col" title="星期五">五</th>
+		<th scope="col" title="星期六">六</th>
+	</tr>
+	</thead>
+
+	<tfoot>
+	<tr>
+		<td colspan="3" id="prev"><a href="../date/2012/05/index.html" title="查看 2012 年五月的文章">&laquo; 五</a></td>
+		<td class="pad">&nbsp;</td>
+		<td colspan="3" id="next" class="pad">&nbsp;</td>
+	</tr>
+	</tfoot>
+
+	<tbody>
+	<tr><td>1</td><td><a href="../date/2012/07/02/index.html" title="六月随笔">2</a></td><td>3</td><td>4</td><td><a href="../date/2012/07/05/index.html" title="ruby Rspec测试框架cheetsheet">5</a></td><td>6</td><td>7</td>
+	</tr>
+	<tr>
+		<td>8</td><td><a href="../date/2012/07/09/index.html" title="linux下STAF执行失败时的处理">9</a></td><td>10</td><td>11</td><td id="today">12</td><td>13</td><td>14</td>
+	</tr>
+	<tr>
+		<td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td>
+	</tr>
+	<tr>
+		<td>22</td><td>23</td><td>24</td><td>25</td><td>26</td><td>27</td><td>28</td>
+	</tr>
+	<tr>
+		<td>29</td><td>30</td><td>31</td>
+		<td class="pad" colspan="4">&nbsp;</td>
+	</tr>
+	</tbody>
+	</table></div></li><li class="widget widget_categories"><h3>分类目录</h3>		<ul>
+	<li class="cat-item cat-item-7"><a href="../category/c_cplusplus/index.html" title="查看 C/C++ 下的所有文章">C/C++</a>
+</li>
+	<li class="cat-item cat-item-24"><a href="../category/ios-dev/index.html" title="查看 IOSDev 下的所有文章">IOSDev</a>
+</li>
+	<li class="cat-item cat-item-23"><a href="../category/java/index.html" title="查看 java 下的所有文章">java</a>
+</li>
+	<li class="cat-item cat-item-5"><a href="../category/lamp/index.html" title="查看 LAMP 下的所有文章">LAMP</a>
+</li>
+	<li class="cat-item cat-item-8"><a href="../category/onthego/index.html" title="查看 OnTheGo 下的所有文章">OnTheGo</a>
+</li>
+	<li class="cat-item cat-item-1"><a href="../category/other/index.html" title="查看 Other 下的所有文章">Other</a>
+</li>
+	<li class="cat-item cat-item-3"><a href="../category/project/index.html" title="查看 Project 下的所有文章">Project</a>
+</li>
+	<li class="cat-item cat-item-4"><a href="../category/rubytesting/index.html" title="查看 Ruby&amp;Testing 下的所有文章">Ruby&amp;Testing</a>
+</li>
+		</ul>
+</li><li class="widget widget_text"><h3>Google Ads</h3>			<div class="textwidget"><script type="text/javascript"><!--
+google_ad_client = "ca-pub-7220882232307827";
+/* left_180x150, 创建于 09-2-19 */
+google_ad_slot = "1136501676";
+google_ad_width = 180;
+google_ad_height = 150;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+</div>
+		</li><li class="widget widget_tag_cloud"><h3>标签</h3><div class="tagcloud"><a href='../tag/c/index.html' class='tag-link-9' title='4 个话题' style='font-size: 22pt;'>c</a>
+<a href='../tag/dailhelper/index.html' class='tag-link-13' title='1 个话题' style='font-size: 8pt;'>dailhelper</a>
+<a href='../tag/linux/index.html' class='tag-link-14' title='1 个话题' style='font-size: 8pt;'>linux</a>
+<a href='../tag/ls/index.html' class='tag-link-10' title='1 个话题' style='font-size: 8pt;'>ls</a>
+<a href='../tag/makefile/index.html' class='tag-link-17' title='1 个话题' style='font-size: 8pt;'>makefile</a>
+<a href='../tag/netkeeper/index.html' class='tag-link-16' title='1 个话题' style='font-size: 8pt;'>Netkeeper</a>
+<a href='../tag/pcap/index.html' class='tag-link-25' title='1 个话题' style='font-size: 8pt;'>pcap</a>
+<a href='../tag/ruby/index.html' class='tag-link-12' title='1 个话题' style='font-size: 8pt;'>ruby</a>
+<a href='../tag/slab/index.html' class='tag-link-20' title='1 个话题' style='font-size: 8pt;'>slab</a>
+<a href='../tag/wget/index.html' class='tag-link-11' title='1 个话题' style='font-size: 8pt;'>wget</a>
+<a href='../tag/系�%259F管�%2590%2586/index.html' class='tag-link-15' title='1 个话题' style='font-size: 8pt;'>系统管理</a></div>
+</li><li class="widget widget_links"><h3>链接表</h3>
+	<ul class='xoxo blogroll'>
+<li><a href="http://blog.csdn.net/Android_Tutor" rel="colleague" title="Android_Tutor的专栏" target="_blank">Android学习系列</a></li>
+<li><a href="http://wpotp.com" rel="me" title="食品找茬网" target="_blank">找茬网</a></li>
+<li><a href="http://www.sz95000.com/" title="深圳长途汽车网上订票，官方网站，这次不会忘记了。。。" target="_blank">深圳长途汽车网上订票</a></li>
+
+	</ul>
+</li>
+<li class="widget widget_meta"><h3>功能</h3>			<ul>
+			<li><a href="../../wp-login.php?action=register">注册</a></li>			<li><a href="../../wp-login.php">登录</a></li>
+			<li><a href="../../feed/index.html" title="使用 RSS 2.0 订阅本站点内容">文章 <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<li><a href="../../comments/feed/index.html" title="使用 RSS 订阅本站点的所有文章的近期评论">评论 <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<li><a href="http://cn.wordpress.org/" title="基于 WordPress，一个优美、先进的个人信息发布平台。">WordPress.org</a></li>
+						</ul>
+</li>		</ul>
+
+		<!-- showcase 2 -->
+		
+</div>
+<!-- sidebar END -->
+
+	<div class="fixed"></div>
+
+		<div id="bottom">
+			<div class="postnav">
+				<span class="alignleft">&laquo; <a href="../181/index.html" rel="prev">解析pcap文件及读取实现源码</a></span>
+				<span class="alignright"><a href="../190/index.html" rel="next">UIView使用图片为背景和图片适应屏幕</a> &raquo;</span>
+				<div class="fixed"></div>
+			</div>
+
+			<div class="anchor">
+				<span><a href="index.html#" onclick="MGJS.goTop();return false;">置顶</a></span>
+			</div>
+			<div class="fixed"></div>
+			</div>
+		<div class="fixed"></div>
+	</div>
+</div>
+
+<!-- footer START -->
+<div id="footer">
+	<div class="inner">
+		<div class="content">
+			<p id="about">
+				版权所有 &copy; 2008-2012 Only For Sunshine~ | 基于 <a href="http://wordpress.org/">WordPress</a> | 主题由 <a href="http://www.neoease.com/">NeoEase</a> 提供			</p>
+
+			<ul id="admin">
+				<li><a href="../../wp-login.php?action=register">注册</a></li>				<li><a href="../../wp-login.php">登录</a></li>
+			</ul>
+
+			<div class="fixed"></div>
+		</div>
+	</div>
+</div><!-- footer END --><script type='text/javascript' src='http://s.gravatar.com/js/gprofiles.js?aa&#038;ver=3.4.1'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var WPGroHo = {"my_hash":""};
+/* ]]> */
+</script>
+<script type='text/javascript' src='../../wp-content/plugins/jetpack/modules/wpgroho.js?ver=3.4.1'></script>
+	<div style="display:none">
+	</div>
+
+	<script src="http://stats.wordpress.com/e-201228.js" type="text/javascript"></script>
+	<script type="text/javascript">
+	st_go({v:'ext',j:'1:1.4.2',blog:'17044931',post:'188'});
+	var load_cmc = function(){linktracker_init(17044931,188,2);};
+	if ( typeof addLoadEvent != 'undefined' ) addLoadEvent(load_cmc);
+	else load_cmc();
+	</script><script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-9565349-1']);
+  _gaq.push(['_setDomainName', 'imzc.net']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script> 
+</body>
+</html>

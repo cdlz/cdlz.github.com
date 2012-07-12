@@ -1,0 +1,34 @@
+small,
+.small,
+.button,
+#header #tagline,
+#navigation li,
+#navigation li li a,
+.post .comments,
+.info,
+#bottom,
+#footer,
+.userinfo .date,
+.userinfo .count,
+#submitbox,
+#sidebar h3,
+#style-text,
+.more-link,
+#respond .row,
+#commentnavi,
+a#cancel-comment-reply-link,
+.post .info,
+#navlist li li a,
+.boxcaption h3,
+#related_posts h3,
+#wp-calendar caption,
+#wp-calendar td#prev,
+#wp-calendar td#next,
+#trackbacks h3,
+#trackbacks .actions {
+	font-size:12px;
+}
+#navigation li a {
+	padding:2px 5px 3px !important;
+	padding:2px 5px 4px;
+}

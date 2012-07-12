@@ -1,0 +1,8 @@
+/* 紫色风格选择按钮的颜色 */
+#style-purple a img {
+	background:#C3ACC6;
+}
+/* 紫色风格选择按钮的悬停颜色 */
+#style-purple a:hover img {
+	background:#A79ABD;
+}

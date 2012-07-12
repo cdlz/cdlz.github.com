@@ -1,0 +1,6 @@
+#style-black a img {
+	background:#777;
+}
+#style-black a:hover img {
+	background:#4f4f4f;
+}

@@ -1,0 +1,344 @@
+/* 底层背景和默认字体颜色 */
+body {
+	background:#E7DFE9;
+	color:#463C4E;
+}
+/* 引用和 pre 框的背景和边框 */
+blockquote,pre {
+	background:#F3EEF4;
+	border:1px dashed #D3BDD7;
+}
+/* 默认的链接字体颜色 */
+a {
+	color:#16387C;
+}
+/* 文本区和文本域的样式 */
+textarea,.textfield {
+	background:#FFF;
+	border:1px solid #D3BDD7;
+	padding:3px;
+	font-size:12px;
+}
+/* 评论留言填写资料时,通过验证的颜色 */
+.valid {
+	color:#119900;
+}
+/* 评论留言填写资料时,不通过验证的颜色 */
+.invalid {
+	color:#ff4a00;
+}
+/* 默认按钮样式 */
+.button,
+a#cancel-comment-reply-link {
+	background:#8C7CA9;
+	border-color:#8C7CA9 #6C499C #6C499C #8C7CA9;
+	color:#FFFFFF;
+}
+.button:hover,
+a#cancel-comment-reply-link:hover {
+	background:#766693;
+	border-color:#6C499C #8C7CA9 #8C7CA9 #6C499C;
+}
+/* 带边元素的背景和边框 */
+.sided,
+.wp-caption {
+	background:#F3EEF4;
+	border:1px #DCCEE0 solid;
+}
+/* 贴子内的图片在鼠标悬停时的边框颜色 */
+a .sided:hover {
+	border-color:#AB97BC;
+}
+/* BOX 线条和背景颜色 */
+.boxcaption,
+.box,
+#related_posts,
+#related_posts ul li {
+	border-color:#D3BDD7;
+	background:#FFF;
+}
+/* BOX 标题颜色 */
+.boxcaption h3,
+#related_posts h3,
+.messagebox .content {
+	background:#F3EEF4;
+}
+/* 带下边的元素的下边线 */
+.bottom_separator {
+	border-bottom:1px dashed #D3BDD7;
+}
+
+/* header START */
+/* 顶部的下边线条 */
+#header {
+	border-bottom:1px solid #AB97BC;
+}
+/* 顶部主题颜色,下边线条 */
+#header .inner {
+	background:#EEE6F0;
+	border-bottom:1px solid #FFF;
+}
+/* Blog 标题左边的粗线条 */
+#header .caption {
+	border-color:#C5B8CE;
+}
+/* Blog 标题 */
+#title a {
+	color:#463C4E;
+	text-decoration:none;
+}
+/* Blog 副标题 */
+#tagline {
+	color:#705C83;
+}
+/* Blog 标题的字体悬停颜色 */
+#title a:hover {
+	color:#6C499C;
+}
+/* 导航菜单项的链接右边颜色 */
+#navigation li a {
+	border-color:#D6C6D9;
+}
+/* 搜索框 */
+#searchbox .textfield {
+	border:1px solid #D3BDD7;
+	background:#FBF9FC url(search_background.gif) no-repeat right !important;
+	background:#FBF9FC url(search_background_ie.gif) no-repeat right; /* for IE6 */
+	background-position:0 0 !important;
+	background-position:0 -21px; /* for IE6 */
+}
+/* 搜索框获得焦点(对 IE<=6 的浏览器无效) */
+#searchbox .textfield:focus {
+	border:solid 1px #AB97BC;
+	background:#FFF url(search_background.gif) no-repeat right !important;
+	background-position:0 -21px !important;
+}
+/* 搜索框提示 */
+#searchbox .searchtip {
+	color:#D3BDD7;
+}
+/* 可转变的订阅图标 */
+#navigation li a#feed img {
+	background-image:url(feed_switch.gif);
+}
+#navigation li a#twitter img {
+	background-image:url(twitter_switch.gif);
+}
+/* header END */
+
+/* submenu START */
+/* 订阅器列表 */
+#navigation li ul {
+	background:#E7DFE9;
+	border-color:#AB97BC;
+}
+/* submenu END */
+
+/* main START */
+/* 主题背景和边框 */
+#container {
+	background:#F7F4F8 url(background.gif) repeat;
+}
+#content {
+	background:#FDFBFF url(content_background.gif) repeat-y top right;
+	border:solid 1px #AB97BC;
+}
+/* 翻页导航上边线条 */
+#bottom .postnav {
+	border-top:1px dashed #D3BDD7;
+}
+/* TOP 的图标 */
+#bottom .anchor span {
+	background:url(go_top.gif) no-repeat left center;
+}
+/* 提示栏的边框 */
+#notice {
+	border:1px solid #D3BDD7;
+}
+/* 提示栏的背景和内线条 */
+#notice .inner {
+	background:#EEE6F0;
+	border:1px solid #FFF;
+}
+/* 提示栏的图标 */
+#notice .icon {
+	background:url(notice.gif) no-repeat top left;
+}
+/* 提示栏的垂直分割线 */
+#notice .content .separator {
+	border-right:1px solid #D3BDD7;
+}
+/* 贴子的标题 */
+.post .title h2 {
+	color:#463C4E;
+	padding-bottom:3px;
+	border-bottom:1px solid #EEE3F9;
+}
+/* 贴子的可链接标题 */
+.post .title a {
+	color:#463C4E;
+	text-decoration:none;
+}
+/* 贴子的可链接标题悬停颜色 */
+.post .title a:hover {
+	color:#6C499C;
+}
+/* 贴子的分类等信息的字体颜色 */
+.post .info,
+#related_posts .excerpt {
+	color:#705C83;
+}
+/* 评论的图标 */
+.post .comments {
+	background:url(comment.gif) no-repeat bottom left;
+}
+/* 文章内表格 */
+.post .content table {
+	background:#FFF;
+	border-color:#D3BDD7;
+}
+.post .content th,
+.post .content td {
+	border-color:#D3BDD7;
+}
+.post .content tr.even td {
+	background:#F3EEF4;
+}
+.post .content th {
+	background:#E3D6E9;
+}
+/* main START */
+
+/* sidebar START */
+/* 侧边栏背景和左边线条 */
+#sidebar {
+	background:#E7DFE9;
+	border-left:1px solid #D3BDD7;
+}
+/* Widget 标题的背景颜色 */
+#sidebar h3,
+.widget .showcase {
+	background:#DCCEE0;
+}
+/* Widget 可连接标题的字体颜色 */
+#sidebar a h3 {
+	color:#463C4E;
+}
+/* Widget 可连接标题和风格选择栏的背景 */
+#styleswitcher,#sidebar a:hover h3 {
+	background:#C5B8CE;
+}
+/* 风格选择按钮的背景和边框 */
+#styleswitcher span.color {
+	background:#FFF;
+	border:1px solid #655C6D;
+}
+/* 目前风格按钮的外空白 */
+#styleswitcher #style-purple {
+	margin-top:0; /* 此项不用修改 */
+}
+/* 目前风格按钮的背景和大小 */
+#styleswitcher #style-purple a img {
+	background:#A79ABD;
+	width:12px; /* 此项不用修改 */
+	height:12px; /* 此项不用修改 */
+}
+/* Widget 各项的下边线条 */
+.widget ul li {
+	border-bottom:1px solid #DCCEE0;
+}
+/* Widget 各子项的上边线条 */
+.widget ul li ul li {
+	border-top:1px solid #DCCEE0;
+}
+/* 最新贴子的日期字体颜色(1.4版后不用) */
+.sidedate {
+	color:#AB97BC;
+}
+/* sidebar END */
+
+/* footer START */
+/* 底部的上边线条 */
+#footer {
+	border-top:1px solid #AB97BC;
+}
+/* 底部的背景和内线条 */
+#footer .inner {
+	background:#E7DFE9;
+	border-top:1px solid #FFF;
+}
+/* footer END */
+
+/* comments START */
+/* 评论框 */
+.commentlist .comment {
+	background:#FFF;
+	border-color:#D3BDD7;
+}
+/* 评论框的评论者信息栏 */
+.userinfo {
+	background:#F3EEF4;
+}
+/* 评论者头像框 */
+.userinfo .userpic {
+	background-color:#fff;
+	border:1px solid #AB97BC;
+}
+/* RSS 图标 */
+#comments_rss {
+	background:url(feed.gif) no-repeat top left;
+}
+/* Trackback 框的边线颜色 */
+#trackbacks,
+#trackbacks li {
+	border-color:#D3BDD7;
+}
+/* Trackback 框的标题颜色 */
+#trackbacks .caption {
+	background:#F3EEF4;
+}
+/* Trackback 框的附属信息字体颜色 */
+#trackbacks li small {
+	color:#705C83;
+}
+/* comments END */
+
+/* calendar START */
+/* 月历的背景颜色 */
+#calendar_wrap {
+	background:#DCCEE0;
+}
+/* 月历星期标题的背景颜色 */
+#wp-calendar th {
+	background:#D3BDD7;
+}
+/* calendar END */
+
+/* wp-pagenavi START */
+/* 悬停页面链接颜色 */
+.wp-pagenavi a:hover {
+	background:#DCCEE0;
+}
+/* 当前页面链接颜色 */
+.wp-pagenavi span.current {
+	background:#EEE6F0;
+}
+/* wp-pagenavi END */
+
+/* wp-recentcomments START */
+/* 评论者头像的背景和边框颜色 */
+.rc_item .rc_avatar img {
+	background:#FFF;
+	border-color:#AB97BC;
+}
+/* wp-recentcomments END */
+
+/* wp-syntax START */
+.wp_syntax {
+	background:#F3EEF4;
+	border:1px solid #D3BDD7;
+}
+.wp_syntax .line_numbers {
+	background:#E7DFE9;
+}
+/* wp-syntax END */

@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Only For Sunshine~ &#187; ls</title>
+	<atom:link href="http://imzc.net/archives/tag/ls/feed/" rel="self" type="application/rss+xml" />
+	<link>http://imzc.net</link>
+	<description>-More Thinking,And Then Just do it~~~</description>
+	<lastBuildDate>Mon, 09 Jul 2012 03:09:37 +0000</lastBuildDate>
+	<language>zh-CN</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.4.1</generator>
+		<item>
+		<title>递归列出目录下文件的全路径</title>
+		<link>http://imzc.net/archives/20/</link>
+		<comments>http://imzc.net/archives/20/#comments</comments>
+		<pubDate>Fri, 27 Aug 2010 01:57:00 +0000</pubDate>
+		<dc:creator>imzc</dc:creator>
+				<category><![CDATA[C/C++]]></category>
+		<category><![CDATA[c]]></category>
+		<category><![CDATA[ls]]></category>
+
+		<guid isPermaLink="false">http://imzc.net/?action=show&#038;id=123</guid>
+		<description><![CDATA[由于ls -R,递归目录列出的信息格式在需要全路径时不好处理,因此专门写这一程序.
+ linux下编译:  gcc lsdir.c -o lsdir -O
+ windows下编译:使用codeblocks即可.
+ Useage: lsdir
+ list the full path of a dir's subdirs or files,not same as  "ls -R".
+ -h,    print this message.
+ -d dirname,    recursely print full path of files.
+ -D,    print dirs only.
+ -F,    print files only.
+ -A,    print files and dirs(defult).
+ -R,    print dir recurse(defult).
+ -r,    only print current dir.
+ none argvs,    print current path.]]></description>
+			<content:encoded><![CDATA[<p>本程序是在网络搜索到的目录遍历用法加以修改,增加功能实现的.所以欢迎转载使用.</p>
+
+<div class="wp_syntax"><table><tr><td class="line_numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+</pre></td><td class="code"><pre class="c" style="font-family:monospace;"><span style="color: #808080; font-style: italic;">/*
+ 由于ls -R,递归目录列出的信息格式在需要全路径时不好处理,因此专门写这一程序.
+ linux下编译:  gcc lsdir.c -o lsdir -O
+ windows下编译:使用codeblocks即可.
+ Useage: lsdir
+ list the full path of a dir's subdirs or files,not same as  &quot;ls -R&quot;.
+ -h,    print this message.
+ -d dirname,    recursely print full path of files.
+ -D,    print dirs only.
+ -F,    print files only.
+ -A,    print files and dirs(defult).
+ -R,    print dir recurse(defult).
+ -r,    only print current dir.
+ none argvs,    print current path.
+ ---zhouchuan,2010.8.27.
+*/</span>
+<span style="color: #339933;">#include &amp;lt;stdio.h&amp;gt;</span>
+<span style="color: #339933;">#include &amp;lt;dirent.h&amp;gt;</span>
+<span style="color: #339933;">#include &amp;lt;string.h&amp;gt;</span>
+<span style="color: #339933;">#include &amp;lt;sys/stat.h&amp;gt;</span>
+<span style="color: #339933;">#include &amp;lt;sys/types.h&amp;gt;</span>
+<span style="color: #339933;">#include &amp;lt;unistd.h&amp;gt;</span>
+&nbsp;
+<span style="color: #339933;">#ifdef __WIN32__  // OS_COMPAT</span>
+<span style="color: #666666; font-style: italic;">//__WINDOWS__</span>
+ <span style="color: #993333;">char</span> path_sep <span style="color: #339933;">=</span> <span style="color: #ff0000;">'<span style="color: #000099; font-weight: bold;">\\</span>'</span><span style="color: #339933;">;</span>
+<span style="color: #339933;">#else</span>
+ <span style="color: #993333;">char</span> path_sep <span style="color: #339933;">=</span> <span style="color: #ff0000;">'/'</span><span style="color: #339933;">;</span>
+<span style="color: #339933;">#endif   // !__WINDOWS__</span>
+&nbsp;
+<span style="color: #339933;">#define DIR_MAX_LEN 1000</span>
+<span style="color: #339933;">#define PRINT_DIR_ONLY 0</span>
+<span style="color: #339933;">#define PRINT_FILE_ONLY 1</span>
+<span style="color: #339933;">#define PRINT_FILE_AND_DIR 2</span>
+&nbsp;
+<span style="color: #339933;">#define DIR_RECURSE_NO 0</span>
+<span style="color: #339933;">#define DIR_RECURSE_YES  1</span>
+&nbsp;
+<span style="color: #993333;">int</span> g_PRINT_TYPE <span style="color: #339933;">=</span> PRINT_FILE_AND_DIR<span style="color: #339933;">;</span> <span style="color: #666666; font-style: italic;">//默认列出所有目录及文件</span>
+<span style="color: #993333;">int</span> g_DIR_RECURSE <span style="color: #339933;">=</span> DIR_RECURSE_YES<span style="color: #339933;">;</span><span style="color: #666666; font-style: italic;">//默认递归</span>
+&nbsp;
+<span style="color: #993333;">void</span> printdir<span style="color: #009900;">&#40;</span><span style="color: #993333;">char</span> <span style="color: #339933;">*</span>dir<span style="color: #339933;">,</span> <span style="color: #993333;">int</span> depth<span style="color: #009900;">&#41;</span>
+<span style="color: #009900;">&#123;</span>
+ DIR <span style="color: #339933;">*</span>dp<span style="color: #339933;">;</span>
+ <span style="color: #993333;">struct</span> dirent <span style="color: #339933;">*</span>entry<span style="color: #339933;">;</span>
+ <span style="color: #993333;">struct</span> stat statbuf<span style="color: #339933;">;</span>
+ <span style="color: #993333;">char</span>  buff<span style="color: #009900;">&#91;</span>DIR_MAX_LEN<span style="color: #009900;">&#93;</span><span style="color: #339933;">;</span>
+&nbsp;
+&nbsp;
+ <span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#40;</span>dp <span style="color: #339933;">=</span> opendir<span style="color: #009900;">&#40;</span>dir<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span> <span style="color: #339933;">==</span> NULL<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+ fprintf<span style="color: #009900;">&#40;</span>stderr<span style="color: #339933;">,</span> <span style="color: #ff0000;">&quot;cannot open directory: %s<span style="color: #000099; font-weight: bold;">\n</span> &quot;</span><span style="color: #339933;">,</span> dir<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+ <span style="color: #b1b100;">return</span><span style="color: #339933;">;</span>
+ <span style="color: #009900;">&#125;</span>
+ chdir<span style="color: #009900;">&#40;</span>dir<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+ getcwd<span style="color: #009900;">&#40;</span>buff<span style="color: #339933;">,</span>DIR_MAX_LEN<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+ <span style="color: #b1b100;">while</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#40;</span>entry <span style="color: #339933;">=</span> readdir<span style="color: #009900;">&#40;</span>dp<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span> <span style="color: #339933;">!=</span> NULL<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+ <span style="color: #666666; font-style: italic;">//lstat(entry-&amp;gt; d_name,&amp;amp;statbuf);</span>
+ stat<span style="color: #009900;">&#40;</span>entry<span style="color: #339933;">-&amp;</span>gt<span style="color: #339933;">;</span> d_name<span style="color: #339933;">,&amp;</span>amp<span style="color: #339933;">;</span>statbuf<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+ <span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span>S_ISDIR<span style="color: #009900;">&#40;</span>statbuf.<span style="color: #202020;">st_mode</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+ <span style="color: #808080; font-style: italic;">/* Found a directory, but ignore . and .. */</span>
+ <span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span>strcmp<span style="color: #009900;">&#40;</span> <span style="color: #ff0000;">&quot;.&quot;</span><span style="color: #339933;">,</span>entry<span style="color: #339933;">-&amp;</span>gt<span style="color: #339933;">;</span> d_name<span style="color: #009900;">&#41;</span> <span style="color: #339933;">==</span> <span style="color: #0000dd;">0</span> <span style="color: #339933;">||</span>strcmp<span style="color: #009900;">&#40;</span> <span style="color: #ff0000;">&quot;..&quot;</span><span style="color: #339933;">,</span>entry<span style="color: #339933;">-&amp;</span>gt<span style="color: #339933;">;</span> d_name<span style="color: #009900;">&#41;</span> <span style="color: #339933;">==</span> <span style="color: #0000dd;">0</span><span style="color: #009900;">&#41;</span>
+ <span style="color: #b1b100;">continue</span><span style="color: #339933;">;</span>
+ <span style="color: #666666; font-style: italic;">// printf( &quot;%*s%s/\n &quot;,depth, &quot; &quot;,entry-&amp;gt; d_name);</span>
+ <span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span>g_PRINT_TYPE <span style="color: #339933;">!=</span> PRINT_FILE_ONLY<span style="color: #009900;">&#41;</span>
+ <span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span> <span style="color: #ff0000;">&quot;%s%c%s%c<span style="color: #000099; font-weight: bold;">\n</span> &quot;</span><span style="color: #339933;">,</span>buff<span style="color: #339933;">,</span>path_sep<span style="color: #339933;">,</span>entry<span style="color: #339933;">-&amp;</span>gt<span style="color: #339933;">;</span> d_name<span style="color: #339933;">,</span>path_sep<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+&nbsp;
+ <span style="color: #808080; font-style: italic;">/* Recurse at a new indent level */</span>
+ <span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span>g_DIR_RECURSE<span style="color: #339933;">==</span>DIR_RECURSE_YES<span style="color: #009900;">&#41;</span>
+ printdir<span style="color: #009900;">&#40;</span>entry<span style="color: #339933;">-&amp;</span>gt<span style="color: #339933;">;</span> d_name<span style="color: #339933;">,</span>depth<span style="color: #339933;">+</span><span style="color: #0000dd;">4</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+ <span style="color: #009900;">&#125;</span><span style="color: #b1b100;">else</span><span style="color: #009900;">&#123;</span>
+ <span style="color: #666666; font-style: italic;">//is a file</span>
+ <span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span>g_PRINT_TYPE <span style="color: #339933;">!=</span>PRINT_DIR_ONLY<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+ <span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span> <span style="color: #ff0000;">&quot;%s%c%s<span style="color: #000099; font-weight: bold;">\n</span> &quot;</span><span style="color: #339933;">,</span>buff<span style="color: #339933;">,</span>path_sep<span style="color: #339933;">,</span>entry<span style="color: #339933;">-&amp;</span>gt<span style="color: #339933;">;</span> d_name<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+ <span style="color: #009900;">&#125;</span>
+ <span style="color: #009900;">&#125;</span>
+ <span style="color: #009900;">&#125;</span>
+ chdir<span style="color: #009900;">&#40;</span> <span style="color: #ff0000;">&quot;..&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+ closedir<span style="color: #009900;">&#40;</span>dp<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<span style="color: #009900;">&#125;</span>
+&nbsp;
+<span style="color: #993333;">void</span> useage<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+ <span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;====================================================================<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+ <span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;Useage: lsdir<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+ <span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot; list the full path of a dir's subdirs or files,not same as  <span style="color: #000099; font-weight: bold;">\&quot;</span>ls -R<span style="color: #000099; font-weight: bold;">\&quot;</span>. <span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+ <span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot; -h,<span style="color: #000099; font-weight: bold;">\t</span>print this message.<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+ <span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot; -d dirname,<span style="color: #000099; font-weight: bold;">\t</span>recursely print full path of files. <span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+ <span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot; -D,<span style="color: #000099; font-weight: bold;">\t</span>print dirs only. <span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+ <span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot; -F,<span style="color: #000099; font-weight: bold;">\t</span>print files only. <span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+ <span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot; -A,<span style="color: #000099; font-weight: bold;">\t</span>print files and dirs(defult). <span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+ <span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot; -R,<span style="color: #000099; font-weight: bold;">\t</span>print dir recurse(defult). <span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+ <span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot; -r,<span style="color: #000099; font-weight: bold;">\t</span>only print current dir. <span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+ <span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot; none argvs,<span style="color: #000099; font-weight: bold;">\t</span>print current path.<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+ <span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;<span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>---zhouchuan,2010.8.27.<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+ <span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;====================================================================<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<span style="color: #009900;">&#125;</span>
+&nbsp;
+<span style="color: #993333;">int</span> main<span style="color: #009900;">&#40;</span><span style="color: #993333;">int</span> argc<span style="color: #339933;">,</span> <span style="color: #993333;">char</span><span style="color: #339933;">*</span> argv<span style="color: #009900;">&#91;</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span>
+<span style="color: #009900;">&#123;</span>
+ <span style="color: #993333;">int</span> oc<span style="color: #339933;">;</span>                     <span style="color: #808080; font-style: italic;">/*选项字符 */</span>
+ <span style="color: #993333;">char</span> <span style="color: #339933;">*</span>b_opt_arg<span style="color: #339933;">;</span>            <span style="color: #808080; font-style: italic;">/*选项参数字串 */</span>
+ <span style="color: #993333;">char</span> <span style="color: #339933;">*</span>topdir<span style="color: #339933;">=</span>NULL<span style="color: #339933;">,</span> pwd<span style="color: #009900;">&#91;</span><span style="color: #0000dd;">2</span><span style="color: #009900;">&#93;</span><span style="color: #339933;">=</span> <span style="color: #ff0000;">&quot;.&quot;</span><span style="color: #339933;">;</span>
+&nbsp;
+ <span style="color: #b1b100;">while</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#40;</span>oc <span style="color: #339933;">=</span> getopt<span style="color: #009900;">&#40;</span>argc<span style="color: #339933;">,</span> argv<span style="color: #339933;">,</span> <span style="color: #ff0000;">&quot;hd:DFARr&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span> <span style="color: #339933;">!=</span> <span style="color: #339933;">-</span><span style="color: #0000dd;">1</span><span style="color: #009900;">&#41;</span>
+ <span style="color: #009900;">&#123;</span>
+ <span style="color: #b1b100;">switch</span><span style="color: #009900;">&#40;</span>oc<span style="color: #009900;">&#41;</span>
+ <span style="color: #009900;">&#123;</span>
+ <span style="color: #b1b100;">case</span> <span style="color: #ff0000;">'h'</span><span style="color: #339933;">:</span>
+ <span style="color: #666666; font-style: italic;">//-h,则打印使用方法</span>
+ useage<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+ <span style="color: #b1b100;">return</span> <span style="color: #0000dd;">0</span><span style="color: #339933;">;</span>
+ <span style="color: #000000; font-weight: bold;">break</span><span style="color: #339933;">;</span>
+ <span style="color: #b1b100;">case</span> <span style="color: #ff0000;">'D'</span><span style="color: #339933;">:</span>
+ g_PRINT_TYPE <span style="color: #339933;">=</span>PRINT_DIR_ONLY <span style="color: #339933;">;</span>
+ <span style="color: #000000; font-weight: bold;">break</span> <span style="color: #339933;">;</span>
+ <span style="color: #b1b100;">case</span> <span style="color: #ff0000;">'F'</span><span style="color: #339933;">:</span>
+ g_PRINT_TYPE <span style="color: #339933;">=</span>PRINT_FILE_ONLY <span style="color: #339933;">;</span>
+ <span style="color: #000000; font-weight: bold;">break</span> <span style="color: #339933;">;</span>
+ <span style="color: #b1b100;">case</span> <span style="color: #ff0000;">'A'</span><span style="color: #339933;">:</span>
+ g_PRINT_TYPE <span style="color: #339933;">=</span>PRINT_FILE_AND_DIR <span style="color: #339933;">;</span>
+ <span style="color: #000000; font-weight: bold;">break</span> <span style="color: #339933;">;</span>
+ <span style="color: #b1b100;">case</span> <span style="color: #ff0000;">'R'</span><span style="color: #339933;">:</span>
+ g_DIR_RECURSE <span style="color: #339933;">=</span> DIR_RECURSE_YES<span style="color: #339933;">;</span>
+ <span style="color: #666666; font-style: italic;">//       printf(&quot; DIR_RECURSE_YES&quot;);</span>
+ <span style="color: #000000; font-weight: bold;">break</span><span style="color: #339933;">;</span>
+ <span style="color: #b1b100;">case</span> <span style="color: #ff0000;">'r'</span><span style="color: #339933;">:</span>
+ g_DIR_RECURSE <span style="color: #339933;">=</span> DIR_RECURSE_NO<span style="color: #339933;">;</span>
+ <span style="color: #666666; font-style: italic;">//    printf(&quot; DIR_RECURSE_NO&quot;);</span>
+ <span style="color: #000000; font-weight: bold;">break</span><span style="color: #339933;">;</span>
+ <span style="color: #b1b100;">case</span> <span style="color: #ff0000;">'d'</span><span style="color: #339933;">:</span>
+ b_opt_arg <span style="color: #339933;">=</span> optarg<span style="color: #339933;">;</span>
+ <span style="color: #666666; font-style: italic;">//      printf(&quot;dir %s\n&quot;, optarg);</span>
+ topdir<span style="color: #339933;">=</span>optarg<span style="color: #339933;">;</span>
+ <span style="color: #000000; font-weight: bold;">break</span><span style="color: #339933;">;</span>
+ <span style="color: #009900;">&#125;</span>
+ <span style="color: #009900;">&#125;</span>
+ <span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span>topdir<span style="color: #339933;">==</span>NULL<span style="color: #009900;">&#41;</span>
+ <span style="color: #009900;">&#123;</span>
+ <span style="color: #666666; font-style: italic;">//   printf(&quot;dir current&quot;);</span>
+ topdir<span style="color: #339933;">=</span>pwd<span style="color: #339933;">;</span>
+ <span style="color: #009900;">&#125;</span>
+ <span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;Directory scan of <span style="color: #000099; font-weight: bold;">\&quot;</span>%s<span style="color: #000099; font-weight: bold;">\&quot;</span>:<span style="color: #000099; font-weight: bold;">\n</span> &quot;</span><span style="color: #339933;">,</span>topdir<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+ printdir<span style="color: #009900;">&#40;</span>topdir<span style="color: #339933;">,</span><span style="color: #0000dd;">0</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+ <span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;===Done.<span style="color: #000099; font-weight: bold;">\n</span> &quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+&nbsp;
+ <span style="color: #b1b100;">return</span> <span style="color: #0000dd;">0</span><span style="color: #339933;">;</span>
+<span style="color: #009900;">&#125;</span></pre></td></tr></table></div>
+
+<p>在很多时候,我们可能需要得到一个目录下所有文件的全路径,以供后续计算.<br />
+如要计算当前目录所有文件的md5值:</p>
+<div>
+<p>./lsdir -F|grep &#8221;/&#8221;|while read LINE;do md5sum $LINE;done;</p>
+<p>源码: <a href="http://imzc.net/wp-content/uploads/2010/08/lsdir.zip">lsdir</a></p>
+</div>
+]]></content:encoded>
+			<wfw:commentRss>http://imzc.net/archives/20/feed/</wfw:commentRss>
+		<slash:comments>296</slash:comments>
+		</item>
+	</channel>
+</rss>

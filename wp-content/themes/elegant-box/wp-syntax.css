@@ -1,0 +1,48 @@
+.wp_syntax {
+	margin-bottom:8px;
+	overflow:auto;
+	overflow-x:auto;
+	overflow-y:hidden;
+	width:99%;
+	padding-bottom:0 !important;
+	padding-bottom:15px;
+}
+.wp_syntax table, 
+.post .content .wp_syntax table {
+	border-collapse:collapse;
+	border:none;
+	margin:0;
+}
+.wp_syntax div {
+	vertical-align:top;
+	padding:2px 4px;
+}
+.wp_syntax pre {
+	border:none;
+	background:none;
+	margin:0;
+	padding:0;
+	width:auto;
+	float:none;
+	clear:none;
+	overflow:visible;
+	font-size:12px;
+	line-height:1.333;
+}
+.line_numbers pre {
+	padding-left:5px;
+}
+.wp_syntax td, 
+.post .content .wp_syntax td {
+	border-top:none;
+	padding:2px 4px;
+	border:none;
+}
+.wp_syntax .line_numbers, 
+.post .content .wp_syntax .line_numbers {
+	text-align:right;
+	overflow:visible;
+}
+.wp_syntax .code {
+	width:100%;
+}

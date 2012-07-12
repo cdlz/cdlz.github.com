@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Only For Sunshine~ &#187; slab</title>
+	<atom:link href="http://imzc.net/archives/tag/slab/feed/" rel="self" type="application/rss+xml" />
+	<link>http://imzc.net</link>
+	<description>-More Thinking,And Then Just do it~~~</description>
+	<lastBuildDate>Mon, 09 Jul 2012 03:09:37 +0000</lastBuildDate>
+	<language>zh-CN</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.4.1</generator>
+		<item>
+		<title>[转]Linux slab 分配器剖析</title>
+		<link>http://imzc.net/archives/109/</link>
+		<comments>http://imzc.net/archives/109/#comments</comments>
+		<pubDate>Mon, 25 Oct 2010 08:23:02 +0000</pubDate>
+		<dc:creator>imzc</dc:creator>
+				<category><![CDATA[C/C++]]></category>
+		<category><![CDATA[slab]]></category>
+
+		<guid isPermaLink="false">http://imzc.net/?p=109</guid>
+		<description><![CDATA[了解 Linux 内存管理的方式
+M. Tim Jones, 顾问工程师, Emulex
+M. Tim Jones
+M. Tim Jones 是一名嵌入式软件工程师，他是 GNU/Linux Application Programming、AI Application Programming 以及 BSD Sockets Programming from a Multilanguage Perspective 等书的作者。他的工程背景非常广泛，从同步宇宙飞船的内核开发到嵌入式架构设计，再到网络协议的开发。Tim 是位于科罗拉多州 Longmont 的 Emulex Corp. 的一名顾问工程师。
+转自: https://www.ibm.com/developerworks/cn/linux/l-linux-slab-allocator/
+
+简介： 良好的操作系统性能部分依赖于操作系统有效管理资源的能力。在过去，堆内存管理器是实际的规范，但是其性能会受到内存碎片和内存回收需求的影响。现在，Linux® 内核使用了源自于 Solaris 的一种方法，但是这种方法在嵌入式系统中已经使用了很长时间了，它是将内存作为对象按照大小进行分配。本文将探索 slab 分配器背后所采用的思想，并介绍这种方法提供的接口和用法。]]></description>
+			<content:encoded><![CDATA[<p><a name="N1006B">动态内存管理</a></p>
+<p>内存管理的目标是提供一种方法，为实现各种目的而在各个用户之间实现内存共享。内存管理方法应该实现以下两个功能：</p>
+<ul>
+<li>最小化管理内存所需的时间</li>
+<li>最大化用于一般应用的可用内存（最小化管理开销）</li>
+</ul>
+<p>内存管理实际上是一种关于权衡的零和游戏。您可以开发一种使用少量内存进行管理的算法，但是要花费更多时间来管理可用内存。也可以开发一个算法来有效地管理内存，但却要使用更多的内存。最终，特定应用程序的需求将促使对这种权衡作出选择。</p>
+<p>每个内存管理器都使用了一种基于堆的分配策略。在这种方法中，大块内存（称为 <strong>堆</strong>）用来为用户定义的目的提供内存。当用户需要一块内存时，就请求给自己分配一定大小的内存。堆管理器会查看可用内存的情况（使用特定算法）并返回一块内存。搜索过程中使用的一些算法有 <strong>first-fit</strong>（在堆中搜索到的第一个满足请求的内存块 ）和 <strong>best-fit</strong>（使用堆中满足请求的最合适的内存块）。当用户使用完内存后，就将内存返回给堆。</p>
+<p>这种基于堆的分配策略的根本问题是<em>碎片（fragmentation）</em>。当内存块被分配后，它们会以不同的顺序在不同的时间返回。这样会在堆中留下一些洞，需要花一些时间才能有效地管理空闲内存。这种算法通常具有较高的内存使用效率（分配需要的内存），但是却需要花费更多时间来对堆进行管理。</p>
+<p>另外一种方法称为 <strong>buddy memory allocation</strong>，是一种更快的内存分配技术，它将内 存划分为 2 的幂次方个分区，并使用 best-fit 方法来分配内存请求。当用户释放内存时，就会检查 buddy  块，查看其相邻的内存块是否也已经被释放。如果是的话，将合并内存块以最小化内存碎片。这个算法的时间效率更高，但是由于使用 best-fit  方法的缘故，会产生内存浪费。</p>
+<p>本文将着重介绍 Linux 内核的内存管理，尤其是 <strong>slab 分配</strong>提供的机制。</p>
+<p><a name="N1009E">slab 缓存</a></p>
+<p>Linux 所使用的 slab 分配器的基础是 Jeff Bonwick 为 SunOS 操作系统首次引入的一种算法。Jeff   的分配器是围绕对象缓存进行的。在内核中，会为有限的对象集（例如文件描述符和其他常见结构）分配大量内存。Jeff  发现对内核中普通对象进行初始化所需的时间超过了对其进行分配和释放所需的时间。因此他的结论是不应该将内存释放回一个全局的内存池，而是将内存保持为针 对特定目而初始化的状态。例如，如果内存被分配给了一个互斥锁，那么只需在为互斥锁首次分配内存时执行一次互斥锁初始化函数（<code>mutex_init</code>）即可。后续的内存分配不需要执行这个初始化函数，因为从上次释放和调用析构之后，它已经处于所需的状态中了。</p>
+<p>Linux slab 分配器使用了这种思想和其他一些思想来构建一个在空间和时间上都具有高效性的内存分配器。</p>
+<p>图 1 给出了 slab 结构的高层组织结构。在最高层是 <code>cache_chain</code>，这是一个 slab 缓存的链接列表。这对于 best-fit 算法非常有用，可以用来查找最适合所需要的分配大小的缓存（遍历列表）。<code>cache_chain</code> 的每个元素都是一个         <code>kmem_cache</code> 结构的引用（称为一个 <strong>cache</strong>）。它定义了一个要管理的给定大小的对象池。<br />
+<a name="figure1"><strong> 图  1. slab 分配器的主要结构</strong></a></p>
+<p><a href="http://imzc.net/wp-content/uploads/2010/10/figure1.gif"><img class="alignleft size-medium wp-image-110" title="figure1" src="http://imzc.net/wp-content/uploads/2010/10/figure1-300x161.gif" alt="" width="300" height="179" /></a></p>
+<p>每个缓存都包含了一个 <strong>slabs</strong> 列表，这是一段连续的内存块（通常都是页面）。存在 3 种 slab：</p>
+<dl>
+<dt><strong> <code>slabs_full</code> </strong></dt>
+<dd>完全分配的 slab </dd>
+<dt><strong> <code>slabs_partial</code> </strong></dt>
+<dd>部分分配的 slab</dd>
+<dt><strong> <code>slabs_empty</code> </strong></dt>
+<dd>空 slab，或者没有对象被分配</dd>
+</dl>
+<p>注意 <code>slabs_empty</code> 列表中的 slab 是进行<strong>回收（reaping）</strong>的主要备选对象。正是通过此过程，slab 所使用的内存被返回给操作系统供其他用户使用。</p>
+<p>slab 列表中的每个 slab  都是一个连续的内存块（一个或多个连续页），它们被划分成一个个对象。这些对象是从特定缓存中进行分配和释放的基本元素。注意 slab 是 slab  分配器进行操作的最小分配单位，因此如果需要对 slab 进行扩展，这也就是所扩展的最小值。通常来说，每个 slab 被分配为多个对象。</p>
+<p>由于对象是从 slab 中进行分配和释放的，因此单个 slab 可以在 slab 列表之间进行移动。例如，当一个 slab 中的所有对象都被使用完时，就从 <code>slabs_partial</code> 列表中移动到          <code>slabs_full</code> 列表中。当一个 slab 完全被分配并且有对象被释放后，就从 <code>slabs_full</code> 列表中移动到          <code>slabs_partial</code> 列表中。当所有对象都被释放之后，就从 <code>slabs_partial</code> 列表移动到          <code>slabs_empty</code> 列表中。</p>
+<p><a name="N1011E">slab 背后的动机</a></p>
+<p>与传统的内存管理模式相比， slab  缓存分配器提供了很多优点。首先，内核通常依赖于对小对象的分配，它们会在系统生命周期内进行无数次分配。slab  缓存分配器通过对类似大小的对象进行缓存而提供这种功能，从而避免了常见的碎片问题。slab  分配器还支持通用对象的初始化，从而避免了为同一目而对一个对象重复进行初始化。最后，slab  分配器还可以支持硬件缓存对齐和着色，这允许不同缓存中的对象占用相同的缓存行，从而提高缓存的利用率并获得更好的性能。</p>
+<div>
+<hr /></div>
+<p><a href="https://www.ibm.com/developerworks/cn/linux/l-linux-slab-allocator/#ibm-pcon">回页首</a></p>
+<p><a name="N10127">API 函数</a></p>
+<p>现在来看一下能够创建新 slab 缓存、向缓存中增加内存、销毁缓存的应用程序接口（API）以及 slab 中对对象进行分配和释放操作的函数。</p>
+<p>第一个步骤是创建 slab 缓存结构，您可以将其静态创建为：</p>
+<table border="0" cellspacing="0" cellpadding="0" width="65%">
+<tbody>
+<tr>
+<td>
+<pre>struct struct <strong>kmem_cache</strong> *my_cachep;</pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p>然后其他 slab 缓存函数将使用该引用进行创建、删除、分配等操作。<code>kmem_cache</code> 结构包含了每个中央处理器单元（CPU）的数据、一组可调整的（可以通过 proc 文件系统访问）参数、统计信息和管理 slab 缓存所必须的元素。</p>
+<p><a name="N10144">kmem_cache_create</a></p>
+<p>内核函数 <code>kmem_cache_create</code> 用来创建一个新缓存。这通常是在内核初始化时执行的，或者在首次加载内核模块时执行。其原型定义如下：</p>
+<table border="0" cellspacing="0" cellpadding="0" width="65%">
+<tbody>
+<tr>
+<td>
+<pre>struct kmem_cache *
+<strong>kmem_cache_create</strong>( const char *name, size_t size, size_t align,
+                       unsigned long flags;
+                       void (*ctor)(void*, struct kmem_cache *, unsigned long),
+                       void (*dtor)(void*, struct kmem_cache *, unsigned long));</pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p><code>name</code> 参数定义了缓存名称，proc 文件系统（在 /proc/slabinfo 中）使用它标识这个缓存。         <code>size</code> 参数指定了为这个缓存创建的对象的大小， <code>align</code> 参数定义了每个对象必需的对齐。         <code>flags</code> 参数指定了为缓存启用的选项。这些标志如表 1 所示。<br />
+<a name="table1"><strong>表 1.           kmem_cache_create 的部分选项（在 flags 参数中指定）</strong></a></p>
+<table border="0" cellspacing="0" cellpadding="0" width="80%" summary="表 1.           kmem_cache_create 的部分选项（在 flags 参数中指定）">
+<tbody>
+<tr>
+<th scope="col">选项</th>
+<th scope="col">说明</th>
+</tr>
+<tr>
+<th scope="row">SLAB_RED_ZONE</th>
+<td>在对象头、尾插入标志，用来支持对缓冲区溢出的检查。</td>
+</tr>
+<tr>
+<th scope="row">SLAB_POISON</th>
+<td>使用一种己知模式填充 slab，允许对缓存中的对象进行监视（对象属对象所有，不过可以在外部进行修改）。</td>
+</tr>
+<tr>
+<th scope="row">SLAB_HWCACHE_ALIGN</th>
+<td>指定缓存对象必须与硬件缓存行对齐。</td>
+</tr>
+</tbody>
+</table>
+<p><code>ctor</code> 和 <code>dtor</code> 参数定义了一个可选的对象构造器和析构器。构造器和析构器是用户提供的回调函数。当从缓存中分配新对象时，可以通过构造器进行初始化。</p>
+<p>在创建缓存之后，          <code>kmem_cache_create</code> 函数会返回对它的引用。注意这个函数并没有向缓存分配任何内存。相反，在试图从缓存（最初为空）分配对象时，<strong>refill</strong> 操作将内存分配给它。当所有对象都被使用掉时，也可以通过相同的操作向缓存添加内存。</p>
+<p><a name="N101BE">kmem_cache_destroy</a></p>
+<p>内核函数 <code>kmem_cache_destroy</code> 用来销毁缓存。这个调用是由内核模块在被卸载时执行的。在调用这个函数时，缓存必须为空。</p>
+<table border="0" cellspacing="0" cellpadding="0" width="65%">
+<tbody>
+<tr>
+<td>
+<pre>void <strong>kmem_cache_destroy</strong>( struct kmem_cache *cachep );</pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p><a name="N101D3">kmem_cache_alloc</a></p>
+<p>要从一个命名的缓存中分配一个对象，可以使用         <code>kmem_cache_alloc</code> 函数。调用者提供了从中分配对象的缓存以及一组标志：</p>
+<table border="0" cellspacing="0" cellpadding="0" width="65%">
+<tbody>
+<tr>
+<td>
+<pre>void <strong>kmem_cache_alloc</strong>( struct kmem_cache *cachep, gfp_t flags );</pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p>这个函数从缓存中返回一个对象。注意如果缓存目前为空，那么这个函数就会调用         <code>cache_alloc_refill</code> 向缓存中增加内存。 <code>kmem_cache_alloc</code> 的 flags 选项与          <code>kmalloc</code> 的 flags 选项相同。表 2 给出了标志选项的部分列表。<br />
+<a name="table2"><strong>表 2.          kmem_cache_alloc 和 kmalloc 内核函数的标志选项</strong></a></p>
+<table border="0" cellspacing="0" cellpadding="0" width="80%" summary="表 2.          kmem_cache_alloc 和 kmalloc 内核函数的标志选项">
+<tbody>
+<tr>
+<th scope="col">标志</th>
+<th scope="col">说明</th>
+</tr>
+<tr>
+<th scope="row">GFP_USER</th>
+<td>为用户分配内存（这个调用可能会睡眠）。</td>
+</tr>
+<tr>
+<th scope="row">GFP_KERNEL</th>
+<td>从内核 RAM 中分配内存（这个调用可能会睡眠）。</td>
+</tr>
+<tr>
+<th scope="row">GFP_ATOMIC</th>
+<td>使该调用强制处于非睡眠状态（对中断处理程序非常有用）。</td>
+</tr>
+<tr>
+<th scope="row">GFP_HIGHUSER</th>
+<td>从高端内存中分配内存。</td>
+</tr>
+</tbody>
+</table>
+<p><a name="N10241">kmem_cache_zalloc</a></p>
+<p>内核函数 <code>kmem_cache_zalloc</code> 与         <code>kmem_cache_alloc</code> 类似，只不过它对对象执行          <code>memset</code> 操作，用来在将对象返回调用者之前对其进行清除操作。</p>
+<p><a name="N10256">kmem_cache_free</a></p>
+<p>要将一个对象释放回 slab，可以使用          <code>kmem_cache_free</code>。调用者提供了缓存引用和要释放的对象。</p>
+<table border="0" cellspacing="0" cellpadding="0" width="65%">
+<tbody>
+<tr>
+<td>
+<pre>void <strong>kmem_cache_free</strong>( struct kmem_cache *cachep, void *objp );</pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p><a name="N1026B">kmalloc 和 kfree</a></p>
+<p>内核中最常用的内存管理函数是          <code>kmalloc</code> 和 <code>kfree</code> 函数。这两个函数的原型如下：</p>
+<table border="0" cellspacing="0" cellpadding="0" width="65%">
+<tbody>
+<tr>
+<td>
+<pre>void *<strong>kmalloc</strong>( size_t size, int flags );
+void <strong>kfree</strong>( const void *objp );</pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p>注意在 <code>kmalloc</code> 中，惟一两个参数是要分配的对象的大小和一组标志（请参看 <a href="https://www.ibm.com/developerworks/cn/linux/l-linux-slab-allocator/#table2">表 2</a> 中的部分列表）。但是 <code>kmalloc</code> 和         <code>kfree</code> 使用了类似于前面定义的函数的 slab 缓存。<code>kmalloc</code> 没有为要从中分配对象的某个 slab 缓存命名，而是循环遍历可用缓存来查找可以满足大小限制的缓存。找到之后，就（使用         <code> __kmem_cache_alloc</code>）分配一个对象。要使用          <code>kfree</code> 释放对象，从中分配对象的缓存可以通过调用 <code>virt_to_cache</code> 确定。这个函数会返回一个缓存引用，然后在          <code>__cache_free</code> 调用中使用该引用释放对象。</p>
+<p><a name="N102B0">其他函数</a></p>
+<p>slab 缓存 API 还提供了其他一些非常有用的函数。         <code>kmem_cache_size</code> 函数会返回这个缓存所管理的对象的大小。您也可以通过调用 <code>kmem_cache_name</code> 来检索给定缓存的名称（在创建缓存时定义）。缓存可以通过释放其中的空闲 slab 进行收缩。这可以通过调用          <code>kmem_cache_shrink</code> 实现。注意这个操作（称为回收）是由内核定期自动执行的（通过         <code>kswapd</code>）。</p>
+<table border="0" cellspacing="0" cellpadding="0" width="65%">
+<tbody>
+<tr>
+<td>
+<pre>unsigned int <strong>kmem_cache_size</strong>( struct kmem_cache *cachep );
+const char *<strong>kmem_cache_name</strong>( struct kmem_cache *cachep );
+int <strong>kmem_cache_shrink</strong>( struct kmem_cache *cachep );</pre>
+</td>
+</tr>
+</tbody>
+</table>
+<div>
+<hr /></div>
+<p><a href="https://www.ibm.com/developerworks/cn/linux/l-linux-slab-allocator/#ibm-pcon">回页首</a></p>
+<p><a name="N102D7">slab 缓存的示例用法</a></p>
+<p>下面的代码片断展示了创建新 slab 缓存、从缓存中分配和释放对象然后销毁缓存的过程。首先，必须要定义一个 <code>kmem_cache</code> 对象，然后对其进行初始化（请参看清单 1）。这个特定的缓存包含 32 字节的对象，并且是硬件缓存对齐的（由标志参数 <code>SLAB_HWCACHE_ALIGN</code> 定义）。<br />
+<a name="listing1"><strong>清单 1. 创建新 slab 缓存</strong></a></p>
+<table border="0" cellspacing="0" cellpadding="0" width="80%">
+<tbody>
+<tr>
+<td>
+<pre>static struct kmem_cache *my_cachep;
+
+static void init_my_cache( void )
+{
+
+   my_cachep = <strong>kmem_cache_create</strong>(
+                  "my_cache",            /* Name */
+                  32,                    /* Object Size */
+                  0,                     /* Alignment */
+                  SLAB_HWCACHE_ALIGN,    /* Flags */
+                  NULL, NULL );          /* Constructor/Deconstructor */
+
+   return;
+}</pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p>使用所分配的 slab  缓存，您现在可以从中分配一个对象了。清单 2 给出了一个从缓存中分配和释放对象的例子。它还展示了两个其他函数的用法。<br />
+<a name="listing2"><strong>清单 2. 分配和释放对象</strong></a></p>
+<table border="0" cellspacing="0" cellpadding="0" width="80%">
+<tbody>
+<tr>
+<td>
+<pre>int slab_test( void )
+{
+  void *object;
+
+  printk( "Cache name is %s\n", <strong>kmem_cache_name</strong>( my_cachep ) );
+  printk( "Cache object size is %d\n", <strong>kmem_cache_size</strong>( my_cachep ) );
+
+  object = <strong>kmem_cache_alloc</strong>( my_cachep, GFP_KERNEL );
+
+  if (object) {
+
+    <strong>kmem_cache_free</strong>( my_cachep, object );
+
+  }
+
+  return 0;
+}</pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p>最后，清单 3 演示了 slab 缓存的销毁。调用者必须确保在执行销毁操作过程中，不要从缓存中分配对象。<br />
+<a name="listing3"><strong>清单 3. 销毁 slab 缓存</strong></a></p>
+<table border="0" cellspacing="0" cellpadding="0" width="80%">
+<tbody>
+<tr>
+<td>
+<pre>static void remove_my_cache( void )
+{
+
+  if (my_cachep) <strong>kmem_cache_destroy</strong>( my_cachep );
+
+  return;
+}</pre>
+</td>
+</tr>
+</tbody>
+</table>
+<div>
+<hr /></div>
+<p><a href="https://www.ibm.com/developerworks/cn/linux/l-linux-slab-allocator/#ibm-pcon">回页首</a></p>
+<p><a name="N1031E">slab 的 proc 接口</a></p>
+<p>proc 文件系统提供了一种简单的方法来监视系统中所有活动的 slab 缓存。这个文件称为  /proc/slabinfo，它除了提供一些可以从用户空间访问的可调整参数之外，还提供了有关所有 slab 缓存的详细信息。当前版本的  slabinfo 提供了一个标题，这样输出结果就更具可读性。对于系统中的每个 slab  缓存来说，这个文件提供了对象数量、活动对象数量以及对象大小的信息（除了每个 slab 的对象和页面之外）。另外还提供了一组可调整的参数和  slab 数据。</p>
+<p>要调优特定的 slab 缓存，可以简单地向  /proc/slabinfo 文件中以字符串的形式回转 slab 缓存名称和 3 个可调整的参数。下面的例子展示了如何增加 limit 和 batchcount 的值，而保留 shared         factor 不变（格式为 “cache name limit batchcount shared factor”）：</p>
+<table border="0" cellspacing="0" cellpadding="0" width="65%">
+<tbody>
+<tr>
+<td>
+<pre># <strong>echo "my_cache 128 64 8" &gt; /proc/slabinfo</strong></pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p><code>limit</code> 字段表示每个 CPU 可以缓存的对象的最大数量。         <code>batchcount</code> 字段是当缓存为空时转换到每个 CPU 缓存中全局缓存对象的最大数量。         <code>shared</code> 参数说明了对称多处理器（Symmetric MultiProcessing，SMP）系统的共享行为。</p>
+<p>注意您必须具有超级用户的特权才能在 proc 文件系统中为 slab 缓存调优参数。</p>
+<div>
+<hr /></div>
+<p><a href="https://www.ibm.com/developerworks/cn/linux/l-linux-slab-allocator/#ibm-pcon">回页首</a></p>
+<p><a name="N10344"> SLOB 分配器</a></p>
+<p>对于小型的嵌入式系统来说，存在一个 slab 模拟层，名为 SLOB。这个 slab 的替代品在小型嵌入式 Linux 系统中具有优势，但是即使它保存了 512KB 内存，依然存在碎片和难于扩展的问题。在禁用 <code>CONFIG_SLAB</code> 时，内核会回到这个 SLOB 分配器中。更多信息请参看 <a href="https://www.ibm.com/developerworks/cn/linux/l-linux-slab-allocator/#resources">参考资料</a> 一节。</p>
+<div>
+<hr /></div>
+<p><a href="https://www.ibm.com/developerworks/cn/linux/l-linux-slab-allocator/#ibm-pcon">回页首</a></p>
+<p><a name="N10355">结束语</a></p>
+<p>slab 缓存分配器的源代码实际上是 Linux 内核中可读性较好的一部分。除了函数调用的间接性之外，源代码也非常直观，总的来说，具有很好的注释。如果您希望了解更多有关 slab 缓存分配器的内容，建议您从源代码开始，因为它是有关这种机制的最新文档。         下面的 <a href="https://www.ibm.com/developerworks/cn/linux/l-linux-slab-allocator/#resources">参考资料</a> 一节提供了介绍 slab 缓存分配器的参考资料，但是不幸的是就目前的 2.6 实现来说，这些文档都已经过时了。</p>
+]]></content:encoded>
+			<wfw:commentRss>http://imzc.net/archives/109/feed/</wfw:commentRss>
+		<slash:comments>274</slash:comments>
+		</item>
+	</channel>
+</rss>

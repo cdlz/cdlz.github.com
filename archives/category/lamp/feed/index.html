@@ -1,0 +1,1484 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Only For Sunshine~ &#187; LAMP</title>
+	<atom:link href="http://imzc.net/archives/category/lamp/feed/" rel="self" type="application/rss+xml" />
+	<link>http://imzc.net</link>
+	<description>-More Thinking,And Then Just do it~~~</description>
+	<lastBuildDate>Mon, 09 Jul 2012 03:09:37 +0000</lastBuildDate>
+	<language>zh-CN</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.4.1</generator>
+		<item>
+		<title>Javascript事件捕获利器-chrome开发人员工具</title>
+		<link>http://imzc.net/archives/203/</link>
+		<comments>http://imzc.net/archives/203/#comments</comments>
+		<pubDate>Wed, 07 Mar 2012 15:13:28 +0000</pubDate>
+		<dc:creator>imzc</dc:creator>
+				<category><![CDATA[LAMP]]></category>
+		<category><![CDATA[Ruby&Testing]]></category>
+
+		<guid isPermaLink="false">http://imzc.net/?p=203</guid>
+		<description><![CDATA[web自动化时，我们往往需要获取javascript对应的事件。有些web，对相关事件进行屏蔽，而只处理某一种 [...]]]></description>
+			<content:encoded><![CDATA[<p>web自动化时，我们往往需要获取javascript对应的事件。有些web，对相关事件进行屏蔽，而只处理某一种事件。</p>
+<p>我们又不能一个一个的测试，因此需要能监听javascript事件的工具了。初步寻找，firebug和IE的开发人员工具都没有。</p>
+<p>而只在chrome开发人员工具中找到了，支持javascript event监听。</p>
+<p>在watir定位不到的时候，使用chrome打开，F12调出开发人员工具，选择到对应元素，在查看右侧的Event Listeners，</p>
+<p>即可看到支持的函数，以及对应触发此事件的js脚本。</p>
+<p>典型的如sohu微博：  t.sohu.com，发表微博时，只有mouseup才会被处理为发表动作。如下图（可以直接点击图片查看大图）：</p>
+<p>&nbsp;</p>
+<div><a href="http://imzc.net/wp-content/uploads/2012/03/chrome开发人员工具.png" target="_blank"><img class="alignleft size-medium wp-image-204" title="chrome开发人员工具" src="http://imzc.net/wp-content/uploads/2012/03/chrome开发人员工具-300x117.png" alt="" width="650" height="307" /></a></div>
+<div></div>
+]]></content:encoded>
+			<wfw:commentRss>http://imzc.net/archives/203/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>worldpress插件编写-WP_OTP</title>
+		<link>http://imzc.net/archives/202/</link>
+		<comments>http://imzc.net/archives/202/#comments</comments>
+		<pubDate>Sat, 11 Feb 2012 11:05:38 +0000</pubDate>
+		<dc:creator>imzc</dc:creator>
+				<category><![CDATA[IOSDev]]></category>
+		<category><![CDATA[LAMP]]></category>
+		<category><![CDATA[Project]]></category>
+
+		<guid isPermaLink="false">http://imzc.net/?p=202</guid>
+		<description><![CDATA[worldpress插件编写-WP_OTP,结合多个示例,理解后编写而成. 实际运行效果和介绍见:WP_OTP [...]]]></description>
+			<content:encoded><![CDATA[<p>worldpress插件编写-WP_OTP,结合多个示例,理解后编写而成.<br />
+实际运行效果和介绍见:<a href="http://imzc.net/wp_otp" target="_blank">WP_OTP</a></p>
+
+<div class="wp_syntax"><table><tr><td class="line_numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+</pre></td><td class="code"><pre class="php" style="font-family:monospace;"><span style="color: #000000; font-weight: bold;">&lt;?php</span>
+ <span style="color: #666666; font-style: italic;">/*
+ Plugin Name: OATH_OTP
+ Plugin URI: http://imzc.net/wp_otp
+ Version: 0.0.1
+ Author: Richard Chou
+ Description: OATH_OTP
+ */</span>
+&nbsp;
+<span style="color: #666666; font-style: italic;">// error_reporting(E_ALL);</span>
+&nbsp;
+<span style="color: #000000; font-weight: bold;">global</span> <span style="color: #000088;">$shakehand_key</span><span style="color: #339933;">;</span>
+&nbsp;
+<span style="color: #666666; font-style: italic;">//20bit</span>
+<span style="color: #000088;">$shakehand_key</span> <span style="color: #339933;">=</span> get_option<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">&quot;shakehand_key&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+&nbsp;
+<span style="color: #666666; font-style: italic;">//translate language, not completed.</span>
+<span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span><span style="color: #339933;">!</span><span style="color: #990000;">function_exists</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'tr'</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+	<span style="color: #000000; font-weight: bold;">function</span> tr<span style="color: #009900;">&#40;</span><span style="color: #000088;">$str</span> <span style="color: #339933;">,</span><span style="color: #000088;">$section</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+		<span style="color: #b1b100;">return</span> <span style="color: #000088;">$str</span> <span style="color: #339933;">;</span>
+	<span style="color: #009900;">&#125;</span>
+<span style="color: #009900;">&#125;</span>
+&nbsp;
+&nbsp;
+<span style="color: #000000; font-weight: bold;">function</span> auth_check<span style="color: #009900;">&#40;</span><span style="color: #000088;">$clientSideSha1Str</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+	<span style="color: #000000; font-weight: bold;">global</span> <span style="color: #000088;">$shakehand_key</span><span style="color: #339933;">;</span>
+	<span style="color: #666666; font-style: italic;">//die($shakehand_key);</span>
+	<span style="color: #000088;">$seed</span> <span style="color: #339933;">=</span> <span style="color: #990000;">time</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+	<span style="color: #000088;">$seed</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$seed</span> <span style="color: #339933;">-</span> <span style="color: #000088;">$seed</span><span style="color: #339933;">%</span><span style="color:#800080;">30</span> <span style="color: #339933;">;</span>
+	<span style="color: #666666; font-style: italic;">//$clientSideSha1Str = sha1($code.$shakehand_key);</span>
+	<span style="color: #000088;">$webSideSha1Str</span> <span style="color: #339933;">=</span><span style="color: #990000;">sha1</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$seed</span><span style="color: #339933;">.</span><span style="color: #000088;">$shakehand_key</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+	<span style="color: #666666; font-style: italic;">//echo &quot;====seed:$seed=====&quot;.$webSideSha1Str.&quot;,&quot;.$clientSideSha1Str.&quot;===&quot;;</span>
+&nbsp;
+	<span style="color: #000088;">$clientSideCode</span> <span style="color: #339933;">=</span> <span style="color: #990000;">substr</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$clientSideSha1Str</span><span style="color: #339933;">,</span><span style="color: #cc66cc;">0</span><span style="color: #339933;">,</span><span style="color: #cc66cc;">6</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+	<span style="color: #000088;">$webSideCode</span> <span style="color: #339933;">=</span> <span style="color: #990000;">substr</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$webSideSha1Str</span><span style="color: #339933;">,</span><span style="color: #cc66cc;">0</span><span style="color: #339933;">,</span><span style="color: #cc66cc;">6</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+&nbsp;
+	<span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$clientSideCode</span> <span style="color: #339933;">==</span> <span style="color: #000088;">$webSideCode</span> <span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+		<span style="color: #b1b100;">return</span> <span style="color: #009900; font-weight: bold;">true</span><span style="color: #339933;">;</span>
+	<span style="color: #009900;">&#125;</span><span style="color: #b1b100;">else</span><span style="color: #009900;">&#123;</span>
+		<span style="color: #b1b100;">return</span> <span style="color: #009900; font-weight: bold;">false</span><span style="color: #339933;">;</span>
+	<span style="color: #009900;">&#125;</span>
+<span style="color: #009900;">&#125;</span>
+<span style="color: #666666; font-style: italic;">// this function adds captcha to the login form</span>
+<span style="color: #000000; font-weight: bold;">function</span> oath_login_form<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+	<span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span> <span style="color: #990000;">session_id</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #339933;">==</span> <span style="color: #0000ff;">&quot;&quot;</span> <span style="color: #009900;">&#41;</span>
+		<span style="color: #990000;">session_start</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+	<span style="color: #000000; font-weight: bold;">global</span> <span style="color: #000088;">$cptch_options</span><span style="color: #339933;">;</span>
+&nbsp;
+	<span style="color: #666666; font-style: italic;">// captcha html - login form</span>
+	<span style="color: #b1b100;">echo</span> <span style="color: #0000ff;">'&lt;p class=&quot;cptch_block&quot;&gt;'</span><span style="color: #339933;">;</span>
+	<span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">&quot;&quot;</span> <span style="color: #339933;">!=</span> <span style="color: #000088;">$cptch_options</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'cptch_label_form'</span><span style="color: #009900;">&#93;</span> <span style="color: #009900;">&#41;</span>	
+		<span style="color: #b1b100;">echo</span> <span style="color: #0000ff;">'&lt;label&gt;'</span><span style="color: #339933;">.</span> <span style="color: #990000;">stripslashes</span><span style="color: #009900;">&#40;</span> <span style="color: #000088;">$cptch_options</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'cptch_label_form'</span><span style="color: #009900;">&#93;</span> <span style="color: #009900;">&#41;</span> <span style="color: #339933;">.</span><span style="color: #0000ff;">'&lt;/label&gt;&lt;br /&gt;'</span><span style="color: #339933;">;</span>
+	<span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span> <span style="color: #990000;">isset</span><span style="color: #009900;">&#40;</span> <span style="color: #000088;">$_SESSION</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'cptch_error'</span><span style="color: #009900;">&#93;</span> <span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+		<span style="color: #b1b100;">echo</span> <span style="color: #0000ff;">&quot;&lt;br /&gt;&lt;span style='color:red'&gt;&quot;</span><span style="color: #339933;">.</span> <span style="color: #000088;">$_SESSION</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'cptch_error'</span><span style="color: #009900;">&#93;</span> <span style="color: #339933;">.</span><span style="color: #0000ff;">&quot;&lt;/span&gt;&lt;br /&gt;&quot;</span><span style="color: #339933;">;</span>
+		<span style="color: #990000;">unset</span><span style="color: #009900;">&#40;</span> <span style="color: #000088;">$_SESSION</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'cptch_error'</span><span style="color: #009900;">&#93;</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+	<span style="color: #009900;">&#125;</span>
+	<span style="color: #b1b100;">echo</span> <span style="color: #0000ff;">'&lt;br /&gt;'</span><span style="color: #339933;">;</span>
+	oath_display_captcha<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+	<span style="color: #b1b100;">echo</span> <span style="color: #0000ff;">'&lt;/p&gt;
+	&lt;br /&gt;'</span><span style="color: #339933;">;</span>
+&nbsp;
+	<span style="color: #b1b100;">return</span> <span style="color: #009900; font-weight: bold;">true</span><span style="color: #339933;">;</span>
+&nbsp;
+<span style="color: #009900;">&#125;</span> <span style="color: #666666; font-style: italic;">//  end function oath_login_form</span>
+&nbsp;
+<span style="color: #666666; font-style: italic;">// this function checks captcha posted with a login</span>
+<span style="color: #000000; font-weight: bold;">function</span> oath_login_post<span style="color: #009900;">&#40;</span><span style="color: #000088;">$errors</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+	<span style="color: #000000; font-weight: bold;">global</span> <span style="color: #000088;">$str_key</span><span style="color: #339933;">;</span>
+	<span style="color: #000088;">$str_key</span> <span style="color: #339933;">=</span> <span style="color: #0000ff;">&quot;123&quot;</span><span style="color: #339933;">;</span>
+	<span style="color: #666666; font-style: italic;">// Delete errors, if they set</span>
+	<span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span> <span style="color: #990000;">isset</span><span style="color: #009900;">&#40;</span> <span style="color: #000088;">$_SESSION</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'cptch_error'</span><span style="color: #009900;">&#93;</span> <span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#41;</span>
+		<span style="color: #990000;">unset</span><span style="color: #009900;">&#40;</span> <span style="color: #000088;">$_SESSION</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'cptch_error'</span><span style="color: #009900;">&#93;</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+&nbsp;
+	<span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span> <span style="color: #990000;">isset</span><span style="color: #009900;">&#40;</span> <span style="color: #000088;">$_REQUEST</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'action'</span><span style="color: #009900;">&#93;</span> <span style="color: #009900;">&#41;</span> <span style="color: #339933;">&amp;&amp;</span> <span style="color: #0000ff;">'register'</span> <span style="color: #339933;">==</span> <span style="color: #000088;">$_REQUEST</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'action'</span><span style="color: #009900;">&#93;</span> <span style="color: #009900;">&#41;</span>
+		<span style="color: #b1b100;">return</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$errors</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+&nbsp;
+	<span style="color: #666666; font-style: italic;">// If captcha not complete, return error</span>
+	<span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span> <span style="color: #990000;">isset</span><span style="color: #009900;">&#40;</span> <span style="color: #000088;">$_REQUEST</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'cptch_number'</span><span style="color: #009900;">&#93;</span> <span style="color: #009900;">&#41;</span> <span style="color: #339933;">&amp;&amp;</span> <span style="color: #0000ff;">&quot;&quot;</span> <span style="color: #339933;">==</span>  <span style="color: #000088;">$_REQUEST</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'cptch_number'</span><span style="color: #009900;">&#93;</span> <span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>	
+		<span style="color: #b1b100;">return</span> <span style="color: #000088;">$errors</span><span style="color: #339933;">.</span><span style="color: #0000ff;">'&lt;strong&gt;'</span><span style="color: #339933;">.</span> tr<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">'ERROR'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'captcha'</span> <span style="color: #009900;">&#41;</span> <span style="color: #339933;">.</span><span style="color: #0000ff;">'&lt;/strong&gt;: '</span><span style="color: #339933;">.</span> tr<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">'Please complete the CAPTCHA.'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'captcha'</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+	<span style="color: #009900;">&#125;</span>
+&nbsp;
+	<span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span>auth_check<span style="color: #009900;">&#40;</span><span style="color: #990000;">trim</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$_REQUEST</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'cptch_number'</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">===</span><span style="color: #009900; font-weight: bold;">true</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+		<span style="color: #666666; font-style: italic;">// captcha was matched						</span>
+	<span style="color: #009900;">&#125;</span> <span style="color: #b1b100;">else</span> <span style="color: #009900;">&#123;</span>
+		<span style="color: #b1b100;">return</span> <span style="color: #000088;">$errors</span><span style="color: #339933;">.</span><span style="color: #0000ff;">'&lt;strong&gt;'</span><span style="color: #339933;">.</span> tr<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">'ERROR'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'captcha'</span> <span style="color: #009900;">&#41;</span> <span style="color: #339933;">.</span><span style="color: #0000ff;">'&lt;/strong&gt;: '</span><span style="color: #339933;">.</span> tr<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">'That CAPTCHA was incorrect.'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'captcha'</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+	<span style="color: #009900;">&#125;</span>
+  <span style="color: #b1b100;">return</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$errors</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<span style="color: #009900;">&#125;</span> <span style="color: #666666; font-style: italic;">// end function oath_login_post</span>
+&nbsp;
+<span style="color: #666666; font-style: italic;">// this function checks the captcha posted with a login when login errors are absent</span>
+<span style="color: #000000; font-weight: bold;">function</span> oath_login_check<span style="color: #009900;">&#40;</span><span style="color: #000088;">$url</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+	<span style="color: #000000; font-weight: bold;">global</span> <span style="color: #000088;">$str_key</span><span style="color: #339933;">;</span>
+	<span style="color: #000000; font-weight: bold;">global</span> <span style="color: #000088;">$auth_tmp_key</span><span style="color: #339933;">;</span>
+	<span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span> <span style="color: #990000;">session_id</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #339933;">==</span> <span style="color: #0000ff;">&quot;&quot;</span> <span style="color: #009900;">&#41;</span>
+		<span style="color: #990000;">session_start</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+&nbsp;
+	<span style="color: #000088;">$str_key</span> <span style="color: #339933;">=</span> <span style="color: #0000ff;">&quot;123&quot;</span><span style="color: #339933;">;</span>
+	<span style="color: #666666; font-style: italic;">// Add error if captcha is empty</span>
+	<span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span> <span style="color: #990000;">isset</span><span style="color: #009900;">&#40;</span> <span style="color: #000088;">$_REQUEST</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'cptch_number'</span><span style="color: #009900;">&#93;</span> <span style="color: #009900;">&#41;</span> <span style="color: #339933;">&amp;&amp;</span> <span style="color: #0000ff;">&quot;&quot;</span> <span style="color: #339933;">==</span>  <span style="color: #000088;">$_REQUEST</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'cptch_number'</span><span style="color: #009900;">&#93;</span> <span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+		<span style="color: #000088;">$_SESSION</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'cptch_error'</span><span style="color: #009900;">&#93;</span> <span style="color: #339933;">=</span> tr<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">'Please complete the CAPTCHA.'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'captcha'</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+		<span style="color: #666666; font-style: italic;">// Redirect to wp-login.php</span>
+		<span style="color: #b1b100;">return</span> <span style="color: #000088;">$_SERVER</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">&quot;REQUEST_URI&quot;</span><span style="color: #009900;">&#93;</span><span style="color: #339933;">;</span>
+	<span style="color: #009900;">&#125;</span>
+	<span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span> <span style="color: #990000;">isset</span><span style="color: #009900;">&#40;</span> <span style="color: #000088;">$_REQUEST</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'cptch_result'</span><span style="color: #009900;">&#93;</span> <span style="color: #009900;">&#41;</span> <span style="color: #339933;">&amp;&amp;</span> <span style="color: #990000;">isset</span><span style="color: #009900;">&#40;</span> <span style="color: #000088;">$_REQUEST</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'cptch_number'</span><span style="color: #009900;">&#93;</span> <span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+		<span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span>auth_check<span style="color: #009900;">&#40;</span><span style="color: #990000;">trim</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$_REQUEST</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'cptch_number'</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">===</span><span style="color: #009900; font-weight: bold;">true</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+			<span style="color: #b1b100;">return</span> <span style="color: #000088;">$url</span><span style="color: #339933;">;</span>		<span style="color: #666666; font-style: italic;">// captcha was matched						</span>
+		<span style="color: #009900;">&#125;</span> <span style="color: #b1b100;">else</span> <span style="color: #009900;">&#123;</span>
+			<span style="color: #666666; font-style: italic;">// Add error if captcha is incorrect</span>
+			<span style="color: #000088;">$_SESSION</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'cptch_error'</span><span style="color: #009900;">&#93;</span> <span style="color: #339933;">=</span> tr<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'That CAPTCHA was incorrect.'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'captcha'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+			<span style="color: #666666; font-style: italic;">// Redirect to wp-login.php</span>
+			<span style="color: #b1b100;">return</span> <span style="color: #000088;">$_SERVER</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">&quot;REQUEST_URI&quot;</span><span style="color: #009900;">&#93;</span><span style="color: #339933;">;</span>
+		<span style="color: #009900;">&#125;</span>
+	<span style="color: #009900;">&#125;</span>
+	<span style="color: #b1b100;">else</span> <span style="color: #009900;">&#123;</span>
+		<span style="color: #b1b100;">return</span> <span style="color: #000088;">$url</span><span style="color: #339933;">;</span>		<span style="color: #666666; font-style: italic;">// captcha was matched						</span>
+	<span style="color: #009900;">&#125;</span>
+<span style="color: #009900;">&#125;</span> <span style="color: #666666; font-style: italic;">// end function oath_login_post</span>
+&nbsp;
+&nbsp;
+&nbsp;
+<span style="color: #666666; font-style: italic;">// Functionality of the captcha logic work</span>
+<span style="color: #000000; font-weight: bold;">function</span> oath_display_captcha<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>
+<span style="color: #009900;">&#123;</span>
+	<span style="color: #000000; font-weight: bold;">global</span> <span style="color: #000088;">$cptch_options</span><span style="color: #339933;">,</span><span style="color: #000088;">$auth_tmp_key</span> <span style="color: #339933;">;</span>
+    <span style="color: #000000; font-weight: bold;">global</span> <span style="color: #000088;">$shakehand_key</span><span style="color: #339933;">;</span>
+&nbsp;
+	<span style="color: #666666; font-style: italic;">// String for display </span>
+	<span style="color: #000088;">$seed</span> <span style="color: #339933;">=</span> <span style="color: #990000;">time</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<span style="color: #000000; font-weight: bold;">?&gt;</span>
+    OATH_OTP(<span style="color: #000000; font-weight: bold;">&lt;?php</span> <span style="color: #b1b100;">echo</span> <span style="color: #990000;">substr</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">&quot;<span style="color: #006699; font-weight: bold;">$seed</span>&quot;</span><span style="color: #339933;">,-</span><span style="color: #cc66cc;">3</span><span style="color: #339933;">,</span><span style="color: #cc66cc;">3</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span><span style="color: #000000; font-weight: bold;">?&gt;</span>):&lt;input type=&quot;text&quot; name=&quot;cptch_number&quot; tabindex=&quot;30&quot; value=&quot;&quot; maxlength=&quot;10&quot; size=&quot;1&quot; style=&quot;width:100px;margin-bottom:0;display:inline;&quot; /&gt;&lt;br /&gt;
+	&lt;input type=&quot;hidden&quot; name=&quot;cptch_result&quot; value=&quot; <span style="color: #000000; font-weight: bold;">&lt;?php</span> <span style="color: #b1b100;">echo</span> <span style="color: #000088;">$auth_tmp_key</span><span style="color: #339933;">;</span> <span style="color: #000000; font-weight: bold;">?&gt;</span>&quot; /&gt;&lt;input type=&quot;hidden&quot; value=&quot;Version: 0.0.1&quot; /&gt;
+&nbsp;
+<span style="color: #000000; font-weight: bold;">&lt;?php</span>
+<span style="color: #009900;">&#125;</span>
+&nbsp;
+&nbsp;
+	add_action<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">'login_form'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'oath_login_form'</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+	add_filter<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">'login_errors'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'oath_login_post'</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+	add_filter<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">'login_redirect'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'oath_login_check'</span><span style="color: #339933;">,</span> <span style="color: #cc66cc;">10</span><span style="color: #339933;">,</span> <span style="color: #cc66cc;">3</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span> 
+&nbsp;
+&nbsp;
+&nbsp;
+<span style="color: #666666; font-style: italic;">// Function for display oather settings page in the admin area</span>
+&nbsp;
+<span style="color: #000000; font-weight: bold;">function</span> oather_activate<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+    add_option<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">'shakehand_key'</span><span style="color: #339933;">,</span>  <span style="color: #0000ff;">&quot;testcoco&quot;</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+    <span style="color: #666666; font-style: italic;">//这里也可以用update_option，区别是使用update_action会在每一次重新启用插件时重置用户设置为默认值。</span>
+&nbsp;
+<span style="color: #009900;">&#125;</span>
+register_activation_hook<span style="color: #009900;">&#40;</span><span style="color: #009900; font-weight: bold;">__FILE__</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'oather_activate'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+&nbsp;
+&nbsp;
+<span style="color: #000000; font-weight: bold;">function</span> oather_admin_init<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+    <span style="color: #666666; font-style: italic;">//注册配置，第3个参数是回调函数，用于过滤提交的内容</span>
+	<span style="color: #666666; font-style: italic;">//register_setting( $option_group, $option_name, $sanitize_callback )</span>
+    register_setting<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">'shakehand_key'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'oather_options'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'oather_options_validate'</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+&nbsp;
+	 <span style="color: #666666; font-style: italic;">//添加设置群</span>
+	 <span style="color: #666666; font-style: italic;">//add_settings_section( $id, $title, $callback, $page ); </span>
+    add_settings_section<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'oather_main'</span><span style="color: #339933;">,</span> tr<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'Settings'</span><span style="color: #339933;">,</span><span style="color: #0000ff;">'oath'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'oather_section'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'oather'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+&nbsp;
+   <span style="color: #666666; font-style: italic;">//添加具体配置</span>
+    <span style="color: #666666; font-style: italic;">//add_settings_field( $id,                  $title,                               $callback,    $page,      $section,   $args );</span>
+    add_settings_field<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'oather_shakehand_key'</span><span style="color: #339933;">,</span> tr<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'oather_shakehand_key'</span><span style="color: #339933;">,</span><span style="color: #0000ff;">'oath'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'oather_authkey'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'oather'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'oather_main'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span> 
+&nbsp;
+&nbsp;
+<span style="color: #009900;">&#125;</span>
+add_action<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'admin_init'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'oather_admin_init'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+&nbsp;
+&nbsp;
+&nbsp;
+<span style="color: #000000; font-weight: bold;">function</span> oather_authkey<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>
+<span style="color: #009900;">&#123;</span>
+    <span style="color: #000088;">$shakehand_key</span> <span style="color: #339933;">=</span> get_option<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">'shakehand_key'</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span> 
+<span style="color: #666666; font-style: italic;">//	echo &quot;&lt;br&gt; $shakehand_key:&quot;;print_r($shakehand_key);</span>
+<span style="color: #000000; font-weight: bold;">?&gt;</span>&lt;input id=&quot;oather_shakehand_key&quot; name=&quot;oather_shakehand_key&quot; style=&quot;width:200px;&quot; maxlength=&quot;20&quot;  value=&quot;<span style="color: #000000; font-weight: bold;">&lt;?php</span> <span style="color: #b1b100;">echo</span> <span style="color: #000088;">$shakehand_key</span><span style="color: #339933;">;</span><span style="color: #000000; font-weight: bold;">?&gt;</span>&quot; /&gt;(6-20 chars)&lt;br /&gt;
+<span style="color: #000000; font-weight: bold;">&lt;?php</span>
+<span style="color: #009900;">&#125;</span>
+&nbsp;
+&nbsp;
+&nbsp;
+<span style="color: #000000; font-weight: bold;">function</span> oather_section<span style="color: #009900;">&#40;</span><span style="color: #000088;">$section</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+	<span style="color: #b1b100;">return</span> <span style="color: #000088;">$section</span><span style="color: #339933;">;</span>
+<span style="color: #009900;">&#125;</span>
+<span style="color: #000000; font-weight: bold;">function</span> oather_options_validate<span style="color: #009900;">&#40;</span><span style="color: #000088;">$input</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span> 
+    <span style="color: #b1b100;">return</span> <span style="color: #000088;">$input</span><span style="color: #339933;">;</span>
+<span style="color: #009900;">&#125;</span>
+&nbsp;
+<span style="color: #000000; font-weight: bold;">function</span> oather_options_page<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+<span style="color: #000000; font-weight: bold;">?&gt;</span>
+    &lt;div class=&quot;wrap&quot;&gt;
+        &lt;h2&gt;<span style="color: #000000; font-weight: bold;">&lt;?php</span> <span style="color: #b1b100;">echo</span> tr<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'OATH_OTP'</span><span style="color: #339933;">,</span><span style="color: #0000ff;">'oath'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span> <span style="color: #000000; font-weight: bold;">?&gt;</span>&lt;/h2&gt;
+        &lt;div class=&quot;narrow&quot;&gt;
+            &lt;form action=&quot;options.php&quot; method=&quot;post&quot;&gt;
+                &lt;p&gt;<span style="color: #000000; font-weight: bold;">&lt;?php</span> <span style="color: #b1b100;">echo</span> tr<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'OATH_OTP目前仅有ios配对客户端,使用时间戳和shakehandKey结合认证.'</span><span style="color: #339933;">,</span><span style="color: #0000ff;">'oath'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span> <span style="color: #000000; font-weight: bold;">?&gt;</span>&lt;/p&gt;
+                <span style="color: #000000; font-weight: bold;">&lt;?php</span> settings_fields<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'shakehand_key'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span> <span style="color: #000000; font-weight: bold;">?&gt;</span>
+                <span style="color: #000000; font-weight: bold;">&lt;?php</span> do_settings_sections<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'oather'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span> <span style="color: #000000; font-weight: bold;">?&gt;</span>
+                &lt;p class=&quot;submit&quot;&gt;
+                    &lt;input name=&quot;submit&quot; type=&quot;submit&quot; class=&quot;button-primary&quot; value=&quot;<span style="color: #000000; font-weight: bold;">&lt;?php</span> <span style="color: #b1b100;">echo</span> tr<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'Save Changes'</span><span style="color: #339933;">,</span><span style="color: #0000ff;">'oath'</span><span style="color: #009900;">&#41;</span> <span style="color: #000000; font-weight: bold;">?&gt;</span>&quot; /&gt;
+                &lt;/p&gt;
+            &lt;/form&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+<span style="color: #000000; font-weight: bold;">&lt;?php</span>
+<span style="color: #009900;">&#125;</span>
+&nbsp;
+ <span style="color: #666666; font-style: italic;">//在设置页添加链接</span>
+<span style="color: #000000; font-weight: bold;">function</span> oather_menu<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+    add_options_page<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'OATH_OTP Settings'</span><span style="color: #339933;">,</span>  tr<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'OATH_OTP'</span><span style="color: #339933;">,</span><span style="color: #0000ff;">'oath'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'manage_options'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'oath_otp'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'oather_options_page'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<span style="color: #009900;">&#125;</span>
+&nbsp;
+<span style="color: #000000; font-weight: bold;">function</span> oather_action_links<span style="color: #009900;">&#40;</span> <span style="color: #000088;">$links</span><span style="color: #339933;">,</span> <span style="color: #000088;">$file</span> <span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+    <span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span> <span style="color: #000088;">$file</span> <span style="color: #339933;">!=</span> plugin_basename<span style="color: #009900;">&#40;</span> <span style="color: #009900; font-weight: bold;">__FILE__</span> <span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span>
+        <span style="color: #b1b100;">return</span> <span style="color: #000088;">$links</span><span style="color: #339933;">;</span>
+    <span style="color: #000088;">$settings_link</span> <span style="color: #339933;">=</span> <span style="color: #0000ff;">'&lt;a href=&quot;options-general.php?page=oath_otp&quot;&gt;Settings&lt;/a&gt;'</span><span style="color: #339933;">;</span>
+    <span style="color: #990000;">array_unshift</span><span style="color: #009900;">&#40;</span> <span style="color: #000088;">$links</span><span style="color: #339933;">,</span> <span style="color: #000088;">$settings_link</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+    <span style="color: #b1b100;">return</span> <span style="color: #000088;">$links</span><span style="color: #339933;">;</span>
+    <span style="color: #666666; font-style: italic;">//在插件页添加链接</span>
+<span style="color: #009900;">&#125;</span>
+add_filter<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">'plugin_action_links'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'oather_action_links'</span><span style="color: #339933;">,</span><span style="color: #cc66cc;">10</span><span style="color: #339933;">,</span><span style="color: #cc66cc;">2</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+add_action<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'admin_menu'</span><span style="color: #339933;">,</span><span style="color: #0000ff;">'oather_menu'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+&nbsp;
+&nbsp;
+&nbsp;
+<span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span><span style="color: #990000;">isset</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$_POST</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'oather_shakehand_key'</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+	<span style="color: #666666; font-style: italic;">//update post</span>
+	<span style="color: #000088;">$shakehand_len</span> <span style="color: #339933;">=</span> <span style="color: #990000;">strlen</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$_POST</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'oather_shakehand_key'</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+		<span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$shakehand_len</span> <span style="color: #339933;">&gt;=</span><span style="color: #cc66cc;">6</span>  <span style="color: #339933;">&amp;&amp;</span> <span style="color: #000088;">$shakehand_len</span> <span style="color: #339933;">&lt;=</span><span style="color: #cc66cc;">20</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span> 
+		 	 update_option<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">'shakehand_key'</span><span style="color: #339933;">,</span> <span style="color: #000088;">$_POST</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'oather_shakehand_key'</span><span style="color: #009900;">&#93;</span> <span style="color: #339933;">,</span><span style="color: #0000ff;">''</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'yes'</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span> 
+               <span style="color: #666666; font-style: italic;">//  print_r($_POST);   </span>
+			 <span style="color: #000088;">$message</span> <span style="color: #339933;">=</span> __<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">&quot;Options saved.&quot;</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'oath'</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+		<span style="color: #009900;">&#125;</span><span style="color: #b1b100;">else</span><span style="color: #009900;">&#123;</span>
+			 <span style="color: #000088;">$message</span> <span style="color: #339933;">=</span> tr<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">&quot;Options save failed,shakehand_key must be in 6 to 20 chars.&quot;</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'oath'</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+		 <span style="color: #009900;">&#125;</span>
+<span style="color: #009900;">&#125;</span>
+&nbsp;
+&nbsp;
+&nbsp;
+ <span style="color: #000000; font-weight: bold;">?&gt;</span></pre></td></tr></table></div>
+
+<p>&nbsp;</p>
+]]></content:encoded>
+			<wfw:commentRss>http://imzc.net/archives/202/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Fedora13使用ISO作为软件仓库</title>
+		<link>http://imzc.net/archives/138/</link>
+		<comments>http://imzc.net/archives/138/#comments</comments>
+		<pubDate>Sun, 21 Aug 2011 13:34:46 +0000</pubDate>
+		<dc:creator>imzc</dc:creator>
+				<category><![CDATA[LAMP]]></category>
+
+		<guid isPermaLink="false">http://imzc.net/?p=138</guid>
+		<description><![CDATA[1. 复制ISO中的所有内容到一个目录,如 /home/zc/repo 2.更改/etc/yum.conf 中 [...]]]></description>
+			<content:encoded><![CDATA[<p>1. 复制ISO中的所有内容到一个目录,如 /home/zc/repo<br />
+2.更改/etc/yum.conf 中的 gpgcheck=1 这一行注释掉(加#号即可)<br />
+3.备份后删除 /etc/yum.repos.d/下所有文件,创建下述文件:<br />
+<code><br />
+  /etc/yum.repos.d/fedora.repo<br />
+[fedora]<br />
+name=Fedora $releasever - $basearch<br />
+failovermethod=priority<br />
+#baseurl=http://download.fedoraproject.org/pub/fedora/linux/releases/$releasever/Everything/$basearch/os/<br />
+baseurl=file:///home/zc/repo<br />
+#mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=fedora-$releasever&#038;arch=$basearch<br />
+enabled=1<br />
+metadata_expire=7d<br />
+gpgcheck=0<br />
+#gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-$basearch<br />
+gpgkey=file:///home/zc/RPM-GPG-KEY-fedora-$basearch</p>
+<p>/etc/yum.repos.d/fedora-updates.repo<br />
+[updates]<br />
+name=Fedora $releasever - $basearch - Updates<br />
+failovermethod=priority<br />
+#baseurl=http://download.fedoraproject.org/pub/fedora/linux/updates/$releasever/$basearch/<br />
+baseurl=file:///home/zc/repo<br />
+#mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=fedora-$releasever&#038;arch=$basearch<br />
+enabled=1<br />
+metadata_expire=7d<br />
+gpgcheck=0<br />
+##gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-$basearch<br />
+gpgkey=file:///home/zc/RPM-GPG-KEY-fedora-$basearch<br />
+</code><br />
+4. 使用 createrepo(#rpm -ivh /home/zc/repo/Packages/createrepo-0.9.8-4.fc13.noarch.rpm ) 制作数据文件.<br />
+   #cd /home/zc/repo<br />
+   #createrepo -g /home/zc/repo/repodata/fce31f091be8211a394d8942fcf4f6cbeffa3d40d87b61af55a97b1a88b46987-Fedora-13-comps.xml .  (后面有一个点,即当前目录,*-Fedora-13-comps.xml前面的数字可能不一样)<br />
+   执行完成后,就产生了一个新的 repodata 目录，里面放置的就是 repodata 数据文件。<br />
+5.yum update 即可像网络源一样使用.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://imzc.net/archives/138/feed/</wfw:commentRss>
+		<slash:comments>263</slash:comments>
+		</item>
+		<item>
+		<title>form enctype的三种格式</title>
+		<link>http://imzc.net/archives/131/</link>
+		<comments>http://imzc.net/archives/131/#comments</comments>
+		<pubDate>Thu, 28 Jul 2011 05:20:33 +0000</pubDate>
+		<dc:creator>imzc</dc:creator>
+				<category><![CDATA[LAMP]]></category>
+
+		<guid isPermaLink="false">http://imzc.net/?p=131</guid>
+		<description><![CDATA[以前没有注意过enctype的各个属性在底层有什么不一样。 工作关系，最近分析了下form enctype，首 [...]]]></description>
+			<content:encoded><![CDATA[<p>以前没有注意过enctype的各个属性在底层有什么不一样。<br />
+工作关系，最近分析了下form enctype，首先说application/x-www-form-urlencoded<br />
+此种类型是默认的，及时在form属性中不设置enctype，HTTP报文中的结构：</p>
+
+<div class="wp_syntax"><table><tr><td class="line_numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td><td class="code"><pre class="c" style="font-family:monospace;">POST <span style="color: #339933;">/</span>post_test.<span style="color: #202020;">php</span> HTTP<span style="color: #339933;">/</span><span style="color:#800080;">1.1</span> 
+Accept<span style="color: #339933;">-</span>Language<span style="color: #339933;">:</span> zh<span style="color: #339933;">-</span>CN
+User<span style="color: #339933;">-</span>Agent<span style="color: #339933;">:</span> Mozilla<span style="color: #339933;">/</span><span style="color:#800080;">4.0</span> 
+Content<span style="color: #339933;">-</span>Type<span style="color: #339933;">:</span> application<span style="color: #339933;">/</span>x<span style="color: #339933;">-</span>www<span style="color: #339933;">-</span>form<span style="color: #339933;">-</span>urlencoded 
+Host<span style="color: #339933;">:</span> 192.168.12.102
+Content<span style="color: #339933;">-</span>Length<span style="color: #339933;">:</span> <span style="color: #0000dd;">42</span>
+Connection<span style="color: #339933;">:</span> Keep<span style="color: #339933;">-</span>Alive
+Cache<span style="color: #339933;">-</span>Control<span style="color: #339933;">:</span> no<span style="color: #339933;">-</span>cache
+&nbsp;
+title<span style="color: #339933;">=</span>test<span style="color: #339933;">&amp;</span>content<span style="color: #339933;">=%</span>B3<span style="color: #339933;">%</span>AC<span style="color: #339933;">%</span>BC<span style="color: #339933;">%</span>B6<span style="color: #339933;">%</span>C5<span style="color: #339933;">%</span>AE<span style="color: #339933;">%</span>C9<span style="color: #339933;">%</span>FA<span style="color: #339933;">&amp;</span>submit<span style="color: #339933;">=</span>post<span style="color: #339933;">+</span>article</pre></td></tr></table></div>
+
+<p>可以看到，表单上传后，最终是通过URL转码后，拼接到一起的。<br />
+而multipart/form-data，以boundary=为区分，假如还有文件的话，会分多次请求。<br />
+这个类型，是包含文件上传表单的必须设置的。</p>
+
+<div class="wp_syntax"><table><tr><td class="line_numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+</pre></td><td class="code"><pre class="c" style="font-family:monospace;">POST <span style="color: #339933;">/</span>post_test.<span style="color: #202020;">php</span><span style="color: #339933;">?</span>t<span style="color: #339933;">=</span><span style="color: #0000dd;">1</span> HTTP<span style="color: #339933;">/</span><span style="color:#800080;">1.1</span>
+Accept<span style="color: #339933;">-</span>Language<span style="color: #339933;">:</span> zh<span style="color: #339933;">-</span>CN
+User<span style="color: #339933;">-</span>Agent<span style="color: #339933;">:</span> Mozilla<span style="color: #339933;">/</span><span style="color:#800080;">4.0</span>  
+Content<span style="color: #339933;">-</span>Type<span style="color: #339933;">:</span> multipart<span style="color: #339933;">/</span>form<span style="color: #339933;">-</span>data<span style="color: #339933;">;</span> boundary<span style="color: #339933;">=---------------------------</span>7dbf514701e8
+Accept<span style="color: #339933;">-</span>Encoding<span style="color: #339933;">:</span> gzip<span style="color: #339933;">,</span> deflate
+Host<span style="color: #339933;">:</span> 192.168.12.102
+Content<span style="color: #339933;">-</span>Length<span style="color: #339933;">:</span> <span style="color: #0000dd;">345</span>
+Connection<span style="color: #339933;">:</span> Keep<span style="color: #339933;">-</span>Alive
+Cache<span style="color: #339933;">-</span>Control<span style="color: #339933;">:</span> no<span style="color: #339933;">-</span>cache
+&nbsp;
+<span style="color: #339933;">-----------------------------</span>7dbf514701e8
+Content<span style="color: #339933;">-</span>Disposition<span style="color: #339933;">:</span> form<span style="color: #339933;">-</span>data<span style="color: #339933;">;</span> name<span style="color: #339933;">=</span><span style="color: #ff0000;">&quot;title&quot;</span>
+test
+<span style="color: #339933;">-----------------------------</span>7dbf514701e8
+Content<span style="color: #339933;">-</span>Disposition<span style="color: #339933;">:</span> form<span style="color: #339933;">-</span>data<span style="color: #339933;">;</span> name<span style="color: #339933;">=</span><span style="color: #ff0000;">&quot;content&quot;</span>
+....
+<span style="color: #339933;">-----------------------------</span>7dbf514701e8
+Content<span style="color: #339933;">-</span>Disposition<span style="color: #339933;">:</span> form<span style="color: #339933;">-</span>data<span style="color: #339933;">;</span> name<span style="color: #339933;">=</span><span style="color: #ff0000;">&quot;submit&quot;</span>
+post article
+<span style="color: #339933;">-----------------------------</span>7dbf514701e8<span style="color: #339933;">--</span></pre></td></tr></table></div>
+
+<p>最后一种： text/plain，这种类型基本是不使用的。HTTP报文中，不包含任何格式。php使用$_POST数组取不到值。必须使用$HTTP_RAW_POST_DATA才能获取到。</p>
+
+<div class="wp_syntax"><table><tr><td class="line_numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></td><td class="code"><pre class="c" style="font-family:monospace;">POST <span style="color: #339933;">/</span>post_test.<span style="color: #202020;">php</span><span style="color: #339933;">?</span>t<span style="color: #339933;">=</span><span style="color: #0000dd;">2</span> HTTP<span style="color: #339933;">/</span><span style="color:#800080;">1.1</span>
+Accept<span style="color: #339933;">-</span>Language<span style="color: #339933;">:</span> zh<span style="color: #339933;">-</span>CN
+User<span style="color: #339933;">-</span>Agent<span style="color: #339933;">:</span> Mozilla<span style="color: #339933;">/</span><span style="color:#800080;">4.0</span> 
+Content<span style="color: #339933;">-</span>Type<span style="color: #339933;">:</span> text<span style="color: #339933;">/</span>plain
+Accept<span style="color: #339933;">-</span>Encoding<span style="color: #339933;">:</span> gzip<span style="color: #339933;">,</span> deflate
+Host<span style="color: #339933;">:</span> 192.168.12.102
+Content<span style="color: #339933;">-</span>Length<span style="color: #339933;">:</span> <span style="color: #0000dd;">51</span>
+Connection<span style="color: #339933;">:</span> Keep<span style="color: #339933;">-</span>Alive
+Cache<span style="color: #339933;">-</span>Control<span style="color: #339933;">:</span> no<span style="color: #339933;">-</span>cache
+&nbsp;
+title<span style="color: #339933;">=</span>test
+content<span style="color: #339933;">=</span>........
+<span style="color: #202020;">submit</span><span style="color: #339933;">=</span>post article</pre></td></tr></table></div>
+
+<p>附上测试的php源码：</p>
+
+<div class="wp_syntax"><table><tr><td class="line_numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+</pre></td><td class="code"><pre class="php" style="font-family:monospace;">&lt;html&gt;
+&lt;title&gt;zc_POST_test&lt;/title&gt;
+&lt;body&gt;
+<span style="color: #000000; font-weight: bold;">&lt;?php</span>
+<span style="color: #000088;">$form_type</span> <span style="color: #339933;">=</span> <span style="color: #0000ff;">'application/x-www-form-urlencoded'</span><span style="color: #339933;">;</span>
+<span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span><span style="color: #339933;">!</span><span style="color: #990000;">empty</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$_GET</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'t'</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span> 
+ <span style="color: #b1b100;">switch</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$_GET</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'t'</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+ <span style="color: #b1b100;">case</span> <span style="color: #0000ff;">'1'</span><span style="color: #339933;">:</span><span style="color: #000088;">$form_type</span> <span style="color: #339933;">=</span> <span style="color: #0000ff;">'multipart/form-data'</span><span style="color: #339933;">;</span>break<span style="color: #339933;">;</span>
+ <span style="color: #b1b100;">case</span> <span style="color: #0000ff;">'2'</span><span style="color: #339933;">:</span><span style="color: #000088;">$form_type</span> <span style="color: #339933;">=</span> <span style="color: #0000ff;">'text/plain'</span><span style="color: #339933;">;</span>break<span style="color: #339933;">;</span>
+ <span style="color: #009900;">&#125;</span>
+<span style="color: #009900;">&#125;</span>
+<span style="color: #b1b100;">echo</span> <span style="color: #000088;">$form_type</span><span style="color: #339933;">;</span>
+<span style="color: #000000; font-weight: bold;">?&gt;</span>
+&lt;br&gt;POST test&lt;br&gt;
+&lt;a href=&quot;<span style="color: #000000; font-weight: bold;">&lt;?=</span><span style="color: #000088;">$_SERVER</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'PHP_SELF'</span><span style="color: #009900;">&#93;</span><span style="color: #339933;">;</span><span style="color: #000000; font-weight: bold;">?&gt;</span>&quot;&gt;application/x-www-form-urlencoded&lt;/a&gt;&amp;nbsp;&lt;a href=&quot;<span style="color: #000000; font-weight: bold;">&lt;?=</span><span style="color: #000088;">$_SERVER</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'PHP_SELF'</span><span style="color: #009900;">&#93;</span><span style="color: #339933;">;</span><span style="color: #000000; font-weight: bold;">?&gt;</span>?t=1&quot;&gt;multipart/form-data&lt;/a&gt;&amp;nbsp;&lt;a href=&quot;<span style="color: #000000; font-weight: bold;">&lt;?=</span><span style="color: #000088;">$_SERVER</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'PHP_SELF'</span><span style="color: #009900;">&#93;</span><span style="color: #339933;">;</span><span style="color: #000000; font-weight: bold;">?&gt;</span>?t=2&quot;&gt;text/plain&lt;/a&gt;&lt;br&gt;
+&lt;form method=&quot;POST&quot; name=&quot;webauthform&quot;  enctype=&quot;<span style="color: #000000; font-weight: bold;">&lt;?php</span> <span style="color: #b1b100;">echo</span> <span style="color: #000088;">$form_type</span><span style="color: #339933;">;</span><span style="color: #000000; font-weight: bold;">?&gt;</span>&quot; id=&quot;webauthform&quot; action=&quot;<span style="color: #000000; font-weight: bold;">&lt;?=</span><span style="color: #000088;">$_SERVER</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'REQUEST_URI'</span><span style="color: #009900;">&#93;</span><span style="color: #339933;">;</span><span style="color: #000000; font-weight: bold;">?&gt;</span>&quot;&gt;
+title:&amp;nbsp;&amp;nbsp;&lt;input type=&quot;text&quot; name=&quot;title&quot;&gt;&lt;br&gt;
+content:&lt;textarea name=&quot;content&quot; cols=&quot;40&quot; rows=&quot;10&quot;&gt;&lt;/textarea&gt;&amp;nbsp;&amp;nbsp;
+&lt;input type=submit name=&quot;submit&quot; value=&quot;post article&quot;&gt;&lt;br&gt; 
+<span style="color: #000000; font-weight: bold;">&lt;?php</span>
+<span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span><span style="color: #339933;">!</span><span style="color: #990000;">empty</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$_POST</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'submit'</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#41;</span>
+<span style="color: #009900;">&#123;</span> 
+ <span style="color: #b1b100;">echo</span> <span style="color: #0000ff;">&quot;&lt;br&gt;POST:&lt;br&gt;&quot;</span><span style="color: #339933;">;</span> 
+ <span style="color: #990000;">print_r</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$_POST</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span> 
+<span style="color: #009900;">&#125;</span>
+<span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span> <span style="color: #339933;">!</span><span style="color: #990000;">empty</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$HTTP_RAW_POST_DATA</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+ <span style="color: #b1b100;">echo</span> <span style="color: #0000ff;">&quot;&lt;br&gt;HTTP_RAW_POST_DATA: text/plain&lt;br&gt;&quot;</span><span style="color: #339933;">;</span> 
+ <span style="color: #990000;">print_r</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$HTTP_RAW_POST_DATA</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span> 
+<span style="color: #009900;">&#125;</span> 
+<span style="color: #000000; font-weight: bold;">?&gt;</span> 
+&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+&lt;/pre&gt;</pre></td></tr></table></div>
+
+]]></content:encoded>
+			<wfw:commentRss>http://imzc.net/archives/131/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>使用vim/sed去除网上copy的源代码行号和空格</title>
+		<link>http://imzc.net/archives/122/</link>
+		<comments>http://imzc.net/archives/122/#comments</comments>
+		<pubDate>Sun, 27 Mar 2011 05:39:23 +0000</pubDate>
+		<dc:creator>imzc</dc:creator>
+				<category><![CDATA[LAMP]]></category>
+
+		<guid isPermaLink="false">http://imzc.net/archives/122</guid>
+		<description><![CDATA[有些时候,在网上搜索到的代码都包含有行号,高亮显示控件不支持直接提取,如: test.sh 01 #!/bin [...]]]></description>
+			<content:encoded><![CDATA[<p>有些时候,在网上搜索到的代码都包含有行号,高亮显示控件不支持直接提取,如: <br/>test.sh <br/>01 #!/bin/bash <br/>02 echo &#8220;aaa&#8221;</p>
+<p>简单的去掉行号和前面的空格: <br/>方案一: <br/>1.vim中删除所有行号: vim test.sh,command模式, :%s/^[0-9]*// ; <br/>此步可以也可以直接使用sed: sed -i &#8216;s/^[0-9]*//g&#8217; test.sh <br/>2.使用sed删除所有行首空字符,sed -i &#8216;s/^[[:space:]]*//&#8217; test.sh</p>
+<p>方案二: <br/>1.notepad++, 录制宏,删除第一行的行号,然后回放宏. <br/>2.ultraedit 列模式. 直接删除.</p>
+<p><br/>网上看到的一个: <br/>删除/test 目录下的所有空目录文件: <br/>find /test -type d -empty | xargs -exec rmdir;</p>
+]]></content:encoded>
+			<wfw:commentRss>http://imzc.net/archives/122/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+		</item>
+		<item>
+		<title>ini配置文件编辑图形化</title>
+		<link>http://imzc.net/archives/112/</link>
+		<comments>http://imzc.net/archives/112/#comments</comments>
+		<pubDate>Sun, 14 Nov 2010 15:13:39 +0000</pubDate>
+		<dc:creator>imzc</dc:creator>
+				<category><![CDATA[LAMP]]></category>
+
+		<guid isPermaLink="false">http://imzc.net/?p=112</guid>
+		<description><![CDATA[在很多时候,我们需要配置一些ini文件,但是重复的section太多,很浪费时间.
+最近测试pppoe单点登录,由于实际环境限制,pppoe只能通过回放数据.针对已有的l2send发包工具,
+配置起来太麻烦了,因此,我用PHP来进行处理,图形化配置,比较方便.]]></description>
+			<content:encoded><![CDATA[<p>在很多时候,我们需要配置一些ini文件,但是重复的section太多,很浪费时间.<br />
+最近测试pppoe单点登录,由于实际环境限制,pppoe只能通过回放数据.针对已有的l2send发包工具,<br />
+配置起来太麻烦了,因此,我用PHP来进行处理,图形化配置,比较方便.<br />
+好久没有写PHP程序了,居然这个玩意儿都弄了整个下午,有点恐怖&#8230;</p>
+<p>假定一个配置文件为:</p>
+
+<div class="wp_syntax"><table><tr><td class="line_numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+</pre></td><td class="code"><pre class="text" style="font-family:monospace;">[config]
+packet_count = 2
+offset_count = 1
+dev0 = eth0
+dev1 = eth2
+interval = 100
+seed = 100
+debug = 1
+limit = 100
+&nbsp;
+[packet0]
+sleep = 0
+mac0 = 00:1F:3C:E2:DF:8E
+mac2 = 00:1F:3C:E2:DF:8D
+nic = 0
+type = 8864
+payload = 1.dat
+attach = 0
+&nbsp;
+[packet1]
+sleep = 0
+mac0 = 00:1F:3C:E2:DF:8D
+mac2 = 00:1F:3C:E2:DF:8E
+nic = 2
+type = 8864
+payload = _2.dat
+attach = 0
+&nbsp;
+[offset1]
+offset = EE
+value = FF
+range = 1
+attach = 0</pre></td></tr></table></div>
+
+<p>下面是该附件.(需要PHP+php_zip扩展环境):  <a rel="attachment wp-att-113" href="http://imzc.net/archives/112/cfgout">cfgout附件下载</a></p>
+]]></content:encoded>
+			<wfw:commentRss>http://imzc.net/archives/112/feed/</wfw:commentRss>
+		<slash:comments>288</slash:comments>
+		</item>
+		<item>
+		<title>PHP接收wget方式上传文件的处理</title>
+		<link>http://imzc.net/archives/67/</link>
+		<comments>http://imzc.net/archives/67/#comments</comments>
+		<pubDate>Sat, 21 Aug 2010 21:37:00 +0000</pubDate>
+		<dc:creator>imzc</dc:creator>
+				<category><![CDATA[LAMP]]></category>
+		<category><![CDATA[wget]]></category>
+
+		<guid isPermaLink="false">http://imzc.net/?action=show&#038;id=122</guid>
+		<description><![CDATA[有些时候,在linux终端下,可能需要上传文件,这时可以考虑用wget文件上传参数替代. 服务器端,PHP需要 [...]]]></description>
+			<content:encoded><![CDATA[<p>有些时候,在linux终端下,可能需要上传文件,这时可以考虑用wget文件上传参数替代.<br />
+服务器端,PHP需要特殊处理一下,直接看代码:</p>
+
+<div class="wp_syntax"><table><tr><td class="line_numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+</pre></td><td class="code"><pre class="php" style="font-family:monospace;"><span style="color: #000000; font-weight: bold;">&lt;?php</span>  
+ <span style="color: #666666; font-style: italic;">/*
+ to submit  data:    wget --post-file='test.tar.gz' 192.168.1.100/upload.php
+ --header=ACCEPT-CHARSET:gzip -nv --timeout=15 --tries=1  
+ */</span>  
+ <span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$_SERVER</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'HTTP_ACCEPT_CHARSET'</span><span style="color: #009900;">&#93;</span><span style="color: #339933;">==</span><span style="color: #0000ff;">'gzip'</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>  
+ <span style="color: #000088;">$data</span> <span style="color: #339933;">=</span> <span style="color: #990000;">file_get_contents</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'php://input'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
+ <span style="color: #000088;">$dir</span> <span style="color: #339933;">=</span> <span style="color: #0000ff;">'wgetupload'</span><span style="color: #339933;">;</span>  
+ <span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span><span style="color: #339933;">!</span><span style="color: #990000;">is_dir</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$dir</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span>  
+ <span style="color: #990000;">mkdir</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$dir</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
+ <span style="color: #666666; font-style: italic;">// exit(1);  </span>
+ <span style="color: #000088;">$filename</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$dir</span><span style="color: #339933;">.</span><span style="color: #0000ff;">'/wget_upload'</span><span style="color: #339933;">.</span><span style="color: #990000;">time</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">.</span><span style="color: #0000ff;">'.tar.gz'</span><span style="color: #339933;">;</span>  
+ <span style="color: #000088;">$fp</span> <span style="color: #339933;">=</span> <span style="color: #990000;">fopen</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$filename</span><span style="color: #339933;">,</span><span style="color: #0000ff;">'a'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
+ <span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$fp</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>  
+ <span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span><span style="color: #990000;">fwrite</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$fp</span><span style="color: #339933;">,</span><span style="color: #000088;">$data</span><span style="color: #009900;">&#41;</span> <span style="color: #339933;">===</span> <span style="color: #009900; font-weight: bold;">FALSE</span><span style="color: #009900;">&#41;</span>  
+ <span style="color: #b1b100;">echo</span> <span style="color: #0000ff;">'can not write to file.'</span><span style="color: #339933;">;</span>  
+ <span style="color: #b1b100;">else</span>  
+ <span style="color: #b1b100;">echo</span> <span style="color: #0000ff;">'upload ok~'</span><span style="color: #339933;">;</span>    
+ <span style="color: #009900;">&#125;</span>  
+ <span style="color: #990000;">fclose</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$fp</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
+ <span style="color: #009900;">&#125;</span><span style="color: #b1b100;">else</span><span style="color: #009900;">&#123;</span>  
+ <span style="color: #990000;">exit</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'use gzip.'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
+ <span style="color: #009900;">&#125;</span>  
+ <span style="color: #000000; font-weight: bold;">?&gt;</span></pre></td></tr></table></div>
+
+]]></content:encoded>
+			<wfw:commentRss>http://imzc.net/archives/67/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>[转]最完整的sysctl.conf优化方案</title>
+		<link>http://imzc.net/archives/68/</link>
+		<comments>http://imzc.net/archives/68/#comments</comments>
+		<pubDate>Thu, 08 Oct 2009 14:58:00 +0000</pubDate>
+		<dc:creator>imzc</dc:creator>
+				<category><![CDATA[LAMP]]></category>
+		<category><![CDATA[linux]]></category>
+		<category><![CDATA[系统管理]]></category>
+
+		<guid isPermaLink="false">http://imzc.net/?action=show&#038;id=110</guid>
+		<description><![CDATA[http://www.bsdlover.cn/security/2007/1216/article_8.htm [...]]]></description>
+			<content:encoded><![CDATA[<p><a href="http://www.bsdlover.cn/security/2007/1216/article_8.html">http://www.bsdlover.cn/security/2007/1216/article_8.html</a></p>
+<div>如果您有补充或修订意见，请于本文后评论或邮件联系<a href="mailto:cujxtm@gmail.com">cujxtm@gmail.com</a>，万分感谢！<br />
+###################<br />
+所有rfc相关的选项都是默认启用的，因此网上的那些还自己写rfc支持的都可以扔掉了:)<br />
+###############################<br />
+net.inet.ip.sourceroute=0<br />
+net.inet.ip.accept_sourceroute=0<br />
+#############################<br />
+通过源路由，攻击者可以尝试到达内部IP地址  &#8211;包括RFC1918中的地址，所以<br />
+不接受源路由信息包可以防止你的内部网络被探测。<br />
+#################################<br />
+net.inet.tcp.drop_synfin=1<br />
+###################################<br />
+安全参数，编译内核的时候加了options  TCP_DROP_SYNFIN才可以用，可以阻止某些OS探测。<br />
+##################################<br />
+kern.maxvnodes=8446<br />
+#################http://www.bsdlover.cn#########<br />
+vnode  是对文件或目录的一种内部表达。 因此， 增加可以被操作系统利用的 vnode 数量将降低磁盘的 I/O。<br />
+一般而言，  这是由操作系统自行完成的，也不需要加以修改。但在某些时候磁盘 I/O 会成为瓶颈，<br />
+而系统的 vnode 不足，  则这一配置应被增加。此时需要考虑是非活跃和空闲内存的数量。<br />
+要查看当前在用的 vnode 数量：<br />
+# sysctl  vfs.numvnodes<br />
+vfs.numvnodes: 91349<br />
+要查看最大可用的 vnode 数量：<br />
+# sysctl  kern.maxvnodes<br />
+kern.maxvnodes: 100000<br />
+如果当前的 vnode 用量接近最大值，则将  kern.maxvnodes 值增大 1,000 可能是个好主意。<br />
+您应继续查看 vfs.numvnodes 的数值，  如果它再次攀升到接近最大值的程度，<br />
+仍需继续提高 kern.maxvnodes。 在 top(1)  中显示的内存用量应有显著变化，<br />
+更多内存会处于活跃 (active)  状态。<br />
+####################################<br />
+kern.maxproc:  964<br />
+#################http://www.bsdlover.cn#########<br />
+Maximum number of  processes<br />
+####################################<br />
+kern.maxprocperuid:  867<br />
+#################http://www.bsdlover.cn#########<br />
+Maximum processes  allowed per  userid<br />
+####################################<br />
+因为我的maxusers设置的是256，20+16*maxusers＝4116。<br />
+maxprocperuid至少要比maxproc少1，因为init(8)  这个系统程序绝对要保持在运作状态。<br />
+我给它设置的2068。<br />
+kern.maxfiles:  1928<br />
+#################http://www.bsdlover.cn#########<br />
+系统中支持最多同时开启的文件数量，如果你在运行数据库或大的很吃描述符的进程，那么应该设置在20000以上，<br />
+比如kde这样的桌面环境，它同时要用的文件非常多。<br />
+一般推荐设置为32768或者65536。<br />
+####################################<br />
+kern.argmax:  262144<br />
+#################http://www.bsdlover.cn#########<br />
+maximum number of  bytes (or characters) in an argument  list.<br />
+命令行下最多支持的参数，比如你在用find命令来批量删除一些文件的时候<br />
+find . -name &#8220;*.old&#8221;  -delete，如果文件数超过了这个数字，那么会提示你数字太多的。<br />
+可以利用find . -name &#8220;*.old&#8221; -ok rm {}  \;来删除。<br />
+默认的参数已经足够多了，因此不建议再做修改。<br />
+####################################<br />
+kern.securelevel:  -1<br />
+#################http://www.bsdlover.cn#########<br />
+-1：这是系统默认级别，没有提供任何内核的保护错误；<br />
+0：基本上作用不多，当你的系统刚启动就是0级别的，当进入多用户模式的时候就自动变成1级了。<br />
+1：在这个级别上，有如下几个限制：<br />
+a.  不能通过kldload或者kldunload加载或者卸载可加载内核模块；<br />
+b.  应用程序不能通过/dev/mem或者/dev/kmem直接写内存；<br />
+c.  不能直接往已经装在(mounted)的磁盘写东西，也就是不能格式化磁盘，但是可以通过标准的内核接口执行写操作；<br />
+d.  不能启动X-windows，同时不能使用chflags来修改文件属性；<br />
+2：在 1  级别的基础上还不能写没装载的磁盘，而且不能在1秒之内制造多次警告，这个是防止DoS控制台的；<br />
+3：在 2  级别的级别上不允许修改IPFW防火墙的规则。<br />
+如果你已经装了防火墙，并且把规则设好了，不轻易改动，那么建议使用3级别，如果你没有装防火墙，而且还准备装防火墙的话，不建议使用。<br />
+我们这里推荐使用  2  级别，能够避免比较多对内核攻击。<br />
+####################################<br />
+kern.maxfilesperproc:  1735<br />
+#################http://www.bsdlover.cn#########<br />
+每个进程能够同时打开的最大文件数量，网上很多资料写的是32768<br />
+除非用异步I/O或大量线程，打开这么多的文件恐怕是不太正常的。<br />
+我个人建议不做修改，保留默认。<br />
+####################################<br />
+kern.ipc.maxsockbuf:  262144<br />
+#################http://www.bsdlover.cn#########<br />
+最大的套接字缓冲区，网上有建议设置为2097152（2M）、8388608（8M）的。<br />
+我个人倒是建议不做修改，保持默认的256K即可，缓冲区大了可能造成碎片、阻塞或者丢包。<br />
+####################################<br />
+kern.ipc.somaxconn:  128<br />
+#################http://www.bsdlover.cn#########<br />
+最大的等待连接完成的套接字队列大小，即并发连接数。<br />
+高负载服务器和受到Dos攻击的系统也许会因为这个队列被塞满而不能提供正常服务。<br />
+默认为128，推荐在1024-4096之间，根据机器和实际情况需要改动，数字越大占用内存也越大。<br />
+####################################<br />
+kern.ipc.nmbclusters:  4800<br />
+#################http://www.bsdlover.cn#########<br />
+这个值用来调整系统在开机后所要分配给网络  mbufs 的 cluster 数量，<br />
+由于每个 cluster 大小为 2K，所以当这个值为 1024 时，也是会用到 2MB  的核心内存空间。<br />
+假设我们的网页同时约有 1000 个联机，而 TCP 传送及接收的暂存区大小都是 16K，<br />
+则最糟的情况下，我们会需要  (16K+16K) * 1024，也就是 32MB 的空间，<br />
+然而所需的 mbufs 大概是这个空间的二倍，也就是 64MB，所以所需的 cluster  数量为 64MB/2K，也就是 32768。<br />
+对于内存有限的机器，建议值是 1024 到 4096 之间，而当拥有海量存储器空间时，我们可以将它设定为  4096 到 32768 之间。<br />
+我们可以使用 netstat 这个指令并加上参数 -m 来查看目前所使用的 mbufs  数量。<br />
+要修改这个值必须在一开机就修改，所以只能在 /boot/loader.conf  中加入修改的设定<br />
+kern.ipc.nmbclusters=32768<br />
+####################################<br />
+kern.ipc.shmmax:  33554432<br />
+#################http://www.bsdlover.cn#########<br />
+共享内存和信号灯(&#8220;System  VIPC&#8221;)如果这些过小的话，有些大型的软件将无法启动<br />
+安装xine和mplayer提示的设置为67108864，即64M，<br />
+如果内存多的话，可以设置为134217728，即128M<br />
+####################################<br />
+kern.ipc.shmall:  8192<br />
+#################http://www.bsdlover.cn#########<br />
+共享内存和信号灯(&#8220;System  VIPC&#8221;)如果这些过小的话，有些大型的软件将无法启动<br />
+安装xine和mplayer提示的设置为32768<br />
+####################################<br />
+kern.ipc.shm_use_phys:  0<br />
+#################http://www.bsdlover.cn#########<br />
+如果我们将它设成 1，则所有 System V  共享内存 (share memory，一种程序间沟通的方式)部份都会被留在实体的内存 (physical memory) 中，<br />
+而不会被放到硬盘上的  swap 空间。我们知道物理内存的存取速度比硬盘快许多，而当物理内存空间不足时，<br />
+部份数据会被放到虚拟的内存上，从物理内存和虚拟内存之间移转的动作就叫作  swap。如果时常做 swap 的动作，<br />
+则需要一直对硬盘作 I/O，速度会很慢。因此，如果我们有大量的程序 (数百个)  需要共同分享一个小的共享内存空间，<br />
+或者是共享内存空间很大时，我们可以将这个值打开。<br />
+这一项，我个人建议不做修改，除非你的内存非常大。<br />
+####################################<br />
+kern.ipc.shm_allow_removed:  0<br />
+#################http://www.bsdlover.cn#########<br />
+共享内存是否允许移除？这项似乎是在fb下装vmware需要设置为1的，否则会有加载SVGA出错的提示<br />
+作为服务器，这项不动也罢。<br />
+####################################<br />
+kern.ipc.numopensockets:  12<br />
+#################http://www.bsdlover.cn#########<br />
+已经开启的socket数目，可以在最繁忙的时候看看它是多少，然后就可以知道maxsockets应该设置成多少了。<br />
+####################################<br />
+kern.ipc.maxsockets:  1928<br />
+#################http://www.bsdlover.cn#########<br />
+这是用来设定系统最大可以开启的  socket 数目。如果您的服务器会提供大量的 FTP 服务，<br />
+而且常快速的传输一些小档案，您也许会发现常传输到一半就中断。因为 FTP  在传输档案时，<br />
+每一个档案都必须开启一个 socket 来传输，但关闭 socket  需要一段时间，如果传输速度很快，<br />
+而档案又多，则同一时间所开启的 socket 会超过原本系统所许可的值，这时我们就必须把这个值调大一点。<br />
+除了  FTP 外，也许有其它网络程序也会有这种问题。<br />
+然而，这个值必须在系统一开机就设定好，所以如果要修改这项设定，我们必须修改  /boot/loader.conf  才行<br />
+kern.ipc.maxsockets=&#8221;16424&#8243;<br />
+####################################<br />
+kern.ipc.nsfbufs:  1456<br />
+#################http://www.bsdlover.cn#########<br />
+经常使用 sendfile(2)  系统调用的繁忙的服务器，<br />
+有必要通过 NSFBUFS 内核选项或者在 /boot/loader.conf (查看 loader(8) 以获得更多细节)  中设置它的值来调节 sendfile(2) 缓存数量。<br />
+这个参数需要调节的普通原因是在进程中看到 sfbufa 状态。sysctl  kern.ipc.nsfbufs 变量在内核配置变量中是只读的。<br />
+这个参数是由 kern.maxusers  决定的，然而它可能有必要因此而调整。<br />
+在/boot/loader.conf里加入<br />
+kern.ipc.nsfbufs=&#8221;2496&#8243;<br />
+####################################<br />
+kern.maxusers:  59<br />
+#################http://www.bsdlover.cn#########<br />
+maxusers  的值决定了处理程序所容许的最大值，20+16*maxusers 就是你将得到的所容许处理程序。<br />
+系统一开机就必须要有 18 个处理程序  (process)，即便是简单的执行指令 man 又会产生 9 个 process，<br />
+所以将这个值设为 64  应该是一个合理的数目。<br />
+如果你的系统会出现 proc table full 的讯息的话，可以就把它设大一点，例如  128。<br />
+除非您的系统会需要同时开启很多档案，否则请不要设定超过 256。<br />
+可以在 /boot/loader.conf  中加入该选项的设定，<br />
+kern.maxusers=256<br />
+####################################<br />
+kern.coredump:  1<br />
+#################http://www.bsdlover.cn#########<br />
+如果设置为0，则程序异常退出时不会生成core文件，作为服务器，不建议这样。<br />
+####################################<br />
+kern.corefile:  %N.core<br />
+#################http://www.bsdlover.cn#########<br />
+可设置为kern.corefile=&#8221;/data/coredump/%U-%P-%N.core&#8221;<br />
+其中  %U是UID，%P是进程ID，%N是进程名，当然/data/coredump必须是一个实际存在的目录<br />
+####################################<br />
+vm.swap_idle_enabled:  0<br />
+vm.swap_idle_threshold1: 2<br />
+vm.swap_idle_threshold2:  10<br />
+#########################<br />
+在有很多用户进入、离开系统和有很多空闲进程的大的多用户系统中很有用。<br />
+可以让进程更快地进入内存，但它会吃掉更多的交换和磁盘带宽。<br />
+系统默认的页面调度算法已经很好了，最好不要更改。<br />
+########################<br />
+vfs.ufs.dirhash_maxmem:  2097152<br />
+#########################<br />
+默认的dirhash最大内存,默认2M<br />
+增加它有助于改善单目录超过100K个文件时的反复读目录时的性能<br />
+建议修改为33554432（32M）<br />
+#############################<br />
+vfs.vmiodirenable:  1<br />
+#################<br />
+这个变量控制目录是否被系统缓存。大多数目录是小的，在系统中只使用单个片断(典型的是1K)并且在缓存中使用的更小  (典型的是512字节)。<br />
+当这个变量设置为关闭 (0) 时，缓存器仅仅缓存固定数量的目录，即使您有很大的内存。<br />
+而将其开启 (设置为1)  时，则允许缓存器用 VM 页面缓存来缓存这些目录，让所有可用内存来缓存目录。<br />
+不利的是最小的用来缓存目录的核心内存是大于 512  字节的物理页面大小(通常是 4k)。<br />
+我们建议如果您在运行任何操作大量文件的程序时保持这个选项打开的默认值。<br />
+这些服务包括 web  缓存，大容量邮件系统和新闻系统。<br />
+尽管可能会浪费一些内存，但打开这个选项通常不会降低性能。但还是应该检验一下。<br />
+####################<br />
+vfs.hirunningspace:  1048576<br />
+############################<br />
+这个值决定了系统可以将多少数据放在写入储存设备的等候区。通常使用默认值即可，<br />
+但当我们有多颗硬盘时，我们可以将它调大为  4MB 或  5MB。<br />
+注意这个设置成很高的值(超过缓存器的写极限)会导致坏的性能。<br />
+不要盲目的把它设置太高！高的数值会导致同时发生的读操作的迟延。<br />
+#############################<br />
+vfs.write_behind:  1<br />
+#########################<br />
+这个选项预设为  1，也就是打开的状态。在打开时，在系统需要写入数据在硬盘或其它储存设备上时，<br />
+它会等到收集了一个 cluster  单位的数据后再一次写入，否则会在一个暂存区空间有写入需求时就立即写到硬盘上。<br />
+这个选项打开时，对于一个大的连续的文件写入速度非常有帮助。但如果您遇到有很多行程延滞在等待写入动作时，您可能必须关闭这个功能。<br />
+############################<br />
+net.local.stream.sendspace:  8192<br />
+##################################<br />
+本地套接字连接的数据发送空间<br />
+建议设置为65536<br />
+###################################<br />
+net.local.stream.recvspace:  8192<br />
+##################################<br />
+本地套接字连接的数据接收空间<br />
+建议设置为65536<br />
+###################################<br />
+net.inet.ip.portrange.lowfirst:  1023<br />
+net.inet.ip.portrange.lowlast: 600<br />
+net.inet.ip.portrange.first:  49152<br />
+net.inet.ip.portrange.last: 65535<br />
+net.inet.ip.portrange.hifirst:  49152<br />
+net.inet.ip.portrange.hilast:  65535<br />
+###################<br />
+以上六项是用来控制TCP及UDP所使用的port范围，这个范围被分成三个部份，低范围、预设范围、及高范围。<br />
+这些是你的服务器主动发起连接时的临时端口的范围，预设的已经1万多了，一般的应用就足够了。<br />
+如果是比较忙碌的FTP  server，一般也不会同时提供给1万多人访问的，<br />
+当然如果很不幸，你的服务器就要提供很多，那么可以修改first的值，比如直接用1024开始<br />
+#########################<br />
+net.inet.ip.redirect:  1<br />
+#########################<br />
+设置为0，屏蔽ip重定向功能<br />
+###########################<br />
+net.inet.ip.rtexpire:  3600<br />
+net.inet.ip.rtminexpire:  10<br />
+########################<br />
+很多apache产生的CLOSE_WAIT状态，这种状态是等待客户端关闭，但是客户端那边并没有正常的关闭，于是留下很多这样的东东。<br />
+建议都修改为2<br />
+#########################<br />
+net.inet.ip.intr_queue_maxlen:  50<br />
+########################<br />
+Maximum size of the IP input  queue，如果下面的net.inet.ip.intr_queue_drops一直在增加，<br />
+那就说明你的队列空间不足了，那么可以考虑增加该值。<br />
+##########################<br />
+net.inet.ip.intr_queue_drops:  0<br />
+####################<br />
+Number of packets dropped from the IP input  queue,如果你sysctl它一直在增加，<br />
+那么增加net.inet.ip.intr_queue_maxlen的值。<br />
+#######################<br />
+net.inet.ip.fastforwarding:  0<br />
+#############################<br />
+如果打开的话每个目标地址一次转发成功以后它的数据都将被记录进路由表和arp数据表，节约路由的计算时间<br />
+但会需要大量的内核内存空间来保存路由表。<br />
+如果内存够大，打开吧，呵呵<br />
+#############################<br />
+net.inet.ip.random_id:  0<br />
+#####################<br />
+默认情况下，ip包的id号是连续的，而这些可能会被攻击者利用，比如可以知道你nat后面带了多少主机。<br />
+如果设置成1，则这个id号是随机的，嘿嘿。<br />
+#####################<br />
+net.inet.icmp.maskrepl:  0<br />
+############################<br />
+防止广播风暴，关闭其他广播探测的响应。默认即是，无须修改。<br />
+###############################<br />
+net.inet.icmp.icmplim:  200<br />
+##############################<br />
+限制系统发送ICMP速率，改为100吧，或者保留也可，并不会给系统带来太大的压力。<br />
+###########################<br />
+net.inet.icmp.icmplim_output:  1<br />
+###################################<br />
+如果设置成0，就不会看到提示说Limiting icmp unreach  response from 214 to 200 packets per second  等等了<br />
+不过禁止输出容易让我们忽视攻击的存在。这个自己看着办吧。<br />
+######################################<br />
+net.inet.icmp.drop_redirect:  0<br />
+net.inet.icmp.log_redirect:  0<br />
+###################################<br />
+设置为1，屏蔽ICMP重定向功能<br />
+###################################<br />
+net.inet.icmp.bmcastecho:  0<br />
+############################<br />
+防止广播风暴，关闭广播ECHO响应，默认即是，无须修改。<br />
+###############################<br />
+net.inet.tcp.mssdflt:  512<br />
+net.inet.tcp.minmss:  216<br />
+###############################<br />
+数据包数据段最小值，以上两个选项最好不动！或者只修改mssdflt为1460，minmss不动。<br />
+原因详见<br />
+[url=http://www.bsdlover.cn/security/2007/1211/article_4.html][color=#0000ff]http://www.bsdlover.cn/security/2007/1211/article_4.html[/color][/url]<br />
+#############################<br />
+net.inet.tcp.keepidle:  7200000<br />
+######################<br />
+TCP的套接字的空闲时间，默认时间太长，可以改为600000（10分钟）。<br />
+##########################<br />
+net.inet.tcp.sendspace:  32768<br />
+#################http://www.bsdlover.cn#########<br />
+最大的待发送TCP数据缓冲区空间，应用程序将数据放到这里就认为发送成功了，系统TCP堆栈保证数据的正常发送。<br />
+####################################<br />
+net.inet.tcp.recvspace:  65536<br />
+###################################<br />
+最大的接受TCP缓冲区空间，系统从这里将数据分发给不同的套接字，增大该空间可提高系统瞬间接受数据的能力以提高性能。<br />
+###################################<br />
+这二个选项分别控制了网络  TCP 联机所使用的传送及接收暂存区的大小。预设的传送暂存区为 32K，而接收暂存区为 64K。<br />
+如果需要加速 TCP  的传输，可以将这二个值调大一点，但缺点是太大的值会造成系统核心占用太多的内存。<br />
+如果我们的机器会同时服务数百或数千个网络联机，那么这二个选项最好维持默认值，否则会造成系统核心内存不足。<br />
+但如果我们使用的是  gigabite  的网络，将这二个值调大会有明显效能的提升。<br />
+传送及接收的暂存区大小可以分开调整，<br />
+例如，假设我们的系统主要做为网页服务器，我们可以将接收的暂存区调小一点，并将传送的暂存区调大，如此一来，我们就可以避免占去太多的核心内存空间。<br />
+net.inet.udp.maxdgram:  9216<br />
+#########################<br />
+最大的发送UDP数据缓冲区大小，网上的资料大多都是65536，我个人认为没多大必要，<br />
+如果要调整，可以试试24576。<br />
+##############################<br />
+net.inet.udp.recvspace:  42080<br />
+##################<br />
+最大的接受UDP缓冲区大小，网上的资料大多都是65536，我个人认为没多大必要，<br />
+如果要调整，可以试试49152。<br />
+#######################<br />
+以上四项配置通常不会导致问题，一般说来网络流量是不对称的，因此应该根据实际情况调整，并观察其效果。<br />
+如果我们将传送或接收的暂存区设为大于  65535，除非服务器本身及客户端所使用的操作系统都支持 TCP 协议的 windows scaling extension (请参考 RFC 1323  文件)。<br />
+FreeBSD默认已支持 rfs1323 (即 sysctl 的 net.inet.tcp.rfc1323  选项)。<br />
+###################################################<br />
+net.inet.tcp.log_in_vain:  0<br />
+##################<br />
+记录下任何TCP连接，这个一般情况下不应该更改。<br />
+####################<br />
+net.inet.tcp.blackhole:  0<br />
+##################################<br />
+建议设置为2，接收到一个已经关闭的端口发来的所有包，直接drop，如果设置为1则是只针对TCP包<br />
+#####################################<br />
+net.inet.tcp.delayed_ack:  1<br />
+###########################<br />
+当一台计算机发起TCP连接请求时，系统会回应ACK应答数据包。<br />
+该选项设置是否延迟ACK应答数据包，把它和包含数据的数据包一起发送。<br />
+在高速网络和低负载的情况下会略微提高性能，但在网络连接较差的时候，<br />
+对方计算机得不到应答会持续发起连接请求，反而会让网络更加拥堵，降低性能。<br />
+因此这个值我建议您看情况而定，如果您的网速不是问题，可以将封包数量减少一半<br />
+如果网络不是特别好，那么就设置为0，有请求就先回应，这样其实浪费的网通、电信的带宽速率而不是你的处理时间:)<br />
+############################<br />
+net.inet.tcp.inflight.enable:  1<br />
+net.inet.tcp.inflight.debug: 0<br />
+net.inet.tcp.inflight.rttthresh:  10<br />
+net.inet.tcp.inflight.min: 6144<br />
+net.inet.tcp.inflight.max:  1073725440<br />
+net.inet.tcp.inflight.stab:  20<br />
+###########################<br />
+限制 TCP 带宽延迟积和 NetBSD 的 TCP/Vegas  类似。<br />
+它可以通过将 sysctl 变量 net.inet.tcp.inflight.enable 设置成 1  来启用。<br />
+系统将尝试计算每一个连接的带宽延迟积，并将排队的数据量限制在恰好能保持最优吞吐量的水平上。<br />
+这一特性在您的服务器同时向使用普通调制解调器，千兆以太网，乃至更高速度的光与网络连接  (或其他带宽延迟积很大的连接) 的时候尤为重要，<br />
+特别是当您同时使用滑动窗缩放，或使用了大的发送窗口的时候。<br />
+如果启用了这个选项，您还应该把  net.inet.tcp.inflight.debug 设置为 0 (禁用调试)，<br />
+对于生产环境而言， 将  net.inet.tcp.inflight.min 设置成至少 6144 会很有好处。<br />
+然而，  需要注意的是，这个值设置过大事实上相当于禁用了连接带宽延迟积限制功能。<br />
+这个限制特性减少了在路由和交换包队列的堵塞数据数量，也减少了在本地主机接口队列阻塞的数据的数量。<br />
+在少数的等候队列中、交互式连接，尤其是通过慢速的调制解调器，也能用低的  往返时间操作。<br />
+但是，注意这只影响到数据发送 (上载/服务端)。对数据接收(下载)没有效果。<br />
+调整  net.inet.tcp.inflight.stab 是 不 推荐的。<br />
+这个参数的默认值是 20，表示把 2  个最大包加入到带宽延迟积窗口的计算中。<br />
+额外的窗口似的算法更为稳定，并改善对于多变网络环境的相应能力，<br />
+但也会导致慢速连接下的 ping 时间增长  (尽管还是会比没有使用 inflight 算法低许多)。<br />
+对于这些情形， 您可能会希望把这个参数减少到 15， 10， 或  5；<br />
+并可能因此而不得不减少 net.inet.tcp.inflight.min (比如说， 3500) 来得到希望的效果。<br />
+减少这些参数的值，  只应作为最后不得已时的手段来使用。<br />
+############################<br />
+net.inet.tcp.syncookies:  1<br />
+#########################<br />
+SYN  cookies是一种用于通过选择加密的初始化TCP序列号，可以对回应的包做验证来降低SYN&#8217;洪水&#8217;攻击的影响的技术。<br />
+默认即是，不需修改<br />
+########################<br />
+net.inet.tcp.msl:  30000<br />
+#######################<br />
+这个值网上很多文章都推荐的7500，<br />
+还可以改的更小一些(如2000或2500)，这样可以加快不正常连接的释放过程(三次握手2秒、FIN_WAIT4秒)。<br />
+#########################<br />
+net.inet.tcp.always_keepalive:  1<br />
+###########################<br />
+帮助系统清除没有正常断开的TCP连接，这增加了一些网络带宽的使用，但是一些死掉的连接最终能被识别并清除。<br />
+死的TCP连接是被拨号用户存取的系统的一个特别的问题，因为用户经常断开modem而不正确的关闭活动的连接。<br />
+#############################<br />
+net.inet.udp.checksum:  1<br />
+#########################<br />
+防止不正确的udp包的攻击，默认即是，不需修改<br />
+##############################<br />
+net.inet.udp.log_in_vain:  0<br />
+#######################<br />
+记录下任何UDP连接,这个一般情况下不应该修改。<br />
+#######################<br />
+net.inet.udp.blackhole:  0<br />
+####################<br />
+建议设置为1，接收到一个已经关闭的端口发来的所有UDP包直接drop<br />
+#######################<br />
+net.inet.raw.maxdgram:  8192<br />
+#########################<br />
+Maximum outgoing raw IP datagram  size<br />
+很多文章建议设置为65536，好像没多大必要。<br />
+######################################<br />
+net.inet.raw.recvspace:  8192<br />
+######################<br />
+Maximum incoming raw IP datagram  size<br />
+很多文章建议设置为65536，好像没多大必要。<br />
+#######################<br />
+net.link.ether.inet.max_age:  1200<br />
+####################<br />
+调整ARP清理的时间，通过向IP路由缓冲填充伪造的ARP条目可以让恶意用户产生资源耗竭和性能减低攻击。<br />
+这项似乎大家都未做改动，我建议不动或者稍微减少，比如300（HP-UX默认的5分钟）<br />
+#######################<br />
+net.inet6.ip6.redirect:  1<br />
+###############################<br />
+设置为0，屏蔽ipv6重定向功能<br />
+###########################<br />
+net.isr.direct:  0<br />
+#################http://www.bsdlover.cn#########<br />
+所有MPSAFE的网络ISR对包做立即响应,提高网卡性能，设置为1。<br />
+####################################<br />
+hw.ata.wc:  1<br />
+#####################<br />
+这个选项用来打开 IDE  硬盘快取。当打开时，如果有数据要写入硬盘时，硬盘会假装已完成写入，并将数据快取起来。<br />
+这种作法会加速硬盘的存取速度，但当系统异常关机时，比较容易造成数据遗失。<br />
+不过由于关闭这个功能所带来的速度差异实在太大，建议还是保留原本打开的状态吧，不做修改。<br />
+###################<br />
+security.bsd.see_other_uids:  1<br />
+security.bsd.see_other_gids:  1<br />
+#####################<br />
+不允许用户看到其他用户的进程,因此应该改成0，<br />
+#######################</div>
+<p>﻿</p>
+]]></content:encoded>
+			<wfw:commentRss>http://imzc.net/archives/68/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>小型企业邮局的替代方案&#8211;QQ域名邮箱</title>
+		<link>http://imzc.net/archives/54/</link>
+		<comments>http://imzc.net/archives/54/#comments</comments>
+		<pubDate>Sun, 13 Sep 2009 23:05:00 +0000</pubDate>
+		<dc:creator>imzc</dc:creator>
+				<category><![CDATA[LAMP]]></category>
+
+		<guid isPermaLink="false">http://imzc.net/?action=show&#038;id=107</guid>
+		<description><![CDATA[这个说到底便是由腾讯mail服务器来解析我们自己域名的MX(MailExchange)记录,可以减少企业邮局的 [...]]]></description>
+			<content:encoded><![CDATA[<p>这个说到底便是由腾讯mail服务器来解析我们自己域名的MX(MailExchange)记录,可以减少企业邮局的费用.</p>
+<p>而且,邮件空间还是无限的,和QQ关联!一个QQ号码可以对应多个域名邮箱~</p>
+<p>我的域名是在Godaddy买的,那个提供了免费的邮件解析,但是貌似很多时候都要出错,所以改为QQ的是一个比较好的替代方法.和原来的QQMAIL一样,支持客户端的.</p>
+<hr size="2" />下面是今天收到来自QQMail团队的邮件:</p>
+<p>亲爱的QQ邮箱用户：</p>
+<p>很高兴的通知您，QQ邮箱团队的新产品——域名邮箱开始内测了！<br />
+您是QQ邮箱的长期用户，我们诚邀您<a href="http://domain.mail.qq.com/" target="_blank">优先体验</a>！</p>
+<p><strong>什么是域名邮箱？ </strong></p>
+<p>如果您拥有自己的域名，您可以将它跟QQ邮箱绑定，创建以自己域名为后缀的专属邮箱。<br />
+例如：<br />
+假如您的域名是www.example.com，您只要通过简单的设置，就能使用@example.com的邮箱。<br />
+同时，您还将拥有个性化的邮箱登录页：<a href="http://mail.qq.com/domain/example.com" target="_blank">http://mail.qq.com/domain/example.com</a></p>
+<p><strong>域名邮箱的特色功能：</strong></p>
+<ol>
+<li>不仅可以随意设置自己心仪的帐户名，连邮箱的标志图片都可以自定义了</li>
+<li>您可以建立多个相同后缀的帐号，分别送给同事和朋友们</li>
+</ol>
+<p><a href="http://domain.mail.qq.com/" target="_blank">现在就开始体验吧！ </a></p>
+<p>QQ邮箱开发团队</p>
+<hr size="2" />GODADDY域名相关设置方法：</p>
+<p><strong>第一步：验证域名（以下两种方法任选其一）</strong><strong> </strong></p>
+<p>方法一：上传html文件</p>
+<p>1          下载专用的验证文件：<a href="http://domain.mail.qq.com/cgi-bin/regdomain?sid=lOQ19ZcSUNNwZ1Eb&amp;action=download&amp;domain=gyqqmail.com">qqmail_domain_verify.txt</a>；</p>
+<p>2          将该文件上传至您的域名指向的Web服务器(或虚拟主机)的根目录；</p>
+<p>3          确保可以通过  http://您的域名/qqmail_domain_verify.txt  这样的方式访问到该文件。</p>
+<p>方法二：给您的域名设置一个CNAME记录</p>
+<p>登录您的域名管理页面，选择域名管理，找到您想修改的域名，然后进入DNS管理面板,增加一个CNAME别名。具体信息如下：<br />
+名称：qqmail+自己的特殊字串<br />
+IP：mail.qq.com</p>
+<p>(CNAME解析一般在2-24小时后生效。如果您无法直接设置您的域名，请联系您的域名服务商)</p>
+<p><strong>第二步：设置</strong><strong>MX</strong><strong>记录</strong><strong></strong></p>
+<p>MX记录用来指定由我们来对您的域名提供邮件服务。请将您的MX记录设置为mxdomain.qq.com  ,优先级为10<br />
+<a href="../attachment.php?id=50" target="_blank"></a></p>
+<hr size="2" />必要的设置:<br />
+在做了以上工作后,便开始等待DNS更改生效,然后再进行后续设置.<br />
+登录QQ邮箱,然后顶部便多了个&#8221;  管理域名邮箱&#8221;链接,点击即可.<br />
+先设置好管理员.然后开始新加成员.添加成员后,绑定到对应的QQ号,当设置成功后,对方会收到一封激活的邮件,<br />
+激活后便可使用该邮箱了.<br />
+另外就是还有一个群发邮箱功能.可以添加成员,类似与QQ群邮件.<br />
+注意邮箱名规则:</p>
+<ol>
+<li>帐号名由a～z的英文字母（不区分大小写）开头；</li>
+<li>由英文字母、0～9的数字（但不能使用全数字）、点、减号或下划线组成；</li>
+<li>不能以点、减号或下划线结尾，不能出现连续两个或两个以上的点、减号或下划线。</li>
+</ol>
+<p>快快享受一下短邮箱名带来的乐趣吧~﻿</p>
+]]></content:encoded>
+			<wfw:commentRss>http://imzc.net/archives/54/feed/</wfw:commentRss>
+		<slash:comments>279</slash:comments>
+		</item>
+		<item>
+		<title>php.ini和mysql中比较重要的几处设置</title>
+		<link>http://imzc.net/archives/69/</link>
+		<comments>http://imzc.net/archives/69/#comments</comments>
+		<pubDate>Sun, 30 Aug 2009 23:12:00 +0000</pubDate>
+		<dc:creator>imzc</dc:creator>
+				<category><![CDATA[LAMP]]></category>
+
+		<guid isPermaLink="false">http://imzc.net/?action=show&#038;id=103</guid>
+		<description><![CDATA[php.ini配置: #程序运行目录 open_basedir =&#8221;D:\www;.&#8221; [...]]]></description>
+			<content:encoded><![CDATA[<p>php.ini配置:<br />
+#程序运行目录<br />
+open_basedir =&#8221;D:\www;.&#8221;<br />
+#禁止函数<br />
+disable_functions = exec,system,popen,chroot,escapeshellarg,shell_exec,passthru,proc_open,proc_get_status<br />
+#禁止类<br />
+disable_classes = COM<br />
+#禁止全局变量(非global那种)<br />
+register_globals = Off<br />
+#禁止动态加载DLL<br />
+enable_dl = Off</p>
+<p>#顺便附上zend_debugger的配置:<br />
+zend_extension_ts=D:/WebServ/php5/ZendDebugger/ZendDebugger.dll<br />
+zend_debugger.allow_hosts=127.0.0.1/32,192.168.1.88/24<br />
+zend_debugger.expose_remotely=always</p>
+<p>mysql:<br />
+对每个用户最小权限,绝对不允许提供File权限.<br />
+网站连接数据库不使用root.</p>
+<p>若能限制mysql/Apache运行权限,先限制其权限;<br />
+在windows下,给cmd.exe加上密码;﻿</p>
+]]></content:encoded>
+			<wfw:commentRss>http://imzc.net/archives/69/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

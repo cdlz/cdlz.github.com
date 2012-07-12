@@ -1,0 +1,23 @@
+.wp-pagenavi {
+	margin-top:1px;
+	padding:0 !important;
+	padding:0 0 8px;
+}
+.wp-pagenavi a, .wp-pagenavi a:link, .wp-pagenavi a:active {
+	border:none;
+	padding:6px 8px; 
+	text-decoration:none;
+}
+.wp-pagenavi a:hover {
+	text-decoration:none;
+}
+.wp-pagenavi span.pages {
+	margin:2px 9px 2px 0;
+}
+.wp-pagenavi span.current {
+	padding:6px 8px; 
+	font-weight:bold;
+}
+.wp-pagenavi span.extend {
+	margin:2px 4px;
+}

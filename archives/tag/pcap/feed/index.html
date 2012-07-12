@@ -1,0 +1,614 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Only For Sunshine~ &#187; pcap</title>
+	<atom:link href="http://imzc.net/archives/tag/pcap/feed/" rel="self" type="application/rss+xml" />
+	<link>http://imzc.net</link>
+	<description>-More Thinking,And Then Just do it~~~</description>
+	<lastBuildDate>Mon, 09 Jul 2012 03:09:37 +0000</lastBuildDate>
+	<language>zh-CN</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.4.1</generator>
+		<item>
+		<title>解析pcap文件及读取实现源码</title>
+		<link>http://imzc.net/archives/181/</link>
+		<comments>http://imzc.net/archives/181/#comments</comments>
+		<pubDate>Tue, 24 Jan 2012 16:55:40 +0000</pubDate>
+		<dc:creator>imzc</dc:creator>
+				<category><![CDATA[C/C++]]></category>
+		<category><![CDATA[pcap]]></category>
+
+		<guid isPermaLink="false">http://imzc.net/?p=181</guid>
+		<description><![CDATA[下面pcap文件格式介绍是在网上转的,根据理解，写了个程序来进行解析pcap文件，后续再实现合并pcap功能( [...]]]></description>
+			<content:encoded><![CDATA[<p>下面pcap文件格式介绍是在<a href="http://blog.csdn.net/in7deforever/article/details/6460595" target="_blank">网上转的</a>,根据理解，写了个程序来进行解析pcap文件，后续再实现合并pcap功能(wireshark已经自带命令行合并pcap文件工具，在这里只是为了分析pcap文件和学习)。<br />
+==========================<br />
+默认的*.pcap文件保存格式。</p>
+<p><img src="http://p.blog.csdn.net/images/p_blog_csdn_net/ALEKS86/1%29%20Pcap%E6%96%87%E4%BB%B6%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84%E5%92%8CPcap%E6%96%87%E4%BB%B6%E5%A4%B4%E7%BB%93%E6%9E%84.gif" alt="" align="textTop" data-ke-src="http://p.blog.csdn.net/images/p_blog_csdn_net/ALEKS86/1%29%20Pcap%E6%96%87%E4%BB%B6%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84%E5%92%8CPcap%E6%96%87%E4%BB%B6%E5%A4%B4%E7%BB%93%E6%9E%84.gif" /></p>
+<p>Pcap文件头24B各字段说明：</p>
+<div>Magic：4B：0x1A 2B 3C 4D:用来标示文件的开始</div>
+<div>Major：2B，0&#215;02 00:当前文件主要的版本号</div>
+<div>Minor：2B，0&#215;04 00当前文件次要的版本号</div>
+<div>ThisZone：4B当地的标准时间；全零</div>
+<div>SigFigs：4B时间戳的精度；全零</div>
+<div>SnapLen：4B最大的存储长度</div>
+<div>LinkType：4B链路类型</div>
+<div>常用类型：</div>
+<div>0            BSD loopback devices, except for later OpenBSD<br />
+1            Ethernet, and Linux loopback devices<br />
+6            802.5 Token Ring<br />
+7            ARCnet<br />
+8            SLIP<br />
+9            PPP<br />
+10           FDDI<br />
+100         LLC/SNAP-encapsulated ATM<br />
+101         &#8220;raw IP&#8221;, with no link<br />
+102         BSD/OS SLIP<br />
+103         BSD/OS PPP<br />
+104         Cisco HDLC<br />
+105         802.11<br />
+108         later OpenBSD loopback devices (with the AF_value in network byte order)<br />
+113         special Linux &#8220;cooked&#8221; capture<br />
+114         LocalTalk</div>
+<div></div>
+<div><img src="http://p.blog.csdn.net/images/p_blog_csdn_net/ALEKS86/2%EF%BC%89Packet%20%E5%8C%85%E5%A4%B4%EF%BC%8816B%EF%BC%89%E5%92%8CPacket%E6%95%B0%E6%8D%AE%E7%BB%84%E6%88%90.gif" alt="" align="textTop" data-ke-src="http://p.blog.csdn.net/images/p_blog_csdn_net/ALEKS86/2%EF%BC%89Packet%20%E5%8C%85%E5%A4%B4%EF%BC%8816B%EF%BC%89%E5%92%8CPacket%E6%95%B0%E6%8D%AE%E7%BB%84%E6%88%90.gif" /></div>
+<div><strong>Packet </strong><strong>包头和Packet</strong><strong>数据组成</strong></div>
+<div>字段说明：</div>
+<div>Timestamp：时间戳高位，精确到seconds</div>
+<div>Timestamp：时间戳低位，精确到microseconds</div>
+<div>Caplen：当前数据区的长度，即抓取到的数据帧长度，由此可以得到下一个数据帧的位置。</div>
+<div>Len：离线数据长度<strong>：</strong>网络中实际数据帧的长度，一般不大于caplen，多数情况下和Caplen数值相等。</div>
+<div><strong>Packet </strong><strong>数据</strong>： 即 Packet（通常就是链路层的数据帧）具体内容，长度就是Caplen，这个长度的后面，就是当前PCAP文件中存放的下一个Packet数据包，也就 是说：PCAP文件里面并没有规定捕获的Packet数据包之间有什么间隔字符串，下一组数据在文件中的起始位置。我们需要靠第一个Packet包确定。 最后，Packet数据部分的格式其实就是标准的网路协议格式了可以任何网络教材上找得到。</div>
+<div>===========================</div>
+<div>我的实现：</div>
+<div>
+
+<div class="wp_syntax"><table><tr><td class="line_numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+</pre></td><td class="code"><pre class="c" style="font-family:monospace;"><span style="color: #666666; font-style: italic;">//</span>
+<span style="color: #666666; font-style: italic;">//  pcap.h</span>
+<span style="color: #666666; font-style: italic;">//  pcaptest</span>
+<span style="color: #666666; font-style: italic;">//</span>
+<span style="color: #666666; font-style: italic;">//  Created by zc on 12-1-24.</span>
+<span style="color: #666666; font-style: italic;">//  Copyright 2012年 __MyCompanyName__. All rights reserved.</span>
+<span style="color: #666666; font-style: italic;">//</span>
+&nbsp;
+<span style="color: #339933;">#ifndef pcaptest_pcap_h</span>
+<span style="color: #339933;">#define pcaptest_pcap_h</span>
+&nbsp;
+<span style="color: #993333;">typedef</span> <span style="color: #993333;">unsigned</span> <span style="color: #993333;">int</span>  bpf_u_int32<span style="color: #339933;">;</span>
+<span style="color: #993333;">typedef</span> <span style="color: #993333;">unsigned</span> <span style="color: #993333;">short</span>  u_short<span style="color: #339933;">;</span>
+<span style="color: #993333;">typedef</span> <span style="color: #993333;">int</span> bpf_int32<span style="color: #339933;">;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;">/*
+ Pcap文件头24B各字段说明：
+ Magic：4B：0x1A 2B 3C 4D:用来标示文件的开始
+ Major：2B，0x02 00:当前文件主要的版本号     
+ Minor：2B，0x04 00当前文件次要的版本号
+ ThisZone：4B当地的标准时间；全零
+ SigFigs：4B时间戳的精度；全零
+ SnapLen：4B最大的存储长度    
+ LinkType：4B链路类型
+ 常用类型：
+ 　0            BSD loopback devices, except for later OpenBSD
+ 1            Ethernet, and Linux loopback devices
+ 6            802.5 Token Ring
+ 7            ARCnet
+ 8            SLIP
+ 9            PPP
+ */</span>
+<span style="color: #993333;">typedef</span> <span style="color: #993333;">struct</span> pcap_file_header <span style="color: #009900;">&#123;</span>
+	bpf_u_int32 magic<span style="color: #339933;">;</span>
+	u_short version_major<span style="color: #339933;">;</span>
+	u_short version_minor<span style="color: #339933;">;</span>
+	bpf_int32 thiszone<span style="color: #339933;">;</span>    
+	bpf_u_int32 sigfigs<span style="color: #339933;">;</span>   
+	bpf_u_int32 snaplen<span style="color: #339933;">;</span>   
+	bpf_u_int32 linktype<span style="color: #339933;">;</span>  
+<span style="color: #009900;">&#125;</span>pcap_file_header<span style="color: #339933;">;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;">/*
+ Packet 包头和Packet数据组成
+ 字段说明：
+ Timestamp：时间戳高位，精确到seconds     
+ Timestamp：时间戳低位，精确到microseconds
+ Caplen：当前数据区的长度，即抓取到的数据帧长度，由此可以得到下一个数据帧的位置。
+ Len：离线数据长度：网络中实际数据帧的长度，一般不大于caplen，多数情况下和Caplen数值相等。
+ Packet 数据：即 Packet（通常就是链路层的数据帧）具体内容，长度就是Caplen，这个长度的后面，就是当前PCAP文件中存放的下一个Packet数据包，也就 是说：PCAP文件里面并没有规定捕获的Packet数据包之间有什么间隔字符串，下一组数据在文件中的起始位置。我们需要靠第一个Packet包确定。
+ */</span>
+&nbsp;
+<span style="color: #993333;">typedef</span> <span style="color: #993333;">struct</span>  timestamp<span style="color: #009900;">&#123;</span>
+	bpf_u_int32 timestamp_s<span style="color: #339933;">;</span>
+	bpf_u_int32 timestamp_ms<span style="color: #339933;">;</span>
+<span style="color: #009900;">&#125;</span>timestamp<span style="color: #339933;">;</span>
+&nbsp;
+<span style="color: #993333;">typedef</span> <span style="color: #993333;">struct</span> pcap_header<span style="color: #009900;">&#123;</span>
+	timestamp ts<span style="color: #339933;">;</span>
+	bpf_u_int32 capture_len<span style="color: #339933;">;</span>
+	bpf_u_int32 len<span style="color: #339933;">;</span>
+&nbsp;
+<span style="color: #009900;">&#125;</span>pcap_header<span style="color: #339933;">;</span>
+&nbsp;
+&nbsp;
+<span style="color: #993333;">void</span> prinfPcapFileHeader<span style="color: #009900;">&#40;</span>pcap_file_header <span style="color: #339933;">*</span>pfh<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<span style="color: #993333;">void</span> printfPcapHeader<span style="color: #009900;">&#40;</span>pcap_header <span style="color: #339933;">*</span>ph<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<span style="color: #993333;">void</span> printPcap<span style="color: #009900;">&#40;</span><span style="color: #993333;">void</span> <span style="color: #339933;">*</span> data<span style="color: #339933;">,</span>size_t size<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+&nbsp;
+<span style="color: #339933;">#endif</span></pre></td></tr></table></div>
+
+
+<div class="wp_syntax"><table><tr><td class="line_numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+</pre></td><td class="code"><pre class="c" style="font-family:monospace;"><span style="color: #666666; font-style: italic;">//</span>
+<span style="color: #666666; font-style: italic;">//  pcap.c</span>
+<span style="color: #666666; font-style: italic;">//  pcaptest</span>
+<span style="color: #666666; font-style: italic;">//</span>
+<span style="color: #666666; font-style: italic;">//  Created by zc on 12-1-24.</span>
+<span style="color: #666666; font-style: italic;">//  Copyright 2012年 __MyCompanyName__. All rights reserved.</span>
+<span style="color: #666666; font-style: italic;">//</span>
+&nbsp;
+<span style="color: #339933;">#include &lt;stdio.h&gt;</span>
+<span style="color: #339933;">#include &quot;pcap.h&quot;</span>
+&nbsp;
+<span style="color: #993333;">void</span> prinfPcapFileHeader<span style="color: #009900;">&#40;</span>pcap_file_header <span style="color: #339933;">*</span>pfh<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+	<span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span>pfh<span style="color: #339933;">==</span>NULL<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+		<span style="color: #b1b100;">return</span><span style="color: #339933;">;</span>
+	<span style="color: #009900;">&#125;</span>
+	<span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;=====================<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span>
+		   <span style="color: #ff0000;">&quot;magic:0x%0x<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span>
+		   <span style="color: #ff0000;">&quot;version_major:%u<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span>
+		   <span style="color: #ff0000;">&quot;version_minor:%u<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span>
+		   <span style="color: #ff0000;">&quot;thiszone:%d<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span>
+		   <span style="color: #ff0000;">&quot;sigfigs:%u<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span>
+		   <span style="color: #ff0000;">&quot;snaplen:%u<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span>
+		   <span style="color: #ff0000;">&quot;linktype:%u<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span>
+		   <span style="color: #ff0000;">&quot;=====================<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #339933;">,</span>
+		   pfh<span style="color: #339933;">-&gt;</span>magic<span style="color: #339933;">,</span>
+		   pfh<span style="color: #339933;">-&gt;</span>version_major<span style="color: #339933;">,</span>
+		   pfh<span style="color: #339933;">-&gt;</span>version_minor<span style="color: #339933;">,</span>
+		   pfh<span style="color: #339933;">-&gt;</span>thiszone<span style="color: #339933;">,</span>
+		   pfh<span style="color: #339933;">-&gt;</span>sigfigs<span style="color: #339933;">,</span>
+		   pfh<span style="color: #339933;">-&gt;</span>snaplen<span style="color: #339933;">,</span>
+		   pfh<span style="color: #339933;">-&gt;</span>linktype<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<span style="color: #009900;">&#125;</span>
+&nbsp;
+<span style="color: #993333;">void</span> printfPcapHeader<span style="color: #009900;">&#40;</span>pcap_header <span style="color: #339933;">*</span>ph<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+	<span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span>ph<span style="color: #339933;">==</span>NULL<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+		<span style="color: #b1b100;">return</span><span style="color: #339933;">;</span>
+	<span style="color: #009900;">&#125;</span>
+	<span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;=====================<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span>
+		   <span style="color: #ff0000;">&quot;ts.timestamp_s:%u<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span>
+		   <span style="color: #ff0000;">&quot;ts.timestamp_ms:%u<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span>
+		   <span style="color: #ff0000;">&quot;capture_len:%u<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span>
+		   <span style="color: #ff0000;">&quot;len:%d<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span>
+		   <span style="color: #ff0000;">&quot;=====================<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #339933;">,</span>
+		   ph<span style="color: #339933;">-&gt;</span>ts.<span style="color: #202020;">timestamp_s</span><span style="color: #339933;">,</span>
+		   ph<span style="color: #339933;">-&gt;</span>ts.<span style="color: #202020;">timestamp_ms</span><span style="color: #339933;">,</span>
+		   ph<span style="color: #339933;">-&gt;</span>capture_len<span style="color: #339933;">,</span>
+		   ph<span style="color: #339933;">-&gt;</span>len<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+&nbsp;
+&nbsp;
+<span style="color: #009900;">&#125;</span>
+&nbsp;
+<span style="color: #993333;">void</span> printPcap<span style="color: #009900;">&#40;</span><span style="color: #993333;">void</span> <span style="color: #339933;">*</span> data<span style="color: #339933;">,</span>size_t size<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+	<span style="color: #993333;">unsigned</span>  <span style="color: #993333;">short</span> iPos <span style="color: #339933;">=</span> <span style="color: #0000dd;">0</span><span style="color: #339933;">;</span>
+	<span style="color: #666666; font-style: italic;">//int * p = (int *)data;</span>
+	<span style="color: #666666; font-style: italic;">//unsigned short* p = (unsigned short *)data;</span>
+	<span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span>data<span style="color: #339933;">==</span>NULL<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+		<span style="color: #b1b100;">return</span><span style="color: #339933;">;</span>
+	<span style="color: #009900;">&#125;</span>
+&nbsp;
+	<span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;<span style="color: #000099; font-weight: bold;">\n</span>==data:0x%x,len:%lu=========&quot;</span><span style="color: #339933;">,</span>data<span style="color: #339933;">,</span>size<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+&nbsp;
+	<span style="color: #b1b100;">for</span> <span style="color: #009900;">&#40;</span>iPos<span style="color: #339933;">=</span><span style="color: #0000dd;">0</span><span style="color: #339933;">;</span> iPos <span style="color: #339933;">&lt;</span> size<span style="color: #339933;">/</span><span style="color: #993333;">sizeof</span><span style="color: #009900;">&#40;</span><span style="color: #993333;">unsigned</span> <span style="color: #993333;">short</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span> iPos<span style="color: #339933;">++</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+		<span style="color: #666666; font-style: italic;">//printf(&quot; %x &quot;,(int)( * (p+iPos) ));</span>
+		<span style="color: #666666; font-style: italic;">//unsigned short a = ntohs(p[iPos]);</span>
+&nbsp;
+		<span style="color: #993333;">unsigned</span> <span style="color: #993333;">short</span> a <span style="color: #339933;">=</span> ntohs<span style="color: #009900;">&#40;</span> <span style="color: #339933;">*</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#40;</span><span style="color: #993333;">unsigned</span> <span style="color: #993333;">short</span> <span style="color: #339933;">*</span><span style="color: #009900;">&#41;</span>data <span style="color: #339933;">+</span> iPos <span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+		<span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span>iPos<span style="color: #339933;">%</span><span style="color:#800080;">8</span><span style="color: #339933;">==</span><span style="color: #0000dd;">0</span><span style="color: #009900;">&#41;</span> <span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+		<span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span>iPos<span style="color: #339933;">%</span><span style="color:#800080;">4</span><span style="color: #339933;">==</span><span style="color: #0000dd;">0</span><span style="color: #009900;">&#41;</span> <span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot; &quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+&nbsp;
+		<span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;%04x&quot;</span><span style="color: #339933;">,</span>a<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+&nbsp;
+&nbsp;
+	<span style="color: #009900;">&#125;</span>
+	<span style="color: #808080; font-style: italic;">/*
+	 for (iPos=0; iPos &lt;= size/sizeof(int); iPos++) {
+		//printf(&quot; %x &quot;,(int)( * (p+iPos) ));
+		int a = ntohl(p[iPos]);
+&nbsp;
+		//int a = ntohl( *((int *)data + iPos ) );
+		if (iPos %4==0) printf(&quot;\n&quot;);
+&nbsp;
+		printf(&quot;%08x &quot;,a);
+&nbsp;
+&nbsp;
+	}
+	 */</span>
+	<span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;<span style="color: #000099; font-weight: bold;">\n</span>============<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<span style="color: #009900;">&#125;</span></pre></td></tr></table></div>
+
+
+<div class="wp_syntax"><table><tr><td class="line_numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+</pre></td><td class="code"><pre class="c" style="font-family:monospace;"><span style="color: #666666; font-style: italic;">//</span>
+<span style="color: #666666; font-style: italic;">//  main.c</span>
+<span style="color: #666666; font-style: italic;">//  pcaptest</span>
+<span style="color: #666666; font-style: italic;">//</span>
+<span style="color: #666666; font-style: italic;">//  Created by zc on 12-1-24.</span>
+<span style="color: #666666; font-style: italic;">//  Copyright 2012年 __MyCompanyName__. All rights reserved.</span>
+<span style="color: #666666; font-style: italic;">//</span>
+&nbsp;
+<span style="color: #339933;">#include &lt;stdio.h&gt;</span>
+<span style="color: #339933;">#include &lt;arpa/inet.h&gt;</span>
+<span style="color: #339933;">#include &quot;pcap.h&quot;</span>
+&nbsp;
+<span style="color: #339933;">#define PCAP_FILE &quot;ping.pcap&quot;</span>
+<span style="color: #339933;">#define MAX_ETH_FRAME 1514</span>
+<span style="color: #339933;">#define ERROR_FILE_OPEN_FAILED -1</span>
+<span style="color: #339933;">#define ERROR_MEM_ALLOC_FAILED -2</span>
+<span style="color: #339933;">#define ERROR_PCAP_PARSE_FAILED -3</span>
+&nbsp;
+&nbsp;
+<span style="color: #993333;">int</span> main <span style="color: #009900;">&#40;</span><span style="color: #993333;">int</span> argc<span style="color: #339933;">,</span> <span style="color: #993333;">const</span> <span style="color: #993333;">char</span> <span style="color: #339933;">*</span> argv<span style="color: #009900;">&#91;</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span>
+<span style="color: #009900;">&#123;</span>
+&nbsp;
+	<span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;sizeof:int %lu,unsigned int %lu,char %lu,unsigned char %lu,short:%lu,unsigned short:%lu<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #339933;">,</span>
+		    <span style="color: #993333;">sizeof</span><span style="color: #009900;">&#40;</span><span style="color: #993333;">int</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">,</span><span style="color: #993333;">sizeof</span><span style="color: #009900;">&#40;</span><span style="color: #993333;">unsigned</span> <span style="color: #993333;">int</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">,</span><span style="color: #993333;">sizeof</span><span style="color: #009900;">&#40;</span><span style="color: #993333;">char</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">,</span><span style="color: #993333;">sizeof</span><span style="color: #009900;">&#40;</span><span style="color: #993333;">unsigned</span> <span style="color: #993333;">char</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">,</span><span style="color: #993333;">sizeof</span><span style="color: #009900;">&#40;</span><span style="color: #993333;">short</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">,</span><span style="color: #993333;">sizeof</span><span style="color: #009900;">&#40;</span><span style="color: #993333;">unsigned</span> <span style="color: #993333;">short</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+&nbsp;
+	pcap_file_header  pfh<span style="color: #339933;">;</span>
+	pcap_header  ph<span style="color: #339933;">;</span>
+	<span style="color: #993333;">int</span> count<span style="color: #339933;">=</span><span style="color: #0000dd;">0</span><span style="color: #339933;">;</span>
+	<span style="color: #993333;">void</span> <span style="color: #339933;">*</span> buff <span style="color: #339933;">=</span> NULL<span style="color: #339933;">;</span>
+	<span style="color: #993333;">int</span> readSize<span style="color: #339933;">=</span><span style="color: #0000dd;">0</span><span style="color: #339933;">;</span>
+	<span style="color: #993333;">int</span> ret <span style="color: #339933;">=</span> <span style="color: #0000dd;">0</span><span style="color: #339933;">;</span>
+&nbsp;
+	FILE <span style="color: #339933;">*</span>fp <span style="color: #339933;">=</span> fopen<span style="color: #009900;">&#40;</span>PCAP_FILE<span style="color: #339933;">,</span> <span style="color: #ff0000;">&quot;rw&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+&nbsp;
+	<span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span>fp<span style="color: #339933;">==</span>NULL<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+		fprintf<span style="color: #009900;">&#40;</span>stderr<span style="color: #339933;">,</span> <span style="color: #ff0000;">&quot;Open file %s error.&quot;</span><span style="color: #339933;">,</span>PCAP_FILE<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+		ret <span style="color: #339933;">=</span> ERROR_FILE_OPEN_FAILED<span style="color: #339933;">;</span>
+		<span style="color: #b1b100;">goto</span> ERROR<span style="color: #339933;">;</span>
+	<span style="color: #009900;">&#125;</span>
+&nbsp;
+	fread<span style="color: #009900;">&#40;</span><span style="color: #339933;">&amp;</span>pfh<span style="color: #339933;">,</span> <span style="color: #993333;">sizeof</span><span style="color: #009900;">&#40;</span>pcap_file_header<span style="color: #009900;">&#41;</span><span style="color: #339933;">,</span> <span style="color: #0000dd;">1</span><span style="color: #339933;">,</span> fp<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>	
+	prinfPcapFileHeader<span style="color: #009900;">&#40;</span><span style="color: #339933;">&amp;</span>pfh<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+	<span style="color: #666666; font-style: italic;">//fseek(fp, 0, sizeof(pcap_file_header));</span>
+&nbsp;
+	buff <span style="color: #339933;">=</span> <span style="color: #009900;">&#40;</span><span style="color: #993333;">void</span> <span style="color: #339933;">*</span><span style="color: #009900;">&#41;</span>malloc<span style="color: #009900;">&#40;</span>MAX_ETH_FRAME<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+	<span style="color: #b1b100;">for</span> <span style="color: #009900;">&#40;</span>count<span style="color: #339933;">=</span><span style="color: #0000dd;">1</span><span style="color: #339933;">;</span> <span style="color: #339933;">;</span> count<span style="color: #339933;">++</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+		memset<span style="color: #009900;">&#40;</span>buff<span style="color: #339933;">,</span><span style="color: #0000dd;">0</span><span style="color: #339933;">,</span>MAX_ETH_FRAME<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+		<span style="color: #666666; font-style: italic;">//read pcap header to get a packet</span>
+		<span style="color: #666666; font-style: italic;">//get only a pcap head count .</span>
+		readSize<span style="color: #339933;">=</span>fread<span style="color: #009900;">&#40;</span><span style="color: #339933;">&amp;</span>ph<span style="color: #339933;">,</span> <span style="color: #993333;">sizeof</span><span style="color: #009900;">&#40;</span>pcap_header<span style="color: #009900;">&#41;</span><span style="color: #339933;">,</span> <span style="color: #0000dd;">1</span><span style="color: #339933;">,</span> fp<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+		<span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span>readSize<span style="color: #339933;">&lt;=</span><span style="color: #0000dd;">0</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+			<span style="color: #000000; font-weight: bold;">break</span><span style="color: #339933;">;</span>
+		<span style="color: #009900;">&#125;</span>
+		printfPcapHeader<span style="color: #009900;">&#40;</span><span style="color: #339933;">&amp;</span>ph<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+&nbsp;
+&nbsp;
+		<span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span>buff<span style="color: #339933;">==</span>NULL<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+			fprintf<span style="color: #009900;">&#40;</span>stderr<span style="color: #339933;">,</span> <span style="color: #ff0000;">&quot;malloc memory failed.<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+			ret <span style="color: #339933;">=</span> ERROR_MEM_ALLOC_FAILED<span style="color: #339933;">;</span>
+			<span style="color: #b1b100;">goto</span> ERROR<span style="color: #339933;">;</span>
+		<span style="color: #009900;">&#125;</span>
+&nbsp;
+		<span style="color: #666666; font-style: italic;">//get a packet contents.</span>
+		<span style="color: #666666; font-style: italic;">//read ph.capture_len bytes.</span>
+		readSize<span style="color: #339933;">=</span>fread<span style="color: #009900;">&#40;</span>buff<span style="color: #339933;">,</span><span style="color: #0000dd;">1</span><span style="color: #339933;">,</span>ph.<span style="color: #202020;">capture_len</span><span style="color: #339933;">,</span> fp<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+		<span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span>readSize <span style="color: #339933;">!=</span> ph.<span style="color: #202020;">capture_len</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+			free<span style="color: #009900;">&#40;</span>buff<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+			fprintf<span style="color: #009900;">&#40;</span>stderr<span style="color: #339933;">,</span> <span style="color: #ff0000;">&quot;pcap file parse error.<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+			ret <span style="color: #339933;">=</span> ERROR_PCAP_PARSE_FAILED<span style="color: #339933;">;</span>
+			<span style="color: #b1b100;">goto</span> ERROR<span style="color: #339933;">;</span>
+		<span style="color: #009900;">&#125;</span>
+		printPcap<span style="color: #009900;">&#40;</span>buff<span style="color: #339933;">,</span> ph.<span style="color: #202020;">capture_len</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+&nbsp;
+&nbsp;
+		<span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;===count:%d,readSize:%d===<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #339933;">,</span>count<span style="color: #339933;">,</span>readSize<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+&nbsp;
+		<span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span>feof<span style="color: #009900;">&#40;</span>fp<span style="color: #009900;">&#41;</span> <span style="color: #339933;">||</span> readSize <span style="color: #339933;">&lt;=</span><span style="color: #0000dd;">0</span> <span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span> 
+			<span style="color: #000000; font-weight: bold;">break</span><span style="color: #339933;">;</span>
+		<span style="color: #009900;">&#125;</span>
+	<span style="color: #009900;">&#125;</span>
+&nbsp;
+ERROR<span style="color: #339933;">:</span>
+	<span style="color: #666666; font-style: italic;">//free</span>
+	<span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span>buff<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+		free<span style="color: #009900;">&#40;</span>buff<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+		buff<span style="color: #339933;">=</span>NULL<span style="color: #339933;">;</span>
+	<span style="color: #009900;">&#125;</span> 
+	<span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span>fp<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+		fclose<span style="color: #009900;">&#40;</span>fp<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+		fp<span style="color: #339933;">=</span>NULL<span style="color: #339933;">;</span>
+	<span style="color: #009900;">&#125;</span>	
+&nbsp;
+    <span style="color: #b1b100;">return</span> ret<span style="color: #339933;">;</span>
+<span style="color: #009900;">&#125;</span></pre></td></tr></table></div>
+
+<p>Makefile:</p>
+
+<div class="wp_syntax"><table><tr><td class="line_numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></td><td class="code"><pre class="c" style="font-family:monospace;">objects <span style="color: #339933;">=</span> main.<span style="color: #202020;">o</span> pcap.<span style="color: #202020;">o</span>
+&nbsp;
+pcaptest <span style="color: #339933;">:</span> $<span style="color: #009900;">&#40;</span>objects<span style="color: #009900;">&#41;</span>
+	gcc <span style="color: #339933;">-</span>o pcaptest  $<span style="color: #009900;">&#40;</span>objects<span style="color: #009900;">&#41;</span>
+&nbsp;
+main.<span style="color: #202020;">o</span><span style="color: #339933;">:</span>pcap.<span style="color: #202020;">h</span>
+pcap.<span style="color: #202020;">o</span><span style="color: #339933;">:</span>pcap.<span style="color: #202020;">h</span>
+&nbsp;
+.<span style="color: #202020;">PHONY</span> <span style="color: #339933;">:</span> clean
+clean <span style="color: #339933;">:</span>
+	rm pcaptest  $<span style="color: #009900;">&#40;</span>objects<span style="color: #009900;">&#41;</span></pre></td></tr></table></div>
+
+</div>
+]]></content:encoded>
+			<wfw:commentRss>http://imzc.net/archives/181/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+		</item>
+	</channel>
+</rss>
