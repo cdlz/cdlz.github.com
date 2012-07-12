@@ -158,6 +158,34 @@ var live_blogging = {"ajaxurl":"http:\/\/imzc.net\/wp-admin\/admin-ajax.php","up
 		
 				<div class="post">
 					<div class="title">
+						<h2><a href="../../archives/234/index.html" rel="bookmark">autoit3实现命令行调用杀毒软件</a></h2>
+						<div class="fixed"></div>
+					</div>
+
+					<div class="info">
+						
+						<span>2012年3月30日</span>
+													<span> | 分类: <a href="../../archives/category/rubytesting/index.html" title="查看 Ruby&amp;Testing 中的全部文章" rel="category tag">Ruby&amp;Testing</a></span>
+																			<span> | 标签: </span>
+						
+						<div class="fixed"></div>
+					</div>
+
+					<div class="content">
+						<p>自动化项目需要调用杀毒软件对特定文件夹进行病毒扫描，但是大部分杀毒软件都没有提供命令行支持。因此只能从图形界面操作搞定。<br />
+sikuli可以实现截图方式点击，但是不太稳定，而且，对于趋势杀毒软件，只能选择到某个盘符，不能选择到具体的文件夹，故存在一定的弱点。<br />
+考虑到杀毒软件都有提供一个右键菜单，查询注册表发现是一个shellext.dll扩展，不能通过rundll32方式调用。因此可以考虑使用autoit进行操作了。重要知识点：<br />
+1.使用windows资源管理器打开特定的文件夹，且处于选中状态，explorer支持多种参数，其中select是实现本功能的参数：<br />
+RunWait(@ComSpec &amp; &#8216; /c &#8216; &amp; &#8216;explorer /select,&#8217; &amp; $DirName,&#8221;, @SW_HIDE)>>> <a href='../../archives/234/index.html' rel="nofollow">More</a></p>						<div class="fixed"></div>
+					</div>
+
+					<div class="comments">
+						<span>评论关闭</span>											</div>
+				</div>
+
+		
+				<div class="post">
+					<div class="title">
 						<h2><a href="../../archives/231/index.html" rel="bookmark">Ruby多线程与同时使用autoit和watir处理popup弹框时的关系</a></h2>
 						<div class="fixed"></div>
 					</div>
@@ -387,30 +415,6 @@ HelloTest.cpp>>> <a href='../../archives/229/index.html' rel="nofollow">More</a>
 						<span>评论关闭</span>											</div>
 				</div>
 
-		
-				<div class="post">
-					<div class="title">
-						<h2><a href="../../archives/203/index.html" rel="bookmark">Javascript事件捕获利器-chrome开发人员工具</a></h2>
-						<div class="fixed"></div>
-					</div>
-
-					<div class="info">
-						
-						<span>2012年3月7日</span>
-													<span> | 分类: <a href="../../archives/category/lamp/index.html" title="查看 LAMP 中的全部文章" rel="category tag">LAMP</a>, <a href="../../archives/category/rubytesting/index.html" title="查看 Ruby&amp;Testing 中的全部文章" rel="category tag">Ruby&amp;Testing</a></span>
-																			<span> | 标签: </span>
-						
-						<div class="fixed"></div>
-					</div>
-
-					<div class="content">
-						<p>web自动化时，我们往往需要获取javascript对应的事件。有些web，对相关事件进行屏蔽，而只处理某一种事件。>>> <a href='../../archives/203/index.html' rel="nofollow">More</a></p>						<div class="fixed"></div>
-					</div>
-
-					<div class="comments">
-						<span>评论关闭</span>											</div>
-				</div>
-
 			</div>
 
 	<!-- sidebar START -->
@@ -461,7 +465,7 @@ HelloTest.cpp>>> <a href='../../archives/229/index.html' rel="nofollow">More</a>
 	<tr><td>1</td><td><a href="../../archives/date/2012/07/02/index.html" title="六月随笔">2</a></td><td>3</td><td>4</td><td><a href="../../archives/date/2012/07/05/index.html" title="ruby Rspec测试框架cheetsheet">5</a></td><td>6</td><td>7</td>
 	</tr>
 	<tr>
-		<td>8</td><td><a href="../../archives/date/2012/07/09/index.html" title="linux下STAF执行失败时的处理">9</a></td><td>10</td><td>11</td><td>12</td><td id="today">13</td><td>14</td>
+		<td>8</td><td><a href="../../archives/date/2012/07/09/index.html" title="linux下STAF执行失败时的处理">9</a></td><td>10</td><td>11</td><td>12</td><td id="today"><a href="../../archives/date/2012/07/13/index.html" title="镜像网站为静态页面到github中">13</a></td><td>14</td>
 	</tr>
 	<tr>
 		<td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td>

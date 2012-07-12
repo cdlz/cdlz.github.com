@@ -13,11 +13,95 @@
 	<atom:link href="http://imzc.net/feed/" rel="self" type="application/rss+xml" />
 	<link>http://imzc.net</link>
 	<description>-More Thinking,And Then Just do it~~~</description>
-	<lastBuildDate>Thu, 12 Jul 2012 16:18:11 +0000</lastBuildDate>
+	<lastBuildDate>Thu, 12 Jul 2012 17:15:18 +0000</lastBuildDate>
 	<language>zh-CN</language>
 	<sy:updatePeriod>hourly</sy:updatePeriod>
 	<sy:updateFrequency>1</sy:updateFrequency>
 	<generator>http://wordpress.org/?v=3.4.1</generator>
+		<item>
+		<title>镜像网站为静态页面到github中</title>
+		<link>http://imzc.net/archives/271/</link>
+		<comments>http://imzc.net/archives/271/#comments</comments>
+		<pubDate>Thu, 12 Jul 2012 17:04:41 +0000</pubDate>
+		<dc:creator>imzc</dc:creator>
+				<category><![CDATA[LAMP]]></category>
+
+		<guid isPermaLink="false">http://imzc.net/?p=271</guid>
+		<description><![CDATA[之前看到太多网站数据损坏的例子了，最近使用github较多，刚好提供了免费的静态网页存放的地方，因此通过一系列 [...]]]></description>
+			<content:encoded><![CDATA[<p>之前看到太多网站数据损坏的例子了，最近使用github较多，刚好提供了免费的静态网页存放的地方，因此通过一系列命令来实现本博客静态化，并自动转移到github中。</p>
+<p>需要准备的有：</p>
+<blockquote><p>
+1.github账户名一个，假定为 gitwww<br />
+2.自己空闲的域名（如果不需要独立域名，可不需要）；<br />
+3.前提： 能登陆博客空间的ssh。vps是一个比较好的解决方法。
+</p></blockquote>
+<p>第一步：  gitwww登陆到github，创建仓库： gitwww.github.com （系统对此&#8221;自己账号名称.github.com&#8221;仓库有特殊处理）；创建成功后，进入该仓库管理页面，点击右上方的【Admin】按钮，保证下述选项为选中状态：</p>
+<p><a href="http://imzc.net/wp-content/uploads/2012/07/github.jpg"><img class="aligncenter size-medium wp-image-272" title="github" src="http://imzc.net/wp-content/uploads/2012/07/github-300x103.jpg" alt="" width="300" height="103" /></a></p>
+<p>第二步：登陆博客SSH，按照github的提示，创建ssh key。保证git能不需要密码登陆成功。</p>
+<p>第三步：初始化github静态博客；</p>
+
+<div class="wp_syntax"><table><tr><td class="line_numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">git</span> clone <span style="color: #c20cb9; font-weight: bold;">git</span><span style="color: #000000; font-weight: bold;">@</span>github.com:gitwww<span style="color: #000000; font-weight: bold;">/</span>gitwww.github.com.git
+<span style="color: #7a0874; font-weight: bold;">cd</span> gitwww.github.com
+<span style="color: #c20cb9; font-weight: bold;">cat</span> <span style="color: #ff0000;">&quot;my blog index&quot;</span> <span style="color: #000000; font-weight: bold;">&gt;</span> index.html
+<span style="color: #7a0874; font-weight: bold;">echo</span> <span style="color: #ff0000;">&quot;www.devzc.com&quot;</span> <span style="color: #000000; font-weight: bold;">&gt;</span> CNAME  <span style="color: #666666; font-style: italic;">#如果需要独立域名，则加上此行</span>
+<span style="color: #c20cb9; font-weight: bold;">git</span> add .
+<span style="color: #c20cb9; font-weight: bold;">git</span> commit <span style="color: #660033;">-m</span> <span style="color: #ff0000;">&quot;blog init&quot;</span>
+<span style="color: #c20cb9; font-weight: bold;">git</span> remote add origin https:<span style="color: #000000; font-weight: bold;">//</span>github.com<span style="color: #000000; font-weight: bold;">/</span>gitwww<span style="color: #000000; font-weight: bold;">/</span>gitwww.github.com.git
+<span style="color: #c20cb9; font-weight: bold;">git</span> push <span style="color: #660033;">-u</span> origin master</pre></td></tr></table></div>
+
+<p>保证代码提交完成,注意：每次提交代码后，页面显示会有一定的延迟。<br />
+第四步，修改你域名的解析:<br />
+devzc.com 的A记录到 204.232.175.78 （http://gitwww.github.com的IP）；<br />
+CNAME记录到gitwww.github.com</p>
+<p>第五步，整站下载并更新到github上：<br />
+工具借助wget就行了。</p>
+
+<div class="wp_syntax"><table><tr><td class="line_numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre></td><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #666666; font-style: italic;">#!/bin/bash</span>
+<span style="color: #007800;">ua</span>=<span style="color: #ff0000;">'Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.1.6) Gecko/20091201 Firefox/3.5.6'</span>
+&nbsp;
+<span style="color: #7a0874; font-weight: bold;">cd</span> <span style="color: #000000; font-weight: bold;">/</span>home<span style="color: #000000; font-weight: bold;">/</span>zc<span style="color: #000000; font-weight: bold;">/</span>imzcstatic<span style="color: #000000; font-weight: bold;">/</span>
+<span style="color: #c20cb9; font-weight: bold;">rm</span> imzc.net <span style="color: #660033;">-rf</span>
+&nbsp;
+<span style="color: #c20cb9; font-weight: bold;">wget</span> <span style="color: #660033;">-r</span> <span style="color: #660033;">-p</span> <span style="color: #660033;">-np</span> <span style="color: #660033;">-k</span> <span style="color: #660033;">-e</span>  <span style="color: #660033;">-U</span> <span style="color: #ff0000;">&quot;<span style="color: #007800;">$ua</span>&quot;</span> <span style="color: #ff0000;">&quot;http://imzc.net&quot;</span> <span style="color: #660033;">-o</span> <span style="color: #000000; font-weight: bold;">/</span>dev<span style="color: #000000; font-weight: bold;">/</span>null <span style="color: #660033;">-P</span> <span style="color: #000000; font-weight: bold;">/</span>home<span style="color: #000000; font-weight: bold;">/</span>zc<span style="color: #000000; font-weight: bold;">/</span>imzcstatic<span style="color: #000000; font-weight: bold;">/</span>
+&nbsp;
+<span style="color: #c20cb9; font-weight: bold;">cp</span> <span style="color: #660033;">-Rf</span> imzc.net<span style="color: #000000; font-weight: bold;">/*</span> cdlz.github.com<span style="color: #000000; font-weight: bold;">/</span>
+<span style="color: #c20cb9; font-weight: bold;">rm</span> imzc.net <span style="color: #660033;">-rf</span>
+<span style="color: #7a0874; font-weight: bold;">cd</span> gitwww.github.com
+<span style="color: #c20cb9; font-weight: bold;">git</span> add .
+<span style="color: #c20cb9; font-weight: bold;">git</span> commit <span style="color: #660033;">-m</span> <span style="color: #ff0000;">&quot;imzc.net auto generate static page.&quot;</span>
+<span style="color: #c20cb9; font-weight: bold;">git</span> push origin master
+<span style="color: #7a0874; font-weight: bold;">cd</span> ..
+<span style="color: #7a0874; font-weight: bold;">echo</span> <span style="color: #ff0000;">&quot;[<span style="color: #780078;">`date`</span>]data update&quot;</span><span style="color: #000000; font-weight: bold;">&gt;&gt;</span>update.log</pre></td></tr></table></div>
+
+<blockquote><p>欢迎访问本博客的静态同步： <a href="http://devzc.com" target="_blank">http://devzc.com</a> </p></blockquote>
+]]></content:encoded>
+			<wfw:commentRss>http://imzc.net/archives/271/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
 		<item>
 		<title>linux下STAF执行失败时的处理</title>
 		<link>http://imzc.net/archives/268/</link>
@@ -864,271 +948,6 @@ word_report<span style="color:#006600; font-weight:bold;">&#40;</span>filename,p
 <p>&nbsp;</p>
 ]]></content:encoded>
 			<wfw:commentRss>http://imzc.net/archives/238/feed/</wfw:commentRss>
-		<slash:comments>0</slash:comments>
-		</item>
-		<item>
-		<title>autoit3实现命令行调用杀毒软件</title>
-		<link>http://imzc.net/archives/234/</link>
-		<comments>http://imzc.net/archives/234/#comments</comments>
-		<pubDate>Fri, 30 Mar 2012 04:31:53 +0000</pubDate>
-		<dc:creator>imzc</dc:creator>
-				<category><![CDATA[Ruby&Testing]]></category>
-
-		<guid isPermaLink="false">http://imzc.net/?p=234</guid>
-		<description><![CDATA[自动化项目需要调用杀毒软件对特定文件夹进行病毒扫描，但是大部分杀毒软件都没有提供命令行支持。因此只能从图形界面 [...]]]></description>
-			<content:encoded><![CDATA[<p>自动化项目需要调用杀毒软件对特定文件夹进行病毒扫描，但是大部分杀毒软件都没有提供命令行支持。因此只能从图形界面操作搞定。<br />
-sikuli可以实现截图方式点击，但是不太稳定，而且，对于趋势杀毒软件，只能选择到某个盘符，不能选择到具体的文件夹，故存在一定的弱点。<br />
-考虑到杀毒软件都有提供一个右键菜单，查询注册表发现是一个shellext.dll扩展，不能通过rundll32方式调用。因此可以考虑使用autoit进行操作了。重要知识点：<br />
-1.使用windows资源管理器打开特定的文件夹，且处于选中状态，explorer支持多种参数，其中select是实现本功能的参数：<br />
-RunWait(@ComSpec &amp; &#8216; /c &#8216; &amp; &#8216;explorer /select,&#8217; &amp; $DirName,&#8221;, @SW_HIDE)</p>
-<p> 2.有些时候对应的文件夹已经处于打开状态，且可能选中到其他文件夹，因此需要使用autoit3的函数，将所有文件夹取消选中。<br />
- 而特定的文件夹再设置为selected。<br />
- 3.直接通过_GUICtrlMenu_GetMenu($hWnd)函数总是失败，因此只有采取变通的手段，通过发送windows消息来获取响应的菜单句柄。<br />
- $hMenu = _SendMessage($hWnd, 0x01E1) ;0x01E1 MN_GETHMENU<br />
- 4.由于autoit3的GuiMenu.au3还未提供click对应item的功能，因此只能通过发送快捷键： {DOWN}，{ENTER}来实现选择菜单。<br />
- 5.右键菜单曾经打算使用发送WM_CONTEXTMENU消息获得，但是发现在某些机子上面又不行，<br />
- ;007B WM_CONTEXTMENU<br />
- ;_WinAPI_PostMessage($hWnd, 0x007B, 0, 0)<br />
- 所以只得采取另外的方法：SHIFT+F10，快捷键很爽啊。。。<br />
- 6._GUICtrlMenu_GetItemText($hMenu, $iItem[, $fByPos = True])函数有些时候获取不到菜单的名称（可能是程序内部处理了，如360杀毒），因此需要提供通过索引的方式点击。。。<br />
- 7.autoit3编译为exe文件，需要选取“console”（默认是GUI的），以便查看程序输出情况。<br />
-使用参数： scan &#8220;E:\待扫描文件&#8221; &#8220;使用|扫描|查杀&#8221;<br />
-           scan &#8220;E:\待扫描文件&#8221; &#8220;使用|扫描|查杀&#8221;  15 （最后一个参数是在获取不到对应菜单时，直接点击菜单项目序号，排除空白的）<br />
- 具体源码见下：</p>
-
-<div class="wp_syntax"><div class="code"><pre class="vbnet" style="font-family:monospace;">#Include &lt;GuiListView.<span style="color: #0000FF;">au3</span>&gt; 
-#include &lt;WinAPI.<span style="color: #0000FF;">au3</span>&gt;  
-#include &lt;GuiMenu.<span style="color: #0000FF;">au3</span>&gt;
-&nbsp;
-&nbsp;
-&nbsp;
-;scan.<span style="color: #0000FF;">exe</span> <span style="color: #808080;">&quot;E:\att_proj\360scan&quot;</span> <span style="color: #808080;">&quot;使用 ESET NOD32 Antivirus 扫描&quot;</span>
-&nbsp;
-$DirName <span style="color: #008000;">=</span> <span style="color: #808080;">&quot;E:\待扫描文件&quot;</span>
-$AntiVirusSoftName <span style="color: #008000;">=</span>  <span style="color: #808080;">&quot;扫描&quot;</span>
-&nbsp;
-$itemToClick <span style="color: #008000;">=</span> <span style="color: #008000;">-</span><span style="color: #FF0000;">1</span>
-&nbsp;
-<span style="color: #0600FF;">If</span> <span style="color: #FF0000;">1</span><span style="color: #008000;">=</span><span style="color: #FF0000;">1</span> <span style="color: #FF8000;">Then</span>
-&nbsp;
-&nbsp;
-<span style="color: #0600FF;">If</span> $cmdline<span style="color: #000000;">&#91;</span><span style="color: #FF0000;">0</span><span style="color: #000000;">&#93;</span> <span style="color: #008000;">=</span> <span style="color: #FF0000;">2</span> or $cmdline<span style="color: #000000;">&#91;</span><span style="color: #FF0000;">0</span><span style="color: #000000;">&#93;</span> <span style="color: #008000;">=</span> <span style="color: #FF0000;">3</span> <span style="color: #FF8000;">Then</span>
-    $DirName <span style="color: #008000;">=</span> $cmdline<span style="color: #000000;">&#91;</span><span style="color: #FF0000;">1</span><span style="color: #000000;">&#93;</span>
-  $AntiVirusSoftName <span style="color: #008000;">=</span> $cmdline<span style="color: #000000;">&#91;</span><span style="color: #FF0000;">2</span><span style="color: #000000;">&#93;</span> 
-  <span style="color: #0600FF;">If</span> $cmdline<span style="color: #000000;">&#91;</span><span style="color: #FF0000;">0</span><span style="color: #000000;">&#93;</span> <span style="color: #008000;">=</span> <span style="color: #FF0000;">3</span> <span style="color: #FF8000;">Then</span> $itemToClick <span style="color: #008000;">=</span>  $cmdline<span style="color: #000000;">&#91;</span><span style="color: #FF0000;">3</span><span style="color: #000000;">&#93;</span>
-<span style="color: #FF8000;">Else</span>     
-  ConsoleWrite<span style="color: #000000;">&#40;</span><span style="color: #008080; font-style: italic;">'Please use this program with two/three argvs, 目录名称 and 右键菜单.'&amp; @CRLF)</span>
-  ConsoleWrite<span style="color: #000000;">&#40;</span><span style="color: #008080; font-style: italic;">'Such as programName &quot;D:\appserv&quot; &quot;使用 ESET NOD32 Antivirus 扫描&quot;.' &amp; @CRLF)</span>
-  ConsoleWrite<span style="color: #000000;">&#40;</span><span style="color: #008080; font-style: italic;">'Such as programName &quot;D:\appserv&quot; &quot;使用 ESET NOD32 Antivirus 扫描&quot; itermnum(begin at zero) .' &amp; @CRLF)</span>
-  <span style="color: #0600FF;">exit</span>
-EndIf 
-&nbsp;
-<span style="color: #0600FF;">If</span> FileExists<span style="color: #000000;">&#40;</span>$DirName<span style="color: #000000;">&#41;</span><span style="color: #008000;">=</span><span style="color: #FF0000;">0</span> <span style="color: #FF8000;">Then</span>
-    ConsoleWrite<span style="color: #000000;">&#40;</span><span style="color: #008080; font-style: italic;">'DirName:'&amp;$DirName&amp;' is not exists.' &amp; @CRLF)</span>
-  <span style="color: #0600FF;">exit</span>
-EndIf
-&nbsp;
-EndIf
-&nbsp;
-ConsoleWrite<span style="color: #000000;">&#40;</span><span style="color: #008080; font-style: italic;">'$DirName:'&amp;$DirName&amp;',$AntiVirusSoftName:'&amp;$AntiVirusSoftName &amp; @CRLF)</span>
-&nbsp;
-$array <span style="color: #008000;">=</span> StringSplit<span style="color: #000000;">&#40;</span>$DirName, <span style="color: #008080; font-style: italic;">'\', 1)</span>
-$ItemName <span style="color: #008000;">=</span> $array<span style="color: #000000;">&#91;</span><span style="color: #0600FF;">UBound</span><span style="color: #000000;">&#40;</span>$array<span style="color: #000000;">&#41;</span><span style="color: #008000;">-</span><span style="color: #FF0000;">1</span><span style="color: #000000;">&#93;</span>
-ConsoleWrite<span style="color: #000000;">&#40;</span><span style="color: #008080; font-style: italic;">'$ItemName:'&amp;$ItemName&amp; @CRLF)</span>
-&nbsp;
-;close all window
-&nbsp;
-&nbsp;
-&nbsp;
-&nbsp;
-&nbsp;
-;While <span style="color: #FF0000;">1</span> ;use infinite <span style="color: #0600FF;">loop</span> since ExitLoop will <span style="color: #FF8000;">get</span> called
-;   $TITLE <span style="color: #008000;">=</span> WinGetTitle<span style="color: #000000;">&#40;</span><span style="color: #808080;">&quot;[CLASS:CabinetWClass]&quot;</span>,<span style="color: #808080;">&quot;&quot;</span><span style="color: #000000;">&#41;</span>
-;  ConsoleWrite<span style="color: #000000;">&#40;</span><span style="color: #808080;">&quot;Try to Close one control: [CLASS:CabinetWClass],title:&quot;</span><span style="color: #008000;">&amp;</span>$TITLE<span style="color: #008000;">&amp;</span> @<span style="color: #0600FF;">CRLF</span><span style="color: #000000;">&#41;</span>
-;  $hanlde <span style="color: #008000;">=</span> WinGetHandle<span style="color: #000000;">&#40;</span>$TITLE<span style="color: #000000;">&#41;</span> 
- ;   $ans <span style="color: #008000;">=</span> WinClose<span style="color: #000000;">&#40;</span>$hanlde<span style="color: #000000;">&#41;</span>  
- ;   <span style="color: #0600FF;">If</span> $ans <span style="color: #008000;">=</span> <span style="color: #FF0000;">0</span> <span style="color: #FF8000;">Then</span> ExitLoop
-;WEnd 
-&nbsp;
-RunWait<span style="color: #000000;">&#40;</span>@ComSpec <span style="color: #008000;">&amp;</span> <span style="color: #008080; font-style: italic;">' /c ' &amp; 'explorer /select,' &amp; $DirName,'', @SW_HIDE)</span>
-&nbsp;
-Opt<span style="color: #000000;">&#40;</span><span style="color: #808080;">&quot;WinTitleMatchMode&quot;</span>, <span style="color: #FF0000;">1</span><span style="color: #000000;">&#41;</span>     ;<span style="color: #FF0000;">1</span><span style="color: #008000;">=</span>start, <span style="color: #FF0000;">2</span><span style="color: #008000;">=</span>subStr, <span style="color: #FF0000;">3</span><span style="color: #008000;">=</span>exact, <span style="color: #FF0000;">4</span><span style="color: #008000;">=</span>advanced, <span style="color: #008000;">-</span><span style="color: #FF0000;">1</span> <span style="color: #FF8000;">to</span> <span style="color: #008000;">-</span><span style="color: #FF0000;">4</span><span style="color: #008000;">=</span>Nocase
-&nbsp;
-WinSetState<span style="color: #000000;">&#40;</span><span style="color: #808080;">&quot;[CLASS:CabinetWClass]&quot;</span>, <span style="color: #808080;">&quot;&quot;</span>, @SW_SHOW<span style="color: #000000;">&#41;</span>
-;WinActivate<span style="color: #000000;">&#40;</span><span style="color: #808080;">&quot;[CLASS:CabinetWClass]&quot;</span>, <span style="color: #808080;">&quot;&quot;</span><span style="color: #000000;">&#41;</span>
-&nbsp;
-;$hWnd <span style="color: #008000;">=</span> ControlGetHandle<span style="color: #000000;">&#40;</span><span style="color: #808080;">&quot;&quot;</span>,<span style="color: #808080;">&quot;FolderView&quot;</span>,<span style="color: #808080;">&quot;[CLASS:SysListView32]&quot;</span><span style="color: #000000;">&#41;</span>
-$hWnd <span style="color: #008000;">=</span> ControlGetHandle<span style="color: #000000;">&#40;</span><span style="color: #808080;">&quot;&quot;</span>,<span style="color: #808080;">&quot;FolderView&quot;</span>,<span style="color: #808080;">&quot;[CLASS:SysListView32; INSTANCE:1]&quot;</span><span style="color: #000000;">&#41;</span>
-&nbsp;
-;$pos <span style="color: #008000;">=</span> ControlGetPos<span style="color: #000000;">&#40;</span><span style="color: #808080;">&quot;&quot;</span>,<span style="color: #808080;">&quot;FolderView&quot;</span>,<span style="color: #808080;">&quot;[CLASS:SysListView32]&quot;</span><span style="color: #000000;">&#41;</span>
-;MsgBox<span style="color: #000000;">&#40;</span><span style="color: #FF0000;">0</span>, <span style="color: #808080;">&quot;Window Stats:&quot;</span>, <span style="color: #808080;">&quot;POS: &quot;</span> <span style="color: #008000;">&amp;</span> $pos<span style="color: #000000;">&#91;</span><span style="color: #FF0000;">0</span><span style="color: #000000;">&#93;</span> <span style="color: #008000;">&amp;</span> <span style="color: #808080;">&quot;,&quot;</span> <span style="color: #008000;">&amp;</span> $pos<span style="color: #000000;">&#91;</span><span style="color: #FF0000;">1</span><span style="color: #000000;">&#93;</span> <span style="color: #008000;">&amp;</span> <span style="color: #808080;">&quot; SIZE: &quot;</span> <span style="color: #008000;">&amp;</span> $pos<span style="color: #000000;">&#91;</span><span style="color: #FF0000;">2</span><span style="color: #000000;">&#93;</span> <span style="color: #008000;">&amp;</span> <span style="color: #808080;">&quot;,&quot;</span> <span style="color: #008000;">&amp;</span> $pos<span style="color: #000000;">&#91;</span><span style="color: #FF0000;">3</span><span style="color: #000000;">&#93;</span> <span style="color: #000000;">&#41;</span>
-&nbsp;
-&nbsp;
-&nbsp;
-$items  <span style="color: #008000;">=</span> _GUICtrlListView_GetItemCount<span style="color: #000000;">&#40;</span>$hWnd<span style="color: #000000;">&#41;</span>
-&nbsp;
-&nbsp;
-;ConsoleWrite<span style="color: #000000;">&#40;</span><span style="color: #808080;">&quot;Item Count: &quot;</span> <span style="color: #008000;">&amp;</span> $items <span style="color: #008000;">&amp;</span> @<span style="color: #0600FF;">CRLF</span><span style="color: #000000;">&#41;</span>
-&nbsp;
-;ConsoleWrite<span style="color: #000000;">&#40;</span><span style="color: #808080;">&quot;Item  Focused: &quot;</span> <span style="color: #008000;">&amp;</span> _GUICtrlListView_GetItemFocused<span style="color: #000000;">&#40;</span>$hWnd, <span style="color: #FF0000;">1</span><span style="color: #000000;">&#41;</span><span style="color: #000000;">&#41;</span>
-&nbsp;
-&nbsp;
-<span style="color: #FF8000;">For</span> $i <span style="color: #008000;">=</span> <span style="color: #FF0000;">0</span> <span style="color: #FF8000;">To</span> $items <span style="color: #008000;">-</span><span style="color: #FF0000;">1</span>
- $ItemText <span style="color: #008000;">=</span> _GUICtrlListView_GetItemText<span style="color: #000000;">&#40;</span>$hWnd, $i<span style="color: #000000;">&#41;</span>
- ;ConsoleWrite<span style="color: #000000;">&#40;</span>$ItemText<span style="color: #008000;">&amp;</span> @<span style="color: #0600FF;">CRLF</span><span style="color: #000000;">&#41;</span>
- _GUICtrlListView_SetItemSelected<span style="color: #000000;">&#40;</span>$hWnd,$i,<span style="color: #0600FF;">False</span><span style="color: #000000;">&#41;</span>
- Sleep<span style="color: #000000;">&#40;</span><span style="color: #FF0000;">10</span><span style="color: #000000;">&#41;</span>
- <span style="color: #0600FF;">If</span> $ItemText <span style="color: #008000;">=</span> $ItemName <span style="color: #FF8000;">Then</span>
-  $aRect <span style="color: #008000;">=</span> _GUICtrlListView_GetItemRect<span style="color: #000000;">&#40;</span>$hWnd,$i<span style="color: #000000;">&#41;</span>
-  ConsoleWrite<span style="color: #000000;">&#40;</span>StringFormat<span style="color: #000000;">&#40;</span><span style="color: #808080;">&quot;Item 2 Rectangle : [%d, %d, %d, %d]&quot;</span>, $aRect<span style="color: #000000;">&#91;</span><span style="color: #FF0000;">0</span><span style="color: #000000;">&#93;</span>, $aRect<span style="color: #000000;">&#91;</span><span style="color: #FF0000;">1</span><span style="color: #000000;">&#93;</span>, $aRect<span style="color: #000000;">&#91;</span><span style="color: #FF0000;">2</span><span style="color: #000000;">&#93;</span>, $aRect<span style="color: #000000;">&#91;</span><span style="color: #FF0000;">3</span><span style="color: #000000;">&#93;</span><span style="color: #000000;">&#41;</span><span style="color: #008000;">&amp;</span> @<span style="color: #0600FF;">CRLF</span><span style="color: #000000;">&#41;</span>
-&nbsp;
-  $aPos <span style="color: #008000;">=</span> _GUICtrlListView_GetItemPosition<span style="color: #000000;">&#40;</span>$hWnd, $i<span style="color: #000000;">&#41;</span>
-  ConsoleWrite<span style="color: #000000;">&#40;</span>StringFormat<span style="color: #000000;">&#40;</span><span style="color: #808080;">&quot;Item Position : [%d, %d]&quot;</span>, $aPos<span style="color: #000000;">&#91;</span><span style="color: #FF0000;">0</span><span style="color: #000000;">&#93;</span>, $aPos<span style="color: #000000;">&#91;</span><span style="color: #FF0000;">1</span><span style="color: #000000;">&#93;</span><span style="color: #000000;">&#41;</span><span style="color: #008000;">&amp;</span> @<span style="color: #0600FF;">CRLF</span><span style="color: #000000;">&#41;</span>
-&nbsp;
-  ;MouseMove <span style="color: #000000;">&#40;</span>$aRect<span style="color: #000000;">&#91;</span><span style="color: #FF0000;">2</span><span style="color: #000000;">&#93;</span>, $aRect<span style="color: #000000;">&#91;</span><span style="color: #FF0000;">3</span><span style="color: #000000;">&#93;</span><span style="color: #000000;">&#41;</span>
-  ;Sleep<span style="color: #000000;">&#40;</span><span style="color: #FF0000;">2000</span><span style="color: #000000;">&#41;</span>
-  ;ControlClick<span style="color: #000000;">&#40;</span><span style="color: #808080;">&quot;&quot;</span>,<span style="color: #808080;">&quot;FolderView&quot;</span>,<span style="color: #808080;">&quot;[CLASS:SysListView32]&quot;</span>,<span style="color: #808080;">&quot;right&quot;</span>,<span style="color: #FF0000;">1</span>,$aPos<span style="color: #000000;">&#91;</span><span style="color: #FF0000;">0</span><span style="color: #000000;">&#93;</span><span style="color: #008000;">+</span><span style="color: #FF0000;">20</span>,$aPos<span style="color: #000000;">&#91;</span><span style="color: #FF0000;">1</span><span style="color: #000000;">&#93;</span><span style="color: #008000;">+</span><span style="color: #FF0000;">20</span><span style="color: #000000;">&#41;</span>
-&nbsp;
-    $centerX <span style="color: #008000;">=</span> <span style="color: #000000;">&#40;</span>$aRect<span style="color: #000000;">&#91;</span><span style="color: #FF0000;">0</span><span style="color: #000000;">&#93;</span> <span style="color: #008000;">+</span> $aRect<span style="color: #000000;">&#91;</span><span style="color: #FF0000;">2</span><span style="color: #000000;">&#93;</span><span style="color: #000000;">&#41;</span><span style="color: #008000;">/</span><span style="color: #FF0000;">2</span>
-  $centerY <span style="color: #008000;">=</span> <span style="color: #000000;">&#40;</span>$aRect<span style="color: #000000;">&#91;</span><span style="color: #FF0000;">1</span><span style="color: #000000;">&#93;</span> <span style="color: #008000;">+</span> $aRect<span style="color: #000000;">&#91;</span><span style="color: #FF0000;">3</span><span style="color: #000000;">&#93;</span><span style="color: #000000;">&#41;</span><span style="color: #008000;">/</span><span style="color: #FF0000;">2</span>
-  $aPos <span style="color: #008000;">=</span> _GUICtrlListView_GetItemPosition<span style="color: #000000;">&#40;</span>$hWnd, $i<span style="color: #000000;">&#41;</span>
-  ConsoleWrite<span style="color: #000000;">&#40;</span>StringFormat<span style="color: #000000;">&#40;</span><span style="color: #808080;">&quot;Item Position : [%d, %d]&quot;</span>, $aPos<span style="color: #000000;">&#91;</span><span style="color: #FF0000;">0</span><span style="color: #000000;">&#93;</span>, $aPos<span style="color: #000000;">&#91;</span><span style="color: #FF0000;">1</span><span style="color: #000000;">&#93;</span><span style="color: #000000;">&#41;</span><span style="color: #008000;">&amp;</span> @<span style="color: #0600FF;">CRLF</span><span style="color: #000000;">&#41;</span>
-&nbsp;
-  _GUICtrlListView_SetItemSelected<span style="color: #000000;">&#40;</span>$hWnd,$i<span style="color: #000000;">&#41;</span>
-&nbsp;
-  ;MouseMove <span style="color: #000000;">&#40;</span>$aRect<span style="color: #000000;">&#91;</span><span style="color: #FF0000;">2</span><span style="color: #000000;">&#93;</span>, $aRect<span style="color: #000000;">&#91;</span><span style="color: #FF0000;">3</span><span style="color: #000000;">&#93;</span><span style="color: #000000;">&#41;</span>
-  ;Sleep<span style="color: #000000;">&#40;</span><span style="color: #FF0000;">2000</span><span style="color: #000000;">&#41;</span>
-  ;ControlClick<span style="color: #000000;">&#40;</span><span style="color: #808080;">&quot;&quot;</span>,<span style="color: #808080;">&quot;FolderView&quot;</span>,<span style="color: #808080;">&quot;[CLASS:SysListView32]&quot;</span>,<span style="color: #808080;">&quot;right&quot;</span>,<span style="color: #FF0000;">1</span>,$centerX,$centerY<span style="color: #000000;">&#41;</span>
-&nbsp;
-  ;ExitLoop 
- EndIf
-&nbsp;
-<span style="color: #FF8000;">Next</span>
-&nbsp;
-&nbsp;
-&nbsp;
-;MsgBox<span style="color: #000000;">&#40;</span><span style="color: #FF0000;">0</span>, <span style="color: #808080;">&quot;HWnd:t,c&quot;</span>, $hWndf <span style="color: #008000;">&amp;</span><span style="color: #808080;">&quot;,&quot;</span><span style="color: #008000;">&amp;</span>$hWnd<span style="color: #000000;">&#41;</span>
-;007B WM_CONTEXTMENU
-;0x001611DA
-;_WinAPI_PostMessage<span style="color: #000000;">&#40;</span>$hWnd, 0x007B, 0x001611da,0x00d30342<span style="color: #000000;">&#41;</span>
-&nbsp;
-;_WinAPI_PostMessage<span style="color: #000000;">&#40;</span>$hWnd, 0x007B, <span style="color: #FF0000;">0</span>, <span style="color: #FF0000;">0</span><span style="color: #000000;">&#41;</span>;<span style="color: #FF0000;">100</span>,<span style="color: #FF0000;">100</span><span style="color: #000000;">&#41;</span>
-&nbsp;
-Opt<span style="color: #000000;">&#40;</span><span style="color: #008080; font-style: italic;">'WinSearchChildren', 1)</span>
-&nbsp;
-HotKeySet<span style="color: #000000;">&#40;</span><span style="color: #008080; font-style: italic;">'{ESC}', '_EXIT')</span>
-OnAutoItExitRegister<span style="color: #000000;">&#40;</span><span style="color: #008080; font-style: italic;">'OnAutoItExit')</span>
-&nbsp;
-Global <span style="color: #0600FF;">Const</span> $MN_GETHMENU <span style="color: #008000;">=</span> 0x01E1
-Global <span style="color: #0600FF;">Const</span> $EVENT_SYSTEM_MENUPOPUPSTART <span style="color: #008000;">=</span> 0x0006
-Global <span style="color: #0600FF;">Const</span> $EVENT_SYSTEM_MENUPOPUPEND <span style="color: #008000;">=</span> 0x0007  
-Global $hFunc, $pFunc
-Global $hWinHook
-&nbsp;
-$hFunc <span style="color: #008000;">=</span> DllCallbackRegister<span style="color: #000000;">&#40;</span><span style="color: #008080; font-style: italic;">'_WinEventProc', 'none', 'ptr;uint;hwnd;int;int;uint;uint')</span>
-$pFunc <span style="color: #008000;">=</span> DllCallbackGetPtr<span style="color: #000000;">&#40;</span>$hFunc<span style="color: #000000;">&#41;</span>
-$hWinHook <span style="color: #008000;">=</span> _SetWinEventHook<span style="color: #000000;">&#40;</span>0x00000001, 0x7FFFFFFF, <span style="color: #FF0000;">0</span>, $pFunc, <span style="color: #FF0000;">0</span>, <span style="color: #FF0000;">0</span>,<span style="color: #804040;">BitOR</span><span style="color: #000000;">&#40;</span>0x0002, 0x0000<span style="color: #000000;">&#41;</span><span style="color: #000000;">&#41;</span>
-&nbsp;
-&nbsp;
- Send<span style="color: #000000;">&#40;</span><span style="color: #808080;">&quot;+{F10}&quot;</span><span style="color: #000000;">&#41;</span> ;弹出右键菜单
-&nbsp;
-&nbsp;
-&nbsp;
-<span style="color: #0600FF;">While</span> <span style="color: #FF0000;">1</span>
-        Sleep<span style="color: #000000;">&#40;</span><span style="color: #FF0000;">20</span><span style="color: #000000;">&#41;</span>
-<span style="color: #0600FF;">WEnd</span>
-&nbsp;
-<span style="color: #FF8000;">Func</span> _EXIT<span style="color: #000000;">&#40;</span><span style="color: #000000;">&#41;</span>
-        <span style="color: #0600FF;">Exit</span>
-EndFunc   ;<span style="color: #008000;">==</span>&gt;_EXIT
-&nbsp;
-<span style="color: #FF8000;">Func</span> OnAutoItExit<span style="color: #000000;">&#40;</span><span style="color: #000000;">&#41;</span>
-        _UnhookWinEvent<span style="color: #000000;">&#40;</span>$hWinHook<span style="color: #000000;">&#41;</span>
-        DllCallbackFree<span style="color: #000000;">&#40;</span>$hFunc<span style="color: #000000;">&#41;</span>
-EndFunc   ;<span style="color: #008000;">==</span>&gt;OnAutoItExit
-&nbsp;
-<span style="color: #FF8000;">Func</span> _WinEventProc<span style="color: #000000;">&#40;</span>$hHook, $iEvent, $hWnd, $iObjectID, $iChildID, $iEventThread, $imsEventTime<span style="color: #000000;">&#41;</span>
-        Local $hMenu
-&nbsp;
-      <span style="color: #0600FF;">If</span> $iEvent <span style="color: #008000;">=</span> $EVENT_SYSTEM_MENUPOPUPSTART  <span style="color: #FF8000;">Then</span>
-                $hMenu <span style="color: #008000;">=</span> _SendMessage<span style="color: #000000;">&#40;</span>$hWnd, 0x01E1<span style="color: #000000;">&#41;</span> ;0x01E1 MN_GETHMENU 
-                <span style="color: #0600FF;">If</span> _GUICtrlMenu_IsMenu<span style="color: #000000;">&#40;</span>$hMenu<span style="color: #000000;">&#41;</span> <span style="color: #FF8000;">Then</span>
-&nbsp;
-            <span style="color: #0600FF;">If</span> $itemToClick &lt;&gt; <span style="color: #008000;">-</span><span style="color: #FF0000;">1</span> <span style="color: #FF8000;">Then</span>
-&nbsp;
-              ConsoleWrite<span style="color: #000000;">&#40;</span><span style="color: #808080;">&quot;Click menu item direct.&quot;</span><span style="color: #008000;">&amp;</span> @<span style="color: #0600FF;">CRLF</span><span style="color: #000000;">&#41;</span>; 
-               <span style="color: #FF8000;">For</span> $i <span style="color: #008000;">=</span> <span style="color: #FF0000;">0</span> <span style="color: #FF8000;">To</span> _GUICtrlMenu_GetItemCount<span style="color: #000000;">&#40;</span>$hMenu<span style="color: #000000;">&#41;</span> <span style="color: #008000;">-</span> <span style="color: #FF0000;">1</span>
-                Send <span style="color: #000000;">&#40;</span><span style="color: #808080;">&quot;{DOWN}&quot;</span><span style="color: #000000;">&#41;</span> 
-                <span style="color: #0600FF;">If</span> $itemToClick <span style="color: #008000;">=</span> $i <span style="color: #FF8000;">Then</span>
-                  ConsoleWrite<span style="color: #000000;">&#40;</span><span style="color: #808080;">&quot;Click menu item :&quot;</span> <span style="color: #008000;">&amp;</span>$itemToClick<span style="color: #008000;">&amp;</span> @<span style="color: #0600FF;">CRLF</span><span style="color: #000000;">&#41;</span>;  
-                  Sleep<span style="color: #000000;">&#40;</span><span style="color: #FF0000;">1000</span><span style="color: #000000;">&#41;</span>
-                  Send <span style="color: #000000;">&#40;</span><span style="color: #808080;">&quot;{ENTER}&quot;</span><span style="color: #000000;">&#41;</span> 
-                  ExitLoop
-                  EndIf
-&nbsp;
-              <span style="color: #FF8000;">Next</span> 
-              <span style="color: #0600FF;">Exit</span><span style="color: #000000;">&#40;</span><span style="color: #FF0000;">0</span><span style="color: #000000;">&#41;</span>
-            <span style="color: #FF8000;">Else</span> 
-              $i<span style="color: #008000;">=</span><span style="color: #FF0000;">0</span>
-              <span style="color: #FF8000;">For</span> $i <span style="color: #008000;">=</span> <span style="color: #FF0000;">0</span> <span style="color: #FF8000;">To</span> _GUICtrlMenu_GetItemCount<span style="color: #000000;">&#40;</span>$hMenu<span style="color: #000000;">&#41;</span> <span style="color: #008000;">-</span> <span style="color: #FF0000;">1</span>
-&nbsp;
-                  Sleep<span style="color: #000000;">&#40;</span><span style="color: #FF0000;">10</span><span style="color: #000000;">&#41;</span>  
-                  Local $sItemText <span style="color: #008000;">=</span> _GUICtrlMenu_GetItemText<span style="color: #000000;">&#40;</span>$hMenu, $i<span style="color: #000000;">&#41;</span>
-&nbsp;
-                  ConsoleWrite<span style="color: #000000;">&#40;</span>$sItemText<span style="color: #008000;">&amp;</span><span style="color: #808080;">&quot;,item index:&quot;</span><span style="color: #008000;">&amp;</span>$i <span style="color: #008000;">&amp;</span> @<span style="color: #0600FF;">CRLF</span><span style="color: #000000;">&#41;</span>; 
-&nbsp;
-                  <span style="color: #0600FF;">If</span> $sItemText <span style="color: #008000;">=</span> <span style="color: #008080; font-style: italic;">'' Then ContinueLoop    </span>
-&nbsp;
-                  Send <span style="color: #000000;">&#40;</span><span style="color: #808080;">&quot;{DOWN}&quot;</span><span style="color: #000000;">&#41;</span>
-                  ;If StringInStr<span style="color: #000000;">&#40;</span>$sItemText,$AntiVirusSoftName<span style="color: #000000;">&#41;</span> &lt;&gt; <span style="color: #FF0000;">0</span> <span style="color: #FF8000;">Then</span>
-                  <span style="color: #0600FF;">If</span> StringRegExp <span style="color: #000000;">&#40;</span>$sItemText,$AntiVirusSoftName,<span style="color: #FF0000;">0</span><span style="color: #000000;">&#41;</span> <span style="color: #008000;">=</span><span style="color: #FF0000;">1</span> <span style="color: #FF8000;">Then</span>
-                    ConsoleWrite<span style="color: #000000;">&#40;</span><span style="color: #808080;">&quot;StringRegExp match,item index:&quot;</span><span style="color: #008000;">&amp;</span>$i <span style="color: #008000;">&amp;</span> @<span style="color: #0600FF;">CRLF</span><span style="color: #000000;">&#41;</span>; 
-                    ;MsgBox<span style="color: #000000;">&#40;</span><span style="color: #FF0000;">0</span>, <span style="color: #808080;">&quot;HWnd&quot;</span>, <span style="color: #808080;">&quot;nod32&quot;</span><span style="color: #000000;">&#41;</span>
-                    ;$subviewid <span style="color: #008000;">=</span> _GUICtrlMenu_GetItemID<span style="color: #000000;">&#40;</span>$hMenu, $i<span style="color: #000000;">&#41;</span>
-                    ;_GUICtrlMenu_SetItemState<span style="color: #000000;">&#40;</span>$hMenu, $i, $MFS_CHECKED,<span style="color: #0600FF;">True</span><span style="color: #000000;">&#41;</span>
-                    ;_GUICtrlMenu_SetItemDisabled<span style="color: #000000;">&#40;</span>$hMenu, $i<span style="color: #000000;">&#41;</span>
-                    ;Send <span style="color: #000000;">&#40;</span><span style="color: #808080;">&quot;{ENTER}&quot;</span><span style="color: #000000;">&#41;</span> 
-                    Sleep<span style="color: #000000;">&#40;</span><span style="color: #FF0000;">1000</span><span style="color: #000000;">&#41;</span>
-                    Send <span style="color: #000000;">&#40;</span><span style="color: #808080;">&quot;{ENTER}&quot;</span><span style="color: #000000;">&#41;</span>
-                    ;ControlClick<span style="color: #000000;">&#40;</span><span style="color: #808080;">&quot;&quot;</span>, <span style="color: #808080;">&quot;&quot;</span>,$subviewid ,<span style="color: #808080;">&quot;left&quot;</span><span style="color: #000000;">&#41;</span> 
-                    ExitLoop
-                  EndIf
-&nbsp;
-              <span style="color: #FF8000;">Next</span> 
-               <span style="color: #0600FF;">If</span> $i <span style="color: #008000;">=</span> <span style="color: #000000;">&#40;</span>_GUICtrlMenu_GetItemCount<span style="color: #000000;">&#40;</span>$hMenu<span style="color: #000000;">&#41;</span> <span style="color: #008000;">-</span> <span style="color: #FF0000;">1</span><span style="color: #000000;">&#41;</span> <span style="color: #FF8000;">Then</span> ConsoleWrite<span style="color: #000000;">&#40;</span><span style="color: #808080;">&quot;Not found,then click the first null menu.&quot;</span> <span style="color: #008000;">&amp;</span> @<span style="color: #0600FF;">CRLF</span><span style="color: #000000;">&#41;</span> 
-            EndIf
-          <span style="color: #0600FF;">Exit</span><span style="color: #000000;">&#40;</span><span style="color: #FF0000;">0</span><span style="color: #000000;">&#41;</span>
-          EndIf
-&nbsp;
-                ConsoleWrite<span style="color: #000000;">&#40;</span><span style="color: #808080;">&quot;Not Menu hwnd.&quot;</span>@<span style="color: #0600FF;">CRLF</span><span style="color: #000000;">&#41;</span>
-      EndIf
-&nbsp;
-&nbsp;
-&nbsp;
-&nbsp;
-EndFunc   ;<span style="color: #008000;">==</span>&gt;_WinEventProc
-&nbsp;
-<span style="color: #FF8000;">Func</span> _SetWinEventHook<span style="color: #000000;">&#40;</span>$ieventMin, $ieventMax, $hMod, $pCallback, $iProcID, $iThreadID, $iFlags<span style="color: #000000;">&#41;</span>
-        Local $aRet
-&nbsp;
-        $aRet <span style="color: #008000;">=</span> DllCall<span style="color: #000000;">&#40;</span><span style="color: #008080; font-style: italic;">'user32.dll', 'ptr', 'SetWinEventHook', 'uint', $ieventMin, 'uint', $ieventMax, _</span>
-                        <span style="color: #008080; font-style: italic;">'hwnd', $hMod, 'ptr', $pCallback, 'dword', $iProcID, 'dword', $iThreadID, 'uint', $iFlags)</span>
-&nbsp;
-        <span style="color: #0600FF;">If</span> @<span style="color: #FF8000;">error</span> Or $aRet<span style="color: #000000;">&#91;</span><span style="color: #FF0000;">0</span><span style="color: #000000;">&#93;</span> <span style="color: #008000;">=</span> <span style="color: #FF0000;">0</span> <span style="color: #FF8000;">Then</span> <span style="color: #FF8000;">Return</span> SetError<span style="color: #000000;">&#40;</span><span style="color: #FF0000;">1</span>, <span style="color: #FF0000;">0</span>, <span style="color: #FF0000;">0</span><span style="color: #000000;">&#41;</span>
-        <span style="color: #FF8000;">Return</span> $aRet<span style="color: #000000;">&#91;</span><span style="color: #FF0000;">0</span><span style="color: #000000;">&#93;</span>
-EndFunc   ;<span style="color: #008000;">==</span>&gt;_SetWinEventHook
-&nbsp;
-<span style="color: #FF8000;">Func</span> _UnhookWinEvent<span style="color: #000000;">&#40;</span>$hWinEventHook<span style="color: #000000;">&#41;</span>
-        Local $aRet
-&nbsp;
-        $aRet <span style="color: #008000;">=</span> DllCall<span style="color: #000000;">&#40;</span><span style="color: #008080; font-style: italic;">'user32.dll', 'int', 'UnhookWinEvent', 'ptr', $hWinEventHook)</span>
-        <span style="color: #0600FF;">If</span> @<span style="color: #FF8000;">error</span> Or $aRet<span style="color: #000000;">&#91;</span><span style="color: #FF0000;">0</span><span style="color: #000000;">&#93;</span> <span style="color: #008000;">=</span> <span style="color: #FF0000;">0</span> <span style="color: #FF8000;">Then</span> <span style="color: #FF8000;">Return</span> SetError<span style="color: #000000;">&#40;</span><span style="color: #FF0000;">1</span>, <span style="color: #FF0000;">0</span>, <span style="color: #FF0000;">0</span><span style="color: #000000;">&#41;</span>
-        <span style="color: #FF8000;">Return</span> $aRet<span style="color: #000000;">&#91;</span><span style="color: #FF0000;">0</span><span style="color: #000000;">&#93;</span>
-EndFunc   ;<span style="color: #008000;">==</span>&gt;_UnhookWinEvent</pre></div></div>
-
-<p>附件下载：<a href='http://imzc.net/wp-content/uploads/2012/03/scan_menu.rar'>scan_menu</a></p>
-]]></content:encoded>
-			<wfw:commentRss>http://imzc.net/archives/234/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 	</channel>

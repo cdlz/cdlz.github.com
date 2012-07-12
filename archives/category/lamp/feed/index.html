@@ -13,11 +13,95 @@
 	<atom:link href="http://imzc.net/archives/category/lamp/feed/" rel="self" type="application/rss+xml" />
 	<link>http://imzc.net</link>
 	<description>-More Thinking,And Then Just do it~~~</description>
-	<lastBuildDate>Thu, 12 Jul 2012 16:18:11 +0000</lastBuildDate>
+	<lastBuildDate>Thu, 12 Jul 2012 17:15:18 +0000</lastBuildDate>
 	<language>zh-CN</language>
 	<sy:updatePeriod>hourly</sy:updatePeriod>
 	<sy:updateFrequency>1</sy:updateFrequency>
 	<generator>http://wordpress.org/?v=3.4.1</generator>
+		<item>
+		<title>镜像网站为静态页面到github中</title>
+		<link>http://imzc.net/archives/271/</link>
+		<comments>http://imzc.net/archives/271/#comments</comments>
+		<pubDate>Thu, 12 Jul 2012 17:04:41 +0000</pubDate>
+		<dc:creator>imzc</dc:creator>
+				<category><![CDATA[LAMP]]></category>
+
+		<guid isPermaLink="false">http://imzc.net/?p=271</guid>
+		<description><![CDATA[之前看到太多网站数据损坏的例子了，最近使用github较多，刚好提供了免费的静态网页存放的地方，因此通过一系列 [...]]]></description>
+			<content:encoded><![CDATA[<p>之前看到太多网站数据损坏的例子了，最近使用github较多，刚好提供了免费的静态网页存放的地方，因此通过一系列命令来实现本博客静态化，并自动转移到github中。</p>
+<p>需要准备的有：</p>
+<blockquote><p>
+1.github账户名一个，假定为 gitwww<br />
+2.自己空闲的域名（如果不需要独立域名，可不需要）；<br />
+3.前提： 能登陆博客空间的ssh。vps是一个比较好的解决方法。
+</p></blockquote>
+<p>第一步：  gitwww登陆到github，创建仓库： gitwww.github.com （系统对此&#8221;自己账号名称.github.com&#8221;仓库有特殊处理）；创建成功后，进入该仓库管理页面，点击右上方的【Admin】按钮，保证下述选项为选中状态：</p>
+<p><a href="http://imzc.net/wp-content/uploads/2012/07/github.jpg"><img class="aligncenter size-medium wp-image-272" title="github" src="http://imzc.net/wp-content/uploads/2012/07/github-300x103.jpg" alt="" width="300" height="103" /></a></p>
+<p>第二步：登陆博客SSH，按照github的提示，创建ssh key。保证git能不需要密码登陆成功。</p>
+<p>第三步：初始化github静态博客；</p>
+
+<div class="wp_syntax"><table><tr><td class="line_numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">git</span> clone <span style="color: #c20cb9; font-weight: bold;">git</span><span style="color: #000000; font-weight: bold;">@</span>github.com:gitwww<span style="color: #000000; font-weight: bold;">/</span>gitwww.github.com.git
+<span style="color: #7a0874; font-weight: bold;">cd</span> gitwww.github.com
+<span style="color: #c20cb9; font-weight: bold;">cat</span> <span style="color: #ff0000;">&quot;my blog index&quot;</span> <span style="color: #000000; font-weight: bold;">&gt;</span> index.html
+<span style="color: #7a0874; font-weight: bold;">echo</span> <span style="color: #ff0000;">&quot;www.devzc.com&quot;</span> <span style="color: #000000; font-weight: bold;">&gt;</span> CNAME  <span style="color: #666666; font-style: italic;">#如果需要独立域名，则加上此行</span>
+<span style="color: #c20cb9; font-weight: bold;">git</span> add .
+<span style="color: #c20cb9; font-weight: bold;">git</span> commit <span style="color: #660033;">-m</span> <span style="color: #ff0000;">&quot;blog init&quot;</span>
+<span style="color: #c20cb9; font-weight: bold;">git</span> remote add origin https:<span style="color: #000000; font-weight: bold;">//</span>github.com<span style="color: #000000; font-weight: bold;">/</span>gitwww<span style="color: #000000; font-weight: bold;">/</span>gitwww.github.com.git
+<span style="color: #c20cb9; font-weight: bold;">git</span> push <span style="color: #660033;">-u</span> origin master</pre></td></tr></table></div>
+
+<p>保证代码提交完成,注意：每次提交代码后，页面显示会有一定的延迟。<br />
+第四步，修改你域名的解析:<br />
+devzc.com 的A记录到 204.232.175.78 （http://gitwww.github.com的IP）；<br />
+CNAME记录到gitwww.github.com</p>
+<p>第五步，整站下载并更新到github上：<br />
+工具借助wget就行了。</p>
+
+<div class="wp_syntax"><table><tr><td class="line_numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre></td><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #666666; font-style: italic;">#!/bin/bash</span>
+<span style="color: #007800;">ua</span>=<span style="color: #ff0000;">'Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.1.6) Gecko/20091201 Firefox/3.5.6'</span>
+&nbsp;
+<span style="color: #7a0874; font-weight: bold;">cd</span> <span style="color: #000000; font-weight: bold;">/</span>home<span style="color: #000000; font-weight: bold;">/</span>zc<span style="color: #000000; font-weight: bold;">/</span>imzcstatic<span style="color: #000000; font-weight: bold;">/</span>
+<span style="color: #c20cb9; font-weight: bold;">rm</span> imzc.net <span style="color: #660033;">-rf</span>
+&nbsp;
+<span style="color: #c20cb9; font-weight: bold;">wget</span> <span style="color: #660033;">-r</span> <span style="color: #660033;">-p</span> <span style="color: #660033;">-np</span> <span style="color: #660033;">-k</span> <span style="color: #660033;">-e</span>  <span style="color: #660033;">-U</span> <span style="color: #ff0000;">&quot;<span style="color: #007800;">$ua</span>&quot;</span> <span style="color: #ff0000;">&quot;http://imzc.net&quot;</span> <span style="color: #660033;">-o</span> <span style="color: #000000; font-weight: bold;">/</span>dev<span style="color: #000000; font-weight: bold;">/</span>null <span style="color: #660033;">-P</span> <span style="color: #000000; font-weight: bold;">/</span>home<span style="color: #000000; font-weight: bold;">/</span>zc<span style="color: #000000; font-weight: bold;">/</span>imzcstatic<span style="color: #000000; font-weight: bold;">/</span>
+&nbsp;
+<span style="color: #c20cb9; font-weight: bold;">cp</span> <span style="color: #660033;">-Rf</span> imzc.net<span style="color: #000000; font-weight: bold;">/*</span> cdlz.github.com<span style="color: #000000; font-weight: bold;">/</span>
+<span style="color: #c20cb9; font-weight: bold;">rm</span> imzc.net <span style="color: #660033;">-rf</span>
+<span style="color: #7a0874; font-weight: bold;">cd</span> gitwww.github.com
+<span style="color: #c20cb9; font-weight: bold;">git</span> add .
+<span style="color: #c20cb9; font-weight: bold;">git</span> commit <span style="color: #660033;">-m</span> <span style="color: #ff0000;">&quot;imzc.net auto generate static page.&quot;</span>
+<span style="color: #c20cb9; font-weight: bold;">git</span> push origin master
+<span style="color: #7a0874; font-weight: bold;">cd</span> ..
+<span style="color: #7a0874; font-weight: bold;">echo</span> <span style="color: #ff0000;">&quot;[<span style="color: #780078;">`date`</span>]data update&quot;</span><span style="color: #000000; font-weight: bold;">&gt;&gt;</span>update.log</pre></td></tr></table></div>
+
+<blockquote><p>欢迎访问本博客的静态同步： <a href="http://devzc.com" target="_blank">http://devzc.com</a> </p></blockquote>
+]]></content:encoded>
+			<wfw:commentRss>http://imzc.net/archives/271/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
 		<item>
 		<title>Javascript事件捕获利器-chrome开发人员工具</title>
 		<link>http://imzc.net/archives/203/</link>
@@ -1445,40 +1529,6 @@ IP：mail.qq.com</p>
 ]]></content:encoded>
 			<wfw:commentRss>http://imzc.net/archives/54/feed/</wfw:commentRss>
 		<slash:comments>279</slash:comments>
-		</item>
-		<item>
-		<title>php.ini和mysql中比较重要的几处设置</title>
-		<link>http://imzc.net/archives/69/</link>
-		<comments>http://imzc.net/archives/69/#comments</comments>
-		<pubDate>Sun, 30 Aug 2009 23:12:00 +0000</pubDate>
-		<dc:creator>imzc</dc:creator>
-				<category><![CDATA[LAMP]]></category>
-
-		<guid isPermaLink="false">http://imzc.net/?action=show&#038;id=103</guid>
-		<description><![CDATA[php.ini配置: #程序运行目录 open_basedir =&#8221;D:\www;.&#8221; [...]]]></description>
-			<content:encoded><![CDATA[<p>php.ini配置:<br />
-#程序运行目录<br />
-open_basedir =&#8221;D:\www;.&#8221;<br />
-#禁止函数<br />
-disable_functions = exec,system,popen,chroot,escapeshellarg,shell_exec,passthru,proc_open,proc_get_status<br />
-#禁止类<br />
-disable_classes = COM<br />
-#禁止全局变量(非global那种)<br />
-register_globals = Off<br />
-#禁止动态加载DLL<br />
-enable_dl = Off</p>
-<p>#顺便附上zend_debugger的配置:<br />
-zend_extension_ts=D:/WebServ/php5/ZendDebugger/ZendDebugger.dll<br />
-zend_debugger.allow_hosts=127.0.0.1/32,192.168.1.88/24<br />
-zend_debugger.expose_remotely=always</p>
-<p>mysql:<br />
-对每个用户最小权限,绝对不允许提供File权限.<br />
-网站连接数据库不使用root.</p>
-<p>若能限制mysql/Apache运行权限,先限制其权限;<br />
-在windows下,给cmd.exe加上密码;﻿</p>
-]]></content:encoded>
-			<wfw:commentRss>http://imzc.net/archives/69/feed/</wfw:commentRss>
-		<slash:comments>0</slash:comments>
 		</item>
 	</channel>
 </rss>

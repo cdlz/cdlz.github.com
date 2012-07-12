@@ -14,7 +14,7 @@ var live_blogging = {"ajaxurl":"http:\/\/imzc.net\/wp-admin\/admin-ajax.php","up
 /* ]]> */
 </script>
 <script type='text/javascript' src='wp-content/plugins/live-blogging/live-blogging.js?ver=3.4.1'></script>
-<script type="text/javascript" src="wp-content/plugins/si-captcha-for-wordpress/captcha/si_captcha.js?ver=1342111187"></script>
+<script type="text/javascript" src="wp-content/plugins/si-captcha-for-wordpress/captcha/si_captcha.js?ver=1342113441"></script>
 <!-- begin SI CAPTCHA Anti-Spam - login/register form style -->
 <style type="text/css">
 div#captchaImgDiv { display:block; }
@@ -42,7 +42,7 @@ input#captcha_code { width:65px; }
 		<label for="user_pass">密码<br />
 		<input type="password" name="pwd" id="user_pass" class="input" value="" size="20" tabindex="20" /></label>
 	</p>
-<p class="cptch_block"><br />    OATH_OTP(187):<input type="text" name="cptch_number" tabindex="30" value="" maxlength="10" size="1" style="width:100px;margin-bottom:0;display:inline;" /><br />	<input type="hidden" name="cptch_result" value=" " /><input type="hidden" value="Version: 0.0.1" />
+<p class="cptch_block"><br />    OATH_OTP(441):<input type="text" name="cptch_number" tabindex="30" value="" maxlength="10" size="1" style="width:100px;margin-bottom:0;display:inline;" /><br />	<input type="hidden" name="cptch_result" value=" " /><input type="hidden" value="Version: 0.0.1" />
 	 
 </p>
 	<br />	<p class="forgetmenot"><label for="rememberme"><input name="rememberme" type="checkbox" id="rememberme" value="forever" tabindex="90" /> 记住我的登录信息</label></p>
