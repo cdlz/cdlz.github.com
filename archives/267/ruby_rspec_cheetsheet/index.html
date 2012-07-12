@@ -1,0 +1,763 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head profile="http://gmpg.org/xfn/11">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+
+	<title>ruby Rspec测试框架cheetsheet | Only For Sunshine~</title>
+	<link rel="alternate" type="application/rss+xml" title="RSS 2.0 - 所有文章" href="http://imzc.net/feed/" />
+	<link rel="alternate" type="application/rss+xml" title="RSS 2.0 - 所有评论" href="http://imzc.net/comments/feed/" />
+	<link rel="pingback" href="http://imzc.net/xmlrpc.php" />
+
+	<!-- style START -->
+	<link rel="stylesheet" href="http://imzc.net/wp-content/themes/elegant-box/style.css" type="text/css" media="screen" />
+			<link rel="stylesheet" href="http://imzc.net/wp-content/themes/elegant-box/chinese.css" type="text/css" media="screen" />
+		<!--[if IE]>
+		<link rel="stylesheet" href="http://imzc.net/wp-content/themes/elegant-box/ie.css" type="text/css" media="screen" />
+	<![endif]-->
+
+	<!-- default style -->
+			<link rel="stylesheet" href="http://imzc.net/wp-content/themes/elegant-box/styles/blue/default.css" type="text/css" media="screen" title="blue" />
+		<link rel="stylesheet" href="http://imzc.net/wp-content/themes/elegant-box/styles/blue/global.css" type="text/css" media="screen" />
+	
+	<!-- others styles -->
+	<link rel="stylesheet" href="http://imzc.net/wp-content/themes/elegant-box/styles/green/default.css" type="text/css" media="screen" title="green" />
+	<link rel="stylesheet" href="http://imzc.net/wp-content/themes/elegant-box/styles/green/global.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="http://imzc.net/wp-content/themes/elegant-box/styles/purple/default.css" type="text/css" media="screen" title="purple" />
+	<link rel="stylesheet" href="http://imzc.net/wp-content/themes/elegant-box/styles/purple/global.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="http://imzc.net/wp-content/themes/elegant-box/styles/brown/default.css" type="text/css" media="screen" title="brown" />
+	<link rel="stylesheet" href="http://imzc.net/wp-content/themes/elegant-box/styles/brown/global.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="http://imzc.net/wp-content/themes/elegant-box/styles/white/default.css" type="text/css" media="screen" title="white" />
+	<link rel="stylesheet" href="http://imzc.net/wp-content/themes/elegant-box/styles/white/global.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="http://imzc.net/wp-content/themes/elegant-box/styles/black/default.css" type="text/css" media="screen" title="black" />
+	<link rel="stylesheet" href="http://imzc.net/wp-content/themes/elegant-box/styles/black/global.css" type="text/css" media="screen" />
+	<!-- style END -->
+
+	<!-- javascript START -->
+			<script type="text/javascript" src="http://imzc.net/wp-content/themes/elegant-box/js/styleswitcher.js"></script>
+		<script type="text/javascript" src="http://imzc.net/wp-content/themes/elegant-box/js/base.js"></script>
+	<script type="text/javascript" src="http://imzc.net/wp-content/themes/elegant-box/js/menu.js"></script>
+	<!-- javascript END -->
+
+		<link rel="alternate" type="application/rss+xml" title="Only For Sunshine~ &raquo; ruby Rspec测试框架cheetsheet 评论 Feed" href="http://imzc.net/archives/267/ruby_rspec_cheetsheet/feed/" />
+<link rel='stylesheet' id='jquery.slimbox-css'  href='http://imzc.net/wp-content/plugins/slimbox/stylesheets/jquery.slimbox.css?ver=2.03' type='text/css' media='all' />
+<link rel='stylesheet' id='wp-pagenavi-css'  href='http://imzc.net/wp-content/themes/elegant-box/pagenavi-css.css?ver=2.70' type='text/css' media='all' />
+<script type='text/javascript' src='http://imzc.net/wp-includes/js/jquery/jquery.js?ver=1.7.2'></script>
+<script type='text/javascript' src='http://imzc.net/wp-content/plugins/slimbox/javascript/jquery.slimbox.js?ver=2.03'></script>
+<script type='text/javascript' src='http://imzc.net/wp-includes/js/json2.js?ver=2011-02-23'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var live_blogging = {"ajaxurl":"http:\/\/imzc.net\/wp-admin\/admin-ajax.php","update_effect":"top"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://imzc.net/wp-content/plugins/live-blogging/live-blogging.js?ver=3.4.1'></script>
+<script type='text/javascript' src='http://imzc.net/wp-includes/js/comment-reply.js?ver=3.4.1'></script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://imzc.net/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://imzc.net/wp-includes/wlwmanifest.xml" /> 
+<link rel='prev' title='六月随笔' href='http://imzc.net/archives/265/june_essay/' />
+<link rel='next' title='linux下STAF执行失败时的处理' href='http://imzc.net/archives/268/linux_staf_libstaf_error/' />
+<meta name="generator" content="WordPress 3.4.1" />
+<link rel='shortlink' href='http://wp.me/p19waf-4j' />
+
+<!-- All in One SEO Pack 1.6.14.5 by Michael Torbert of Semper Fi Web Design[343,409] -->
+<meta name="description" content="ruby Rspec测试框架cheetsheet" />
+<meta name="keywords" content="ruby,rspec" />
+<link rel="canonical" href="http://imzc.net/archives/267/ruby_rspec_cheetsheet/" />
+<!-- /all in one seo pack -->
+<script type="text/javascript">
+	jQuery(document).ready(function($){	
+	    var select = $('a[href$=".bmp"],a[href$=".gif"],a[href$=".jpg"],a[href$=".jpeg"], a[href$=".png"],a[href$=".BMP"],a[href$=".GIF"],a[href$=".JPG"],a[href$=".JPEG"],a[href$=".PNG"]');
+		select.slimbox();
+	});
+</script>
+
+<link rel="stylesheet" href="http://imzc.net/wp-content/themes/elegant-box/wp-syntax.css" type="text/css" media="screen" />
+</head>
+
+
+<body>
+	<!-- header START -->
+	<div id="header">
+		<div class="inner">
+			<div class="content">
+				<div class="caption">
+					<h1 id="title"><a href="http://imzc.net/" title="-More Thinking,And Then Just do it~~~">Only For Sunshine~</a></h1>
+					<div id="tagline">-More Thinking,And Then Just do it~~~</div>
+				</div>
+
+				<!-- search box -->
+									<form action="http://www.google.com/cse" id="search_box" method="get">
+						<div id="searchbox">
+							<input type="text" id="searchtxt" class="textfield" name="q" size="24" />
+							<input type="hidden" name="cx" value="007838838681523399853:u4canb53vle" />
+							<input type="hidden" name="ie" value="UTF-8" />
+						</div>
+					</form>
+				<script type="text/javascript">
+//<![CDATA[
+	var searchbox = document.getElementById("searchbox");
+	var searchtxt = document.getElementById("searchtxt");
+	var tiptext = "请输入关键字...";
+	if(searchtxt.value == "" || searchtxt.value == tiptext) {
+		searchtxt.className += " searchtip";
+		searchtxt.value = tiptext;
+	}
+	searchtxt.onfocus = function(e) {
+		if(searchtxt.value == tiptext) {
+			searchtxt.value = "";
+			searchtxt.className = searchtxt.className.replace(" searchtip", "");
+		}
+	}
+	searchtxt.onblur = function(e) {
+		if(searchtxt.value == "") {
+			searchtxt.className += " searchtip";
+			searchtxt.value = tiptext;
+		}
+	}
+//]]>
+</script>
+
+				<!-- navigation START -->
+				<ul id="navigation">
+
+					<li class="page_item"><a href="http://imzc.net/">首页</a></li>
+					<li class="page_item page-item-260"><a href="http://imzc.net/ios/">IOS_PROJ</a></li>
+<li class="page_item page-item-164"><a href="http://imzc.net/wp_otp/">WP_OTP</a></li>
+<li class="page_item page-item-180"><a href="http://imzc.net/vps-recommended/">vps推荐</a></li>
+<li class="page_item page-item-139"><a href="http://imzc.net/mysites/">我的站点</a></li>
+<li class="page_item page-item-2"><a href="http://imzc.net/aboutme/">关于</a></li>
+					<li id="subscribe">
+						<a rel="external nofollow" title="订阅这个博客的文章" id="feed" href="http://imzc.net/feed/"><img src="http://imzc.net/wp-content/themes/elegant-box/images/transparent.gif" alt="RSS 订阅" /></a>
+													<ul>
+								<li class="first"><a rel="external nofollow" title="订阅到有道" href="http://reader.youdao.com/b.do?url=http://imzc.net/feed/"> 有道</a></li>
+								<li><a rel="external nofollow" title="订阅到鲜果" href="http://www.xianguo.com/subscribe.php?url=http://imzc.net/feed/"> 鲜果</a></li>
+								<li><a rel="external nofollow" title="订阅到抓虾" href="http://www.zhuaxia.com/add_channel.php?url=http://imzc.net/feed/"> 抓虾</a></li>
+								<li><a rel="external nofollow" title="订阅到 Google" href="http://fusion.google.com/add?feedurl=http://imzc.net/feed/">  Google</a></li>
+								<li><a rel="external nofollow" title="订阅到 My Yahoo!" href="http://add.my.yahoo.com/rss?url=http://imzc.net/feed/">  My Yahoo!</a></li>
+								<li><a rel="external nofollow" title="订阅到 newsgator" href="http://www.newsgator.com/ngs/subscriber/subfext.aspx?url=http://imzc.net/feed/">  newsgator</a></li>
+								<li><a rel="external nofollow" title="订阅到 Bloglines" href="http://www.bloglines.com/sub/http://imzc.net/feed/">  Bloglines</a></li>
+								<li><a rel="external nofollow" title="订阅到 哪吒" href="http://inezha.com/add?url=http://imzc.net/feed/">  哪吒</a></li>
+							</ul>
+											</li>
+
+				</ul>
+				<!-- navigation END -->
+
+			</div>
+		</div>
+	</div>
+	<!-- header END -->
+
+	<div id="container">
+		<div id="content">
+			<div id="main">
+
+		
+			<div class="post">
+				<div class="title">
+					<h2>ruby Rspec测试框架cheetsheet</h2>
+					<div class="fixed"></div>
+				</div>
+
+				<div class="info">
+					
+					<span>2012年7月5日</span>
+											<span> | 分类: <a href="http://imzc.net/archives/category/rubytesting/" title="查看 Ruby&amp;Testing 中的全部文章" rel="category tag">Ruby&amp;Testing</a></span>
+																<span> | 标签: </span>
+					
+					<div class="fixed"></div>
+				</div>
+
+				<div class="content">
+<div style=”padding:3px 0″>
+<script type="text/javascript"><!--
+google_ad_client = "pub-7220882232307827";
+/* blog_468x15, Created @09-2-19 */
+google_ad_slot = "1127450986";
+google_ad_width = 468;
+google_ad_height = 15;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+</div>
+<br />	
+					<p>项目使用Rspec测试框架,一堆should等等方法容易忘记,这里收集了下:<br />
+INSTALL<br />
+=======</p>
+<p>$ gem install rspec</p>
+<p>RSPEC-RAILS<br />
+===========</p>
+<p>  RAILS-3<br />
+  =======</p>
+<p>    CONFIGURE THE GEMFILE<br />
+    ======================<br />
+    group :development, :test do<br />
+      gem &#8220;rspec-rails&#8221;, &#8220;~> 2.0&#8243;<br />
+    end</p>
+<p>    INSTALL THE BUNDLE<br />
+    ===============================<br />
+    $ bundle install</p>
+<p>    BOOTSTRAP THE APP<br />
+    =================<br />
+    $ ./script/rails generate rspec:install<br />
+          create  .rspec<br />
+          create  spec<br />
+          create  spec/spec_helper.rb<br />
+          create  autotest<br />
+          create  autotest/discover.rb</p>
+<p>  RAILS-2<br />
+  =======</p>
+<p>    INSTALL<br />
+    =======<br />
+    $ gem install rspec-rails -v 1.3.3</p>
+<p>    BOOTSTRAP THE APP<br />
+    =================<br />
+    $ ./script/generate rspec<br />
+        create  spec<br />
+        create  spec/spec_helper.rb<br />
+        create  spec/spec.opts<br />
+        create  previous_failures.txt<br />
+        create  script/spec_server<br />
+        create  script/spec</p>
+<p>HOW TO USE<br />
+==========</p>
+<p>  COMMAND LINE<br />
+  =============<br />
+rspec &#8211;color &#8211;format doc spec/widget_spec.rb</p>
+<p>  RAILS 3 (RSPEC 2)<br />
+  =============<br />
+./rails/generate model User<br />
+rake -T spec # lists all rspec rake tasks<br />
+rake spec # run all specs<br />
+rake spec/models/mymodel_spec.rb # run a single spec file<br />
+rake spec/models/mymodel_spec.rb:27 # run a single example or group on line 27</p>
+<p>  RAILS 2 (RSPEC 1)<br />
+  =============<br />
+./script/generate rspec_model User<br />
+rake -T spec # lists all rspec rake tasks<br />
+rake spec # run all specs<br />
+rake spec SPEC=spec/models/mymodel_spec.rb SPEC_OPTS=&#8221;-e \&#8221;should do<br />
+something\&#8221;" #run a single spec</p>
+
+<div class="wp_syntax"><table><tr><td class="line_numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+</pre></td><td class="code"><pre class="rails" style="font-family:monospace;"><span style="color:#9966CC; font-weight:bold;">module</span> UserSpecHelper
+  <span style="color:#9966CC; font-weight:bold;">def</span> valid_user_attributes
+    <span style="color:#006600; font-weight:bold;">&#123;</span> <span style="color:#ff3333; font-weight:bold;">:email</span> <span style="color:#006600; font-weight:bold;">=&gt;</span> <span style="color:#996600;">&quot;joe@bloggs.com&quot;</span>,
+      <span style="color:#ff3333; font-weight:bold;">:username</span> <span style="color:#006600; font-weight:bold;">=&gt;</span> <span style="color:#996600;">&quot;joebloggs&quot;</span>,
+      <span style="color:#ff3333; font-weight:bold;">:password</span> <span style="color:#006600; font-weight:bold;">=&gt;</span> <span style="color:#996600;">&quot;abcdefg&quot;</span><span style="color:#006600; font-weight:bold;">&#125;</span>
+  <span style="color:#9966CC; font-weight:bold;">end</span>
+<span style="color:#9966CC; font-weight:bold;">end</span>
+&nbsp;
+&nbsp;
+describe <span style="color:#996600;">&quot;A User (in general)&quot;</span> <span style="color:#9966CC; font-weight:bold;">do</span>
+  <span style="color:#9966CC; font-weight:bold;">include</span> UserSpecHelper
+&nbsp;
+  before<span style="color:#006600; font-weight:bold;">&#40;</span>:<span style="color:#5A0A0A; font-weight:bold;">each</span><span style="color:#006600; font-weight:bold;">&#41;</span> <span style="color:#9966CC; font-weight:bold;">do</span>
+    <span style="color:#0066ff; font-weight:bold;">@user</span> = User.<span style="color:#5A0A0A; font-weight:bold;">new</span>
+  <span style="color:#9966CC; font-weight:bold;">end</span>
+&nbsp;
+  it <span style="color:#996600;">&quot;should be invalid without a username&quot;</span> <span style="color:#9966CC; font-weight:bold;">do</span>
+    pending <span style="color:#996600;">&quot;some other thing we depend on&quot;</span>
+    <span style="color:#0066ff; font-weight:bold;">@user</span>.<span style="color:#9900CC;">attributes</span> = valid_user_attributes.<span style="color:#9900CC;">except</span><span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#ff3333; font-weight:bold;">:username</span><span style="color:#006600; font-weight:bold;">&#41;</span>
+    <span style="color:#0066ff; font-weight:bold;">@user</span>.<span style="color:#9900CC;">should_not</span> be_valid
+    <span style="color:#0066ff; font-weight:bold;">@user</span>.<span style="color:#9900CC;">should</span> have<span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#006666;">1</span><span style="color:#006600; font-weight:bold;">&#41;</span>.<span style="color:#9900CC;">error_on</span><span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#ff3333; font-weight:bold;">:username</span><span style="color:#006600; font-weight:bold;">&#41;</span>
+    <span style="color:#0066ff; font-weight:bold;">@user</span>.<span style="color:#5A0A0A; font-weight:bold;">errors</span>.<span style="color:#9900CC;">on</span><span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#ff3333; font-weight:bold;">:username</span><span style="color:#006600; font-weight:bold;">&#41;</span>.<span style="color:#9900CC;">should</span> == <span style="color:#996600;">&quot;is required&quot;</span>
+    <span style="color:#0066ff; font-weight:bold;">@user</span>.<span style="color:#9900CC;">username</span> = <span style="color:#996600;">&quot;someusername&quot;</span>
+    <span style="color:#0066ff; font-weight:bold;">@user</span>.<span style="color:#9900CC;">should</span> be_valid
+  <span style="color:#9966CC; font-weight:bold;">end</span>
+<span style="color:#9966CC; font-weight:bold;">end</span></pre></td></tr></table></div>
+
+<p>EXPECTATIONS<br />
+=====================</p>
+
+<div class="wp_syntax"><table><tr><td class="line_numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+</pre></td><td class="code"><pre class="rails" style="font-family:monospace;">target.<span style="color:#9900CC;">should</span> satisfy <span style="color:#006600; font-weight:bold;">&#123;</span><span style="color:#006600; font-weight:bold;">|</span>arg<span style="color:#006600; font-weight:bold;">|</span> ...<span style="color:#006600; font-weight:bold;">&#125;</span>
+target.<span style="color:#9900CC;">should_not</span> satisfy <span style="color:#006600; font-weight:bold;">&#123;</span><span style="color:#006600; font-weight:bold;">|</span>arg<span style="color:#006600; font-weight:bold;">|</span> ...<span style="color:#006600; font-weight:bold;">&#125;</span>
+&nbsp;
+target.<span style="color:#9900CC;">should</span> equal <span style="color:#006600; font-weight:bold;">&lt;</span>value<span style="color:#006600; font-weight:bold;">&gt;</span>
+target.<span style="color:#9900CC;">should_not</span> equal <span style="color:#006600; font-weight:bold;">&lt;</span>value<span style="color:#006600; font-weight:bold;">&gt;</span>
+&nbsp;
+target.<span style="color:#9900CC;">should</span> be_close <span style="color:#006600; font-weight:bold;">&lt;</span>value<span style="color:#006600; font-weight:bold;">&gt;</span>, <span style="color:#006600; font-weight:bold;">&lt;</span>tolerance<span style="color:#006600; font-weight:bold;">&gt;</span>
+target.<span style="color:#9900CC;">should_not</span> be_close <span style="color:#006600; font-weight:bold;">&lt;</span>value<span style="color:#006600; font-weight:bold;">&gt;</span>, <span style="color:#006600; font-weight:bold;">&lt;</span>tolerance<span style="color:#006600; font-weight:bold;">&gt;</span>
+&nbsp;
+target.<span style="color:#9900CC;">should</span> be <span style="color:#006600; font-weight:bold;">&lt;</span>value<span style="color:#006600; font-weight:bold;">&gt;</span>
+target.<span style="color:#9900CC;">should_not</span> be <span style="color:#006600; font-weight:bold;">&lt;</span>value<span style="color:#006600; font-weight:bold;">&gt;</span>
+&nbsp;
+target.<span style="color:#9900CC;">should</span> predicate <span style="color:#006600; font-weight:bold;">&#91;</span>optional args<span style="color:#006600; font-weight:bold;">&#93;</span>
+target.<span style="color:#9900CC;">should</span> be_predicate <span style="color:#006600; font-weight:bold;">&#91;</span>optional args<span style="color:#006600; font-weight:bold;">&#93;</span>
+target.<span style="color:#9900CC;">should_not</span> predicate <span style="color:#006600; font-weight:bold;">&#91;</span>optional args<span style="color:#006600; font-weight:bold;">&#93;</span>
+target.<span style="color:#9900CC;">should_not</span> be_predicate <span style="color:#006600; font-weight:bold;">&#91;</span>optional args<span style="color:#006600; font-weight:bold;">&#93;</span>
+&nbsp;
+target.<span style="color:#9900CC;">should</span> be <span style="color:#006600; font-weight:bold;">&lt;</span> <span style="color:#006666;">6</span>
+target.<span style="color:#9900CC;">should</span> == <span style="color:#006666;">5</span>
+target.<span style="color:#9900CC;">should</span> be_between<span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#006666;">1</span>, <span style="color:#006666;">10</span><span style="color:#006600; font-weight:bold;">&#41;</span>
+target.<span style="color:#9900CC;">should_not</span> == <span style="color:#996600;">'Samantha'</span>
+&nbsp;
+target.<span style="color:#9900CC;">should</span> match <span style="color:#006600; font-weight:bold;">&lt;</span>regex<span style="color:#006600; font-weight:bold;">&gt;</span>
+target.<span style="color:#9900CC;">should_not</span> match <span style="color:#006600; font-weight:bold;">&lt;</span>regex<span style="color:#006600; font-weight:bold;">&gt;</span>
+&nbsp;
+target.<span style="color:#9900CC;">should</span> be_an_instance_of <span style="color:#006600; font-weight:bold;">&lt;</span>class<span style="color:#006600; font-weight:bold;">&gt;</span>
+target.<span style="color:#9900CC;">should_not</span> be_an_instance_of <span style="color:#006600; font-weight:bold;">&lt;</span>class<span style="color:#006600; font-weight:bold;">&gt;</span>
+&nbsp;
+target.<span style="color:#9900CC;">should</span> be_a_kind_of <span style="color:#006600; font-weight:bold;">&lt;</span>class<span style="color:#006600; font-weight:bold;">&gt;</span>
+target.<span style="color:#9900CC;">should_not</span> be_a_kind_of <span style="color:#006600; font-weight:bold;">&lt;</span>class<span style="color:#006600; font-weight:bold;">&gt;</span>
+&nbsp;
+target.<span style="color:#9900CC;">should</span> <span style="color:#5A0A0A; font-weight:bold;">respond_to</span> <span style="color:#006600; font-weight:bold;">&lt;</span>symbol<span style="color:#006600; font-weight:bold;">&gt;</span>
+target.<span style="color:#9900CC;">should_not</span> <span style="color:#5A0A0A; font-weight:bold;">respond_to</span> <span style="color:#006600; font-weight:bold;">&lt;</span>symbol<span style="color:#006600; font-weight:bold;">&gt;</span>
+&nbsp;
+<span style="color:#CC0066; font-weight:bold;">lambda</span> <span style="color:#006600; font-weight:bold;">&#123;</span>a_call<span style="color:#006600; font-weight:bold;">&#125;</span>.<span style="color:#9900CC;">should</span> raise_error
+<span style="color:#CC0066; font-weight:bold;">lambda</span> <span style="color:#006600; font-weight:bold;">&#123;</span>a_call<span style="color:#006600; font-weight:bold;">&#125;</span>.<span style="color:#9900CC;">should</span> raise_error<span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#006600; font-weight:bold;">&lt;</span>exception<span style="color:#006600; font-weight:bold;">&gt;</span> <span style="color:#006600; font-weight:bold;">&#91;</span>, message<span style="color:#006600; font-weight:bold;">&#93;</span><span style="color:#006600; font-weight:bold;">&#41;</span>
+<span style="color:#CC0066; font-weight:bold;">lambda</span> <span style="color:#006600; font-weight:bold;">&#123;</span>a_call<span style="color:#006600; font-weight:bold;">&#125;</span>.<span style="color:#9900CC;">should_not</span> raise_error
+<span style="color:#CC0066; font-weight:bold;">lambda</span> <span style="color:#006600; font-weight:bold;">&#123;</span>a_call<span style="color:#006600; font-weight:bold;">&#125;</span>.<span style="color:#9900CC;">should_not</span> raise_error<span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#006600; font-weight:bold;">&lt;</span>exception<span style="color:#006600; font-weight:bold;">&gt;</span> <span style="color:#006600; font-weight:bold;">&#91;</span>, message<span style="color:#006600; font-weight:bold;">&#93;</span><span style="color:#006600; font-weight:bold;">&#41;</span>
+<span style="color:#CC0066; font-weight:bold;">lambda</span> <span style="color:#006600; font-weight:bold;">&#123;</span>a_call<span style="color:#006600; font-weight:bold;">&#125;</span>.<span style="color:#9900CC;">should</span> change<span style="color:#006600; font-weight:bold;">&#40;</span>instance, method<span style="color:#006600; font-weight:bold;">&#41;</span>.<span style="color:#9900CC;">from</span><span style="color:#006600; font-weight:bold;">&#40;</span>number<span style="color:#006600; font-weight:bold;">&#41;</span>.<span style="color:#9900CC;">to</span><span style="color:#006600; font-weight:bold;">&#40;</span>number<span style="color:#006600; font-weight:bold;">&#41;</span>
+&nbsp;
+<span style="color:#CC0066; font-weight:bold;">proc</span>.<span style="color:#9900CC;">should</span> throw <span style="color:#006600; font-weight:bold;">&lt;</span>symbol<span style="color:#006600; font-weight:bold;">&gt;</span>
+<span style="color:#CC0066; font-weight:bold;">proc</span>.<span style="color:#9900CC;">should_not</span> throw <span style="color:#006600; font-weight:bold;">&lt;</span>symbol<span style="color:#006600; font-weight:bold;">&gt;</span>
+&nbsp;
+target.<span style="color:#9900CC;">should</span> <span style="color:#9966CC; font-weight:bold;">include</span> <span style="color:#006600; font-weight:bold;">&lt;</span>object<span style="color:#006600; font-weight:bold;">&gt;</span>
+target.<span style="color:#9900CC;">should_not</span> <span style="color:#9966CC; font-weight:bold;">include</span> <span style="color:#006600; font-weight:bold;">&lt;</span>object<span style="color:#006600; font-weight:bold;">&gt;</span>
+&nbsp;
+target.<span style="color:#9900CC;">should</span> have<span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#006600; font-weight:bold;">&lt;</span>number<span style="color:#006600; font-weight:bold;">&gt;</span><span style="color:#006600; font-weight:bold;">&#41;</span>.<span style="color:#9900CC;">things</span>
+target.<span style="color:#9900CC;">should</span> have_at_least<span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#006600; font-weight:bold;">&lt;</span>number<span style="color:#006600; font-weight:bold;">&gt;</span><span style="color:#006600; font-weight:bold;">&#41;</span>.<span style="color:#9900CC;">things</span>
+target.<span style="color:#9900CC;">should</span> have_at_most<span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#006600; font-weight:bold;">&lt;</span>number<span style="color:#006600; font-weight:bold;">&gt;</span><span style="color:#006600; font-weight:bold;">&#41;</span>.<span style="color:#9900CC;">things</span>
+&nbsp;
+target.<span style="color:#9900CC;">should</span> have<span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#006600; font-weight:bold;">&lt;</span>number<span style="color:#006600; font-weight:bold;">&gt;</span><span style="color:#006600; font-weight:bold;">&#41;</span>.<span style="color:#9900CC;">errors_on</span><span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#ff3333; font-weight:bold;">:field</span><span style="color:#006600; font-weight:bold;">&#41;</span>
+&nbsp;
+expect <span style="color:#006600; font-weight:bold;">&#123;</span> thing.<span style="color:#9900CC;">approve</span>! <span style="color:#006600; font-weight:bold;">&#125;</span>.<span style="color:#9900CC;">to</span> change<span style="color:#006600; font-weight:bold;">&#40;</span>thing, <span style="color:#ff3333; font-weight:bold;">:status</span><span style="color:#006600; font-weight:bold;">&#41;</span>.
+    <span style="color:#9900CC;">from</span><span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#6666ff; font-weight:bold;">Status::AWAITING_APPROVAL</span><span style="color:#006600; font-weight:bold;">&#41;</span>.
+    <span style="color:#9900CC;">to</span><span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#6666ff; font-weight:bold;">Status::APPROVED</span><span style="color:#006600; font-weight:bold;">&#41;</span>
+&nbsp;
+expect <span style="color:#006600; font-weight:bold;">&#123;</span> thing.<span style="color:#5A0A0A; font-weight:bold;">destroy</span> <span style="color:#006600; font-weight:bold;">&#125;</span>.<span style="color:#9900CC;">to</span> change<span style="color:#006600; font-weight:bold;">&#40;</span>Thing, :<span style="color:#5A0A0A; font-weight:bold;">count</span><span style="color:#006600; font-weight:bold;">&#41;</span>.<span style="color:#9900CC;">by</span><span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#006600; font-weight:bold;">-</span><span style="color:#006666;">1</span><span style="color:#006600; font-weight:bold;">&#41;</span></pre></td></tr></table></div>
+
+<p>Mocks and Stubs(打桩)<br />
+===============</p>
+
+<div class="wp_syntax"><table><tr><td class="line_numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+</pre></td><td class="code"><pre class="rails" style="font-family:monospace;">user_mock = mock <span style="color:#996600;">&quot;User&quot;</span>
+user_mock.<span style="color:#9900CC;">should_receive</span><span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#ff3333; font-weight:bold;">:authenticate</span><span style="color:#006600; font-weight:bold;">&#41;</span>.<span style="color:#9900CC;">with</span><span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#996600;">&quot;password&quot;</span><span style="color:#006600; font-weight:bold;">&#41;</span>.<span style="color:#9900CC;">and_return</span><span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#0000FF; font-weight:bold;">true</span><span style="color:#006600; font-weight:bold;">&#41;</span>
+user_mock.<span style="color:#9900CC;">should_receive</span><span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#ff3333; font-weight:bold;">:coffee</span><span style="color:#006600; font-weight:bold;">&#41;</span>.<span style="color:#9900CC;">exactly</span><span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#006666;">3</span><span style="color:#006600; font-weight:bold;">&#41;</span>.<span style="color:#9900CC;">times</span>.<span style="color:#9900CC;">and_return</span><span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#ff3333; font-weight:bold;">:americano</span><span style="color:#006600; font-weight:bold;">&#41;</span>
+user_mock.<span style="color:#9900CC;">should_receive</span><span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#ff3333; font-weight:bold;">:coffee</span><span style="color:#006600; font-weight:bold;">&#41;</span>.<span style="color:#9900CC;">exactly</span><span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#006666;">5</span><span style="color:#006600; font-weight:bold;">&#41;</span>.<span style="color:#9900CC;">times</span>.<span style="color:#9900CC;">and_raise</span><span style="color:#006600; font-weight:bold;">&#40;</span>NotEnoughCoffeeExcep
+ion<span style="color:#006600; font-weight:bold;">&#41;</span>
+&nbsp;
+people_stub = mock <span style="color:#996600;">&quot;people&quot;</span>
+people_stub.<span style="color:#9900CC;">stub</span>!<span style="color:#006600; font-weight:bold;">&#40;</span>:<span style="color:#5A0A0A; font-weight:bold;">each</span><span style="color:#006600; font-weight:bold;">&#41;</span>.<span style="color:#9900CC;">and_yield</span><span style="color:#006600; font-weight:bold;">&#40;</span>mock_user<span style="color:#006600; font-weight:bold;">&#41;</span>
+people_stub.<span style="color:#9900CC;">stub</span>!<span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#ff3333; font-weight:bold;">:bad_method</span><span style="color:#006600; font-weight:bold;">&#41;</span>.<span style="color:#9900CC;">and_raise</span><span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#CC00FF; font-weight:bold;">RuntimeError</span><span style="color:#006600; font-weight:bold;">&#41;</span>
+&nbsp;
+user_stub = mock_model<span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#996600;">&quot;User&quot;</span>, <span style="color:#ff3333; font-weight:bold;">:id</span> <span style="color:#006600; font-weight:bold;">=&gt;</span> <span style="color:#006666;">23</span>, <span style="color:#ff3333; font-weight:bold;">:username</span> <span style="color:#006600; font-weight:bold;">=&gt;</span> <span style="color:#996600;">&quot;pat&quot;</span>, <span style="color:#ff3333; font-weight:bold;">:email</span> <span style="color:#006600; font-weight:bold;">=&gt;</span>
+<span style="color:#996600;">&quot;pat@example.com&quot;</span><span style="color:#006600; font-weight:bold;">&#41;</span>
+&nbsp;
+my_instance.<span style="color:#9900CC;">stub</span>!<span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#ff3333; font-weight:bold;">:msg</span><span style="color:#006600; font-weight:bold;">&#41;</span>.<span style="color:#9900CC;">and_return</span><span style="color:#006600; font-weight:bold;">&#40;</span>value<span style="color:#006600; font-weight:bold;">&#41;</span>
+MyClass.<span style="color:#9900CC;">stub</span>!<span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#ff3333; font-weight:bold;">:msg</span><span style="color:#006600; font-weight:bold;">&#41;</span>.<span style="color:#9900CC;">and_return</span><span style="color:#006600; font-weight:bold;">&#40;</span>value<span style="color:#006600; font-weight:bold;">&#41;</span></pre></td></tr></table></div>
+
+<p>Examples (in the real world)</p>
+<p>============================</p>
+<p>http://madhatted.com/2008/7/10/rspec-real-world-testing</p>
+<p>presentation: http://kerryb.github.com/iprug-rspec-presentation/#31<br />
+&nbsp;</p>
+					<div class="fixed"></div>
+				</div>
+
+				<div class="comments comments_single">
+					<a href="#respond">发表评论</a>
+									</div>
+
+				<!-- related posts START -->
+								<!-- related posts END -->
+			</div>
+
+
+<script type="text/javascript" src="http://imzc.net/wp-content/themes/elegant-box/js/comment.js"></script>
+
+	<div class="messagebox">
+		<div class="content small">
+			目前还没有任何评论.		</div>
+	</div>
+
+
+	<div id="respond">
+	<form action="http://imzc.net/wp-comments-post.php" method="post" id="commentform">
+
+	<!-- comment info -->
+	<div id="comment_header">
+		<div id="comment_info">
+							
+				<div id="author_info">
+					<div class="row">
+						<input type="text" name="author" id="author" class="textfield" value="" size="24" tabindex="1" />
+						<label for="author" class="small">昵称 (必填)</label>
+					</div>
+					<div class="row">
+						<input type="text" name="email" id="email" class="textfield" value="" size="24" tabindex="2" />
+						<label for="email" class="small">电子邮箱 (我们会为您保密) (必填)</label>
+					</div>
+					<div class="row">
+						<input type="text" name="url" id="url" class="textfield" value="" size="24" tabindex="3" />
+						<label for="url" class="small">网址</label>
+					</div>
+				</div>
+
+				
+					</div>
+	</div>
+
+	<!-- comment input -->
+	<textarea name="comment" id="comment" tabindex="4" rows="8" cols="50"></textarea>
+
+	<!-- comment submit and rss -->
+	<div id="submitbox">
+		<div id="comments_rss">
+			<a href="http://imzc.net/comments/feed/">
+				<span class="feed">订阅评论</span>
+			</a>
+		</div>
+
+		<div class="act">
+							<a rel="nofollow" id="cancel-comment-reply-link" href="/archives/267/ruby_rspec_cheetsheet/#respond" style="display:none;">取消</a>						<input name="submit" type="submit" id="submit" class="button" tabindex="5" value="提交评论" />
+		</div>
+		
+		<input type="hidden" name="comment_post_ID" value="267" />
+					<input type='hidden' name='comment_post_ID' value='267' id='comment_post_ID' />
+<input type='hidden' name='comment_parent' id='comment_parent' value='0' />
+				<div class="fixed"></div>
+	</div>
+
+	
+<div id="captchaImgDiv">
+
+<div class="captchaSizeDivLarge"><img id="si_image_com" class="si-captcha" src="http://imzc.net/wp-content/plugins/si-captcha-for-wordpress/captcha/securimage_show.php?si_form_id=com&amp;prefix=eynw74W25Ok4M6EP" width="175" height="60" alt="验证图片" title="验证图片" />
+    <input id="si_code_com" name="si_code_com" type="hidden"  value="eynw74W25Ok4M6EP" />
+    <div id="si_refresh_com">
+<a href="#" rel="nofollow" title="刷新验证码" onclick="si_captcha_refresh('si_image_com','com','/wp-content/plugins/si-captcha-for-wordpress/captcha','http://imzc.net/wp-content/plugins/si-captcha-for-wordpress/captcha/securimage_show.php?si_form_id=com&amp;prefix='); return false;">
+      <img class="captchaImgRefresh" src="http://imzc.net/wp-content/plugins/si-captcha-for-wordpress/captcha/images/refresh.png" width="22" height="20" alt="刷新验证码" onclick="this.blur();" /></a>
+  </div>
+  </div>
+<div id="captchaInputDiv"><input id="captcha_code" name="captcha_code" type="text" value="" tabindex="4"  />
+ <label id="captcha_code_label" for="captcha_code">验证码</label><span class="required"> *</span>
+ </div>
+</div>
+      <script type='text/javascript'>
+          var sUrlInput = document.getElementById("comment");
+                  var oParent = sUrlInput.parentNode;
+          var sSubstitue = document.getElementById("captchaImgDiv");
+                  oParent.appendChild(sSubstitue, sUrlInput);
+      </script>
+            <noscript>
+          <style type='text/css'>#submit {display:none;}</style><br />           <input name="submit" type="submit" id="submit-alt" tabindex="6" value="提交" />
+          </noscript>
+  <input type="hidden" name="human_form" value="d6708b9dec3e03308f071c966dedb3f2" /><div style="text-align:center; font-style:italic; font-size:12px;">Protected by <a href="http://boliquan.com/wp-anti-spam/" target="_blank">WP Anti Spam</a></div><p class="comment-subscription-form"><input type="checkbox" name="subscribe_comments" id="subscribe_comments" value="subscribe" style="width: auto; -moz-appearance: checkbox; -webkit-appearance: checkbox;" /> <label class="subscribe-label" id="subscribe-label" for="subscribe_comments">Notify me of follow-up comments by email.</label></p><p class="comment-subscription-form"><input type="checkbox" name="subscribe_blog" id="subscribe_blog" value="subscribe" style="width: auto; -moz-appearance: checkbox; -webkit-appearance: checkbox;" /> <label class="subscribe-label" id="subscribe-blog-label" for="subscribe_blog">Notify me of new posts by email.</label></p>	</form>
+	</div>
+
+			<script type="text/javascript">CMT.loadCommentShortcut('commentform', 'submit', ' (Ctrl+Enter)');</script>
+	
+
+			
+
+	</div>
+
+	<!-- sidebar START -->
+<div id="sidebar">
+
+<!-- Style Switcher START -->
+<div class="widget">
+	<div id="styleswitcher">
+		<span id="style-text">主题风格: </span>
+			<span id="style-green" class="color"><a onclick="TSS.setActiveStyleSheet('green');" href="javascript:void(0);" title="将主题风格更换为green"><img src="http://imzc.net/wp-content/themes/elegant-box/images/transparent.gif" alt="" /></a></span>
+			<span id="style-purple" class="color"><a onclick="TSS.setActiveStyleSheet('purple');" href="javascript:void(0);" title="将主题风格更换为purple"><img src="http://imzc.net/wp-content/themes/elegant-box/images/transparent.gif" alt="" /></a></span>
+			<span id="style-brown" class="color"><a onclick="TSS.setActiveStyleSheet('brown');" href="javascript:void(0);" title="将主题风格更换为brown"><img src="http://imzc.net/wp-content/themes/elegant-box/images/transparent.gif" alt="" /></a></span>
+			<span id="style-blue" class="color"><a onclick="TSS.setActiveStyleSheet('blue');" href="javascript:void(0);" title="将主题风格更换为blue"><img src="http://imzc.net/wp-content/themes/elegant-box/images/transparent.gif" alt="" /></a></span>
+			<span id="style-white" class="color"><a onclick="TSS.setActiveStyleSheet('white');" href="javascript:void(0);" title="将主题风格更换为white"><img src="http://imzc.net/wp-content/themes/elegant-box/images/transparent.gif" alt="" /></a></span>
+			<span id="style-black" class="color"><a onclick="TSS.setActiveStyleSheet('black');" href="javascript:void(0);" title="将主题风格更换为black"><img src="http://imzc.net/wp-content/themes/elegant-box/images/transparent.gif" alt="" /></a></span>
+		<div class="fixed"></div>
+	</div>
+</div>
+<!-- Style Switcher END -->
+
+		<!-- showcase -->
+		
+		<ul id="widgets">
+
+<li class="widget widget_calendar"><h3>Archives</h3><div id="calendar_wrap"><table id="wp-calendar">
+	<caption>2012 年七月</caption>
+	<thead>
+	<tr>
+		<th scope="col" title="星期日">日</th>
+		<th scope="col" title="星期一">一</th>
+		<th scope="col" title="星期二">二</th>
+		<th scope="col" title="星期三">三</th>
+		<th scope="col" title="星期四">四</th>
+		<th scope="col" title="星期五">五</th>
+		<th scope="col" title="星期六">六</th>
+	</tr>
+	</thead>
+
+	<tfoot>
+	<tr>
+		<td colspan="3" id="prev"><a href="http://imzc.net/archives/date/2012/05/" title="查看 2012 年五月的文章">&laquo; 五</a></td>
+		<td class="pad">&nbsp;</td>
+		<td colspan="3" id="next" class="pad">&nbsp;</td>
+	</tr>
+	</tfoot>
+
+	<tbody>
+	<tr><td>1</td><td><a href="http://imzc.net/archives/date/2012/07/02/" title="六月随笔">2</a></td><td>3</td><td>4</td><td><a href="http://imzc.net/archives/date/2012/07/05/" title="ruby Rspec测试框架cheetsheet">5</a></td><td>6</td><td>7</td>
+	</tr>
+	<tr>
+		<td>8</td><td><a href="http://imzc.net/archives/date/2012/07/09/" title="linux下STAF执行失败时的处理">9</a></td><td>10</td><td>11</td><td>12</td><td id="today">13</td><td>14</td>
+	</tr>
+	<tr>
+		<td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td>
+	</tr>
+	<tr>
+		<td>22</td><td>23</td><td>24</td><td>25</td><td>26</td><td>27</td><td>28</td>
+	</tr>
+	<tr>
+		<td>29</td><td>30</td><td>31</td>
+		<td class="pad" colspan="4">&nbsp;</td>
+	</tr>
+	</tbody>
+	</table></div></li><li class="widget widget_categories"><h3>分类目录</h3>		<ul>
+	<li class="cat-item cat-item-7"><a href="http://imzc.net/archives/category/c_cplusplus/" title="查看 C/C++ 下的所有文章">C/C++</a>
+</li>
+	<li class="cat-item cat-item-24"><a href="http://imzc.net/archives/category/ios-dev/" title="查看 IOSDev 下的所有文章">IOSDev</a>
+</li>
+	<li class="cat-item cat-item-23"><a href="http://imzc.net/archives/category/java/" title="查看 java 下的所有文章">java</a>
+</li>
+	<li class="cat-item cat-item-5"><a href="http://imzc.net/archives/category/lamp/" title="查看 LAMP 下的所有文章">LAMP</a>
+</li>
+	<li class="cat-item cat-item-8"><a href="http://imzc.net/archives/category/onthego/" title="查看 OnTheGo 下的所有文章">OnTheGo</a>
+</li>
+	<li class="cat-item cat-item-1"><a href="http://imzc.net/archives/category/other/" title="查看 Other 下的所有文章">Other</a>
+</li>
+	<li class="cat-item cat-item-3"><a href="http://imzc.net/archives/category/project/" title="查看 Project 下的所有文章">Project</a>
+</li>
+	<li class="cat-item cat-item-4"><a href="http://imzc.net/archives/category/rubytesting/" title="查看 Ruby&amp;Testing 下的所有文章">Ruby&amp;Testing</a>
+</li>
+		</ul>
+</li><li class="widget widget_text"><h3>Google Ads</h3>			<div class="textwidget"><script type="text/javascript"><!--
+google_ad_client = "ca-pub-7220882232307827";
+/* left_180x150, 创建于 09-2-19 */
+google_ad_slot = "1136501676";
+google_ad_width = 180;
+google_ad_height = 150;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+</div>
+		</li><li class="widget widget_tag_cloud"><h3>标签</h3><div class="tagcloud"><a href='http://imzc.net/archives/tag/c/' class='tag-link-9' title='4 个话题' style='font-size: 22pt;'>c</a>
+<a href='http://imzc.net/archives/tag/dailhelper/' class='tag-link-13' title='1 个话题' style='font-size: 8pt;'>dailhelper</a>
+<a href='http://imzc.net/archives/tag/linux/' class='tag-link-14' title='1 个话题' style='font-size: 8pt;'>linux</a>
+<a href='http://imzc.net/archives/tag/ls/' class='tag-link-10' title='1 个话题' style='font-size: 8pt;'>ls</a>
+<a href='http://imzc.net/archives/tag/makefile/' class='tag-link-17' title='1 个话题' style='font-size: 8pt;'>makefile</a>
+<a href='http://imzc.net/archives/tag/netkeeper/' class='tag-link-16' title='1 个话题' style='font-size: 8pt;'>Netkeeper</a>
+<a href='http://imzc.net/archives/tag/pcap/' class='tag-link-25' title='1 个话题' style='font-size: 8pt;'>pcap</a>
+<a href='http://imzc.net/archives/tag/ruby/' class='tag-link-12' title='1 个话题' style='font-size: 8pt;'>ruby</a>
+<a href='http://imzc.net/archives/tag/slab/' class='tag-link-20' title='1 个话题' style='font-size: 8pt;'>slab</a>
+<a href='http://imzc.net/archives/tag/wget/' class='tag-link-11' title='1 个话题' style='font-size: 8pt;'>wget</a>
+<a href='http://imzc.net/archives/tag/%e7%b3%bb%e7%bb%9f%e7%ae%a1%e7%90%86/' class='tag-link-15' title='1 个话题' style='font-size: 8pt;'>系统管理</a></div>
+</li><li class="widget widget_links"><h3>链接表</h3>
+	<ul class='xoxo blogroll'>
+<li><a href="http://blog.csdn.net/Android_Tutor" rel="colleague" title="Android_Tutor的专栏" target="_blank">Android学习系列</a></li>
+<li><a href="http://wpotp.com" rel="me" title="食品找茬网" target="_blank">找茬网</a></li>
+<li><a href="http://www.sz95000.com/" title="深圳长途汽车网上订票，官方网站，这次不会忘记了。。。" target="_blank">深圳长途汽车网上订票</a></li>
+
+	</ul>
+</li>
+<li class="widget widget_meta"><h3>功能</h3>			<ul>
+			<li><a href="http://imzc.net/wp-login.php?action=register">注册</a></li>			<li><a href="http://imzc.net/wp-login.php">登录</a></li>
+			<li><a href="http://imzc.net/feed/" title="使用 RSS 2.0 订阅本站点内容">文章 <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<li><a href="http://imzc.net/comments/feed/" title="使用 RSS 订阅本站点的所有文章的近期评论">评论 <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<li><a href="http://cn.wordpress.org/" title="基于 WordPress，一个优美、先进的个人信息发布平台。">WordPress.org</a></li>
+						</ul>
+</li>		</ul>
+
+		<!-- showcase 2 -->
+		
+</div>
+<!-- sidebar END -->
+
+	<div class="fixed"></div>
+
+		<div id="bottom">
+			<div class="postnav">
+				<span class="alignleft">&laquo; <a href="http://imzc.net/archives/265/june_essay/" rel="prev">六月随笔</a></span>
+				<span class="alignright"><a href="http://imzc.net/archives/268/linux_staf_libstaf_error/" rel="next">linux下STAF执行失败时的处理</a> &raquo;</span>
+				<div class="fixed"></div>
+			</div>
+
+			<div class="anchor">
+				<span><a href="#" onclick="MGJS.goTop();return false;">置顶</a></span>
+			</div>
+			<div class="fixed"></div>
+			</div>
+		<div class="fixed"></div>
+	</div>
+</div>
+
+<!-- footer START -->
+<div id="footer">
+	<div class="inner">
+		<div class="content">
+			<p id="about">
+				版权所有 &copy; 2008-2012 Only For Sunshine~ | 基于 <a href="http://wordpress.org/">WordPress</a> | 主题由 <a href="http://www.neoease.com/">NeoEase</a> 提供			</p>
+
+			<ul id="admin">
+				<li><a href="http://imzc.net/wp-login.php?action=register">注册</a></li>				<li><a href="http://imzc.net/wp-login.php">登录</a></li>
+			</ul>
+
+			<div class="fixed"></div>
+		</div>
+	</div>
+</div><!-- footer END --><script type='text/javascript' src='http://imzc.net/wp-content/plugins/si-captcha-for-wordpress/captcha/si_captcha.js?ver=1.0'></script>
+<script type="text/javascript">
+//<![CDATA[
+var si_captcha_styles = "\
+<!-- begin SI CAPTCHA Anti-Spam - comment form style -->\
+<style type='text/css'>\
+div#captchaImgDiv { display:block; }\
+.captchaSizeDivSmall { width:175px; height:45px; padding-top:10px; }\
+.captchaSizeDivLarge { width:250px; height:60px; padding-top:10px; }\
+img#si_image_com,#si_image_reg,#si_image_log,#si_image_side_login { border-style:none; margin:0; padding-right:5px; float:left; }\
+.captchaImgRefresh { border-style:none; margin:0; vertical-align:bottom; }\
+div#captchaInputDiv { display:block; padding-top:15px; padding-bottom:5px; }\
+label#captcha_code_label { margin:0; }\
+input#captcha_code { width:65px; }\
+</style>\
+<!-- end SI CAPTCHA Anti-Spam - comment form style -->\
+";
+jQuery(document).ready(function($) {
+$('head').append(si_captcha_styles);
+});
+//]]>
+</script>
+<script type='text/javascript' src='http://s.gravatar.com/js/gprofiles.js?aa&#038;ver=3.4.1'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var WPGroHo = {"my_hash":""};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://imzc.net/wp-content/plugins/jetpack/modules/wpgroho.js?ver=3.4.1'></script>
+	<div style="display:none">
+	</div>
+
+	<script src="http://stats.wordpress.com/e-201228.js" type="text/javascript"></script>
+	<script type="text/javascript">
+	st_go({v:'ext',j:'1:1.4.2',blog:'17044931',post:'267'});
+	var load_cmc = function(){linktracker_init(17044931,267,2);};
+	if ( typeof addLoadEvent != 'undefined' ) addLoadEvent(load_cmc);
+	else load_cmc();
+	</script><script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-9565349-1']);
+  _gaq.push(['_setDomainName', 'imzc.net']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script> 
+</body>
+</html>
