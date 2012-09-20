@@ -13,11 +13,11 @@
 	<atom:link href="http://imzc.net/archives/tag/c/feed/" rel="self" type="application/rss+xml" />
 	<link>http://imzc.net</link>
 	<description>-More Thinking,And Then Just do it~~~</description>
-	<lastBuildDate>Thu, 12 Jul 2012 17:15:18 +0000</lastBuildDate>
+	<lastBuildDate>Thu, 20 Sep 2012 16:40:36 +0000</lastBuildDate>
 	<language>zh-CN</language>
 	<sy:updatePeriod>hourly</sy:updatePeriod>
 	<sy:updateFrequency>1</sy:updateFrequency>
-	<generator>http://wordpress.org/?v=3.4.1</generator>
+	<generator>http://wordpress.org/?v=3.4.2</generator>
 		<item>
 		<title>递归列出目录下文件的全路径</title>
 		<link>http://imzc.net/archives/20/</link>
@@ -42,302 +42,152 @@
  -R,    print dir recurse(defult).
  -r,    only print current dir.
  none argvs,    print current path.]]></description>
-			<content:encoded><![CDATA[<p>本程序是在网络搜索到的目录遍历用法加以修改,增加功能实现的.所以欢迎转载使用.</p>
-
-<div class="wp_syntax"><table><tr><td class="line_numbers"><pre>1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53
-54
-55
-56
-57
-58
-59
-60
-61
-62
-63
-64
-65
-66
-67
-68
-69
-70
-71
-72
-73
-74
-75
-76
-77
-78
-79
-80
-81
-82
-83
-84
-85
-86
-87
-88
-89
-90
-91
-92
-93
-94
-95
-96
-97
-98
-99
-100
-101
-102
-103
-104
-105
-106
-107
-108
-109
-110
-111
-112
-113
-114
-115
-116
-117
-118
-119
-120
-121
-122
-123
-124
-125
-126
-127
-128
-129
-130
-131
-132
-133
-134
-135
-136
-137
-138
-139
-140
-141
-142
-143
-144
-145
-146
-</pre></td><td class="code"><pre class="c" style="font-family:monospace;"><span style="color: #808080; font-style: italic;">/*
+			<content:encoded><![CDATA[<p>本程序是在网络搜索到的目录遍历用法加以修改,增加功能实现的.所以欢迎转载使用.</p><pre class="crayon-plain-tag">/*
  由于ls -R,递归目录列出的信息格式在需要全路径时不好处理,因此专门写这一程序.
- linux下编译:  gcc lsdir.c -o lsdir -O
+ linux下编译:&nbsp; gcc lsdir.c -o lsdir -O
  windows下编译:使用codeblocks即可.
  Useage: lsdir
- list the full path of a dir's subdirs or files,not same as  &quot;ls -R&quot;.
- -h,    print this message.
- -d dirname,    recursely print full path of files.
- -D,    print dirs only.
- -F,    print files only.
- -A,    print files and dirs(defult).
- -R,    print dir recurse(defult).
- -r,    only print current dir.
- none argvs,    print current path.
+ list the full path of a dir's subdirs or files,not same as&nbsp; &quot;ls -R&quot;.
+ -h,&nbsp;&nbsp;&nbsp; print this message.
+ -d dirname,&nbsp;&nbsp;&nbsp; recursely print full path of files.
+ -D,&nbsp;&nbsp;&nbsp; print dirs only.
+ -F,&nbsp;&nbsp;&nbsp; print files only.
+ -A,&nbsp;&nbsp;&nbsp; print files and dirs(defult).
+ -R,&nbsp;&nbsp;&nbsp; print dir recurse(defult).
+ -r,&nbsp;&nbsp;&nbsp; only print current dir.
+ none argvs,&nbsp;&nbsp;&nbsp; print current path.
  ---zhouchuan,2010.8.27.
-*/</span>
-<span style="color: #339933;">#include &amp;lt;stdio.h&amp;gt;</span>
-<span style="color: #339933;">#include &amp;lt;dirent.h&amp;gt;</span>
-<span style="color: #339933;">#include &amp;lt;string.h&amp;gt;</span>
-<span style="color: #339933;">#include &amp;lt;sys/stat.h&amp;gt;</span>
-<span style="color: #339933;">#include &amp;lt;sys/types.h&amp;gt;</span>
-<span style="color: #339933;">#include &amp;lt;unistd.h&amp;gt;</span>
-&nbsp;
-<span style="color: #339933;">#ifdef __WIN32__  // OS_COMPAT</span>
-<span style="color: #666666; font-style: italic;">//__WINDOWS__</span>
- <span style="color: #993333;">char</span> path_sep <span style="color: #339933;">=</span> <span style="color: #ff0000;">'<span style="color: #000099; font-weight: bold;">\\</span>'</span><span style="color: #339933;">;</span>
-<span style="color: #339933;">#else</span>
- <span style="color: #993333;">char</span> path_sep <span style="color: #339933;">=</span> <span style="color: #ff0000;">'/'</span><span style="color: #339933;">;</span>
-<span style="color: #339933;">#endif   // !__WINDOWS__</span>
-&nbsp;
-<span style="color: #339933;">#define DIR_MAX_LEN 1000</span>
-<span style="color: #339933;">#define PRINT_DIR_ONLY 0</span>
-<span style="color: #339933;">#define PRINT_FILE_ONLY 1</span>
-<span style="color: #339933;">#define PRINT_FILE_AND_DIR 2</span>
-&nbsp;
-<span style="color: #339933;">#define DIR_RECURSE_NO 0</span>
-<span style="color: #339933;">#define DIR_RECURSE_YES  1</span>
-&nbsp;
-<span style="color: #993333;">int</span> g_PRINT_TYPE <span style="color: #339933;">=</span> PRINT_FILE_AND_DIR<span style="color: #339933;">;</span> <span style="color: #666666; font-style: italic;">//默认列出所有目录及文件</span>
-<span style="color: #993333;">int</span> g_DIR_RECURSE <span style="color: #339933;">=</span> DIR_RECURSE_YES<span style="color: #339933;">;</span><span style="color: #666666; font-style: italic;">//默认递归</span>
-&nbsp;
-<span style="color: #993333;">void</span> printdir<span style="color: #009900;">&#40;</span><span style="color: #993333;">char</span> <span style="color: #339933;">*</span>dir<span style="color: #339933;">,</span> <span style="color: #993333;">int</span> depth<span style="color: #009900;">&#41;</span>
-<span style="color: #009900;">&#123;</span>
- DIR <span style="color: #339933;">*</span>dp<span style="color: #339933;">;</span>
- <span style="color: #993333;">struct</span> dirent <span style="color: #339933;">*</span>entry<span style="color: #339933;">;</span>
- <span style="color: #993333;">struct</span> stat statbuf<span style="color: #339933;">;</span>
- <span style="color: #993333;">char</span>  buff<span style="color: #009900;">&#91;</span>DIR_MAX_LEN<span style="color: #009900;">&#93;</span><span style="color: #339933;">;</span>
-&nbsp;
-&nbsp;
- <span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#40;</span>dp <span style="color: #339933;">=</span> opendir<span style="color: #009900;">&#40;</span>dir<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span> <span style="color: #339933;">==</span> NULL<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
- fprintf<span style="color: #009900;">&#40;</span>stderr<span style="color: #339933;">,</span> <span style="color: #ff0000;">&quot;cannot open directory: %s<span style="color: #000099; font-weight: bold;">\n</span> &quot;</span><span style="color: #339933;">,</span> dir<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
- <span style="color: #b1b100;">return</span><span style="color: #339933;">;</span>
- <span style="color: #009900;">&#125;</span>
- chdir<span style="color: #009900;">&#40;</span>dir<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
- getcwd<span style="color: #009900;">&#40;</span>buff<span style="color: #339933;">,</span>DIR_MAX_LEN<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
- <span style="color: #b1b100;">while</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#40;</span>entry <span style="color: #339933;">=</span> readdir<span style="color: #009900;">&#40;</span>dp<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span> <span style="color: #339933;">!=</span> NULL<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
- <span style="color: #666666; font-style: italic;">//lstat(entry-&amp;gt; d_name,&amp;amp;statbuf);</span>
- stat<span style="color: #009900;">&#40;</span>entry<span style="color: #339933;">-&amp;</span>gt<span style="color: #339933;">;</span> d_name<span style="color: #339933;">,&amp;</span>amp<span style="color: #339933;">;</span>statbuf<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
- <span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span>S_ISDIR<span style="color: #009900;">&#40;</span>statbuf.<span style="color: #202020;">st_mode</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
- <span style="color: #808080; font-style: italic;">/* Found a directory, but ignore . and .. */</span>
- <span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span>strcmp<span style="color: #009900;">&#40;</span> <span style="color: #ff0000;">&quot;.&quot;</span><span style="color: #339933;">,</span>entry<span style="color: #339933;">-&amp;</span>gt<span style="color: #339933;">;</span> d_name<span style="color: #009900;">&#41;</span> <span style="color: #339933;">==</span> <span style="color: #0000dd;">0</span> <span style="color: #339933;">||</span>strcmp<span style="color: #009900;">&#40;</span> <span style="color: #ff0000;">&quot;..&quot;</span><span style="color: #339933;">,</span>entry<span style="color: #339933;">-&amp;</span>gt<span style="color: #339933;">;</span> d_name<span style="color: #009900;">&#41;</span> <span style="color: #339933;">==</span> <span style="color: #0000dd;">0</span><span style="color: #009900;">&#41;</span>
- <span style="color: #b1b100;">continue</span><span style="color: #339933;">;</span>
- <span style="color: #666666; font-style: italic;">// printf( &quot;%*s%s/\n &quot;,depth, &quot; &quot;,entry-&amp;gt; d_name);</span>
- <span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span>g_PRINT_TYPE <span style="color: #339933;">!=</span> PRINT_FILE_ONLY<span style="color: #009900;">&#41;</span>
- <span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span> <span style="color: #ff0000;">&quot;%s%c%s%c<span style="color: #000099; font-weight: bold;">\n</span> &quot;</span><span style="color: #339933;">,</span>buff<span style="color: #339933;">,</span>path_sep<span style="color: #339933;">,</span>entry<span style="color: #339933;">-&amp;</span>gt<span style="color: #339933;">;</span> d_name<span style="color: #339933;">,</span>path_sep<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-&nbsp;
- <span style="color: #808080; font-style: italic;">/* Recurse at a new indent level */</span>
- <span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span>g_DIR_RECURSE<span style="color: #339933;">==</span>DIR_RECURSE_YES<span style="color: #009900;">&#41;</span>
- printdir<span style="color: #009900;">&#40;</span>entry<span style="color: #339933;">-&amp;</span>gt<span style="color: #339933;">;</span> d_name<span style="color: #339933;">,</span>depth<span style="color: #339933;">+</span><span style="color: #0000dd;">4</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
- <span style="color: #009900;">&#125;</span><span style="color: #b1b100;">else</span><span style="color: #009900;">&#123;</span>
- <span style="color: #666666; font-style: italic;">//is a file</span>
- <span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span>g_PRINT_TYPE <span style="color: #339933;">!=</span>PRINT_DIR_ONLY<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
- <span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span> <span style="color: #ff0000;">&quot;%s%c%s<span style="color: #000099; font-weight: bold;">\n</span> &quot;</span><span style="color: #339933;">,</span>buff<span style="color: #339933;">,</span>path_sep<span style="color: #339933;">,</span>entry<span style="color: #339933;">-&amp;</span>gt<span style="color: #339933;">;</span> d_name<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
- <span style="color: #009900;">&#125;</span>
- <span style="color: #009900;">&#125;</span>
- <span style="color: #009900;">&#125;</span>
- chdir<span style="color: #009900;">&#40;</span> <span style="color: #ff0000;">&quot;..&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
- closedir<span style="color: #009900;">&#40;</span>dp<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<span style="color: #009900;">&#125;</span>
-&nbsp;
-<span style="color: #993333;">void</span> useage<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
- <span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;====================================================================<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
- <span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;Useage: lsdir<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
- <span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot; list the full path of a dir's subdirs or files,not same as  <span style="color: #000099; font-weight: bold;">\&quot;</span>ls -R<span style="color: #000099; font-weight: bold;">\&quot;</span>. <span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
- <span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot; -h,<span style="color: #000099; font-weight: bold;">\t</span>print this message.<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
- <span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot; -d dirname,<span style="color: #000099; font-weight: bold;">\t</span>recursely print full path of files. <span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
- <span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot; -D,<span style="color: #000099; font-weight: bold;">\t</span>print dirs only. <span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
- <span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot; -F,<span style="color: #000099; font-weight: bold;">\t</span>print files only. <span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
- <span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot; -A,<span style="color: #000099; font-weight: bold;">\t</span>print files and dirs(defult). <span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
- <span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot; -R,<span style="color: #000099; font-weight: bold;">\t</span>print dir recurse(defult). <span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
- <span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot; -r,<span style="color: #000099; font-weight: bold;">\t</span>only print current dir. <span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
- <span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot; none argvs,<span style="color: #000099; font-weight: bold;">\t</span>print current path.<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
- <span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;<span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>---zhouchuan,2010.8.27.<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
- <span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;====================================================================<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<span style="color: #009900;">&#125;</span>
-&nbsp;
-<span style="color: #993333;">int</span> main<span style="color: #009900;">&#40;</span><span style="color: #993333;">int</span> argc<span style="color: #339933;">,</span> <span style="color: #993333;">char</span><span style="color: #339933;">*</span> argv<span style="color: #009900;">&#91;</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span>
-<span style="color: #009900;">&#123;</span>
- <span style="color: #993333;">int</span> oc<span style="color: #339933;">;</span>                     <span style="color: #808080; font-style: italic;">/*选项字符 */</span>
- <span style="color: #993333;">char</span> <span style="color: #339933;">*</span>b_opt_arg<span style="color: #339933;">;</span>            <span style="color: #808080; font-style: italic;">/*选项参数字串 */</span>
- <span style="color: #993333;">char</span> <span style="color: #339933;">*</span>topdir<span style="color: #339933;">=</span>NULL<span style="color: #339933;">,</span> pwd<span style="color: #009900;">&#91;</span><span style="color: #0000dd;">2</span><span style="color: #009900;">&#93;</span><span style="color: #339933;">=</span> <span style="color: #ff0000;">&quot;.&quot;</span><span style="color: #339933;">;</span>
-&nbsp;
- <span style="color: #b1b100;">while</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#40;</span>oc <span style="color: #339933;">=</span> getopt<span style="color: #009900;">&#40;</span>argc<span style="color: #339933;">,</span> argv<span style="color: #339933;">,</span> <span style="color: #ff0000;">&quot;hd:DFARr&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span> <span style="color: #339933;">!=</span> <span style="color: #339933;">-</span><span style="color: #0000dd;">1</span><span style="color: #009900;">&#41;</span>
- <span style="color: #009900;">&#123;</span>
- <span style="color: #b1b100;">switch</span><span style="color: #009900;">&#40;</span>oc<span style="color: #009900;">&#41;</span>
- <span style="color: #009900;">&#123;</span>
- <span style="color: #b1b100;">case</span> <span style="color: #ff0000;">'h'</span><span style="color: #339933;">:</span>
- <span style="color: #666666; font-style: italic;">//-h,则打印使用方法</span>
- useage<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
- <span style="color: #b1b100;">return</span> <span style="color: #0000dd;">0</span><span style="color: #339933;">;</span>
- <span style="color: #000000; font-weight: bold;">break</span><span style="color: #339933;">;</span>
- <span style="color: #b1b100;">case</span> <span style="color: #ff0000;">'D'</span><span style="color: #339933;">:</span>
- g_PRINT_TYPE <span style="color: #339933;">=</span>PRINT_DIR_ONLY <span style="color: #339933;">;</span>
- <span style="color: #000000; font-weight: bold;">break</span> <span style="color: #339933;">;</span>
- <span style="color: #b1b100;">case</span> <span style="color: #ff0000;">'F'</span><span style="color: #339933;">:</span>
- g_PRINT_TYPE <span style="color: #339933;">=</span>PRINT_FILE_ONLY <span style="color: #339933;">;</span>
- <span style="color: #000000; font-weight: bold;">break</span> <span style="color: #339933;">;</span>
- <span style="color: #b1b100;">case</span> <span style="color: #ff0000;">'A'</span><span style="color: #339933;">:</span>
- g_PRINT_TYPE <span style="color: #339933;">=</span>PRINT_FILE_AND_DIR <span style="color: #339933;">;</span>
- <span style="color: #000000; font-weight: bold;">break</span> <span style="color: #339933;">;</span>
- <span style="color: #b1b100;">case</span> <span style="color: #ff0000;">'R'</span><span style="color: #339933;">:</span>
- g_DIR_RECURSE <span style="color: #339933;">=</span> DIR_RECURSE_YES<span style="color: #339933;">;</span>
- <span style="color: #666666; font-style: italic;">//       printf(&quot; DIR_RECURSE_YES&quot;);</span>
- <span style="color: #000000; font-weight: bold;">break</span><span style="color: #339933;">;</span>
- <span style="color: #b1b100;">case</span> <span style="color: #ff0000;">'r'</span><span style="color: #339933;">:</span>
- g_DIR_RECURSE <span style="color: #339933;">=</span> DIR_RECURSE_NO<span style="color: #339933;">;</span>
- <span style="color: #666666; font-style: italic;">//    printf(&quot; DIR_RECURSE_NO&quot;);</span>
- <span style="color: #000000; font-weight: bold;">break</span><span style="color: #339933;">;</span>
- <span style="color: #b1b100;">case</span> <span style="color: #ff0000;">'d'</span><span style="color: #339933;">:</span>
- b_opt_arg <span style="color: #339933;">=</span> optarg<span style="color: #339933;">;</span>
- <span style="color: #666666; font-style: italic;">//      printf(&quot;dir %s\n&quot;, optarg);</span>
- topdir<span style="color: #339933;">=</span>optarg<span style="color: #339933;">;</span>
- <span style="color: #000000; font-weight: bold;">break</span><span style="color: #339933;">;</span>
- <span style="color: #009900;">&#125;</span>
- <span style="color: #009900;">&#125;</span>
- <span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span>topdir<span style="color: #339933;">==</span>NULL<span style="color: #009900;">&#41;</span>
- <span style="color: #009900;">&#123;</span>
- <span style="color: #666666; font-style: italic;">//   printf(&quot;dir current&quot;);</span>
- topdir<span style="color: #339933;">=</span>pwd<span style="color: #339933;">;</span>
- <span style="color: #009900;">&#125;</span>
- <span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;Directory scan of <span style="color: #000099; font-weight: bold;">\&quot;</span>%s<span style="color: #000099; font-weight: bold;">\&quot;</span>:<span style="color: #000099; font-weight: bold;">\n</span> &quot;</span><span style="color: #339933;">,</span>topdir<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
- printdir<span style="color: #009900;">&#40;</span>topdir<span style="color: #339933;">,</span><span style="color: #0000dd;">0</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
- <span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;===Done.<span style="color: #000099; font-weight: bold;">\n</span> &quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-&nbsp;
- <span style="color: #b1b100;">return</span> <span style="color: #0000dd;">0</span><span style="color: #339933;">;</span>
-<span style="color: #009900;">&#125;</span></pre></td></tr></table></div>
+*/
+#include &amp;lt;stdio.h&amp;gt;
+#include &amp;lt;dirent.h&amp;gt;
+#include &amp;lt;string.h&amp;gt;
+#include &amp;lt;sys/stat.h&amp;gt;
+#include &amp;lt;sys/types.h&amp;gt;
+#include &amp;lt;unistd.h&amp;gt;
 
-<p>在很多时候,我们可能需要得到一个目录下所有文件的全路径,以供后续计算.<br />
+#ifdef __WIN32__&nbsp; // OS_COMPAT
+//__WINDOWS__
+ char path_sep = '\\';
+#else
+ char path_sep = '/';
+#endif&nbsp;&nbsp; // !__WINDOWS__
+
+#define DIR_MAX_LEN 1000
+#define PRINT_DIR_ONLY 0
+#define PRINT_FILE_ONLY 1
+#define PRINT_FILE_AND_DIR 2
+
+#define DIR_RECURSE_NO 0
+#define DIR_RECURSE_YES&nbsp; 1
+
+int g_PRINT_TYPE = PRINT_FILE_AND_DIR; //默认列出所有目录及文件
+int g_DIR_RECURSE = DIR_RECURSE_YES;//默认递归
+
+void printdir(char *dir, int depth)
+{
+ DIR *dp;
+ struct dirent *entry;
+ struct stat statbuf;
+ char&nbsp; buff[DIR_MAX_LEN];
+
+
+ if((dp = opendir(dir)) == NULL) {
+ fprintf(stderr, &quot;cannot open directory: %s\n &quot;, dir);
+ return;
+ }
+ chdir(dir);
+ getcwd(buff,DIR_MAX_LEN);
+ while((entry = readdir(dp)) != NULL) {
+ //lstat(entry-&amp;gt; d_name,&amp;amp;statbuf);
+ stat(entry-&amp;gt; d_name,&amp;amp;statbuf);
+ if(S_ISDIR(statbuf.st_mode)) {
+ /* Found a directory, but ignore . and .. */
+ if(strcmp( &quot;.&quot;,entry-&amp;gt; d_name) == 0 ||strcmp( &quot;..&quot;,entry-&amp;gt; d_name) == 0)
+ continue;
+ // printf( &quot;%*s%s/\n &quot;,depth, &quot; &quot;,entry-&amp;gt; d_name);
+ if(g_PRINT_TYPE != PRINT_FILE_ONLY)
+ printf( &quot;%s%c%s%c\n &quot;,buff,path_sep,entry-&amp;gt; d_name,path_sep);
+
+ /* Recurse at a new indent level */
+ if(g_DIR_RECURSE==DIR_RECURSE_YES)
+ printdir(entry-&amp;gt; d_name,depth+4);
+ }else{
+ //is a file
+ if(g_PRINT_TYPE !=PRINT_DIR_ONLY){
+ printf( &quot;%s%c%s\n &quot;,buff,path_sep,entry-&amp;gt; d_name);
+ }
+ }
+ }
+ chdir( &quot;..&quot;);
+ closedir(dp);
+}
+
+void useage(){
+ printf(&quot;====================================================================\n&quot;);
+ printf(&quot;Useage: lsdir\n&quot;);
+ printf(&quot; list the full path of a dir's subdirs or files,not same as&nbsp; \&quot;ls -R\&quot;. \n&quot;);
+ printf(&quot; -h,\tprint this message.\n&quot;);
+ printf(&quot; -d dirname,\trecursely print full path of files. \n&quot;);
+ printf(&quot; -D,\tprint dirs only. \n&quot;);
+ printf(&quot; -F,\tprint files only. \n&quot;);
+ printf(&quot; -A,\tprint files and dirs(defult). \n&quot;);
+ printf(&quot; -R,\tprint dir recurse(defult). \n&quot;);
+ printf(&quot; -r,\tonly print current dir. \n&quot;);
+ printf(&quot; none argvs,\tprint current path.\n&quot;);
+ printf(&quot;\t\t\t\t---zhouchuan,2010.8.27.\n&quot;);
+ printf(&quot;====================================================================\n&quot;);
+}
+
+int main(int argc, char* argv[])
+{
+ int oc;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /*选项字符 */
+ char *b_opt_arg;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /*选项参数字串 */
+ char *topdir=NULL, pwd[2]= &quot;.&quot;;
+
+ while((oc = getopt(argc, argv, &quot;hd:DFARr&quot;)) != -1)
+ {
+ switch(oc)
+ {
+ case 'h':
+ //-h,则打印使用方法
+ useage();
+ return 0;
+ break;
+ case 'D':
+ g_PRINT_TYPE =PRINT_DIR_ONLY ;
+ break ;
+ case 'F':
+ g_PRINT_TYPE =PRINT_FILE_ONLY ;
+ break ;
+ case 'A':
+ g_PRINT_TYPE =PRINT_FILE_AND_DIR ;
+ break ;
+ case 'R':
+ g_DIR_RECURSE = DIR_RECURSE_YES;
+ //&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; printf(&quot; DIR_RECURSE_YES&quot;);
+ break;
+ case 'r':
+ g_DIR_RECURSE = DIR_RECURSE_NO;
+ //&nbsp;&nbsp;&nbsp; printf(&quot; DIR_RECURSE_NO&quot;);
+ break;
+ case 'd':
+ b_opt_arg = optarg;
+ //&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; printf(&quot;dir %s\n&quot;, optarg);
+ topdir=optarg;
+ break;
+ }
+ }
+ if(topdir==NULL)
+ {
+ //&nbsp;&nbsp; printf(&quot;dir current&quot;);
+ topdir=pwd;
+ }
+ printf(&quot;Directory scan of \&quot;%s\&quot;:\n &quot;,topdir);
+ printdir(topdir,0);
+ printf(&quot;===Done.\n &quot;);
+
+ return 0;
+}</pre><p>在很多时候,我们可能需要得到一个目录下所有文件的全路径,以供后续计算.<br />
 如要计算当前目录所有文件的md5值:</p>
 <div>
 <p>./lsdir -F|grep &#8221;/&#8221;|while read LINE;do md5sum $LINE;done;</p>
@@ -416,501 +266,252 @@
 STL vector with iterator 和 for_each 算法.]]></description>
 			<content:encoded><![CDATA[<p>练习部分有:const关键字,函数指针,内部类,初始化列表,</p>
 <p>STL vector with iterator 和 for_each 算法.</p>
-<p>直接看代码,注意看注释.</p>
+<p>直接看代码,注意看注释.</p><pre class="crayon-plain-tag">//VC2005,dev-cpp 4.9.9.2(gcc)下编译通过.
 
-<div class="wp_syntax"><table><tr><td class="line_numbers"><pre>1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53
-54
-55
-56
-57
-58
-59
-60
-61
-62
-63
-64
-65
-66
-67
-68
-69
-70
-71
-72
-73
-74
-75
-76
-77
-78
-79
-80
-81
-82
-83
-84
-85
-86
-87
-88
-89
-90
-91
-92
-93
-94
-95
-96
-97
-98
-99
-100
-101
-102
-103
-104
-105
-106
-107
-108
-109
-110
-111
-112
-113
-114
-115
-116
-117
-118
-119
-120
-121
-122
-123
-124
-125
-126
-127
-128
-129
-130
-131
-132
-133
-134
-135
-136
-137
-138
-139
-140
-141
-142
-143
-144
-145
-146
-147
-148
-149
-150
-151
-152
-153
-154
-155
-156
-157
-158
-159
-160
-161
-162
-163
-164
-165
-166
-167
-168
-169
-170
-171
-172
-173
-174
-175
-176
-177
-178
-179
-180
-181
-182
-183
-184
-185
-186
-187
-188
-189
-190
-191
-192
-193
-194
-195
-196
-197
-198
-199
-200
-201
-202
-203
-204
-205
-206
-207
-208
-209
-210
-211
-212
-213
-214
-215
-216
-217
-218
-219
-220
-221
-222
-223
-224
-225
-226
-227
-228
-229
-230
-231
-232
-233
-234
-235
-236
-237
-238
-239
-240
-241
-242
-243
-244
-245
-246
-</pre></td><td class="code"><pre class="c" style="font-family:monospace;"><span style="color: #666666; font-style: italic;">//VC2005,dev-cpp 4.9.9.2(gcc)下编译通过.</span>
-&nbsp;
-﻿<span style="color: #666666; font-style: italic;">//main.cpp  </span>
- <span style="color: #339933;">#include&lt;iostream&gt;  </span>
- <span style="color: #339933;">#include &lt;string&gt;  </span>
- <span style="color: #339933;">#include &lt;vector&gt;  </span>
- <span style="color: #339933;">#include &lt;algorithm&gt;//for_each  </span>
-&nbsp;
- using namespace std<span style="color: #339933;">;</span>  
-&nbsp;
- <span style="color: #993333;">void</span> prints<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- <span style="color: #993333;">void</span> copy<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- <span style="color: #993333;">void</span> <span style="color: #009900;">&#40;</span><span style="color: #339933;">*</span>pFun<span style="color: #009900;">&#91;</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #339933;">=</span> <span style="color: #009900;">&#123;</span>prints<span style="color: #339933;">,</span> copy<span style="color: #009900;">&#125;</span><span style="color: #339933;">;</span><span style="color: #666666; font-style: italic;">//定义一个函数指针数组  </span>
-&nbsp;
- <span style="color: #666666; font-style: italic;">//以下为for_each第三个参数的定义  </span>
- template<span style="color: #339933;">&lt;</span>class T<span style="color: #339933;">&gt;</span>  
- class mFun  
- <span style="color: #009900;">&#123;</span>  
- private<span style="color: #339933;">:</span>  
- T fa<span style="color: #339933;">;</span>  
- public<span style="color: #339933;">:</span>  
- mFun<span style="color: #009900;">&#40;</span><span style="color: #993333;">const</span> T <span style="color: #339933;">&amp;</span>name<span style="color: #009900;">&#41;</span><span style="color: #339933;">:</span>fa<span style="color: #009900;">&#40;</span>name<span style="color: #009900;">&#41;</span>  
- <span style="color: #009900;">&#123;</span> <span style="color: #009900;">&#125;</span>  
-&nbsp;
- <span style="color: #993333;">void</span> operator<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#40;</span>T <span style="color: #339933;">&amp;</span>name<span style="color: #009900;">&#41;</span><span style="color: #993333;">const</span>  
- <span style="color: #009900;">&#123;</span>  
- name<span style="color: #339933;">*=</span>fa<span style="color: #339933;">;</span>  
- <span style="color: #009900;">&#125;</span>  
- <span style="color: #009900;">&#125;</span><span style="color: #339933;">;</span>   
-&nbsp;
- <span style="color: #666666; font-style: italic;">//以下为双向链表的定义</span>
- <span style="color: #666666; font-style: italic;">//暂时只实现了简单的加入和删除,主要是体现一个思想. </span>
- template<span style="color: #339933;">&lt;</span>class Type<span style="color: #339933;">&gt;</span>  
- class LIST  
- <span style="color: #009900;">&#123;</span>  
- public<span style="color: #339933;">:</span>  
- <span style="color: #666666; font-style: italic;">//无参数构造函数.  </span>
- LIST<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>  
- head <span style="color: #339933;">=</span> NULL<span style="color: #339933;">;</span>  
- tail <span style="color: #339933;">=</span>NULL<span style="color: #339933;">;</span>  
- count <span style="color: #339933;">=</span> <span style="color: #0000dd;">0</span><span style="color: #339933;">;</span>  
- <span style="color: #009900;">&#125;</span>  
-&nbsp;
- <span style="color: #666666; font-style: italic;">//前插入式双向链表  </span>
- <span style="color: #993333;">void</span> Add<span style="color: #009900;">&#40;</span>Type d<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>  
- <span style="color: #666666; font-style: italic;">//注意处理空链表和有数据的链表时添加结点的问题  </span>
- <span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span>head<span style="color: #339933;">==</span>NULL<span style="color: #009900;">&#41;</span>  
- <span style="color: #009900;">&#123;</span>  
- head <span style="color: #339933;">=</span> new _node<span style="color: #339933;">&lt;</span>Type<span style="color: #339933;">&gt;</span><span style="color: #009900;">&#40;</span>d<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- head<span style="color: #339933;">-&gt;</span>setNext<span style="color: #009900;">&#40;</span>head<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- head<span style="color: #339933;">-&gt;</span>setPrev<span style="color: #009900;">&#40;</span>head<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- tail <span style="color: #339933;">=</span> head<span style="color: #339933;">;</span>  
- <span style="color: #009900;">&#125;</span><span style="color: #b1b100;">else</span>  
- <span style="color: #009900;">&#123;</span>  
- _node<span style="color: #339933;">&lt;</span>Type<span style="color: #339933;">&gt;</span> <span style="color: #339933;">*</span> temp <span style="color: #339933;">=</span> new _node<span style="color: #339933;">&lt;</span>Type<span style="color: #339933;">&gt;</span><span style="color: #009900;">&#40;</span>d<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- temp<span style="color: #339933;">-&gt;</span>setPrev<span style="color: #009900;">&#40;</span>head<span style="color: #339933;">-&gt;</span>Prev<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- temp<span style="color: #339933;">-&gt;</span>setNext<span style="color: #009900;">&#40;</span>head<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- head<span style="color: #339933;">-&gt;</span>setPrev<span style="color: #009900;">&#40;</span>temp<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- tail<span style="color: #339933;">-&gt;</span>setNext<span style="color: #009900;">&#40;</span>temp<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- head <span style="color: #339933;">=</span> temp<span style="color: #339933;">;</span>  
- <span style="color: #009900;">&#125;</span>  
- count<span style="color: #339933;">++;</span>  
- <span style="color: #009900;">&#125;</span>  
-&nbsp;
- <span style="color: #666666; font-style: italic;">//删除数据为d的节点  </span>
- <span style="color: #993333;">void</span> Delete<span style="color: #009900;">&#40;</span>Type d<span style="color: #009900;">&#41;</span>  
- <span style="color: #009900;">&#123;</span>  
- <span style="color: #993333;">int</span> iPos<span style="color: #339933;">=</span>count<span style="color: #339933;">;</span>  
- <span style="color: #b1b100;">for</span><span style="color: #009900;">&#40;</span>_node<span style="color: #339933;">&lt;</span>Type<span style="color: #339933;">&gt;</span> <span style="color: #339933;">*</span> p <span style="color: #339933;">=</span> head<span style="color: #339933;">;</span> iPos<span style="color: #339933;">&gt;</span><span style="color: #0000dd;">0</span><span style="color: #339933;">;</span> p<span style="color: #339933;">=</span>p<span style="color: #339933;">-&gt;</span>Next<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span>  
- <span style="color: #009900;">&#123;</span>  
- <span style="color: #339933;">--</span>iPos<span style="color: #339933;">;</span>  
- <span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span>p<span style="color: #339933;">-&gt;</span>Data<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">==</span>d<span style="color: #009900;">&#41;</span>  
- <span style="color: #009900;">&#123;</span>  
- _node<span style="color: #339933;">&lt;</span>Type<span style="color: #339933;">&gt;</span> <span style="color: #339933;">*</span> tn<span style="color: #339933;">=</span> p<span style="color: #339933;">-&gt;</span>Next<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- _node<span style="color: #339933;">&lt;</span>Type<span style="color: #339933;">&gt;</span> <span style="color: #339933;">*</span> tp<span style="color: #339933;">=</span> p<span style="color: #339933;">-&gt;</span>Prev<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- tn<span style="color: #339933;">-&gt;</span>setPrev<span style="color: #009900;">&#40;</span>tp<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- tp<span style="color: #339933;">-&gt;</span>setNext<span style="color: #009900;">&#40;</span>tn<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- <span style="color: #666666; font-style: italic;">//如果是头结点,则还应该将头结点head移位  </span>
- <span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span>p<span style="color: #339933;">==</span>head<span style="color: #009900;">&#41;</span>  
- head<span style="color: #339933;">=</span>head<span style="color: #339933;">-&gt;</span>Next<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- count<span style="color: #339933;">--;</span>  
- delete p<span style="color: #339933;">;</span>  
- <span style="color: #b1b100;">return</span> <span style="color: #339933;">;</span>  
- <span style="color: #009900;">&#125;</span>  
- <span style="color: #009900;">&#125;</span><span style="color: #666666; font-style: italic;">//end for  </span>
-&nbsp;
- <span style="color: #009900;">&#125;</span>  
-&nbsp;
- <span style="color: #666666; font-style: italic;">//打印所有的节点  </span>
- <span style="color: #993333;">void</span> PrintAll<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #993333;">const</span>  
- <span style="color: #009900;">&#123;</span>  
- <span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span>head<span style="color: #339933;">!=</span>NULL<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>  
- cout<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;all data:&quot;</span><span style="color: #339933;">&lt;&lt;</span>endl<span style="color: #339933;">;</span>  
- <span style="color: #993333;">int</span> iPos<span style="color: #339933;">=</span>count<span style="color: #339933;">;</span>  
- <span style="color: #b1b100;">for</span><span style="color: #009900;">&#40;</span>_node<span style="color: #339933;">&lt;</span>Type<span style="color: #339933;">&gt;</span> <span style="color: #339933;">*</span> p <span style="color: #339933;">=</span> head<span style="color: #339933;">;</span>iPos<span style="color: #339933;">&gt;</span><span style="color: #0000dd;">0</span> <span style="color: #339933;">;</span>p<span style="color: #339933;">=</span> p<span style="color: #339933;">-&gt;</span>Next<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#41;</span>  
- <span style="color: #009900;">&#123;</span>  
- <span style="color: #339933;">--</span>iPos<span style="color: #339933;">;</span>  
- cout<span style="color: #339933;">&lt;&lt;</span>hex<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;0x&quot;</span><span style="color: #339933;">&lt;&lt;</span>p<span style="color: #339933;">-&gt;</span>Prev<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;-&lt;&quot;</span><span style="color: #339933;">&lt;&lt;</span>p<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;&gt;-&quot;</span><span style="color: #339933;">&lt;&lt;</span>p<span style="color: #339933;">-&gt;</span>Next<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;:&quot;</span><span style="color: #339933;">&lt;&lt;</span>dec<span style="color: #339933;">&lt;&lt;</span>p<span style="color: #339933;">-&gt;</span>Data<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">&lt;&lt;</span>endl<span style="color: #339933;">;</span>  
- <span style="color: #009900;">&#125;</span>  
- cout<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;-----end-----&quot;</span><span style="color: #339933;">&lt;&lt;</span>endl<span style="color: #339933;">;</span>  
- <span style="color: #009900;">&#125;</span>  
- <span style="color: #009900;">&#125;</span>  
- virtual ~LIST<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>  
- <span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span>head<span style="color: #339933;">!=</span>NULL<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>  
- <span style="color: #993333;">int</span> iPos <span style="color: #339933;">=</span> count<span style="color: #339933;">;</span>  
- <span style="color: #b1b100;">for</span><span style="color: #009900;">&#40;</span>_node<span style="color: #339933;">&lt;</span>Type<span style="color: #339933;">&gt;</span> <span style="color: #339933;">*</span> p <span style="color: #339933;">=</span> head<span style="color: #339933;">;</span>iPos<span style="color: #339933;">&gt;</span><span style="color: #0000dd;">0</span><span style="color: #339933;">;</span><span style="color: #009900;">&#41;</span>  
- <span style="color: #009900;">&#123;</span>  
- <span style="color: #339933;">--</span>iPos<span style="color: #339933;">;</span>  
- _node<span style="color: #339933;">&lt;</span>Type<span style="color: #339933;">&gt;</span> <span style="color: #339933;">*</span> t <span style="color: #339933;">=</span> p<span style="color: #339933;">;</span>  
- p<span style="color: #339933;">=</span> p<span style="color: #339933;">-&gt;</span>Next<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- delete t<span style="color: #339933;">;</span>  
- <span style="color: #009900;">&#125;</span>  
- head <span style="color: #339933;">=</span> NULL<span style="color: #339933;">;</span>  
- tail    <span style="color: #339933;">=</span> NULL<span style="color: #339933;">;</span>  
- count <span style="color: #339933;">=</span> <span style="color: #0000dd;">0</span><span style="color: #339933;">;</span>  
- <span style="color: #009900;">&#125;</span>  
- cout<span style="color: #339933;">&lt;&lt;</span>endl<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;list deleted!&quot;</span><span style="color: #339933;">&lt;&lt;</span>endl<span style="color: #339933;">;</span>  
- <span style="color: #009900;">&#125;</span>  
- protected<span style="color: #339933;">:</span>  
- private<span style="color: #339933;">:</span>  
- <span style="color: #666666; font-style: italic;">//内部类,由于_node仅仅在LIST类中使用,故无必要定义至外部;</span>
- <span style="color: #666666; font-style: italic;">//可以将_node所有成员设置为public,这样,便不必有成员函数了,</span>
- <span style="color: #666666; font-style: italic;">//在封装和暴露中间取个平衡点即可,不必死守规则.</span>
- template<span style="color: #339933;">&lt;</span>class T<span style="color: #339933;">&gt;</span>  
- class _node  
- <span style="color: #009900;">&#123;</span>  
- public<span style="color: #339933;">:</span>  
- _node<span style="color: #009900;">&#40;</span>T d<span style="color: #009900;">&#41;</span><span style="color: #339933;">:</span>_data<span style="color: #009900;">&#40;</span>d<span style="color: #009900;">&#41;</span>  
- <span style="color: #009900;">&#123;</span> 
- <span style="color: #666666; font-style: italic;">//通过初始化列表来初始化_data,这样效率高.</span>
- next <span style="color: #339933;">=</span> NULL<span style="color: #339933;">;</span>  
- prev <span style="color: #339933;">=</span> NULL<span style="color: #339933;">;</span>  
- <span style="color: #009900;">&#125;</span>  
- T <span style="color: #339933;">&amp;</span> Data<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>  
- <span style="color: #009900;">&#123;</span>  
- <span style="color: #b1b100;">return</span> _data<span style="color: #339933;">;</span>  
- <span style="color: #009900;">&#125;</span>  
-&nbsp;
- <span style="color: #993333;">void</span> setPrev<span style="color: #009900;">&#40;</span>_node <span style="color: #339933;">*</span> pr<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>  
- prev <span style="color: #339933;">=</span> pr<span style="color: #339933;">;</span>  
- <span style="color: #009900;">&#125;</span>  
-&nbsp;
- _node <span style="color: #339933;">*</span> Prev<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>  
- <span style="color: #009900;">&#123;</span>  
- <span style="color: #b1b100;">return</span> prev<span style="color: #339933;">;</span>  
- <span style="color: #009900;">&#125;</span>  
-&nbsp;
-&nbsp;
- <span style="color: #993333;">void</span> setNext<span style="color: #009900;">&#40;</span>_node <span style="color: #339933;">*</span> n<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>  
- next <span style="color: #339933;">=</span> n<span style="color: #339933;">;</span>  
- <span style="color: #009900;">&#125;</span>  
-&nbsp;
- _node <span style="color: #339933;">*</span> Next<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>  
- <span style="color: #009900;">&#123;</span>  
- <span style="color: #b1b100;">return</span> next<span style="color: #339933;">;</span>  
- <span style="color: #009900;">&#125;</span>  
-&nbsp;
-&nbsp;
- private<span style="color: #339933;">:</span>  
- _node <span style="color: #339933;">*</span> next<span style="color: #339933;">;</span>  
- _node <span style="color: #339933;">*</span> prev<span style="color: #339933;">;</span>  
- T _data<span style="color: #339933;">;</span>  
- <span style="color: #009900;">&#125;</span><span style="color: #339933;">;</span>  
- <span style="color: #993333;">unsigned</span> <span style="color: #993333;">int</span> count<span style="color: #339933;">;</span>  
- _node<span style="color: #339933;">&lt;</span>Type<span style="color: #339933;">&gt;</span> <span style="color: #339933;">*</span> head<span style="color: #339933;">;</span><span style="color: #666666; font-style: italic;">//头结点  </span>
- _node<span style="color: #339933;">&lt;</span>Type<span style="color: #339933;">&gt;</span> <span style="color: #339933;">*</span> tail<span style="color: #339933;">;</span><span style="color: #666666; font-style: italic;">//尾结点  </span>
- <span style="color: #009900;">&#125;</span><span style="color: #339933;">;</span>  
-&nbsp;
- <span style="color: #993333;">int</span> main<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>  
- <span style="color: #009900;">&#123;</span>     
- cout<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;----------------------------------------------------------------&quot;</span><span style="color: #339933;">&lt;&lt;</span>endl<span style="color: #339933;">;</span>   
- cout<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;const关键字练习:&quot;</span><span style="color: #339933;">&lt;&lt;</span>endl<span style="color: #339933;">;</span>   
- <span style="color: #993333;">const</span> <span style="color: #993333;">char</span> <span style="color: #339933;">*</span>p1  <span style="color: #339933;">=</span> <span style="color: #ff0000;">&quot;Hello,你好.&quot;</span><span style="color: #339933;">;</span><span style="color: #666666; font-style: italic;">//p1可以改变,字符串内容不可改变  </span>
- <span style="color: #993333;">char</span> <span style="color: #339933;">*</span> <span style="color: #993333;">const</span> p2 <span style="color: #339933;">=</span> <span style="color: #ff0000;">&quot;imzc&quot;</span><span style="color: #339933;">;</span><span style="color: #666666; font-style: italic;">//p2不可改变,但是字符串内容可以  </span>
- <span style="color: #993333;">const</span> <span style="color: #993333;">char</span> <span style="color: #339933;">*</span> <span style="color: #993333;">const</span> p3  <span style="color: #339933;">=</span> <span style="color: #ff0000;">&quot;this is p3.&quot;</span><span style="color: #339933;">;</span><span style="color: #666666; font-style: italic;">//都不可改变  </span>
- <span style="color: #993333;">char</span> <span style="color: #339933;">*</span> t <span style="color: #339933;">=</span> new <span style="color: #993333;">char</span><span style="color: #009900;">&#91;</span><span style="color: #0000dd;">30</span><span style="color: #009900;">&#93;</span><span style="color: #339933;">;</span> 
- <span style="color: #666666; font-style: italic;">//只有通过动态分配或者char p[30]这种形式的,指向的内容才可以改变 </span>
- strcpy<span style="color: #009900;">&#40;</span>t<span style="color: #339933;">,</span>p1<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- p1<span style="color: #339933;">++</span> <span style="color: #339933;">;</span>   
- t<span style="color: #009900;">&#91;</span><span style="color: #0000dd;">1</span><span style="color: #009900;">&#93;</span><span style="color: #339933;">=</span><span style="color: #ff0000;">'a'</span><span style="color: #339933;">;</span>  
- cout<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;p1:&quot;</span><span style="color: #339933;">&lt;&lt;</span>p1<span style="color: #339933;">&lt;&lt;</span>endl<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;p2:&quot;</span><span style="color: #339933;">&lt;&lt;</span>p2<span style="color: #339933;">&lt;&lt;</span>endl<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;p3:&quot;</span><span style="color: #339933;">&lt;&lt;</span>p3<span style="color: #339933;">&lt;&lt;</span>endl<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;t:&quot;</span><span style="color: #339933;">&lt;&lt;</span>t<span style="color: #339933;">&lt;&lt;</span>endl<span style="color: #339933;">;</span>  
- delete <span style="color: #009900;">&#91;</span><span style="color: #009900;">&#93;</span> t<span style="color: #339933;">;</span>  
- cout<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;----------------------------------------------------------------&quot;</span><span style="color: #339933;">&lt;&lt;</span>endl<span style="color: #339933;">;</span>  
- cout<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;函数指针练习:&quot;</span><span style="color: #339933;">&lt;&lt;</span>endl<span style="color: #339933;">;</span>   
- cout<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;&gt;&quot;</span><span style="color: #339933;">;</span>   
- <span style="color: #993333;">int</span> index<span style="color: #339933;">=</span><span style="color: #0000dd;">0</span><span style="color: #339933;">;</span>  
- cin <span style="color: #339933;">&gt;&gt;</span>index<span style="color: #339933;">;</span>  
- <span style="color: #b1b100;">do</span><span style="color: #009900;">&#123;</span>   
- <span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span>index<span style="color: #339933;">&gt;</span><span style="color: #0000dd;">2</span><span style="color: #339933;">||</span>index<span style="color: #339933;">&lt;=</span><span style="color: #0000dd;">0</span><span style="color: #009900;">&#41;</span>  
- <span style="color: #009900;">&#123;</span>  
- cout<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;Only has two function!1,prints;2,copy.&quot;</span><span style="color: #339933;">&lt;&lt;</span>endl<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;&gt;&quot;</span><span style="color: #339933;">;</span>  
- cin<span style="color: #339933;">&gt;&gt;</span>index<span style="color: #339933;">;</span>  
- <span style="color: #009900;">&#125;</span>  
- <span style="color: #b1b100;">else</span>  
- <span style="color: #009900;">&#123;</span>  
- pFun<span style="color: #009900;">&#91;</span>index<span style="color: #339933;">-</span><span style="color: #0000dd;">1</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- cout<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;return to main.&quot;</span><span style="color: #339933;">&lt;&lt;</span>endl<span style="color: #339933;">;</span>  
- <span style="color: #009900;">&#125;</span>  
- <span style="color: #009900;">&#125;</span> <span style="color: #b1b100;">while</span> <span style="color: #009900;">&#40;</span>index<span style="color: #339933;">&gt;</span><span style="color: #0000dd;">2</span><span style="color: #339933;">||</span>index<span style="color: #339933;">&lt;=</span><span style="color: #0000dd;">0</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- cout<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;----------------------------------------------------------------&quot;</span><span style="color: #339933;">&lt;&lt;</span>endl<span style="color: #339933;">;</span>  
- cout<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;双向链表练习:&quot;</span><span style="color: #339933;">&lt;&lt;</span>endl<span style="color: #339933;">;</span>  
- LIST<span style="color: #339933;">&lt;</span>string<span style="color: #339933;">&gt;</span> li<span style="color: #339933;">;</span>  
- li.<span style="color: #202020;">Add</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;hello&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- li.<span style="color: #202020;">Add</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;see&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- li.<span style="color: #202020;">Add</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;yes&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- li.<span style="color: #202020;">Add</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;no&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- li.<span style="color: #202020;">Add</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;3qs&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- li.<span style="color: #202020;">PrintAll</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- cout<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;Delete: <span style="color: #000099; font-weight: bold;">\&quot;</span>no<span style="color: #000099; font-weight: bold;">\&quot;</span>string.&quot;</span><span style="color: #339933;">&lt;&lt;</span>endl<span style="color: #339933;">;</span>  
- li.<span style="color: #202020;">Delete</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;no&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- li.<span style="color: #202020;">PrintAll</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- cout<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;----------------------------------------------------------------&quot;</span><span style="color: #339933;">&lt;&lt;</span>endl<span style="color: #339933;">;</span>  
- cout<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;for_each 实例:&quot;</span><span style="color: #339933;">&lt;&lt;</span>endl<span style="color: #339933;">;</span>  
- vector<span style="color: #339933;">&lt;</span>int<span style="color: #339933;">&gt;</span> v<span style="color: #339933;">;</span>  
- v.<span style="color: #202020;">push_back</span><span style="color: #009900;">&#40;</span><span style="color: #0000dd;">12</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- <span style="color: #b1b100;">for</span> <span style="color: #009900;">&#40;</span><span style="color: #993333;">int</span> i<span style="color: #339933;">=</span><span style="color: #0000dd;">0</span><span style="color: #339933;">;</span>i<span style="color: #339933;">&lt;</span><span style="color: #0000dd;">100</span><span style="color: #339933;">;</span>i<span style="color: #339933;">+=</span><span style="color: #0000dd;">10</span><span style="color: #009900;">&#41;</span>  
- <span style="color: #009900;">&#123;</span>  
- v.<span style="color: #202020;">push_back</span><span style="color: #009900;">&#40;</span>i<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- <span style="color: #009900;">&#125;</span>  
- cout<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;原始向量:&quot;</span><span style="color: #339933;">;</span>  
- <span style="color: #b1b100;">for</span> <span style="color: #009900;">&#40;</span>vector<span style="color: #339933;">&lt;</span>int<span style="color: #339933;">&gt;::</span><span style="color: #202020;">iterator</span> v1<span style="color: #339933;">=</span>v.<span style="color: #202020;">begin</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>v1<span style="color: #339933;">!=</span>v.<span style="color: #202020;">end</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>v1<span style="color: #339933;">++</span><span style="color: #009900;">&#41;</span>  
- <span style="color: #009900;">&#123;</span>  
- cout<span style="color: #339933;">&lt;&lt;*</span><span style="color: #009900;">&#40;</span>v1<span style="color: #009900;">&#41;</span><span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot; &quot;</span><span style="color: #339933;">;</span>  
- <span style="color: #009900;">&#125;</span>  
- cout<span style="color: #339933;">&lt;&lt;</span>endl<span style="color: #339933;">;</span>  
- for_each <span style="color: #009900;">&#40;</span> v.<span style="color: #202020;">begin</span> <span style="color: #009900;">&#40;</span> <span style="color: #009900;">&#41;</span> <span style="color: #339933;">,</span> v.<span style="color: #202020;">end</span> <span style="color: #009900;">&#40;</span> <span style="color: #009900;">&#41;</span> <span style="color: #339933;">,</span> mFun<span style="color: #339933;">&lt;</span>int<span style="color: #339933;">&gt;</span> <span style="color: #009900;">&#40;</span> <span style="color: #0000dd;">12</span> <span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- cout<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;for_each-&gt;add(-2):&quot;</span><span style="color: #339933;">;</span>  
- <span style="color: #b1b100;">for</span> <span style="color: #009900;">&#40;</span>vector<span style="color: #339933;">&lt;</span>int<span style="color: #339933;">&gt;::</span><span style="color: #202020;">iterator</span> v1<span style="color: #339933;">=</span>v.<span style="color: #202020;">begin</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>v1<span style="color: #339933;">!=</span>v.<span style="color: #202020;">end</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>v1<span style="color: #339933;">++</span><span style="color: #009900;">&#41;</span>  
- <span style="color: #009900;">&#123;</span>  
- cout<span style="color: #339933;">&lt;&lt;*</span><span style="color: #009900;">&#40;</span>v1<span style="color: #009900;">&#41;</span><span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot; &quot;</span><span style="color: #339933;">;</span>  
- <span style="color: #009900;">&#125;</span>  
- cout<span style="color: #339933;">&lt;&lt;</span>endl<span style="color: #339933;">;</span>   
-&nbsp;
- <span style="color: #b1b100;">return</span> <span style="color: #0000dd;">0</span><span style="color: #339933;">;</span>  
-&nbsp;
- <span style="color: #009900;">&#125;</span>  
-&nbsp;
- <span style="color: #993333;">void</span> prints<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>  
- <span style="color: #009900;">&#123;</span>  
- cout<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;prints() function&quot;</span><span style="color: #339933;">&lt;&lt;</span>endl<span style="color: #339933;">;</span>  
- <span style="color: #009900;">&#125;</span>  
-&nbsp;
- <span style="color: #993333;">void</span> copy<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>  
- <span style="color: #009900;">&#123;</span>  
- cout<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;copy function&quot;</span><span style="color: #339933;">&lt;&lt;</span>endl<span style="color: #339933;">;</span>  
- <span style="color: #009900;">&#125;</span></pre></td></tr></table></div>
-
+﻿//main.cpp &nbsp;
+ #include&amp;lt;iostream&amp;gt; &nbsp;
+ #include &amp;lt;string&amp;gt; &nbsp;
+ #include &amp;lt;vector&amp;gt; &nbsp;
+ #include &amp;lt;algorithm&amp;gt;//for_each &nbsp;
+ 
+ using namespace std; &nbsp;
+ 
+ void prints(); &nbsp;
+ void copy(); &nbsp;
+ void (*pFun[])() = {prints, copy};//定义一个函数指针数组 &nbsp;
+ 
+ //以下为for_each第三个参数的定义 &nbsp;
+ template&amp;lt;class T&amp;gt; &nbsp;
+ class mFun &nbsp;
+ { &nbsp;
+ private: &nbsp;
+ T fa; &nbsp;
+ public: &nbsp;
+ mFun(const T &amp;amp;name):fa(name) &nbsp;
+ { } &nbsp;
+ 
+ void operator()(T &amp;amp;name)const &nbsp;
+ { &nbsp;
+ name*=fa; &nbsp;
+ } &nbsp;
+ };&nbsp; &nbsp;
+ 
+ //以下为双向链表的定义
+ //暂时只实现了简单的加入和删除,主要是体现一个思想. 
+ template&amp;lt;class Type&amp;gt; &nbsp;
+ class LIST &nbsp;
+ { &nbsp;
+ public: &nbsp;
+ //无参数构造函数. &nbsp;
+ LIST(){ &nbsp;
+ head = NULL; &nbsp;
+ tail =NULL; &nbsp;
+ count = 0; &nbsp;
+ } &nbsp;
+ 
+ //前插入式双向链表 &nbsp;
+ void Add(Type d){ &nbsp;
+ //注意处理空链表和有数据的链表时添加结点的问题 &nbsp;
+ if(head==NULL) &nbsp;
+ { &nbsp;
+ head = new _node&amp;lt;Type&amp;gt;(d); &nbsp;
+ head-&amp;gt;setNext(head); &nbsp;
+ head-&amp;gt;setPrev(head); &nbsp;
+ tail = head; &nbsp;
+ }else &nbsp;
+ { &nbsp;
+ _node&amp;lt;Type&amp;gt; * temp = new _node&amp;lt;Type&amp;gt;(d); &nbsp;
+ temp-&amp;gt;setPrev(head-&amp;gt;Prev()); &nbsp;
+ temp-&amp;gt;setNext(head); &nbsp;
+ head-&amp;gt;setPrev(temp); &nbsp;
+ tail-&amp;gt;setNext(temp); &nbsp;
+ head = temp; &nbsp;
+ } &nbsp;
+ count++; &nbsp;
+ } &nbsp;
+ 
+ //删除数据为d的节点 &nbsp;
+ void Delete(Type d) &nbsp;
+ { &nbsp;
+ int iPos=count; &nbsp;
+ for(_node&amp;lt;Type&amp;gt; * p = head; iPos&amp;gt;0; p=p-&amp;gt;Next()) &nbsp;
+ { &nbsp;
+ --iPos; &nbsp;
+ if(p-&amp;gt;Data()==d) &nbsp;
+ { &nbsp;
+ _node&amp;lt;Type&amp;gt; * tn= p-&amp;gt;Next(); &nbsp;
+ _node&amp;lt;Type&amp;gt; * tp= p-&amp;gt;Prev(); &nbsp;
+ tn-&amp;gt;setPrev(tp); &nbsp;
+ tp-&amp;gt;setNext(tn); &nbsp;
+ //如果是头结点,则还应该将头结点head移位 &nbsp;
+ if(p==head) &nbsp;
+ head=head-&amp;gt;Next(); &nbsp;
+ count--; &nbsp;
+ delete p; &nbsp;
+ return ; &nbsp;
+ } &nbsp;
+ }//end for &nbsp;
+ 
+ } &nbsp;
+ 
+ //打印所有的节点 &nbsp;
+ void PrintAll()const &nbsp;
+ { &nbsp;
+ if(head!=NULL){ &nbsp;
+ cout&amp;lt;&amp;lt;&quot;all data:&quot;&amp;lt;&amp;lt;endl; &nbsp;
+ int iPos=count; &nbsp;
+ for(_node&amp;lt;Type&amp;gt; * p = head;iPos&amp;gt;0 ;p= p-&amp;gt;Next() ) &nbsp;
+ { &nbsp;
+ --iPos; &nbsp;
+ cout&amp;lt;&amp;lt;hex&amp;lt;&amp;lt;&quot;0x&quot;&amp;lt;&amp;lt;p-&amp;gt;Prev()&amp;lt;&amp;lt;&quot;-&amp;lt;&quot;&amp;lt;&amp;lt;p&amp;lt;&amp;lt;&quot;&amp;gt;-&quot;&amp;lt;&amp;lt;p-&amp;gt;Next()&amp;lt;&amp;lt;&quot;:&quot;&amp;lt;&amp;lt;dec&amp;lt;&amp;lt;p-&amp;gt;Data()&amp;lt;&amp;lt;endl; &nbsp;
+ } &nbsp;
+ cout&amp;lt;&amp;lt;&quot;-----end-----&quot;&amp;lt;&amp;lt;endl; &nbsp;
+ } &nbsp;
+ } &nbsp;
+ virtual ~LIST(){ &nbsp;
+ if(head!=NULL){ &nbsp;
+ int iPos = count; &nbsp;
+ for(_node&amp;lt;Type&amp;gt; * p = head;iPos&amp;gt;0;) &nbsp;
+ { &nbsp;
+ --iPos; &nbsp;
+ _node&amp;lt;Type&amp;gt; * t = p; &nbsp;
+ p= p-&amp;gt;Next(); &nbsp;
+ delete t; &nbsp;
+ } &nbsp;
+ head = NULL; &nbsp;
+ tail&nbsp;&nbsp;&nbsp; = NULL; &nbsp;
+ count = 0; &nbsp;
+ } &nbsp;
+ cout&amp;lt;&amp;lt;endl&amp;lt;&amp;lt;&quot;list deleted!&quot;&amp;lt;&amp;lt;endl; &nbsp;
+ } &nbsp;
+ protected: &nbsp;
+ private: &nbsp;
+ //内部类,由于_node仅仅在LIST类中使用,故无必要定义至外部;
+ //可以将_node所有成员设置为public,这样,便不必有成员函数了,
+ //在封装和暴露中间取个平衡点即可,不必死守规则.
+ template&amp;lt;class T&amp;gt; &nbsp;
+ class _node &nbsp;
+ { &nbsp;
+ public: &nbsp;
+ _node(T d):_data(d) &nbsp;
+ { 
+ //通过初始化列表来初始化_data,这样效率高.
+ next = NULL; &nbsp;
+ prev = NULL; &nbsp;
+ } &nbsp;
+ T &amp;amp; Data() &nbsp;
+ { &nbsp;
+ return _data; &nbsp;
+ } &nbsp;
+ 
+ void setPrev(_node * pr){ &nbsp;
+ prev = pr; &nbsp;
+ } &nbsp;
+ 
+ _node * Prev() &nbsp;
+ { &nbsp;
+ return prev; &nbsp;
+ } &nbsp;
+ 
+ 
+ void setNext(_node * n){ &nbsp;
+ next = n; &nbsp;
+ } &nbsp;
+ 
+ _node * Next() &nbsp;
+ { &nbsp;
+ return next; &nbsp;
+ } &nbsp;
+ 
+ 
+ private: &nbsp;
+ _node * next; &nbsp;
+ _node * prev; &nbsp;
+ T _data; &nbsp;
+ }; &nbsp;
+ unsigned int count; &nbsp;
+ _node&amp;lt;Type&amp;gt; * head;//头结点 &nbsp;
+ _node&amp;lt;Type&amp;gt; * tail;//尾结点 &nbsp;
+ }; &nbsp;
+ 
+ int main() &nbsp;
+ {&nbsp;&nbsp;&nbsp; &nbsp;
+ cout&amp;lt;&amp;lt;&quot;----------------------------------------------------------------&quot;&amp;lt;&amp;lt;endl;&nbsp; &nbsp;
+ cout&amp;lt;&amp;lt;&quot;const关键字练习:&quot;&amp;lt;&amp;lt;endl;&nbsp; &nbsp;
+ const char *p1&nbsp; = &quot;Hello,你好.&quot;;//p1可以改变,字符串内容不可改变 &nbsp;
+ char * const p2 = &quot;imzc&quot;;//p2不可改变,但是字符串内容可以 &nbsp;
+ const char * const p3&nbsp; = &quot;this is p3.&quot;;//都不可改变 &nbsp;
+ char * t = new char[30]; 
+ //只有通过动态分配或者char p[30]这种形式的,指向的内容才可以改变 
+ strcpy(t,p1); &nbsp;
+ p1++ ;&nbsp; &nbsp;
+ t[1]='a'; &nbsp;
+ cout&amp;lt;&amp;lt;&quot;p1:&quot;&amp;lt;&amp;lt;p1&amp;lt;&amp;lt;endl&amp;lt;&amp;lt;&quot;p2:&quot;&amp;lt;&amp;lt;p2&amp;lt;&amp;lt;endl&amp;lt;&amp;lt;&quot;p3:&quot;&amp;lt;&amp;lt;p3&amp;lt;&amp;lt;endl&amp;lt;&amp;lt;&quot;t:&quot;&amp;lt;&amp;lt;t&amp;lt;&amp;lt;endl; &nbsp;
+ delete [] t; &nbsp;
+ cout&amp;lt;&amp;lt;&quot;----------------------------------------------------------------&quot;&amp;lt;&amp;lt;endl; &nbsp;
+ cout&amp;lt;&amp;lt;&quot;函数指针练习:&quot;&amp;lt;&amp;lt;endl;&nbsp; &nbsp;
+ cout&amp;lt;&amp;lt;&quot;&amp;gt;&quot;;&nbsp; &nbsp;
+ int index=0; &nbsp;
+ cin &amp;gt;&amp;gt;index; &nbsp;
+ do{&nbsp; &nbsp;
+ if(index&amp;gt;2||index&amp;lt;=0) &nbsp;
+ { &nbsp;
+ cout&amp;lt;&amp;lt;&quot;Only has two function!1,prints;2,copy.&quot;&amp;lt;&amp;lt;endl&amp;lt;&amp;lt;&quot;&amp;gt;&quot;; &nbsp;
+ cin&amp;gt;&amp;gt;index; &nbsp;
+ } &nbsp;
+ else &nbsp;
+ { &nbsp;
+ pFun[index-1](); &nbsp;
+ cout&amp;lt;&amp;lt;&quot;return to main.&quot;&amp;lt;&amp;lt;endl; &nbsp;
+ } &nbsp;
+ } while (index&amp;gt;2||index&amp;lt;=0); &nbsp;
+ cout&amp;lt;&amp;lt;&quot;----------------------------------------------------------------&quot;&amp;lt;&amp;lt;endl; &nbsp;
+ cout&amp;lt;&amp;lt;&quot;双向链表练习:&quot;&amp;lt;&amp;lt;endl; &nbsp;
+ LIST&amp;lt;string&amp;gt; li; &nbsp;
+ li.Add(&quot;hello&quot;); &nbsp;
+ li.Add(&quot;see&quot;); &nbsp;
+ li.Add(&quot;yes&quot;); &nbsp;
+ li.Add(&quot;no&quot;); &nbsp;
+ li.Add(&quot;3qs&quot;); &nbsp;
+ li.PrintAll(); &nbsp;
+ cout&amp;lt;&amp;lt;&quot;Delete: \&quot;no\&quot;string.&quot;&amp;lt;&amp;lt;endl; &nbsp;
+ li.Delete(&quot;no&quot;); &nbsp;
+ li.PrintAll(); &nbsp;
+ cout&amp;lt;&amp;lt;&quot;----------------------------------------------------------------&quot;&amp;lt;&amp;lt;endl; &nbsp;
+ cout&amp;lt;&amp;lt;&quot;for_each 实例:&quot;&amp;lt;&amp;lt;endl; &nbsp;
+ vector&amp;lt;int&amp;gt; v; &nbsp;
+ v.push_back(12); &nbsp;
+ for (int i=0;i&amp;lt;100;i+=10) &nbsp;
+ { &nbsp;
+ v.push_back(i); &nbsp;
+ } &nbsp;
+ cout&amp;lt;&amp;lt;&quot;原始向量:&quot;; &nbsp;
+ for (vector&amp;lt;int&amp;gt;::iterator v1=v.begin();v1!=v.end();v1++) &nbsp;
+ { &nbsp;
+ cout&amp;lt;&amp;lt;*(v1)&amp;lt;&amp;lt;&quot; &quot;; &nbsp;
+ } &nbsp;
+ cout&amp;lt;&amp;lt;endl; &nbsp;
+ for_each ( v.begin ( ) , v.end ( ) , mFun&amp;lt;int&amp;gt; ( 12 ) ); &nbsp;
+ cout&amp;lt;&amp;lt;&quot;for_each-&amp;gt;add(-2):&quot;; &nbsp;
+ for (vector&amp;lt;int&amp;gt;::iterator v1=v.begin();v1!=v.end();v1++) &nbsp;
+ { &nbsp;
+ cout&amp;lt;&amp;lt;*(v1)&amp;lt;&amp;lt;&quot; &quot;; &nbsp;
+ } &nbsp;
+ cout&amp;lt;&amp;lt;endl;&nbsp; &nbsp;
+ 
+ return 0; &nbsp;
+ 
+ } &nbsp;
+ 
+ void prints() &nbsp;
+ { &nbsp;
+ cout&amp;lt;&amp;lt;&quot;prints() function&quot;&amp;lt;&amp;lt;endl; &nbsp;
+ } &nbsp;
+ 
+ void copy() &nbsp;
+ { &nbsp;
+ cout&amp;lt;&amp;lt;&quot;copy function&quot;&amp;lt;&amp;lt;endl; &nbsp;
+ }</pre><p></p>
 ]]></content:encoded>
 			<wfw:commentRss>http://imzc.net/archives/24/feed/</wfw:commentRss>
 		<slash:comments>279</slash:comments>
@@ -926,12 +527,8 @@ STL vector with iterator 和 for_each 算法.]]></description>
 		<category><![CDATA[makefile]]></category>
 
 		<guid isPermaLink="false">http://imzc.net/?action=show&#038;id=97</guid>
-		<description><![CDATA[1 &#160; 代码如下：﻿ //function.h   void sig_int(int);   //f [...]]]></description>
-			<content:encoded><![CDATA[
-<div class="wp_syntax"><table><tr><td class="line_numbers"><pre>1
-</pre></td><td class="code"><pre class="c" style="font-family:monospace;">&nbsp;</pre></td></tr></table></div>
-
-<p>代码如下：﻿</p>
+		<description><![CDATA[[crayon-505b48de17f8c/] 代码如下：﻿ //function.h   void sig_ [...]]]></description>
+			<content:encoded><![CDATA[<p></p><pre class="crayon-plain-tag"></pre><p>代码如下：﻿</p>
 <p>//function.h  <br />
  void sig_int(int);  </p>
 <p> //function.c  <br />
@@ -992,43 +589,40 @@ OBJS = test.o function.o   <br />
 <p><a id="makefile.E7.9A.84.E8.A7.84.E5.88.99" name="makefile.E7.9A.84.E8.A7.84.E5.88.99"></a></p>
 <h2>makefile的规则</h2>
 <p>在讲述这个makefile之前，还是让我们先来粗略地看一看makefile的规则。</p>
-<pre>target ... : prerequisites ...
+<p></p><pre class="crayon-plain-tag">target ...&nbsp;: prerequisites ...
 	command
 	...
-	...</pre>
-<p>target可以是一个object file(目标文件)，也可以是一个执行文件，还可以是一个标签（label）。对于标签这种特性，在后续的“伪目标”章节中会有叙述。</p>
+	...</pre><p>target可以是一个object file(目标文件)，也可以是一个执行文件，还可以是一个标签（label）。对于标签这种特性，在后续的“伪目标”章节中会有叙述。</p>
 <p>prerequisites就是，要生成那个target所需要的文件或是目标。</p>
 <p>command也就是make需要执行的命令。（任意的shell命令）</p>
 <p>这是一个文件的依赖关系，也就是说，target这一个或多个的目标文件依赖于prerequisites中的文件，其生成规则定义在  command中。说白一点就是说，prerequisites中如果有一个以上的文件比target文件要新的话，command所定义的命令就会被执  行。这就是makefile的规则。也就是makefile中最核心的内容。</p>
 <p>说到底，makefile的东西就是这样一点，好像我的这篇文档也该结束了。呵呵。还不尽然，这是makefile的主线和核心，但要写好一个makefile还不够，我会以后面一点一点地结合我的工作经验给你慢慢道来。内容还多着呢。：）</p>
 <p><a id=".E4.B8.80.E4.B8.AA.E7.A4.BA.E4.BE.8B" name=".E4.B8.80.E4.B8.AA.E7.A4.BA.E4.BE.8B"></a></p>
 <h2>一个示例</h2>
-<p>正如前面所说的，如果一个工程有3个头文件，和8个c文件，我们为了完成前面所述的那三个规则，我们的makefile应该是下面的这个样子的。</p>
-<pre>edit : main.o kbd.o command.o display.o \
+<p>正如前面所说的，如果一个工程有3个头文件，和8个c文件，我们为了完成前面所述的那三个规则，我们的makefile应该是下面的这个样子的。</p><pre class="crayon-plain-tag">edit&nbsp;: main.o kbd.o command.o display.o \
 		insert.o search.o files.o utils.o
 	cc -o edit main.o kbd.o command.o display.o \
 		insert.o search.o files.o utils.o
 
-main.o : main.c defs.h
+main.o&nbsp;: main.c defs.h
 	cc -c main.c
-kbd.o : kbd.c defs.h command.h
+kbd.o&nbsp;: kbd.c defs.h command.h
 	cc -c kbd.c
-command.o : command.c defs.h command.h
+command.o&nbsp;: command.c defs.h command.h
 	cc -c command.c
-display.o : display.c defs.h buffer.h
+display.o&nbsp;: display.c defs.h buffer.h
 	cc -c display.c
-insert.o : insert.c defs.h buffer.h
+insert.o&nbsp;: insert.c defs.h buffer.h
 	cc -c insert.c
-search.o : search.c defs.h buffer.h
+search.o&nbsp;: search.c defs.h buffer.h
 	cc -c search.c
-files.o : files.c defs.h buffer.h command.h
+files.o&nbsp;: files.c defs.h buffer.h command.h
 	cc -c files.c
-utils.o : utils.c defs.h
+utils.o&nbsp;: utils.c defs.h
 	cc -c utils.c
-clean :
+clean&nbsp;:
 	rm edit main.o kbd.o command.o display.o \
-		insert.o search.o files.o utils.o</pre>
-<p>反斜杠（\）是换行符的意思。这样比较便于makefile的易读。我们可以把这个内容保存在名字为“makefile”或“Makefile”  的文件中，然后在该目录下直接输入命令“make”就可以生成执行文件edit。如果要删除执行文件和所有的中间目标文件，那么，只要简单地执行一下  “make clean”就可以了。</p>
+		insert.o search.o files.o utils.o</pre><p>反斜杠（\）是换行符的意思。这样比较便于makefile的易读。我们可以把这个内容保存在名字为“makefile”或“Makefile”  的文件中，然后在该目录下直接输入命令“make”就可以生成执行文件edit。如果要删除执行文件和所有的中间目标文件，那么，只要简单地执行一下  “make clean”就可以了。</p>
 <p>在这个makefile中，目标文件（target）包含：执行文件edit和中间目标文件（*.o），依赖文件  （prerequisites）就是冒号后面的那些 .c 文件和 .h文件。每一个 .o 文件都有一组依赖文件，而这些 .o 文件又是执行文件  edit 的依赖文件。依赖关系的实质上就是说明了目标文件是由哪些文件生成的，换言之，目标文件是哪些文件更新的。</p>
 <p>在定义好依赖关系后，后续的那一行定义了如何生成目标文件的操作系统命令，一定要以一个tab键作为开头。记住，make并不管命令是怎  么工作的，他只管执行所定义的命令。make会比较targets文件和prerequisites文件的修改日期，如果prerequisites文件  的日期要比targets文件的日期要新，或者target不存在的话，那么，make就会执行后续定义的命令。</p>
 <p>这里要说明一点的是，clean不是一个文件，它只不过是一个动作名字，有点像c语言中的lable一样，其冒号后什么也没有，那  么，make就不会自动去找它的依赖性，也就不会自动执行其后所定义的命令。要执行其后的命令，就要在make命令后明显得指出这个lable的名字。这  样的方法非常有用，我们可以在一个makefile中定义不用的编译或是和编译无关的命令，比如程序的打包，程序的备份，等等。</p>
@@ -1048,92 +642,78 @@ clean :
 <p>而如果我们改变了“command.h”，那么，kdb.o、command.o和files.o都会被重编译，并且，edit会被重链接。</p>
 <p><a id="makefile.E4.B8.AD.E4.BD.BF.E7.94.A8.E5.8F.98.E9.87.8F" name="makefile.E4.B8.AD.E4.BD.BF.E7.94.A8.E5.8F.98.E9.87.8F"></a></p>
 <h2>makefile中使用变量</h2>
-<p>在上面的例子中，先让我们看看edit的规则：</p>
-<pre>edit : main.o kbd.o command.o display.o \
+<p>在上面的例子中，先让我们看看edit的规则：</p><pre class="crayon-plain-tag">edit&nbsp;: main.o kbd.o command.o display.o \
 		insert.o search.o files.o utils.o
 	cc -o edit main.o kbd.o command.o display.o \
-		insert.o search.o files.o utils.o</pre>
-<p>我们可以看到[.o]文件的字符串被重复了两次，如果我们的工程需要加入一个新的[.o]文件，那么我们需要在两个地方加（应该是三个地方，还有一   个地方在clean中）。当然，我们的makefile并不复杂，所以在两个地方加也不累，但如果makefile变得复杂，那么我们就有可能会忘掉一个  需要加入的地方，而导致编译失败。所以，为了makefile的易维护，在makefile中我们可以使用变量。makefile的变量也就是一个字符  串，理解成C语言中的宏可能会更好。</p>
-<p>比如，我们声明一个变量，叫objects, OBJECTS, objs, OBJS, obj, 或是 OBJ，反正不管什么啦，只要能够表示obj文件就行了。我们在makefile一开始就这样定义：</p>
-<pre>objects = main.o kbd.o command.o display.o \
-		insert.o search.o files.o utils.o</pre>
-<p>于是，我们就可以很方便地在我们的makefile中以“$(objects)”的方式来使用这个变量了，于是我们的改良版makefile就变成下面这个样子：</p>
-<pre>objects = main.o kbd.o command.o display.o \
+		insert.o search.o files.o utils.o</pre><p>我们可以看到[.o]文件的字符串被重复了两次，如果我们的工程需要加入一个新的[.o]文件，那么我们需要在两个地方加（应该是三个地方，还有一   个地方在clean中）。当然，我们的makefile并不复杂，所以在两个地方加也不累，但如果makefile变得复杂，那么我们就有可能会忘掉一个  需要加入的地方，而导致编译失败。所以，为了makefile的易维护，在makefile中我们可以使用变量。makefile的变量也就是一个字符  串，理解成C语言中的宏可能会更好。</p>
+<p>比如，我们声明一个变量，叫objects, OBJECTS, objs, OBJS, obj, 或是 OBJ，反正不管什么啦，只要能够表示obj文件就行了。我们在makefile一开始就这样定义：</p><pre class="crayon-plain-tag">objects = main.o kbd.o command.o display.o \
+		insert.o search.o files.o utils.o</pre><p>于是，我们就可以很方便地在我们的makefile中以“$(objects)”的方式来使用这个变量了，于是我们的改良版makefile就变成下面这个样子：</p><pre class="crayon-plain-tag">objects = main.o kbd.o command.o display.o \
 		insert.o search.o files.o utils.o
 
-edit : $(objects)
+edit&nbsp;: $(objects)
 	cc -o edit $(objects)
-main.o : main.c defs.h
+main.o&nbsp;: main.c defs.h
 	cc -c main.c
-kbd.o : kbd.c defs.h command.h
+kbd.o&nbsp;: kbd.c defs.h command.h
 	cc -c kbd.c
-command.o : command.c defs.h command.h
+command.o&nbsp;: command.c defs.h command.h
 	cc -c command.c
-display.o : display.c defs.h buffer.h
+display.o&nbsp;: display.c defs.h buffer.h
 	cc -c display.c
-insert.o : insert.c defs.h buffer.h
+insert.o&nbsp;: insert.c defs.h buffer.h
 	cc -c insert.c
-search.o : search.c defs.h buffer.h
+search.o&nbsp;: search.c defs.h buffer.h
 	cc -c search.c
-files.o : files.c defs.h buffer.h command.h
+files.o&nbsp;: files.c defs.h buffer.h command.h
 	cc -c files.c
-utils.o : utils.c defs.h
+utils.o&nbsp;: utils.c defs.h
 	cc -c utils.c
-clean :
-	rm edit $(objects)</pre>
-<p>于是如果有新的 .o 文件加入，我们只需简单地修改一下 objects 变量就可以了。</p>
+clean&nbsp;:
+	rm edit $(objects)</pre><p>于是如果有新的 .o 文件加入，我们只需简单地修改一下 objects 变量就可以了。</p>
 <p>关于变量更多的话题，我会在后续给你一一道来。</p>
 <p><a id=".E8.AE.A9make.E8.87.AA.E5.8A.A8.E6.8E.A8.E5.AF.BC" name=".E8.AE.A9make.E8.87.AA.E5.8A.A8.E6.8E.A8.E5.AF.BC"></a></p>
 <h2>让make自动推导</h2>
 <p>GNU的make很强大，它可以自动推导文件以及文件依赖关系后面的命令，于是我们就没必要去在每一个[.o]文件后都写上类似的命令，因为，我们的make会自动识别，并自己推导命令。</p>
-<p>只要make看到一个[.o]文件，它就会自动的把[.c]文件加在依赖关系中，如果make找到一个whatever.o，那么  whatever.c，就会是whatever.o的依赖文件。并且 cc -c whatever.c 也会被推导出来，于是，我们的makefile  再也不用写得这么复杂。我们的新makefile又出炉了。</p>
-<pre>objects = main.o kbd.o command.o display.o \
+<p>只要make看到一个[.o]文件，它就会自动的把[.c]文件加在依赖关系中，如果make找到一个whatever.o，那么  whatever.c，就会是whatever.o的依赖文件。并且 cc -c whatever.c 也会被推导出来，于是，我们的makefile  再也不用写得这么复杂。我们的新makefile又出炉了。</p><pre class="crayon-plain-tag">objects = main.o kbd.o command.o display.o \
 		insert.o search.o files.o utils.o
 
-edit : $(objects)
+edit&nbsp;: $(objects)
 	cc -o edit $(objects)
 
-main.o : defs.h
-kbd.o : defs.h command.h
-command.o : defs.h command.h
-display.o : defs.h buffer.h
-insert.o : defs.h buffer.h
-search.o : defs.h buffer.h
-files.o : defs.h buffer.h command.h
-utils.o : defs.h
+main.o&nbsp;: defs.h
+kbd.o&nbsp;: defs.h command.h
+command.o&nbsp;: defs.h command.h
+display.o&nbsp;: defs.h buffer.h
+insert.o&nbsp;: defs.h buffer.h
+search.o&nbsp;: defs.h buffer.h
+files.o&nbsp;: defs.h buffer.h command.h
+utils.o&nbsp;: defs.h
 
-.PHONY : clean
-clean :
-	rm edit $(objects)</pre>
-<p>这种方法，也就是make的“隐晦规则”。上面文件内容中，“.PHONY”表示，clean是个伪目标文件。</p>
+.PHONY&nbsp;: clean
+clean&nbsp;:
+	rm edit $(objects)</pre><p>这种方法，也就是make的“隐晦规则”。上面文件内容中，“.PHONY”表示，clean是个伪目标文件。</p>
 <p>关于更为详细的“隐晦规则”和“伪目标文件”，我会在后续给你一一道来。</p>
 <p><a id=".E5.8F.A6.E7.B1.BB.E9.A3.8E.E6.A0.BC.E7.9A.84makefile" name=".E5.8F.A6.E7.B1.BB.E9.A3.8E.E6.A0.BC.E7.9A.84makefile"></a></p>
 <h2>另类风格的makefile</h2>
-<p>既然我们的make可以自动推导命令，那么我看到那堆[.o]和[.h]的依赖就有点不爽，那么多的重复的[.h]，能不能把其收拢起来，好吧，没有问题，这个对于make来说很容易，谁叫它提供了自动推导命令和文件的功能呢？来看看最新风格的makefile吧。</p>
-<pre>objects = main.o kbd.o command.o display.o \
+<p>既然我们的make可以自动推导命令，那么我看到那堆[.o]和[.h]的依赖就有点不爽，那么多的重复的[.h]，能不能把其收拢起来，好吧，没有问题，这个对于make来说很容易，谁叫它提供了自动推导命令和文件的功能呢？来看看最新风格的makefile吧。</p><pre class="crayon-plain-tag">objects = main.o kbd.o command.o display.o \
 		insert.o search.o files.o utils.o
 
-edit : $(objects)
+edit&nbsp;: $(objects)
 	cc -o edit $(objects)
 
-$(objects) : defs.h
-kbd.o command.o files.o : command.h
-display.o insert.o search.o files.o : buffer.h
+$(objects)&nbsp;: defs.h
+kbd.o command.o files.o&nbsp;: command.h
+display.o insert.o search.o files.o&nbsp;: buffer.h
 
-.PHONY : clean
-clean :
-	rm edit $(objects)</pre>
-<p>这种风格，让我们的makefile变得很简单，但我们的文件依赖关系就显得有点凌乱了。鱼和熊掌不可兼得。还看你的喜好了。我是不喜欢这种风格的，一是文件的依赖关系看不清楚，二是如果文件一多，要加入几个新的.o文件，那就理不清楚了。</p>
+.PHONY&nbsp;: clean
+clean&nbsp;:
+	rm edit $(objects)</pre><p>这种风格，让我们的makefile变得很简单，但我们的文件依赖关系就显得有点凌乱了。鱼和熊掌不可兼得。还看你的喜好了。我是不喜欢这种风格的，一是文件的依赖关系看不清楚，二是如果文件一多，要加入几个新的.o文件，那就理不清楚了。</p>
 <p><a id=".E6.B8.85.E7.A9.BA.E7.9B.AE.E6.A0.87.E6.96.87.E4.BB.B6.E7.9A.84.E8.A7.84.E5.88.99" name=".E6.B8.85.E7.A9.BA.E7.9B.AE.E6.A0.87.E6.96.87.E4.BB.B6.E7.9A.84.E8.A7.84.E5.88.99"></a></p>
 <h2>清空目标文件的规则</h2>
-<p>每个Makefile中都应该写一个清空目标文件（.o和执行文件）的规则，这不仅便于重编译，也很利于保持文件的清洁。这是一个“修养”（呵呵，还记得我的《编程修养》吗）。一般的风格都是：</p>
-<pre>clean:
-	rm edit $(objects)</pre>
-<p>更为稳健的做法是：</p>
-<pre>.PHONY : clean
-clean :
-	-rm edit $(objects)</pre>
-<p>前面说过，.PHONY意思表示clean是一个“伪目标”，。而在rm命令前面加了一个小减号的意思就是，也许某些文件出现问题，但不要管，继续   做后面的事。当然，clean的规则不要放在文件的开头，不然，这就会变成make的默认目标，相信谁也不愿意这样。不成文的规矩是——“clean从来  都是放在文件的最后”。</p>
+<p>每个Makefile中都应该写一个清空目标文件（.o和执行文件）的规则，这不仅便于重编译，也很利于保持文件的清洁。这是一个“修养”（呵呵，还记得我的《编程修养》吗）。一般的风格都是：</p><pre class="crayon-plain-tag">clean:
+	rm edit $(objects)</pre><p>更为稳健的做法是：</p><pre class="crayon-plain-tag">.PHONY&nbsp;: clean
+clean&nbsp;:
+	-rm edit $(objects)</pre><p>前面说过，.PHONY意思表示clean是一个“伪目标”，。而在rm命令前面加了一个小减号的意思就是，也许某些文件出现问题，但不要管，继续   做后面的事。当然，clean的规则不要放在文件的开头，不然，这就会变成make的默认目标，相信谁也不愿意这样。不成文的规矩是——“clean从来  都是放在文件的最后”。</p>
 <p>上面就是一个makefile的概貌，也是makefile的基础，下面还有很多makefile的相关细节，准备好了吗？准备好了就来。</p>
 <p><a id="Makefile.E9.87.8C.E6.9C.89.E4.BB.80.E4.B9.88.EF.BC.9F" name="Makefile.E9.87.8C.E6.9C.89.E4.BB.80.E4.B9.88.EF.BC.9F"></a></p>
 <h2>Makefile里有什么？</h2>
@@ -1152,21 +732,13 @@ clean :
 <p>当然，你可以使用别的文件名来书写Makefile，比  如：“Make.Linux”，“Make.Solaris”，“Make.AIX”等，如果要指定特定的Makefile，你可以使用make的“-  f”和“&#8211;file”参数，如：make -f Make.Linux或make &#8211;file Make.AIX。</p>
 <p><a id=".E5.BC.95.E7.94.A8.E5.85.B6.E5.AE.83.E7.9A.84Makefile" name=".E5.BC.95.E7.94.A8.E5.85.B6.E5.AE.83.E7.9A.84Makefile"></a></p>
 <h2>引用其它的Makefile</h2>
-<p>在Makefile使用include关键字可以把别的Makefile包含进来，这很像C语言的#include，被包含的文件会原模原样的放在当前文件的包含位置。include的语法是：</p>
-<pre>include &lt;filename&gt;;</pre>
-<p>filename可以是当前操作系统Shell的文件模式（可以包含路径和通配符）</p>
-<p>在include前面可以有一些空字符，但是绝不能是[Tab]键开始。include和&lt;filename&gt;;可以用一个或  多个空格隔开。举个例子，你有这样几个Makefile：a.mk、b.mk、c.mk，还有一个文件叫foo.make，以及一个变量$(bar)，其  包含了 e.mk和f.mk，那么，下面的语句：</p>
-<pre>include foo.make *.mk $(bar)</pre>
-<p>等价于：</p>
-<pre>include foo.make a.mk b.mk c.mk e.mk f.mk</pre>
-<p>make命令开始时，会找寻include所指出的其它Makefile，并把其内容安置在当前的位置。就好像C/C++的#include指令一   样。如果文件都没有指定绝对路径或是相对路径的话，make会在当前目录下首先寻找，如果当前目录下没有找到，那么，make还会在下面的几个目录下找：</p>
+<p>在Makefile使用include关键字可以把别的Makefile包含进来，这很像C语言的#include，被包含的文件会原模原样的放在当前文件的包含位置。include的语法是：</p><pre class="crayon-plain-tag">include &amp;lt;filename&amp;gt;;</pre><p>filename可以是当前操作系统Shell的文件模式（可以包含路径和通配符）</p>
+<p>在include前面可以有一些空字符，但是绝不能是[Tab]键开始。include和&lt;filename&gt;;可以用一个或  多个空格隔开。举个例子，你有这样几个Makefile：a.mk、b.mk、c.mk，还有一个文件叫foo.make，以及一个变量$(bar)，其  包含了 e.mk和f.mk，那么，下面的语句：</p><pre class="crayon-plain-tag">include foo.make *.mk $(bar)</pre><p>等价于：</p><pre class="crayon-plain-tag">include foo.make a.mk b.mk c.mk e.mk f.mk</pre><p>make命令开始时，会找寻include所指出的其它Makefile，并把其内容安置在当前的位置。就好像C/C++的#include指令一   样。如果文件都没有指定绝对路径或是相对路径的话，make会在当前目录下首先寻找，如果当前目录下没有找到，那么，make还会在下面的几个目录下找：</p>
 <ol>
 <li>如果make执行时，有“-I”或“&#8211;include-dir”参数，那么make就会在这个参数所指定的目录下去寻找。</li>
 <li>如果目录&lt;prefix&gt;;/include（一般是：/usr/local/bin或/usr/include）存在的话，make也会去找。</li>
 </ol>
-<p>如果有文件没有找到的话，make会生成一条警告信息，但不会马上出现致命错误。它会继续载入其它的文件，一旦完成makefile的读取，  make会再重试这些没有找到，或是不能读取的文件，如果还是不行，make才会出现一条致命信息。如果你想让make不理那些无法读取的文件，而继续执  行，你可以在include前加一个减号“-”。如：</p>
-<pre>-include &lt;filename&gt;;</pre>
-<p>其表示，无论include过程中出现什么错误，都不要报错继续执行。和其它版本make兼容的相关命令是sinclude，其作用和这一个是一样的。</p>
+<p>如果有文件没有找到的话，make会生成一条警告信息，但不会马上出现致命错误。它会继续载入其它的文件，一旦完成makefile的读取，  make会再重试这些没有找到，或是不能读取的文件，如果还是不行，make才会出现一条致命信息。如果你想让make不理那些无法读取的文件，而继续执  行，你可以在include前加一个减号“-”。如：</p><pre class="crayon-plain-tag">-include &amp;lt;filename&amp;gt;;</pre><p>其表示，无论include过程中出现什么错误，都不要报错继续执行。和其它版本make兼容的相关命令是sinclude，其作用和这一个是一样的。</p>
 <p><a id=".E7.8E.AF.E5.A2.83.E5.8F.98.E9.87.8F_MAKEFILES" name=".E7.8E.AF.E5.A2.83.E5.8F.98.E9.87.8F_MAKEFILES"></a></p>
 <h2>环境变量 MAKEFILES</h2>
 <p>如果你的当前环境中定义了环境变量MAKEFILES，那么，make会把这个变量中的值做一个类似于include的动作。这个变量中的值是其它   的Makefile，用空格分隔。只是，它和include不同的是，从这个环境变中引入的Makefile的“目标”不会起作用，如果环境变量中定义的  文件发现错误，make也会不理。</p>

@@ -41,7 +41,15 @@
 	<!-- javascript END -->
 
 		<link rel='stylesheet' id='jquery.slimbox-css'  href='../../wp-content/plugins/slimbox/stylesheets/jquery.slimbox.css?ver=2.03' type='text/css' media='all' />
+<link rel='stylesheet' id='crayon-style-css'  href='http://imzc.net/wp-content/plugins/crayon-syntax-highlighter/css/style.css?ver=1.10' type='text/css' media='all' />
+<link rel='stylesheet' id='crayon-theme-classic-css'  href='../../wp-content/plugins/crayon-syntax-highlighter/themes/classic/classic.css?ver=1.10' type='text/css' media='all' />
+<link rel='stylesheet' id='crayon-font-monaco-css'  href='../../wp-content/plugins/crayon-syntax-highlighter/fonts/monaco.css?ver=1.10' type='text/css' media='all' />
 <link rel='stylesheet' id='wp-pagenavi-css'  href='../../wp-content/themes/elegant-box/pagenavi-css.css?ver=2.70' type='text/css' media='all' />
+<script type="text/javascript">
+var duoshuoQuery = {"short_name":"imzc","sso":{"login":"http:\/\/imzc.net\/wp-login.php?action=duoshuo_login","logout":"http:\/\/imzc.net\/wp-login.php?action=logout&_wpnonce=552f4bd578"},"remote_auth":"W10= f583f463193a32a7dd03f5c6801576e7688b4734 1345733245"};
+duoshuoQuery.sso.login += '&redirect_to=' + encodeURIComponent(window.location.href);
+duoshuoQuery.sso.logout += '&redirect_to=' + encodeURIComponent(window.location.href);
+</script>
 <script type='text/javascript' src='../../wp-includes/js/jquery/jquery.js?ver=1.7.2'></script>
 <script type='text/javascript' src='../../wp-content/plugins/slimbox/javascript/jquery.slimbox.js?ver=2.03'></script>
 <script type='text/javascript' src='../../wp-includes/js/json2.js?ver=2011-02-23'></script>
@@ -51,7 +59,11 @@ var live_blogging = {"ajaxurl":"http:\/\/imzc.net\/wp-admin\/admin-ajax.php","up
 /* ]]> */
 </script>
 <script type='text/javascript' src='../../wp-content/plugins/live-blogging/live-blogging.js?ver=3.4.1'></script>
+<script type='text/javascript' src='../../wp-content/plugins/crayon-syntax-highlighter/js/util.js?ver=1.10'></script>
+<script type='text/javascript' src='../../wp-content/plugins/crayon-syntax-highlighter/js/crayon.js?ver=1.10'></script>
+<script type='text/javascript' src='../../wp-content/plugins/crayon-syntax-highlighter/js/jquery.popup.js?ver=1.10'></script>
 <script type='text/javascript' src='../../wp-includes/js/comment-reply.js?ver=3.4.1'></script>
+<script type='text/javascript' src='http://static.duoshuo.com/embed.js'></script>
 <link rel="EditURI" type="application/rsd+xml" title="RSD" href="../../xmlrpc.php?rsd" />
 <link rel="wlwmanifest" type="application/wlwmanifest+xml" href="../../wp-includes/wlwmanifest.xml" /> 
 <link rel='prev' title='Ruby使用xml-rpc对emlog进行发帖，编辑等操作' href='../226/index.html' />
@@ -59,7 +71,7 @@ var live_blogging = {"ajaxurl":"http:\/\/imzc.net\/wp-admin\/admin-ajax.php","up
 <meta name="generator" content="WordPress 3.4.1" />
 <link rel='shortlink' href='http://wp.me/p19waf-3F' />
 
-<!-- All in One SEO Pack 1.6.14.5 by Michael Torbert of Semper Fi Web Design[343,406] -->
+<!-- All in One SEO Pack 1.6.14.6 by Michael Torbert of Semper Fi Web Design[343,406] -->
 <meta name="description" content="ruby使用win32ole和win32api" />
 <meta name="keywords" content="ruby,win32ole,win32api" />
 <link rel="canonical" href="index.html" />
@@ -70,8 +82,6 @@ var live_blogging = {"ajaxurl":"http:\/\/imzc.net\/wp-admin\/admin-ajax.php","up
 		select.slimbox();
 	});
 </script>
-
-<link rel="stylesheet" href="../../wp-content/themes/elegant-box/wp-syntax.css" type="text/css" media="screen" />
 </head>
 
 
@@ -184,66 +194,98 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 </div>
 <br />	
 					<p>ruby提供的功能比较强大，能直接调用win32 api，还能使用OLE组建。<br />
-一、 win32 ole调用：</p>
+一、 win32 ole调用：</p><!-- Crayon Syntax Highlighter v1.10 -->
 
-<div class="wp_syntax"><div class="code"><pre class="ruby" style="font-family:monospace;"><span style="color:#CC0066; font-weight:bold;">require</span> <span style="color:#996600;">&quot;win32ole&quot;</span>
-i = WIN32OLE.<span style="color:#9900CC;">new</span><span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#996600;">'AutoItX3.Control'</span><span style="color:#006600; font-weight:bold;">&#41;</span> <span style="color:#008000; font-style:italic;">#使用AutoIt工具的OLE</span>
-<span style="color:#CC0066; font-weight:bold;">puts</span> i.<span style="color:#9900CC;">ole_methods</span> <span style="color:#008000; font-style:italic;">#打印出所有支持的方法</span>
-i.<span style="color:#9900CC;">Run</span><span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#996600;">&quot;calc.exe&quot;</span><span style="color:#006600; font-weight:bold;">&#41;</span></pre></div></div>
-
+		<div id="crayon-5036427d7e7e8" class="crayon-syntax crayon-theme-classic crayon-font-monaco crayon-os-pc print-yes" data-settings=" scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; float: none; clear: both; ">
+		
+			<div class="crayon-toolbar" data-settings=" mouseover overlay hide delay" style="">
+			<div class="crayon-tools"><span class="crayon-mixed-highlight" title="含多种语言"></span><a class="crayon-nums-button crayon-button" title="显示/隐藏行编号"></a><a class="crayon-copy-button crayon-button" data-text="使用 %s 复制，使用 %s 粘贴。" title="复制代码"></a><a class="crayon-popup-button crayon-button" title="在新窗口中显示代码" onclick="return false;"></a><a class="crayon-plain-button crayon-button" title="纯文本显示代码"></a><span class="crayon-language">Ruby</span></div></div>
+			<div class="crayon-info" style=""></div>
+			<div class="crayon-plain-wrap"><textarea wrap="off" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; ">require "win32ole"
+i = WIN32OLE.new('AutoItX3.Control') #使用AutoIt工具的OLE
+puts i.ole_methods #打印出所有支持的方法
+i.Run("calc.exe")</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show" style="">
+					<div class="crayon-nums-content"><div class="crayon-num" style="">1</div><div class="crayon-num crayon-striped-num" style="">2</div><div class="crayon-num" style="">3</div><div class="crayon-num crayon-striped-num" style="">4</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style=""><div class="crayon-line" id="crayon-5036427d7e7e8-1" style=""><span class="i">require</span><span class="h"> </span><span class="s">"win32ole"</span></div><div class="crayon-line crayon-striped-line" id="crayon-5036427d7e7e8-2" style=""><span class="i">i</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="i">WIN32OLE</span><span class="sy">.</span><span class="e">new</span><span class="sy">(</span><span class="s">'AutoItX3.Control'</span><span class="sy">)</span><span class="h"> </span><span class="c">#使用AutoIt工具的OLE</span></div><div class="crayon-line" id="crayon-5036427d7e7e8-3" style=""><span class="i">puts</span><span class="h"> </span><span class="i">i</span><span class="sy">.</span><span class="v">ole_methods</span><span class="h"> </span><span class="c">#打印出所有支持的方法</span></div><div class="crayon-line crayon-striped-line" id="crayon-5036427d7e7e8-4" style=""><span class="i">i</span><span class="sy">.</span><span class="e">Run</span><span class="sy">(</span><span class="s">"calc.exe"</span><span class="sy">)</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0026 seconds] -->
 <p>二。 win32 api调用：<br />
 由于涉及到一些结构体，自己使用二进制方法比较麻烦，可以使用已有的CStruct gem包来处理。<br />
 安装步骤和简单介绍见：<a href="http://www.w-yong.com/docs/ruby_win32_api.html" target="_blank"> http://www.w-yong.com/docs/ruby_win32_api.html</a><br />
-官方的一个事例：</p>
+官方的一个事例：</p><!-- Crayon Syntax Highlighter v1.10 -->
 
-<div class="wp_syntax"><div class="code"><pre class="ruby" style="font-family:monospace;"><span style="color:#CC0066; font-weight:bold;">require</span> <span style="color:#996600;">'windows/memory'</span>
-<span style="color:#CC0066; font-weight:bold;">require</span> <span style="color:#996600;">'win32struct'</span>
-&nbsp;
-<span style="color:#9966CC; font-weight:bold;">include</span> <span style="color:#6666ff; font-weight:bold;">Windows::Memory</span>
-&nbsp;
-<span style="color:#008000; font-style:italic;"># example:</span>
-&nbsp;
-<span style="color:#008000; font-style:italic;"># typedef struct _MEMORYSTATUS {</span>
-<span style="color:#008000; font-style:italic;">#     DWORD dwLength;</span>
-<span style="color:#008000; font-style:italic;">#     DWORD dwMemoryLoad;</span>
-<span style="color:#008000; font-style:italic;">#     DWORD dwTotalPhys;</span>
-<span style="color:#008000; font-style:italic;">#     DWORD dwAvailPhys;</span>
-<span style="color:#008000; font-style:italic;">#     DWORD dwTotalPageFile;</span>
-<span style="color:#008000; font-style:italic;">#     DWORD dwAvailPageFile;</span>
-<span style="color:#008000; font-style:italic;">#     DWORD dwTotalVirtual;</span>
-<span style="color:#008000; font-style:italic;">#     DWORD dwAvailVirtual;</span>
-<span style="color:#008000; font-style:italic;"># } MEMORYSTATUS, *LPMEMORYSTATUS;</span>
-&nbsp;
-<span style="color:#9966CC; font-weight:bold;">class</span> MEMORYSTATUS <span style="color:#006600; font-weight:bold;">&lt;</span> Win32Struct
-    DWORD <span style="color:#ff3333; font-weight:bold;">:dwLength</span>
-    DWORD <span style="color:#ff3333; font-weight:bold;">:dwMemoryLoad</span>
-    DWORD <span style="color:#ff3333; font-weight:bold;">:dwTotalPhys</span>
-    DWORD <span style="color:#ff3333; font-weight:bold;">:dwAvailPhys</span>
-    DWORD <span style="color:#ff3333; font-weight:bold;">:dwTotalPageFile</span>
-    DWORD <span style="color:#ff3333; font-weight:bold;">:dwAvailPageFile</span>
-    DWORD <span style="color:#ff3333; font-weight:bold;">:dwTotalVirtual</span>
-    DWORD <span style="color:#ff3333; font-weight:bold;">:dwAvailVirtual</span>
-<span style="color:#9966CC; font-weight:bold;">end</span>
-&nbsp;
-<span style="color:#008000; font-style:italic;"># create a MEMORYSTATUS's instance</span>
-stat = MEMORYSTATUS.<span style="color:#9900CC;">new</span> <span style="color:#006600; font-weight:bold;">&#123;</span><span style="color:#006600; font-weight:bold;">|</span>st<span style="color:#006600; font-weight:bold;">|</span> st.<span style="color:#9900CC;">dwLength</span> = MEMORYSTATUS.<span style="color:#9900CC;">size</span> <span style="color:#006600; font-weight:bold;">&#125;</span>
-&nbsp;
-<span style="color:#008000; font-style:italic;"># call API &quot;GlobalMemoryStatus&quot; - See also MSDN</span>
-GlobalMemoryStatus<span style="color:#006600; font-weight:bold;">&#40;</span>stat.<span style="color:#9900CC;">data</span><span style="color:#006600; font-weight:bold;">&#41;</span>
-&nbsp;
-<span style="color:#008000; font-style:italic;">#output</span>
-<span style="color:#CC0066; font-weight:bold;">printf</span> <span style="color:#996600;">&quot;[Physical Memory]<span style="color:#000099;">\n</span>&quot;</span>
-<span style="color:#CC0066; font-weight:bold;">printf</span> <span style="color:#996600;">&quot;  total:%12d bytes<span style="color:#000099;">\n</span>&quot;</span>,stat.<span style="color:#9900CC;">dwTotalPhys</span>
-<span style="color:#CC0066; font-weight:bold;">printf</span> <span style="color:#996600;">&quot;  free :%12d bytes<span style="color:#000099;">\n</span>&quot;</span>,stat.<span style="color:#9900CC;">dwAvailPhys</span>
-&nbsp;
-<span style="color:#CC0066; font-weight:bold;">printf</span> <span style="color:#996600;">&quot;[Virtual Memory]<span style="color:#000099;">\n</span>&quot;</span>
-<span style="color:#CC0066; font-weight:bold;">printf</span> <span style="color:#996600;">&quot;  total:%12d bytes<span style="color:#000099;">\n</span>&quot;</span>,stat.<span style="color:#9900CC;">dwTotalVirtual</span>
-<span style="color:#CC0066; font-weight:bold;">printf</span> <span style="color:#996600;">&quot;  free :%12d bytes<span style="color:#000099;">\n</span>&quot;</span>,stat.<span style="color:#9900CC;">dwAvailVirtual</span>
-&nbsp;
-<span style="color:#CC0066; font-weight:bold;">printf</span> <span style="color:#996600;">&quot;[Paging File]<span style="color:#000099;">\n</span>&quot;</span>
-<span style="color:#CC0066; font-weight:bold;">printf</span> <span style="color:#996600;">&quot;  total:%12d bytes<span style="color:#000099;">\n</span>&quot;</span>,stat.<span style="color:#9900CC;">dwTotalPageFile</span>
-<span style="color:#CC0066; font-weight:bold;">printf</span> <span style="color:#996600;">&quot;  free :%12d bytes<span style="color:#000099;">\n</span>&quot;</span>,stat.<span style="color:#9900CC;">dwAvailPageFile</span></pre></div></div>
+		<div id="crayon-5036427d7e86d" class="crayon-syntax crayon-theme-classic crayon-font-monaco crayon-os-pc print-yes" data-settings=" scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; float: none; clear: both; ">
+		
+			<div class="crayon-toolbar" data-settings=" mouseover overlay hide delay" style="">
+			<div class="crayon-tools"><span class="crayon-mixed-highlight" title="含多种语言"></span><a class="crayon-nums-button crayon-button" title="显示/隐藏行编号"></a><a class="crayon-copy-button crayon-button" data-text="使用 %s 复制，使用 %s 粘贴。" title="复制代码"></a><a class="crayon-popup-button crayon-button" title="在新窗口中显示代码" onclick="return false;"></a><a class="crayon-plain-button crayon-button" title="纯文本显示代码"></a><span class="crayon-language">Ruby</span></div></div>
+			<div class="crayon-info" style=""></div>
+			<div class="crayon-plain-wrap"><textarea wrap="off" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; ">require 'windows/memory'
+require 'win32struct'
 
+include Windows::Memory
+
+# example:
+
+# typedef struct _MEMORYSTATUS {
+#     DWORD dwLength;
+#     DWORD dwMemoryLoad;
+#     DWORD dwTotalPhys;
+#     DWORD dwAvailPhys;
+#     DWORD dwTotalPageFile;
+#     DWORD dwAvailPageFile;
+#     DWORD dwTotalVirtual;
+#     DWORD dwAvailVirtual;
+# } MEMORYSTATUS, *LPMEMORYSTATUS;
+
+class MEMORYSTATUS &lt; Win32Struct
+    DWORD :dwLength
+    DWORD :dwMemoryLoad
+    DWORD :dwTotalPhys
+    DWORD :dwAvailPhys
+    DWORD :dwTotalPageFile
+    DWORD :dwAvailPageFile
+    DWORD :dwTotalVirtual
+    DWORD :dwAvailVirtual
+end
+
+# create a MEMORYSTATUS's instance
+stat = MEMORYSTATUS.new {|st| st.dwLength = MEMORYSTATUS.size }
+
+# call API "GlobalMemoryStatus" - See also MSDN
+GlobalMemoryStatus(stat.data)
+
+#output
+printf "[Physical Memory]\n"
+printf "  total:%12d bytes\n",stat.dwTotalPhys
+printf "  free :%12d bytes\n",stat.dwAvailPhys
+
+printf "[Virtual Memory]\n"
+printf "  total:%12d bytes\n",stat.dwTotalVirtual
+printf "  free :%12d bytes\n",stat.dwAvailVirtual
+
+printf "[Paging File]\n"
+printf "  total:%12d bytes\n",stat.dwTotalPageFile
+printf "  free :%12d bytes\n",stat.dwAvailPageFile</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show" style="">
+					<div class="crayon-nums-content"><div class="crayon-num" style="">1</div><div class="crayon-num crayon-striped-num" style="">2</div><div class="crayon-num" style="">3</div><div class="crayon-num crayon-striped-num" style="">4</div><div class="crayon-num" style="">5</div><div class="crayon-num crayon-striped-num" style="">6</div><div class="crayon-num" style="">7</div><div class="crayon-num crayon-striped-num" style="">8</div><div class="crayon-num" style="">9</div><div class="crayon-num crayon-striped-num" style="">10</div><div class="crayon-num" style="">11</div><div class="crayon-num crayon-striped-num" style="">12</div><div class="crayon-num" style="">13</div><div class="crayon-num crayon-striped-num" style="">14</div><div class="crayon-num" style="">15</div><div class="crayon-num crayon-striped-num" style="">16</div><div class="crayon-num" style="">17</div><div class="crayon-num crayon-striped-num" style="">18</div><div class="crayon-num" style="">19</div><div class="crayon-num crayon-striped-num" style="">20</div><div class="crayon-num" style="">21</div><div class="crayon-num crayon-striped-num" style="">22</div><div class="crayon-num" style="">23</div><div class="crayon-num crayon-striped-num" style="">24</div><div class="crayon-num" style="">25</div><div class="crayon-num crayon-striped-num" style="">26</div><div class="crayon-num" style="">27</div><div class="crayon-num crayon-striped-num" style="">28</div><div class="crayon-num" style="">29</div><div class="crayon-num crayon-striped-num" style="">30</div><div class="crayon-num" style="">31</div><div class="crayon-num crayon-striped-num" style="">32</div><div class="crayon-num" style="">33</div><div class="crayon-num crayon-striped-num" style="">34</div><div class="crayon-num" style="">35</div><div class="crayon-num crayon-striped-num" style="">36</div><div class="crayon-num" style="">37</div><div class="crayon-num crayon-striped-num" style="">38</div><div class="crayon-num" style="">39</div><div class="crayon-num crayon-striped-num" style="">40</div><div class="crayon-num" style="">41</div><div class="crayon-num crayon-striped-num" style="">42</div><div class="crayon-num" style="">43</div><div class="crayon-num crayon-striped-num" style="">44</div><div class="crayon-num" style="">45</div><div class="crayon-num crayon-striped-num" style="">46</div><div class="crayon-num" style="">47</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style=""><div class="crayon-line" id="crayon-5036427d7e86d-1" style=""><span class="i">require</span><span class="h"> </span><span class="s">'windows/memory'</span></div><div class="crayon-line crayon-striped-line" id="crayon-5036427d7e86d-2" style=""><span class="i">require</span><span class="h"> </span><span class="s">'win32struct'</span></div><div class="crayon-line" id="crayon-5036427d7e86d-3" style=""></div><div class="crayon-line crayon-striped-line" id="crayon-5036427d7e86d-4" style=""><span class="i">include</span><span class="h"> </span><span class="i">Windows</span><span class="o">::</span><span class="i">Memory</span></div><div class="crayon-line" id="crayon-5036427d7e86d-5" style=""></div><div class="crayon-line crayon-striped-line" id="crayon-5036427d7e86d-6" style=""><span class="c"># example:</span></div><div class="crayon-line" id="crayon-5036427d7e86d-7" style=""></div><div class="crayon-line crayon-striped-line" id="crayon-5036427d7e86d-8" style=""><span class="c"># typedef struct _MEMORYSTATUS {</span></div><div class="crayon-line" id="crayon-5036427d7e86d-9" style=""><span class="c">#&nbsp;&nbsp;&nbsp;&nbsp; DWORD dwLength;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5036427d7e86d-10" style=""><span class="c">#&nbsp;&nbsp;&nbsp;&nbsp; DWORD dwMemoryLoad;</span></div><div class="crayon-line" id="crayon-5036427d7e86d-11" style=""><span class="c">#&nbsp;&nbsp;&nbsp;&nbsp; DWORD dwTotalPhys;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5036427d7e86d-12" style=""><span class="c">#&nbsp;&nbsp;&nbsp;&nbsp; DWORD dwAvailPhys;</span></div><div class="crayon-line" id="crayon-5036427d7e86d-13" style=""><span class="c">#&nbsp;&nbsp;&nbsp;&nbsp; DWORD dwTotalPageFile;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5036427d7e86d-14" style=""><span class="c">#&nbsp;&nbsp;&nbsp;&nbsp; DWORD dwAvailPageFile;</span></div><div class="crayon-line" id="crayon-5036427d7e86d-15" style=""><span class="c">#&nbsp;&nbsp;&nbsp;&nbsp; DWORD dwTotalVirtual;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5036427d7e86d-16" style=""><span class="c">#&nbsp;&nbsp;&nbsp;&nbsp; DWORD dwAvailVirtual;</span></div><div class="crayon-line" id="crayon-5036427d7e86d-17" style=""><span class="c"># } MEMORYSTATUS, *LPMEMORYSTATUS;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5036427d7e86d-18" style=""></div><div class="crayon-line" id="crayon-5036427d7e86d-19" style=""><span class="r">class</span><span class="h"> </span><span class="i">MEMORYSTATUS</span><span class="h"> </span><span class="o">&lt;</span><span class="h"> </span><span class="i">Win32Struct</span></div><div class="crayon-line crayon-striped-line" id="crayon-5036427d7e86d-20" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="i">DWORD</span><span class="h"> </span><span class="o">:</span><span class="i">dwLength</span></div><div class="crayon-line" id="crayon-5036427d7e86d-21" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="i">DWORD</span><span class="h"> </span><span class="o">:</span><span class="i">dwMemoryLoad</span></div><div class="crayon-line crayon-striped-line" id="crayon-5036427d7e86d-22" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="i">DWORD</span><span class="h"> </span><span class="o">:</span><span class="i">dwTotalPhys</span></div><div class="crayon-line" id="crayon-5036427d7e86d-23" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="i">DWORD</span><span class="h"> </span><span class="o">:</span><span class="i">dwAvailPhys</span></div><div class="crayon-line crayon-striped-line" id="crayon-5036427d7e86d-24" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="i">DWORD</span><span class="h"> </span><span class="o">:</span><span class="i">dwTotalPageFile</span></div><div class="crayon-line" id="crayon-5036427d7e86d-25" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="i">DWORD</span><span class="h"> </span><span class="o">:</span><span class="i">dwAvailPageFile</span></div><div class="crayon-line crayon-striped-line" id="crayon-5036427d7e86d-26" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="i">DWORD</span><span class="h"> </span><span class="o">:</span><span class="i">dwTotalVirtual</span></div><div class="crayon-line" id="crayon-5036427d7e86d-27" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="i">DWORD</span><span class="h"> </span><span class="o">:</span><span class="i">dwAvailVirtual</span></div><div class="crayon-line crayon-striped-line" id="crayon-5036427d7e86d-28" style=""><span class="st">end</span></div><div class="crayon-line" id="crayon-5036427d7e86d-29" style=""></div><div class="crayon-line crayon-striped-line" id="crayon-5036427d7e86d-30" style=""><span class="c"># create a MEMORYSTATUS's instance</span></div><div class="crayon-line" id="crayon-5036427d7e86d-31" style=""><span class="i">stat</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="i">MEMORYSTATUS</span><span class="sy">.</span><span class="e">new</span><span class="h"> </span><span class="k ">{</span><span class="o">|</span><span class="i">st</span><span class="o">|</span><span class="h"> </span><span class="i">st</span><span class="sy">.</span><span class="v">dwLength</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="i">MEMORYSTATUS</span><span class="sy">.</span><span class="v">size</span><span class="h"> </span><span class="k ">}</span></div><div class="crayon-line crayon-striped-line" id="crayon-5036427d7e86d-32" style=""></div><div class="crayon-line" id="crayon-5036427d7e86d-33" style=""><span class="c"># call API "GlobalMemoryStatus" - See also MSDN</span></div><div class="crayon-line crayon-striped-line" id="crayon-5036427d7e86d-34" style=""><span class="e">GlobalMemoryStatus</span><span class="sy">(</span><span class="i">stat</span><span class="sy">.</span><span class="t">data</span><span class="sy">)</span></div><div class="crayon-line" id="crayon-5036427d7e86d-35" style=""></div><div class="crayon-line crayon-striped-line" id="crayon-5036427d7e86d-36" style=""><span class="c">#output</span></div><div class="crayon-line" id="crayon-5036427d7e86d-37" style=""><span class="i">printf</span><span class="h"> </span><span class="s">"[Physical Memory]\n"</span></div><div class="crayon-line crayon-striped-line" id="crayon-5036427d7e86d-38" style=""><span class="i">printf</span><span class="h"> </span><span class="s">"&nbsp;&nbsp;total:%12d bytes\n"</span><span class="sy">,</span><span class="i">stat</span><span class="sy">.</span><span class="v">dwTotalPhys</span></div><div class="crayon-line" id="crayon-5036427d7e86d-39" style=""><span class="i">printf</span><span class="h"> </span><span class="s">"&nbsp;&nbsp;free :%12d bytes\n"</span><span class="sy">,</span><span class="i">stat</span><span class="sy">.</span><span class="v">dwAvailPhys</span></div><div class="crayon-line crayon-striped-line" id="crayon-5036427d7e86d-40" style=""></div><div class="crayon-line" id="crayon-5036427d7e86d-41" style=""><span class="i">printf</span><span class="h"> </span><span class="s">"[Virtual Memory]\n"</span></div><div class="crayon-line crayon-striped-line" id="crayon-5036427d7e86d-42" style=""><span class="i">printf</span><span class="h"> </span><span class="s">"&nbsp;&nbsp;total:%12d bytes\n"</span><span class="sy">,</span><span class="i">stat</span><span class="sy">.</span><span class="v">dwTotalVirtual</span></div><div class="crayon-line" id="crayon-5036427d7e86d-43" style=""><span class="i">printf</span><span class="h"> </span><span class="s">"&nbsp;&nbsp;free :%12d bytes\n"</span><span class="sy">,</span><span class="i">stat</span><span class="sy">.</span><span class="v">dwAvailVirtual</span></div><div class="crayon-line crayon-striped-line" id="crayon-5036427d7e86d-44" style=""></div><div class="crayon-line" id="crayon-5036427d7e86d-45" style=""><span class="i">printf</span><span class="h"> </span><span class="s">"[Paging File]\n"</span></div><div class="crayon-line crayon-striped-line" id="crayon-5036427d7e86d-46" style=""><span class="i">printf</span><span class="h"> </span><span class="s">"&nbsp;&nbsp;total:%12d bytes\n"</span><span class="sy">,</span><span class="i">stat</span><span class="sy">.</span><span class="v">dwTotalPageFile</span></div><div class="crayon-line" id="crayon-5036427d7e86d-47" style=""><span class="i">printf</span><span class="h"> </span><span class="s">"&nbsp;&nbsp;free :%12d bytes\n"</span><span class="sy">,</span><span class="i">stat</span><span class="sy">.</span><span class="v">dwAvailPageFile</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0136 seconds] -->
 <p>&nbsp;<br />
 运行结果:<br />
 <code><br />
@@ -306,7 +348,7 @@ E:\att_proj\RubyStudy\lib>ruby cstruct.rb<br />
 		<ul id="widgets">
 
 <li class="widget widget_calendar"><h3>Archives</h3><div id="calendar_wrap"><table id="wp-calendar">
-	<caption>2012 年七月</caption>
+	<caption>2012 年八月</caption>
 	<thead>
 	<tr>
 		<th scope="col" title="星期日">日</th>
@@ -321,27 +363,28 @@ E:\att_proj\RubyStudy\lib>ruby cstruct.rb<br />
 
 	<tfoot>
 	<tr>
-		<td colspan="3" id="prev"><a href="../date/2012/05/index.html" title="查看 2012 年五月的文章">&laquo; 五</a></td>
+		<td colspan="3" id="prev"><a href="../date/2012/07/index.html" title="查看 2012 年七月的文章">&laquo; 七</a></td>
 		<td class="pad">&nbsp;</td>
 		<td colspan="3" id="next" class="pad">&nbsp;</td>
 	</tr>
 	</tfoot>
 
 	<tbody>
-	<tr><td>1</td><td><a href="../date/2012/07/02/index.html" title="六月随笔">2</a></td><td>3</td><td>4</td><td><a href="../date/2012/07/05/index.html" title="ruby Rspec测试框架cheetsheet">5</a></td><td>6</td><td>7</td>
+	<tr>
+		<td colspan="3" class="pad">&nbsp;</td><td><a href="../date/2012/08/01/index.html" title="配置vim rails集成开发环境">1</a></td><td><a href="../date/2012/08/02/index.html" title="安装ruby1.8.6后，gem错误的解决">2</a></td><td>3</td><td><a href="../date/2012/08/04/index.html" title="There was a problem installing &#8220;Mac OS X&#8221;.Try Reinstalling.">4</a></td>
 	</tr>
 	<tr>
-		<td>8</td><td><a href="../date/2012/07/09/index.html" title="linux下STAF执行失败时的处理">9</a></td><td>10</td><td>11</td><td>12</td><td id="today"><a href="../date/2012/07/13/index.html" title="镜像网站为静态页面到github中">13</a></td><td>14</td>
+		<td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td>
 	</tr>
 	<tr>
-		<td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td>
+		<td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td><a href="../date/2012/08/18/index.html" title="简单提取页面中所有迅雷下载资源链接">18</a></td>
 	</tr>
 	<tr>
-		<td>22</td><td>23</td><td>24</td><td>25</td><td>26</td><td>27</td><td>28</td>
+		<td>19</td><td>20</td><td>21</td><td>22</td><td id="today"><a href="../date/2012/08/23/index.html" title="使用python脚本简单切换hosts文件">23</a></td><td>24</td><td>25</td>
 	</tr>
 	<tr>
-		<td>29</td><td>30</td><td>31</td>
-		<td class="pad" colspan="4">&nbsp;</td>
+		<td>26</td><td>27</td><td>28</td><td>29</td><td>30</td><td>31</td>
+		<td class="pad" colspan="1">&nbsp;</td>
 	</tr>
 	</tbody>
 	</table></div></li><li class="widget widget_categories"><h3>分类目录</h3>		<ul>
@@ -349,7 +392,7 @@ E:\att_proj\RubyStudy\lib>ruby cstruct.rb<br />
 </li>
 	<li class="cat-item cat-item-24"><a href="../category/ios-dev/index.html" title="查看 IOSDev 下的所有文章">IOSDev</a>
 </li>
-	<li class="cat-item cat-item-23"><a href="../category/java/index.html" title="查看 java 下的所有文章">java</a>
+	<li class="cat-item cat-item-23"><a href="../category/java/index.html" title="查看 Java 下的所有文章">Java</a>
 </li>
 	<li class="cat-item cat-item-5"><a href="../category/lamp/index.html" title="查看 LAMP 下的所有文章">LAMP</a>
 </li>
@@ -360,6 +403,8 @@ E:\att_proj\RubyStudy\lib>ruby cstruct.rb<br />
 	<li class="cat-item cat-item-3"><a href="../category/project/index.html" title="查看 Project 下的所有文章">Project</a>
 </li>
 	<li class="cat-item cat-item-4"><a href="../category/rubytesting/index.html" title="查看 Ruby&amp;Testing 下的所有文章">Ruby&amp;Testing</a>
+</li>
+	<li class="cat-item cat-item-26"><a href="../category/scriptlanguage/index.html" title="查看 脚本语言 下的所有文章">脚本语言</a>
 </li>
 		</ul>
 </li><li class="widget widget_text"><h3>Google Ads</h3>			<div class="textwidget"><script type="text/javascript"><!--
@@ -388,6 +433,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 </li><li class="widget widget_links"><h3>链接表</h3>
 	<ul class='xoxo blogroll'>
 <li><a href="http://blog.csdn.net/Android_Tutor" rel="colleague" title="Android_Tutor的专栏" target="_blank">Android学习系列</a></li>
+<li><a href="http://ihower.tw/rails3/" title="Rails3学习,写得不错!">Rails3学习</a></li>
 <li><a href="http://wpotp.com" rel="me" title="食品找茬网" target="_blank">找茬网</a></li>
 <li><a href="http://www.sz95000.com/" title="深圳长途汽车网上订票，官方网站，这次不会忘记了。。。" target="_blank">深圳长途汽车网上订票</a></li>
 
@@ -447,10 +493,11 @@ var WPGroHo = {"my_hash":""};
 <script type='text/javascript' src='../../wp-content/plugins/jetpack/modules/wpgroho.js?ver=3.4.1'></script>
 	<div style="display:none">
 	</div>
+<script type='text/javascript' src='http://s0.wp.com/wp-content/js/devicepx-jetpack.js?ver=201234'></script>
 
-	<script src="http://stats.wordpress.com/e-201228.js" type="text/javascript"></script>
+	<script src="http://stats.wordpress.com/e-201234.js" type="text/javascript"></script>
 	<script type="text/javascript">
-	st_go({v:'ext',j:'1:1.4.2',blog:'17044931',post:'227'});
+	st_go({v:'ext',j:'1:1.6.1',blog:'17044931',post:'227'});
 	var load_cmc = function(){linktracker_init(17044931,227,2);};
 	if ( typeof addLoadEvent != 'undefined' ) addLoadEvent(load_cmc);
 	else load_cmc();
@@ -470,3 +517,7 @@ var WPGroHo = {"my_hash":""};
 </script> 
 </body>
 </html>
+
+<!-- Dynamic page generated in 0.701 seconds. -->
+<!-- Cached page generated by WP-Super-Cache on 2012-08-23 22:47:25 -->
+<!-- super cache -->

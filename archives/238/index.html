@@ -41,7 +41,15 @@
 	<!-- javascript END -->
 
 		<link rel='stylesheet' id='jquery.slimbox-css'  href='../../wp-content/plugins/slimbox/stylesheets/jquery.slimbox.css?ver=2.03' type='text/css' media='all' />
+<link rel='stylesheet' id='crayon-style-css'  href='http://imzc.net/wp-content/plugins/crayon-syntax-highlighter/css/style.css?ver=1.10' type='text/css' media='all' />
+<link rel='stylesheet' id='crayon-theme-classic-css'  href='../../wp-content/plugins/crayon-syntax-highlighter/themes/classic/classic.css?ver=1.10' type='text/css' media='all' />
+<link rel='stylesheet' id='crayon-font-monaco-css'  href='../../wp-content/plugins/crayon-syntax-highlighter/fonts/monaco.css?ver=1.10' type='text/css' media='all' />
 <link rel='stylesheet' id='wp-pagenavi-css'  href='../../wp-content/themes/elegant-box/pagenavi-css.css?ver=2.70' type='text/css' media='all' />
+<script type="text/javascript">
+var duoshuoQuery = {"short_name":"imzc","sso":{"login":"http:\/\/imzc.net\/wp-login.php?action=duoshuo_login","logout":"http:\/\/imzc.net\/wp-login.php?action=logout&_wpnonce=7282ea8bf5"},"remote_auth":"W10= 8d4efa344690289d341e65e032666897d371f660 1345838930"};
+duoshuoQuery.sso.login += '&redirect_to=' + encodeURIComponent(window.location.href);
+duoshuoQuery.sso.logout += '&redirect_to=' + encodeURIComponent(window.location.href);
+</script>
 <script type='text/javascript' src='../../wp-includes/js/jquery/jquery.js?ver=1.7.2'></script>
 <script type='text/javascript' src='../../wp-content/plugins/slimbox/javascript/jquery.slimbox.js?ver=2.03'></script>
 <script type='text/javascript' src='../../wp-includes/js/json2.js?ver=2011-02-23'></script>
@@ -51,7 +59,11 @@ var live_blogging = {"ajaxurl":"http:\/\/imzc.net\/wp-admin\/admin-ajax.php","up
 /* ]]> */
 </script>
 <script type='text/javascript' src='../../wp-content/plugins/live-blogging/live-blogging.js?ver=3.4.1'></script>
+<script type='text/javascript' src='../../wp-content/plugins/crayon-syntax-highlighter/js/util.js?ver=1.10'></script>
+<script type='text/javascript' src='../../wp-content/plugins/crayon-syntax-highlighter/js/crayon.js?ver=1.10'></script>
+<script type='text/javascript' src='../../wp-content/plugins/crayon-syntax-highlighter/js/jquery.popup.js?ver=1.10'></script>
 <script type='text/javascript' src='../../wp-includes/js/comment-reply.js?ver=3.4.1'></script>
+<script type='text/javascript' src='http://static.duoshuo.com/embed.js'></script>
 <link rel="EditURI" type="application/rsd+xml" title="RSD" href="../../xmlrpc.php?rsd" />
 <link rel="wlwmanifest" type="application/wlwmanifest+xml" href="../../wp-includes/wlwmanifest.xml" /> 
 <link rel='prev' title='autoit3实现命令行调用杀毒软件' href='../234/index.html' />
@@ -59,7 +71,7 @@ var live_blogging = {"ajaxurl":"http:\/\/imzc.net\/wp-admin\/admin-ajax.php","up
 <meta name="generator" content="WordPress 3.4.1" />
 <link rel='shortlink' href='http://wp.me/p19waf-3Q' />
 
-<!-- All in One SEO Pack 1.6.14.5 by Michael Torbert of Semper Fi Web Design[343,426] -->
+<!-- All in One SEO Pack 1.6.14.6 by Michael Torbert of Semper Fi Web Design[343,426] -->
 <meta name="description" content="ruby调用OLE实现word输出(支持嵌入图片)" />
 <meta name="keywords" content="ruby,ole,word,embedded_picture,inlineshapes" />
 <link rel="canonical" href="index.html" />
@@ -70,8 +82,6 @@ var live_blogging = {"ajaxurl":"http:\/\/imzc.net\/wp-admin\/admin-ajax.php","up
 		select.slimbox();
 	});
 </script>
-
-<link rel="stylesheet" href="../../wp-content/themes/elegant-box/wp-syntax.css" type="text/css" media="screen" />
 </head>
 
 
@@ -191,95 +201,111 @@ word OLE在哪里去搜索参数列表啊。。。貌似网上都找不到详细
 嵌入图片有两种函数，后来使用了第二种：<br />
 ad.Shapes.AddPicture(picture_360.to_s,false,true,left,top,width,height)<br />
 sel.InlineShapes.AddPicture(picture_360.to_s,false,true,nil)<br />
-经过网上搜索加以整理，最终实现了，代码如下：</p>
+经过网上搜索加以整理，最终实现了，代码如下：</p><!-- Crayon Syntax Highlighter v1.10 -->
 
-<div class="wp_syntax"><div class="code"><pre class="ruby" style="font-family:monospace;"><span style="color:#008000; font-style:italic;"># coding: utf-8</span>
-<span style="color:#CC0066; font-weight:bold;">require</span> <span style="color:#996600;">'win32ole'</span>  
-&nbsp;
-root =  <span style="color:#CC00FF; font-weight:bold;">File</span>.<span style="color:#9900CC;">expand_path</span><span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#CC00FF; font-weight:bold;">File</span>.<span style="color:#9900CC;">dirname</span><span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#0000FF; font-weight:bold;">__FILE__</span><span style="color:#006600; font-weight:bold;">&#41;</span> <span style="color:#006600; font-weight:bold;">&#41;</span>
-pic_root = root <span style="color:#006600; font-weight:bold;">+</span> <span style="color:#996600;">&quot;/pics&quot;</span>
-start = <span style="color:#CC00FF; font-weight:bold;">Time</span>.<span style="color:#9900CC;">now</span>  
-filename = root<span style="color:#006600; font-weight:bold;">+</span><span style="color:#996600;">&quot;/virus_scan_reports_&quot;</span><span style="color:#006600; font-weight:bold;">+</span>start.<span style="color:#9900CC;">to_i</span><span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#006600; font-weight:bold;">&#41;</span>.<span style="color:#9900CC;">to_s</span><span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#006600; font-weight:bold;">&#41;</span><span style="color:#006600; font-weight:bold;">+</span><span style="color:#996600;">&quot;.doc&quot;</span> 
-&nbsp;
-<span style="color:#CC0066; font-weight:bold;">puts</span><span style="color:#006600; font-weight:bold;">&#40;</span>root<span style="color:#006600; font-weight:bold;">+</span><span style="color:#996600;">&quot;,time:&quot;</span><span style="color:#006600; font-weight:bold;">+</span>start.<span style="color:#9900CC;">to_i</span><span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#006600; font-weight:bold;">&#41;</span>.<span style="color:#9900CC;">to_s</span><span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#006600; font-weight:bold;">&#41;</span><span style="color:#006600; font-weight:bold;">&#41;</span>
-&nbsp;
-<span style="color:#9966CC; font-weight:bold;">def</span> word_report<span style="color:#006600; font-weight:bold;">&#40;</span>report_filename,pic_hash,scantitle=<span style="color:#996600;">&quot;&quot;</span><span style="color:#006600; font-weight:bold;">&#41;</span>
-word=WIN32OLE.<span style="color:#9900CC;">new</span> <span style="color:#996600;">'word.Application'</span>
-word.<span style="color:#9900CC;">visible</span>=<span style="color:#0000FF; font-weight:bold;">false</span> 
-doc=word.<span style="color:#9900CC;">Documents</span>
-d=doc.<span style="color:#9900CC;">add</span>
-sel=word.<span style="color:#9900CC;">Selection</span>
-ad=word.<span style="color:#9900CC;">ActiveDocument</span>
-&nbsp;
-ad.<span style="color:#9900CC;">Styles</span>.<span style="color:#9900CC;">Add</span><span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#996600;">'Name'</span><span style="color:#006600; font-weight:bold;">=&gt;</span><span style="color:#996600;">'title'</span><span style="color:#006600; font-weight:bold;">&#41;</span>
-font=ad.<span style="color:#9900CC;">Styles</span><span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#996600;">&quot;title&quot;</span><span style="color:#006600; font-weight:bold;">&#41;</span>.<span style="color:#9900CC;">Font</span>
-font.<span style="color:#9900CC;">Size</span>=<span style="color:#006666;">20</span>
-font.<span style="color:#9900CC;">Bold</span>=<span style="color:#0000FF; font-weight:bold;">true</span>
-font.<span style="color:#9900CC;">Name</span>=<span style="color:#996600;">&quot;宋体&quot;</span>
-&nbsp;
-ad.<span style="color:#9900CC;">Styles</span>.<span style="color:#9900CC;">Add</span><span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#996600;">'Name'</span><span style="color:#006600; font-weight:bold;">=&gt;</span><span style="color:#996600;">'content'</span><span style="color:#006600; font-weight:bold;">&#41;</span>
-font=ad.<span style="color:#9900CC;">Styles</span><span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#996600;">&quot;content&quot;</span><span style="color:#006600; font-weight:bold;">&#41;</span>.<span style="color:#9900CC;">Font</span>
-font.<span style="color:#9900CC;">Size</span>=<span style="color:#006666;">12</span>
-font.<span style="color:#9900CC;">Bold</span>=<span style="color:#0000FF; font-weight:bold;">false</span>
-font.<span style="color:#9900CC;">Name</span>=<span style="color:#996600;">&quot;宋体&quot;</span>
-&nbsp;
-sel.<span style="color:#9900CC;">Style</span>=ad.<span style="color:#9900CC;">Styles</span><span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#996600;">&quot;title&quot;</span><span style="color:#006600; font-weight:bold;">&#41;</span>  
-sel.<span style="color:#9900CC;">typeText</span><span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#996600;">&quot;杀毒报告:#{scantitle}&quot;</span><span style="color:#006600; font-weight:bold;">&#41;</span> 
-&nbsp;
-sel.<span style="color:#9900CC;">TypeParagraph</span>;
-sel.<span style="color:#9900CC;">Style</span>=ad.<span style="color:#9900CC;">Styles</span><span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#996600;">&quot;content&quot;</span><span style="color:#006600; font-weight:bold;">&#41;</span> 
-&nbsp;
-picture_360 = pic_hash<span style="color:#006600; font-weight:bold;">&#91;</span><span style="color:#ff3333; font-weight:bold;">:picture_360</span><span style="color:#006600; font-weight:bold;">&#93;</span>   
-picture_macaffee = pic_hash<span style="color:#006600; font-weight:bold;">&#91;</span><span style="color:#ff3333; font-weight:bold;">:picture_macaffee</span><span style="color:#006600; font-weight:bold;">&#93;</span>  
-picture_trend = pic_hash<span style="color:#006600; font-weight:bold;">&#91;</span><span style="color:#ff3333; font-weight:bold;">:picture_trend</span><span style="color:#006600; font-weight:bold;">&#93;</span>
-picture_duba = pic_hash<span style="color:#006600; font-weight:bold;">&#91;</span><span style="color:#ff3333; font-weight:bold;">:picture_duba</span><span style="color:#006600; font-weight:bold;">&#93;</span> 
-picture_rsing = pic_hash<span style="color:#006600; font-weight:bold;">&#91;</span><span style="color:#ff3333; font-weight:bold;">:picture_rsing</span><span style="color:#006600; font-weight:bold;">&#93;</span> 
-&nbsp;
-sel.<span style="color:#9900CC;">TypeText</span><span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#996600;">&quot;360杀毒&quot;</span><span style="color:#006600; font-weight:bold;">&#41;</span>;
-sel.<span style="color:#9900CC;">TypeParagraph</span>;
-<span style="color:#008000; font-style:italic;">#argvs:$file;msoFalse # link to file ; msoTrue # save with document ;$left, $top, $width, $height</span>
-<span style="color:#008000; font-style:italic;">#ad.Shapes.AddPicture(picture_360.to_s,false,true,left,top,width,height)</span>
-sel.<span style="color:#9900CC;">InlineShapes</span>.<span style="color:#9900CC;">AddPicture</span><span style="color:#006600; font-weight:bold;">&#40;</span>picture_360.<span style="color:#9900CC;">to_s</span>,<span style="color:#0000FF; font-weight:bold;">false</span>,<span style="color:#0000FF; font-weight:bold;">true</span>,<span style="color:#0000FF; font-weight:bold;">nil</span><span style="color:#006600; font-weight:bold;">&#41;</span>
-&nbsp;
-sel.<span style="color:#9900CC;">TypeParagraph</span>;
-sel.<span style="color:#9900CC;">TypeText</span><span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#996600;">&quot;MCaffee杀毒&quot;</span><span style="color:#006600; font-weight:bold;">&#41;</span>;
-sel.<span style="color:#9900CC;">TypeParagraph</span>; 
-sel.<span style="color:#9900CC;">InlineShapes</span>.<span style="color:#9900CC;">AddPicture</span><span style="color:#006600; font-weight:bold;">&#40;</span>picture_macaffee.<span style="color:#9900CC;">to_s</span>,<span style="color:#0000FF; font-weight:bold;">false</span>,<span style="color:#0000FF; font-weight:bold;">true</span>,<span style="color:#0000FF; font-weight:bold;">nil</span><span style="color:#006600; font-weight:bold;">&#41;</span>
-&nbsp;
-sel.<span style="color:#9900CC;">TypeParagraph</span>;
-sel.<span style="color:#9900CC;">TypeText</span><span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#996600;">&quot;Trend Pc-cilin杀毒&quot;</span><span style="color:#006600; font-weight:bold;">&#41;</span>;
-sel.<span style="color:#9900CC;">TypeParagraph</span>; 
-sel.<span style="color:#9900CC;">InlineShapes</span>.<span style="color:#9900CC;">AddPicture</span><span style="color:#006600; font-weight:bold;">&#40;</span>picture_trend.<span style="color:#9900CC;">to_s</span>,<span style="color:#0000FF; font-weight:bold;">false</span>,<span style="color:#0000FF; font-weight:bold;">true</span>,<span style="color:#0000FF; font-weight:bold;">nil</span><span style="color:#006600; font-weight:bold;">&#41;</span>
-&nbsp;
-sel.<span style="color:#9900CC;">TypeParagraph</span>;
-sel.<span style="color:#9900CC;">TypeText</span><span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#996600;">&quot;金山毒霸杀毒&quot;</span><span style="color:#006600; font-weight:bold;">&#41;</span>;
-sel.<span style="color:#9900CC;">TypeParagraph</span>; 
-sel.<span style="color:#9900CC;">InlineShapes</span>.<span style="color:#9900CC;">AddPicture</span><span style="color:#006600; font-weight:bold;">&#40;</span>picture_duba.<span style="color:#9900CC;">to_s</span>,<span style="color:#0000FF; font-weight:bold;">false</span>,<span style="color:#0000FF; font-weight:bold;">true</span>,<span style="color:#0000FF; font-weight:bold;">nil</span><span style="color:#006600; font-weight:bold;">&#41;</span>
-&nbsp;
-sel.<span style="color:#9900CC;">TypeParagraph</span>;
-sel.<span style="color:#9900CC;">TypeText</span><span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#996600;">&quot;瑞星杀毒&quot;</span><span style="color:#006600; font-weight:bold;">&#41;</span>;
-sel.<span style="color:#9900CC;">TypeParagraph</span>; 
-sel.<span style="color:#9900CC;">InlineShapes</span>.<span style="color:#9900CC;">AddPicture</span><span style="color:#006600; font-weight:bold;">&#40;</span>picture_rsing.<span style="color:#9900CC;">to_s</span>,<span style="color:#0000FF; font-weight:bold;">false</span>,<span style="color:#0000FF; font-weight:bold;">true</span>,<span style="color:#0000FF; font-weight:bold;">nil</span><span style="color:#006600; font-weight:bold;">&#41;</span>
-&nbsp;
-<span style="color:#008000; font-style:italic;"># word.ActiveDocument.Save </span>
-word.<span style="color:#9900CC;">DefaultSaveFormat</span> 
-d.<span style="color:#9900CC;">saveas</span><span style="color:#006600; font-weight:bold;">&#40;</span>report_filename<span style="color:#006600; font-weight:bold;">&#41;</span>;
-<span style="color:#008000; font-style:italic;"># word.ActiveDocument.Close</span>
-<span style="color:#008000; font-style:italic;"># word.Documents.close() </span>
-word.<span style="color:#9900CC;">quit</span><span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#006600; font-weight:bold;">&#41;</span>    
-&nbsp;
-<span style="color:#9966CC; font-weight:bold;">end</span>
-&nbsp;
-&nbsp;
-pic_hash = <span style="color:#006600; font-weight:bold;">&#123;</span><span style="color:#006600; font-weight:bold;">&#125;</span>
-pic_hash<span style="color:#006600; font-weight:bold;">&#91;</span><span style="color:#ff3333; font-weight:bold;">:picture_360</span><span style="color:#006600; font-weight:bold;">&#93;</span> = pic_root<span style="color:#006600; font-weight:bold;">+</span><span style="color:#996600;">&quot;/360_2012_03_31__20_54_27.bmp&quot;</span>      
-pic_hash<span style="color:#006600; font-weight:bold;">&#91;</span><span style="color:#ff3333; font-weight:bold;">:picture_macaffee</span><span style="color:#006600; font-weight:bold;">&#93;</span> = pic_root<span style="color:#006600; font-weight:bold;">+</span><span style="color:#996600;">&quot;/macaffee_2012_04_01__21_18_36.bmp&quot;</span>  
-pic_hash<span style="color:#006600; font-weight:bold;">&#91;</span><span style="color:#ff3333; font-weight:bold;">:picture_trend</span><span style="color:#006600; font-weight:bold;">&#93;</span> = pic_root<span style="color:#006600; font-weight:bold;">+</span><span style="color:#996600;">&quot;/trend_pccilin_2012_03_31__20_53_20.bmp&quot;</span>
-pic_hash<span style="color:#006600; font-weight:bold;">&#91;</span><span style="color:#ff3333; font-weight:bold;">:picture_duba</span><span style="color:#006600; font-weight:bold;">&#93;</span> = pic_root<span style="color:#006600; font-weight:bold;">+</span><span style="color:#996600;">&quot;/kingsoft_duba_2012_03_31__20_55_37.bmp&quot;</span>  
-pic_hash<span style="color:#006600; font-weight:bold;">&#91;</span><span style="color:#ff3333; font-weight:bold;">:picture_rsing</span><span style="color:#006600; font-weight:bold;">&#93;</span> = pic_root<span style="color:#006600; font-weight:bold;">+</span><span style="color:#996600;">&quot;/rsing_2012_03_31__20_53_58.bmp&quot;</span>
-&nbsp;
-word_report<span style="color:#006600; font-weight:bold;">&#40;</span>filename,pic_hash,<span style="color:#996600;">&quot;att test&quot;</span><span style="color:#006600; font-weight:bold;">&#41;</span></pre></div></div>
+		<div id="crayon-5037df52aa5f3" class="crayon-syntax crayon-theme-classic crayon-font-monaco crayon-os-pc print-yes" data-settings=" scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; float: none; clear: both; ">
+		
+			<div class="crayon-toolbar" data-settings=" mouseover overlay hide delay" style="">
+			<div class="crayon-tools"><span class="crayon-mixed-highlight" title="含多种语言"></span><a class="crayon-nums-button crayon-button" title="显示/隐藏行编号"></a><a class="crayon-copy-button crayon-button" data-text="使用 %s 复制，使用 %s 粘贴。" title="复制代码"></a><a class="crayon-popup-button crayon-button" title="在新窗口中显示代码" onclick="return false;"></a><a class="crayon-plain-button crayon-button" title="纯文本显示代码"></a><span class="crayon-language">Ruby</span></div></div>
+			<div class="crayon-info" style=""></div>
+			<div class="crayon-plain-wrap"><textarea wrap="off" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; "># coding: utf-8
+require 'win32ole'  
+ 
+root =  File.expand_path(File.dirname(__FILE__) )
+pic_root = root + "/pics"
+start = Time.now  
+filename = root+"/virus_scan_reports_"+start.to_i().to_s()+".doc" 
 
+puts(root+",time:"+start.to_i().to_s())
+
+def word_report(report_filename,pic_hash,scantitle="")
+word=WIN32OLE.new 'word.Application'
+word.visible=false 
+doc=word.Documents
+d=doc.add
+sel=word.Selection
+ad=word.ActiveDocument
+
+ad.Styles.Add('Name'=&gt;'title')
+font=ad.Styles("title").Font
+font.Size=20
+font.Bold=true
+font.Name="宋体"
+
+ad.Styles.Add('Name'=&gt;'content')
+font=ad.Styles("content").Font
+font.Size=12
+font.Bold=false
+font.Name="宋体"
+ 
+sel.Style=ad.Styles("title")  
+sel.typeText("杀毒报告:#{scantitle}") 
+
+sel.TypeParagraph;
+sel.Style=ad.Styles("content") 
+ 
+picture_360 = pic_hash[:picture_360]   
+picture_macaffee = pic_hash[:picture_macaffee]  
+picture_trend = pic_hash[:picture_trend]
+picture_duba = pic_hash[:picture_duba] 
+picture_rsing = pic_hash[:picture_rsing] 
+
+sel.TypeText("360杀毒");
+sel.TypeParagraph;
+#argvs:$file;msoFalse # link to file ; msoTrue # save with document ;$left, $top, $width, $height
+#ad.Shapes.AddPicture(picture_360.to_s,false,true,left,top,width,height)
+sel.InlineShapes.AddPicture(picture_360.to_s,false,true,nil)
+ 
+sel.TypeParagraph;
+sel.TypeText("MCaffee杀毒");
+sel.TypeParagraph; 
+sel.InlineShapes.AddPicture(picture_macaffee.to_s,false,true,nil)
+
+sel.TypeParagraph;
+sel.TypeText("Trend Pc-cilin杀毒");
+sel.TypeParagraph; 
+sel.InlineShapes.AddPicture(picture_trend.to_s,false,true,nil)
+
+sel.TypeParagraph;
+sel.TypeText("金山毒霸杀毒");
+sel.TypeParagraph; 
+sel.InlineShapes.AddPicture(picture_duba.to_s,false,true,nil)
+
+sel.TypeParagraph;
+sel.TypeText("瑞星杀毒");
+sel.TypeParagraph; 
+sel.InlineShapes.AddPicture(picture_rsing.to_s,false,true,nil)
+    
+# word.ActiveDocument.Save 
+word.DefaultSaveFormat 
+d.saveas(report_filename);
+# word.ActiveDocument.Close
+# word.Documents.close() 
+word.quit()    
+
+end
+
+
+pic_hash = {}
+pic_hash[:picture_360] = pic_root+"/360_2012_03_31__20_54_27.bmp"      
+pic_hash[:picture_macaffee] = pic_root+"/macaffee_2012_04_01__21_18_36.bmp"  
+pic_hash[:picture_trend] = pic_root+"/trend_pccilin_2012_03_31__20_53_20.bmp"
+pic_hash[:picture_duba] = pic_root+"/kingsoft_duba_2012_03_31__20_55_37.bmp"  
+pic_hash[:picture_rsing] = pic_root+"/rsing_2012_03_31__20_53_58.bmp"
+
+word_report(filename,pic_hash,"att test")</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show" style="">
+					<div class="crayon-nums-content"><div class="crayon-num" style="">1</div><div class="crayon-num crayon-striped-num" style="">2</div><div class="crayon-num" style="">3</div><div class="crayon-num crayon-striped-num" style="">4</div><div class="crayon-num" style="">5</div><div class="crayon-num crayon-striped-num" style="">6</div><div class="crayon-num" style="">7</div><div class="crayon-num crayon-striped-num" style="">8</div><div class="crayon-num" style="">9</div><div class="crayon-num crayon-striped-num" style="">10</div><div class="crayon-num" style="">11</div><div class="crayon-num crayon-striped-num" style="">12</div><div class="crayon-num" style="">13</div><div class="crayon-num crayon-striped-num" style="">14</div><div class="crayon-num" style="">15</div><div class="crayon-num crayon-striped-num" style="">16</div><div class="crayon-num" style="">17</div><div class="crayon-num crayon-striped-num" style="">18</div><div class="crayon-num" style="">19</div><div class="crayon-num crayon-striped-num" style="">20</div><div class="crayon-num" style="">21</div><div class="crayon-num crayon-striped-num" style="">22</div><div class="crayon-num" style="">23</div><div class="crayon-num crayon-striped-num" style="">24</div><div class="crayon-num" style="">25</div><div class="crayon-num crayon-striped-num" style="">26</div><div class="crayon-num" style="">27</div><div class="crayon-num crayon-striped-num" style="">28</div><div class="crayon-num" style="">29</div><div class="crayon-num crayon-striped-num" style="">30</div><div class="crayon-num" style="">31</div><div class="crayon-num crayon-striped-num" style="">32</div><div class="crayon-num" style="">33</div><div class="crayon-num crayon-striped-num" style="">34</div><div class="crayon-num" style="">35</div><div class="crayon-num crayon-striped-num" style="">36</div><div class="crayon-num" style="">37</div><div class="crayon-num crayon-striped-num" style="">38</div><div class="crayon-num" style="">39</div><div class="crayon-num crayon-striped-num" style="">40</div><div class="crayon-num" style="">41</div><div class="crayon-num crayon-striped-num" style="">42</div><div class="crayon-num" style="">43</div><div class="crayon-num crayon-striped-num" style="">44</div><div class="crayon-num" style="">45</div><div class="crayon-num crayon-striped-num" style="">46</div><div class="crayon-num" style="">47</div><div class="crayon-num crayon-striped-num" style="">48</div><div class="crayon-num" style="">49</div><div class="crayon-num crayon-striped-num" style="">50</div><div class="crayon-num" style="">51</div><div class="crayon-num crayon-striped-num" style="">52</div><div class="crayon-num" style="">53</div><div class="crayon-num crayon-striped-num" style="">54</div><div class="crayon-num" style="">55</div><div class="crayon-num crayon-striped-num" style="">56</div><div class="crayon-num" style="">57</div><div class="crayon-num crayon-striped-num" style="">58</div><div class="crayon-num" style="">59</div><div class="crayon-num crayon-striped-num" style="">60</div><div class="crayon-num" style="">61</div><div class="crayon-num crayon-striped-num" style="">62</div><div class="crayon-num" style="">63</div><div class="crayon-num crayon-striped-num" style="">64</div><div class="crayon-num" style="">65</div><div class="crayon-num crayon-striped-num" style="">66</div><div class="crayon-num" style="">67</div><div class="crayon-num crayon-striped-num" style="">68</div><div class="crayon-num" style="">69</div><div class="crayon-num crayon-striped-num" style="">70</div><div class="crayon-num" style="">71</div><div class="crayon-num crayon-striped-num" style="">72</div><div class="crayon-num" style="">73</div><div class="crayon-num crayon-striped-num" style="">74</div><div class="crayon-num" style="">75</div><div class="crayon-num crayon-striped-num" style="">76</div><div class="crayon-num" style="">77</div><div class="crayon-num crayon-striped-num" style="">78</div><div class="crayon-num" style="">79</div><div class="crayon-num crayon-striped-num" style="">80</div><div class="crayon-num" style="">81</div><div class="crayon-num crayon-striped-num" style="">82</div><div class="crayon-num" style="">83</div><div class="crayon-num crayon-striped-num" style="">84</div><div class="crayon-num" style="">85</div><div class="crayon-num crayon-striped-num" style="">86</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style=""><div class="crayon-line" id="crayon-5037df52aa5f3-1" style=""><span class="c"># coding: utf-8</span></div><div class="crayon-line crayon-striped-line" id="crayon-5037df52aa5f3-2" style=""><span class="i">require</span><span class="h"> </span><span class="s">'win32ole'</span><span class="h">&nbsp;&nbsp;</span></div><div class="crayon-line" id="crayon-5037df52aa5f3-3" style=""><span class="h"> </span></div><div class="crayon-line crayon-striped-line" id="crayon-5037df52aa5f3-4" style=""><span class="i">root</span><span class="h"> </span><span class="o">=</span><span class="h">&nbsp;&nbsp;</span><span class="t">File</span><span class="sy">.</span><span class="e">expand_path</span><span class="sy">(</span><span class="t">File</span><span class="sy">.</span><span class="e">dirname</span><span class="sy">(</span><span class="r">__FILE__</span><span class="sy">)</span><span class="h"> </span><span class="sy">)</span></div><div class="crayon-line" id="crayon-5037df52aa5f3-5" style=""><span class="i">pic_root</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="i">root</span><span class="h"> </span><span class="o">+</span><span class="h"> </span><span class="s">"/pics"</span></div><div class="crayon-line crayon-striped-line" id="crayon-5037df52aa5f3-6" style=""><span class="i">start</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="t">Time</span><span class="sy">.</span><span class="v">now</span><span class="h">&nbsp;&nbsp;</span></div><div class="crayon-line" id="crayon-5037df52aa5f3-7" style=""><span class="i">filename</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="i">root</span><span class="o">+</span><span class="s">"/virus_scan_reports_"</span><span class="o">+</span><span class="i">start</span><span class="sy">.</span><span class="e">to_i</span><span class="sy">(</span><span class="sy">)</span><span class="sy">.</span><span class="e">to_s</span><span class="sy">(</span><span class="sy">)</span><span class="o">+</span><span class="s">".doc"</span><span class="h"> </span></div><div class="crayon-line crayon-striped-line" id="crayon-5037df52aa5f3-8" style=""></div><div class="crayon-line" id="crayon-5037df52aa5f3-9" style=""><span class="e">puts</span><span class="sy">(</span><span class="i">root</span><span class="o">+</span><span class="s">",time:"</span><span class="o">+</span><span class="i">start</span><span class="sy">.</span><span class="e">to_i</span><span class="sy">(</span><span class="sy">)</span><span class="sy">.</span><span class="e">to_s</span><span class="sy">(</span><span class="sy">)</span><span class="sy">)</span></div><div class="crayon-line crayon-striped-line" id="crayon-5037df52aa5f3-10" style=""></div><div class="crayon-line" id="crayon-5037df52aa5f3-11" style=""><span class="r">def</span><span class="h"> </span><span class="e">word_report</span><span class="sy">(</span><span class="i">report_filename</span><span class="sy">,</span><span class="i">pic_hash</span><span class="sy">,</span><span class="i">scantitle</span><span class="o">=</span><span class="s">""</span><span class="sy">)</span></div><div class="crayon-line crayon-striped-line" id="crayon-5037df52aa5f3-12" style=""><span class="i">word</span><span class="o">=</span><span class="i">WIN32OLE</span><span class="sy">.</span><span class="v">new</span><span class="h"> </span><span class="s">'word.Application'</span></div><div class="crayon-line" id="crayon-5037df52aa5f3-13" style=""><span class="i">word</span><span class="sy">.</span><span class="v">visible</span><span class="o">=</span><span class="r">false</span><span class="h"> </span></div><div class="crayon-line crayon-striped-line" id="crayon-5037df52aa5f3-14" style=""><span class="i">doc</span><span class="o">=</span><span class="i">word</span><span class="sy">.</span><span class="v">Documents</span></div><div class="crayon-line" id="crayon-5037df52aa5f3-15" style=""><span class="i">d</span><span class="o">=</span><span class="i">doc</span><span class="sy">.</span><span class="v">add</span></div><div class="crayon-line crayon-striped-line" id="crayon-5037df52aa5f3-16" style=""><span class="i">sel</span><span class="o">=</span><span class="i">word</span><span class="sy">.</span><span class="v">Selection</span></div><div class="crayon-line" id="crayon-5037df52aa5f3-17" style=""><span class="i">ad</span><span class="o">=</span><span class="i">word</span><span class="sy">.</span><span class="v">ActiveDocument</span></div><div class="crayon-line crayon-striped-line" id="crayon-5037df52aa5f3-18" style=""></div><div class="crayon-line" id="crayon-5037df52aa5f3-19" style=""><span class="i">ad</span><span class="sy">.</span><span class="v">Styles</span><span class="sy">.</span><span class="e">Add</span><span class="sy">(</span><span class="s">'Name'</span><span class="o">=</span><span class="o">&gt;</span><span class="s">'title'</span><span class="sy">)</span></div><div class="crayon-line crayon-striped-line" id="crayon-5037df52aa5f3-20" style=""><span class="i">font</span><span class="o">=</span><span class="i">ad</span><span class="sy">.</span><span class="e">Styles</span><span class="sy">(</span><span class="s">"title"</span><span class="sy">)</span><span class="sy">.</span><span class="v">Font</span></div><div class="crayon-line" id="crayon-5037df52aa5f3-21" style=""><span class="i">font</span><span class="sy">.</span><span class="v">Size</span><span class="o">=</span><span class="cn">20</span></div><div class="crayon-line crayon-striped-line" id="crayon-5037df52aa5f3-22" style=""><span class="i">font</span><span class="sy">.</span><span class="v">Bold</span><span class="o">=</span><span class="r">true</span></div><div class="crayon-line" id="crayon-5037df52aa5f3-23" style=""><span class="i">font</span><span class="sy">.</span><span class="v">Name</span><span class="o">=</span><span class="s">"宋体"</span></div><div class="crayon-line crayon-striped-line" id="crayon-5037df52aa5f3-24" style=""></div><div class="crayon-line" id="crayon-5037df52aa5f3-25" style=""><span class="i">ad</span><span class="sy">.</span><span class="v">Styles</span><span class="sy">.</span><span class="e">Add</span><span class="sy">(</span><span class="s">'Name'</span><span class="o">=</span><span class="o">&gt;</span><span class="s">'content'</span><span class="sy">)</span></div><div class="crayon-line crayon-striped-line" id="crayon-5037df52aa5f3-26" style=""><span class="i">font</span><span class="o">=</span><span class="i">ad</span><span class="sy">.</span><span class="e">Styles</span><span class="sy">(</span><span class="s">"content"</span><span class="sy">)</span><span class="sy">.</span><span class="v">Font</span></div><div class="crayon-line" id="crayon-5037df52aa5f3-27" style=""><span class="i">font</span><span class="sy">.</span><span class="v">Size</span><span class="o">=</span><span class="cn">12</span></div><div class="crayon-line crayon-striped-line" id="crayon-5037df52aa5f3-28" style=""><span class="i">font</span><span class="sy">.</span><span class="v">Bold</span><span class="o">=</span><span class="r">false</span></div><div class="crayon-line" id="crayon-5037df52aa5f3-29" style=""><span class="i">font</span><span class="sy">.</span><span class="v">Name</span><span class="o">=</span><span class="s">"宋体"</span></div><div class="crayon-line crayon-striped-line" id="crayon-5037df52aa5f3-30" style=""><span class="h"> </span></div><div class="crayon-line" id="crayon-5037df52aa5f3-31" style=""><span class="i">sel</span><span class="sy">.</span><span class="v">Style</span><span class="o">=</span><span class="i">ad</span><span class="sy">.</span><span class="e">Styles</span><span class="sy">(</span><span class="s">"title"</span><span class="sy">)</span><span class="h">&nbsp;&nbsp;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5037df52aa5f3-32" style=""><span class="i">sel</span><span class="sy">.</span><span class="e">typeText</span><span class="sy">(</span><span class="s">"杀毒报告:#{scantitle}"</span><span class="sy">)</span><span class="h"> </span></div><div class="crayon-line" id="crayon-5037df52aa5f3-33" style=""></div><div class="crayon-line crayon-striped-line" id="crayon-5037df52aa5f3-34" style=""><span class="i">sel</span><span class="sy">.</span><span class="v">TypeParagraph</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5037df52aa5f3-35" style=""><span class="i">sel</span><span class="sy">.</span><span class="v">Style</span><span class="o">=</span><span class="i">ad</span><span class="sy">.</span><span class="e">Styles</span><span class="sy">(</span><span class="s">"content"</span><span class="sy">)</span><span class="h"> </span></div><div class="crayon-line crayon-striped-line" id="crayon-5037df52aa5f3-36" style=""><span class="h"> </span></div><div class="crayon-line" id="crayon-5037df52aa5f3-37" style=""><span class="i">picture_360</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="i">pic_hash</span><span class="sy">[</span><span class="o">:</span><span class="i">picture_360</span><span class="sy">]</span><span class="h">&nbsp;&nbsp; </span></div><div class="crayon-line crayon-striped-line" id="crayon-5037df52aa5f3-38" style=""><span class="i">picture_macaffee</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="i">pic_hash</span><span class="sy">[</span><span class="o">:</span><span class="i">picture_macaffee</span><span class="sy">]</span><span class="h">&nbsp;&nbsp;</span></div><div class="crayon-line" id="crayon-5037df52aa5f3-39" style=""><span class="i">picture_trend</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="i">pic_hash</span><span class="sy">[</span><span class="o">:</span><span class="i">picture_trend</span><span class="sy">]</span></div><div class="crayon-line crayon-striped-line" id="crayon-5037df52aa5f3-40" style=""><span class="i">picture_duba</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="i">pic_hash</span><span class="sy">[</span><span class="o">:</span><span class="i">picture_duba</span><span class="sy">]</span><span class="h"> </span></div><div class="crayon-line" id="crayon-5037df52aa5f3-41" style=""><span class="i">picture_rsing</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="i">pic_hash</span><span class="sy">[</span><span class="o">:</span><span class="i">picture_rsing</span><span class="sy">]</span><span class="h"> </span></div><div class="crayon-line crayon-striped-line" id="crayon-5037df52aa5f3-42" style=""></div><div class="crayon-line" id="crayon-5037df52aa5f3-43" style=""><span class="i">sel</span><span class="sy">.</span><span class="e">TypeText</span><span class="sy">(</span><span class="s">"360杀毒"</span><span class="sy">)</span><span class="sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5037df52aa5f3-44" style=""><span class="i">sel</span><span class="sy">.</span><span class="v">TypeParagraph</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5037df52aa5f3-45" style=""><span class="c">#argvs:$file;msoFalse # link to file ; msoTrue # save with document ;$left, $top, $width, $height</span></div><div class="crayon-line crayon-striped-line" id="crayon-5037df52aa5f3-46" style=""><span class="c">#ad.Shapes.AddPicture(picture_360.to_s,false,true,left,top,width,height)</span></div><div class="crayon-line" id="crayon-5037df52aa5f3-47" style=""><span class="i">sel</span><span class="sy">.</span><span class="v">InlineShapes</span><span class="sy">.</span><span class="e">AddPicture</span><span class="sy">(</span><span class="i">picture_360</span><span class="sy">.</span><span class="v">to_s</span><span class="sy">,</span><span class="r">false</span><span class="sy">,</span><span class="r">true</span><span class="sy">,</span><span class="r">nil</span><span class="sy">)</span></div><div class="crayon-line crayon-striped-line" id="crayon-5037df52aa5f3-48" style=""><span class="h"> </span></div><div class="crayon-line" id="crayon-5037df52aa5f3-49" style=""><span class="i">sel</span><span class="sy">.</span><span class="v">TypeParagraph</span><span class="sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5037df52aa5f3-50" style=""><span class="i">sel</span><span class="sy">.</span><span class="e">TypeText</span><span class="sy">(</span><span class="s">"MCaffee杀毒"</span><span class="sy">)</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5037df52aa5f3-51" style=""><span class="i">sel</span><span class="sy">.</span><span class="v">TypeParagraph</span><span class="sy">;</span><span class="h"> </span></div><div class="crayon-line crayon-striped-line" id="crayon-5037df52aa5f3-52" style=""><span class="i">sel</span><span class="sy">.</span><span class="v">InlineShapes</span><span class="sy">.</span><span class="e">AddPicture</span><span class="sy">(</span><span class="i">picture_macaffee</span><span class="sy">.</span><span class="v">to_s</span><span class="sy">,</span><span class="r">false</span><span class="sy">,</span><span class="r">true</span><span class="sy">,</span><span class="r">nil</span><span class="sy">)</span></div><div class="crayon-line" id="crayon-5037df52aa5f3-53" style=""></div><div class="crayon-line crayon-striped-line" id="crayon-5037df52aa5f3-54" style=""><span class="i">sel</span><span class="sy">.</span><span class="v">TypeParagraph</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5037df52aa5f3-55" style=""><span class="i">sel</span><span class="sy">.</span><span class="e">TypeText</span><span class="sy">(</span><span class="s">"Trend Pc-cilin杀毒"</span><span class="sy">)</span><span class="sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5037df52aa5f3-56" style=""><span class="i">sel</span><span class="sy">.</span><span class="v">TypeParagraph</span><span class="sy">;</span><span class="h"> </span></div><div class="crayon-line" id="crayon-5037df52aa5f3-57" style=""><span class="i">sel</span><span class="sy">.</span><span class="v">InlineShapes</span><span class="sy">.</span><span class="e">AddPicture</span><span class="sy">(</span><span class="i">picture_trend</span><span class="sy">.</span><span class="v">to_s</span><span class="sy">,</span><span class="r">false</span><span class="sy">,</span><span class="r">true</span><span class="sy">,</span><span class="r">nil</span><span class="sy">)</span></div><div class="crayon-line crayon-striped-line" id="crayon-5037df52aa5f3-58" style=""></div><div class="crayon-line" id="crayon-5037df52aa5f3-59" style=""><span class="i">sel</span><span class="sy">.</span><span class="v">TypeParagraph</span><span class="sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5037df52aa5f3-60" style=""><span class="i">sel</span><span class="sy">.</span><span class="e">TypeText</span><span class="sy">(</span><span class="s">"金山毒霸杀毒"</span><span class="sy">)</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5037df52aa5f3-61" style=""><span class="i">sel</span><span class="sy">.</span><span class="v">TypeParagraph</span><span class="sy">;</span><span class="h"> </span></div><div class="crayon-line crayon-striped-line" id="crayon-5037df52aa5f3-62" style=""><span class="i">sel</span><span class="sy">.</span><span class="v">InlineShapes</span><span class="sy">.</span><span class="e">AddPicture</span><span class="sy">(</span><span class="i">picture_duba</span><span class="sy">.</span><span class="v">to_s</span><span class="sy">,</span><span class="r">false</span><span class="sy">,</span><span class="r">true</span><span class="sy">,</span><span class="r">nil</span><span class="sy">)</span></div><div class="crayon-line" id="crayon-5037df52aa5f3-63" style=""></div><div class="crayon-line crayon-striped-line" id="crayon-5037df52aa5f3-64" style=""><span class="i">sel</span><span class="sy">.</span><span class="v">TypeParagraph</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5037df52aa5f3-65" style=""><span class="i">sel</span><span class="sy">.</span><span class="e">TypeText</span><span class="sy">(</span><span class="s">"瑞星杀毒"</span><span class="sy">)</span><span class="sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5037df52aa5f3-66" style=""><span class="i">sel</span><span class="sy">.</span><span class="v">TypeParagraph</span><span class="sy">;</span><span class="h"> </span></div><div class="crayon-line" id="crayon-5037df52aa5f3-67" style=""><span class="i">sel</span><span class="sy">.</span><span class="v">InlineShapes</span><span class="sy">.</span><span class="e">AddPicture</span><span class="sy">(</span><span class="i">picture_rsing</span><span class="sy">.</span><span class="v">to_s</span><span class="sy">,</span><span class="r">false</span><span class="sy">,</span><span class="r">true</span><span class="sy">,</span><span class="r">nil</span><span class="sy">)</span></div><div class="crayon-line crayon-striped-line" id="crayon-5037df52aa5f3-68" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line" id="crayon-5037df52aa5f3-69" style=""><span class="c"># word.ActiveDocument.Save </span></div><div class="crayon-line crayon-striped-line" id="crayon-5037df52aa5f3-70" style=""><span class="i">word</span><span class="sy">.</span><span class="r">Def</span>aultSaveFormat<span class="h"> </span></div><div class="crayon-line" id="crayon-5037df52aa5f3-71" style=""><span class="i">d</span><span class="sy">.</span><span class="e">saveas</span><span class="sy">(</span><span class="i">report_filename</span><span class="sy">)</span><span class="sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5037df52aa5f3-72" style=""><span class="c"># word.ActiveDocument.Close</span></div><div class="crayon-line" id="crayon-5037df52aa5f3-73" style=""><span class="c"># word.Documents.close() </span></div><div class="crayon-line crayon-striped-line" id="crayon-5037df52aa5f3-74" style=""><span class="i">word</span><span class="sy">.</span><span class="e">quit</span><span class="sy">(</span><span class="sy">)</span><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line" id="crayon-5037df52aa5f3-75" style=""></div><div class="crayon-line crayon-striped-line" id="crayon-5037df52aa5f3-76" style=""><span class="st">end</span></div><div class="crayon-line" id="crayon-5037df52aa5f3-77" style=""></div><div class="crayon-line crayon-striped-line" id="crayon-5037df52aa5f3-78" style=""></div><div class="crayon-line" id="crayon-5037df52aa5f3-79" style=""><span class="i">pic_hash</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="k ">{</span><span class="k ">}</span></div><div class="crayon-line crayon-striped-line" id="crayon-5037df52aa5f3-80" style=""><span class="i">pic_hash</span><span class="sy">[</span><span class="o">:</span><span class="i">picture_360</span><span class="sy">]</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="i">pic_root</span><span class="o">+</span><span class="s">"/360_2012_03_31__20_54_27.bmp"</span><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line" id="crayon-5037df52aa5f3-81" style=""><span class="i">pic_hash</span><span class="sy">[</span><span class="o">:</span><span class="i">picture_macaffee</span><span class="sy">]</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="i">pic_root</span><span class="o">+</span><span class="s">"/macaffee_2012_04_01__21_18_36.bmp"</span><span class="h">&nbsp;&nbsp;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5037df52aa5f3-82" style=""><span class="i">pic_hash</span><span class="sy">[</span><span class="o">:</span><span class="i">picture_trend</span><span class="sy">]</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="i">pic_root</span><span class="o">+</span><span class="s">"/trend_pccilin_2012_03_31__20_53_20.bmp"</span></div><div class="crayon-line" id="crayon-5037df52aa5f3-83" style=""><span class="i">pic_hash</span><span class="sy">[</span><span class="o">:</span><span class="i">picture_duba</span><span class="sy">]</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="i">pic_root</span><span class="o">+</span><span class="s">"/kingsoft_duba_2012_03_31__20_55_37.bmp"</span><span class="h">&nbsp;&nbsp;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5037df52aa5f3-84" style=""><span class="i">pic_hash</span><span class="sy">[</span><span class="o">:</span><span class="i">picture_rsing</span><span class="sy">]</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="i">pic_root</span><span class="o">+</span><span class="s">"/rsing_2012_03_31__20_53_58.bmp"</span></div><div class="crayon-line" id="crayon-5037df52aa5f3-85" style=""></div><div class="crayon-line crayon-striped-line" id="crayon-5037df52aa5f3-86" style=""><span class="e">word_report</span><span class="sy">(</span><span class="i">filename</span><span class="sy">,</span><span class="i">pic_hash</span><span class="sy">,</span><span class="s">"att test"</span><span class="sy">)</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0383 seconds] -->
 <p>&nbsp;</p>
 					<div class="fixed"></div>
 				</div>
@@ -329,7 +355,7 @@ word_report<span style="color:#006600; font-weight:bold;">&#40;</span>filename,p
 		<ul id="widgets">
 
 <li class="widget widget_calendar"><h3>Archives</h3><div id="calendar_wrap"><table id="wp-calendar">
-	<caption>2012 年七月</caption>
+	<caption>2012 年八月</caption>
 	<thead>
 	<tr>
 		<th scope="col" title="星期日">日</th>
@@ -344,27 +370,28 @@ word_report<span style="color:#006600; font-weight:bold;">&#40;</span>filename,p
 
 	<tfoot>
 	<tr>
-		<td colspan="3" id="prev"><a href="../date/2012/05/index.html" title="查看 2012 年五月的文章">&laquo; 五</a></td>
+		<td colspan="3" id="prev"><a href="../date/2012/07/index.html" title="查看 2012 年七月的文章">&laquo; 七</a></td>
 		<td class="pad">&nbsp;</td>
 		<td colspan="3" id="next" class="pad">&nbsp;</td>
 	</tr>
 	</tfoot>
 
 	<tbody>
-	<tr><td>1</td><td><a href="../date/2012/07/02/index.html" title="六月随笔">2</a></td><td>3</td><td>4</td><td><a href="../date/2012/07/05/index.html" title="ruby Rspec测试框架cheetsheet">5</a></td><td>6</td><td>7</td>
+	<tr>
+		<td colspan="3" class="pad">&nbsp;</td><td><a href="../date/2012/08/01/index.html" title="配置vim rails集成开发环境">1</a></td><td><a href="../date/2012/08/02/index.html" title="安装ruby1.8.6后，gem错误的解决">2</a></td><td>3</td><td><a href="../date/2012/08/04/index.html" title="There was a problem installing &#8220;Mac OS X&#8221;.Try Reinstalling.">4</a></td>
 	</tr>
 	<tr>
-		<td>8</td><td><a href="../date/2012/07/09/index.html" title="linux下STAF执行失败时的处理">9</a></td><td>10</td><td>11</td><td>12</td><td id="today"><a href="../date/2012/07/13/index.html" title="镜像网站为静态页面到github中">13</a></td><td>14</td>
+		<td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td>
 	</tr>
 	<tr>
-		<td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td>
+		<td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td><a href="../date/2012/08/18/index.html" title="简单提取页面中所有迅雷下载资源链接">18</a></td>
 	</tr>
 	<tr>
-		<td>22</td><td>23</td><td>24</td><td>25</td><td>26</td><td>27</td><td>28</td>
+		<td>19</td><td>20</td><td>21</td><td>22</td><td><a href="../date/2012/08/23/index.html" title="使用python脚本简单切换hosts文件">23</a></td><td>24</td><td id="today">25</td>
 	</tr>
 	<tr>
-		<td>29</td><td>30</td><td>31</td>
-		<td class="pad" colspan="4">&nbsp;</td>
+		<td>26</td><td>27</td><td>28</td><td>29</td><td>30</td><td>31</td>
+		<td class="pad" colspan="1">&nbsp;</td>
 	</tr>
 	</tbody>
 	</table></div></li><li class="widget widget_categories"><h3>分类目录</h3>		<ul>
@@ -372,7 +399,7 @@ word_report<span style="color:#006600; font-weight:bold;">&#40;</span>filename,p
 </li>
 	<li class="cat-item cat-item-24"><a href="../category/ios-dev/index.html" title="查看 IOSDev 下的所有文章">IOSDev</a>
 </li>
-	<li class="cat-item cat-item-23"><a href="../category/java/index.html" title="查看 java 下的所有文章">java</a>
+	<li class="cat-item cat-item-23"><a href="../category/java/index.html" title="查看 Java 下的所有文章">Java</a>
 </li>
 	<li class="cat-item cat-item-5"><a href="../category/lamp/index.html" title="查看 LAMP 下的所有文章">LAMP</a>
 </li>
@@ -383,6 +410,8 @@ word_report<span style="color:#006600; font-weight:bold;">&#40;</span>filename,p
 	<li class="cat-item cat-item-3"><a href="../category/project/index.html" title="查看 Project 下的所有文章">Project</a>
 </li>
 	<li class="cat-item cat-item-4"><a href="../category/rubytesting/index.html" title="查看 Ruby&amp;Testing 下的所有文章">Ruby&amp;Testing</a>
+</li>
+	<li class="cat-item cat-item-26"><a href="../category/scriptlanguage/index.html" title="查看 脚本语言 下的所有文章">脚本语言</a>
 </li>
 		</ul>
 </li><li class="widget widget_text"><h3>Google Ads</h3>			<div class="textwidget"><script type="text/javascript"><!--
@@ -411,6 +440,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 </li><li class="widget widget_links"><h3>链接表</h3>
 	<ul class='xoxo blogroll'>
 <li><a href="http://blog.csdn.net/Android_Tutor" rel="colleague" title="Android_Tutor的专栏" target="_blank">Android学习系列</a></li>
+<li><a href="http://ihower.tw/rails3/" title="Rails3学习,写得不错!">Rails3学习</a></li>
 <li><a href="http://wpotp.com" rel="me" title="食品找茬网" target="_blank">找茬网</a></li>
 <li><a href="http://www.sz95000.com/" title="深圳长途汽车网上订票，官方网站，这次不会忘记了。。。" target="_blank">深圳长途汽车网上订票</a></li>
 
@@ -470,10 +500,11 @@ var WPGroHo = {"my_hash":""};
 <script type='text/javascript' src='../../wp-content/plugins/jetpack/modules/wpgroho.js?ver=3.4.1'></script>
 	<div style="display:none">
 	</div>
+<script type='text/javascript' src='http://s0.wp.com/wp-content/js/devicepx-jetpack.js?ver=201234'></script>
 
-	<script src="http://stats.wordpress.com/e-201228.js" type="text/javascript"></script>
+	<script src="http://stats.wordpress.com/e-201234.js" type="text/javascript"></script>
 	<script type="text/javascript">
-	st_go({v:'ext',j:'1:1.4.2',blog:'17044931',post:'238'});
+	st_go({v:'ext',j:'1:1.6.1',blog:'17044931',post:'238'});
 	var load_cmc = function(){linktracker_init(17044931,238,2);};
 	if ( typeof addLoadEvent != 'undefined' ) addLoadEvent(load_cmc);
 	else load_cmc();
@@ -493,3 +524,7 @@ var WPGroHo = {"my_hash":""};
 </script> 
 </body>
 </html>
+
+<!-- Dynamic page generated in 0.677 seconds. -->
+<!-- Cached page generated by WP-Super-Cache on 2012-08-25 04:08:50 -->
+<!-- super cache -->

@@ -43,6 +43,11 @@
 		<link rel="alternate" type="application/rss+xml" title="Only For Sunshine~ &raquo; 【使用Ruby进行Web应用测试系列】二、使用watir组件登陆本博客 评论 Feed" href="feed/index.html" />
 <link rel='stylesheet' id='jquery.slimbox-css'  href='../../wp-content/plugins/slimbox/stylesheets/jquery.slimbox.css?ver=2.03' type='text/css' media='all' />
 <link rel='stylesheet' id='wp-pagenavi-css'  href='../../wp-content/themes/elegant-box/pagenavi-css.css?ver=2.70' type='text/css' media='all' />
+<script type="text/javascript">
+var duoshuoQuery = {"short_name":"imzc","sso":{"login":"http:\/\/imzc.net\/wp-login.php?action=duoshuo_login","logout":"http:\/\/imzc.net\/wp-login.php?action=logout&_wpnonce=bb3b89883e"},"remote_auth":"W10= 07c28fa66d747fdaceb8368a2ef6068239020dec 1344953009"};
+duoshuoQuery.sso.login += '&redirect_to=' + encodeURIComponent(window.location.href);
+duoshuoQuery.sso.logout += '&redirect_to=' + encodeURIComponent(window.location.href);
+</script>
 <script type='text/javascript' src='../../wp-includes/js/jquery/jquery.js?ver=1.7.2'></script>
 <script type='text/javascript' src='../../wp-content/plugins/slimbox/javascript/jquery.slimbox.js?ver=2.03'></script>
 <script type='text/javascript' src='../../wp-includes/js/json2.js?ver=2011-02-23'></script>
@@ -53,6 +58,7 @@ var live_blogging = {"ajaxurl":"http:\/\/imzc.net\/wp-admin\/admin-ajax.php","up
 </script>
 <script type='text/javascript' src='../../wp-content/plugins/live-blogging/live-blogging.js?ver=3.4.1'></script>
 <script type='text/javascript' src='../../wp-includes/js/comment-reply.js?ver=3.4.1'></script>
+<script type='text/javascript' src='http://static.duoshuo.com/embed.js'></script>
 <link rel="EditURI" type="application/rsd+xml" title="RSD" href="../../xmlrpc.php?rsd" />
 <link rel="wlwmanifest" type="application/wlwmanifest+xml" href="../../wp-includes/wlwmanifest.xml" /> 
 <link rel='prev' title='【使用Ruby进行Web应用测试系列】一、环境搭建' href='../49/index.html' />
@@ -60,7 +66,7 @@ var live_blogging = {"ajaxurl":"http:\/\/imzc.net\/wp-admin\/admin-ajax.php","up
 <meta name="generator" content="WordPress 3.4.1" />
 <link rel='shortlink' href='http://wp.me/p19waf-M' />
 
-<!-- All in One SEO Pack 1.6.14.5 by Michael Torbert of Semper Fi Web Design[343,458] -->
+<!-- All in One SEO Pack 1.6.14.6 by Michael Torbert of Semper Fi Web Design[343,458] -->
 <meta name="description" content="由于登录部分有验证码,为了使用方便测试,因此留了一个借口,当通过http请求该页面时,会返回验证码的数字. 比如请求http://imzc.net/get_verifycode_for_watir.php?debug=1而获得当前的验证码. 在sablog中,验证码是保存在$_SESSION中的,因此,直接显示出来即可,下面是此脚本的代码: 需要注意的是,要先请求登录页面,然后用同一个浏览器来请求此接口,否则得到的验证码不是真实的." />
 <meta name="keywords" content="ruby" />
 <link rel="canonical" href="index.html" />
@@ -352,7 +358,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 		<ul id="widgets">
 
 <li class="widget widget_calendar"><h3>Archives</h3><div id="calendar_wrap"><table id="wp-calendar">
-	<caption>2012 年七月</caption>
+	<caption>2012 年八月</caption>
 	<thead>
 	<tr>
 		<th scope="col" title="星期日">日</th>
@@ -367,27 +373,28 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 
 	<tfoot>
 	<tr>
-		<td colspan="3" id="prev"><a href="../date/2012/05/index.html" title="查看 2012 年五月的文章">&laquo; 五</a></td>
+		<td colspan="3" id="prev"><a href="../date/2012/07/index.html" title="查看 2012 年七月的文章">&laquo; 七</a></td>
 		<td class="pad">&nbsp;</td>
 		<td colspan="3" id="next" class="pad">&nbsp;</td>
 	</tr>
 	</tfoot>
 
 	<tbody>
-	<tr><td>1</td><td><a href="../date/2012/07/02/index.html" title="六月随笔">2</a></td><td>3</td><td>4</td><td><a href="../date/2012/07/05/index.html" title="ruby Rspec测试框架cheetsheet">5</a></td><td>6</td><td>7</td>
+	<tr>
+		<td colspan="3" class="pad">&nbsp;</td><td><a href="../date/2012/08/01/index.html" title="配置vim rails集成开发环境">1</a></td><td><a href="../date/2012/08/02/index.html" title="安装ruby1.8.6后，gem错误的解决">2</a></td><td>3</td><td><a href="../date/2012/08/04/index.html" title="There was a problem installing &#8220;Mac OS X&#8221;.Try Reinstalling.">4</a></td>
 	</tr>
 	<tr>
-		<td>8</td><td><a href="../date/2012/07/09/index.html" title="linux下STAF执行失败时的处理">9</a></td><td>10</td><td>11</td><td>12</td><td id="today"><a href="../date/2012/07/13/index.html" title="镜像网站为静态页面到github中">13</a></td><td>14</td>
+		<td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td>
 	</tr>
 	<tr>
-		<td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td>
+		<td>12</td><td>13</td><td id="today">14</td><td>15</td><td>16</td><td>17</td><td>18</td>
 	</tr>
 	<tr>
-		<td>22</td><td>23</td><td>24</td><td>25</td><td>26</td><td>27</td><td>28</td>
+		<td>19</td><td>20</td><td>21</td><td>22</td><td>23</td><td>24</td><td>25</td>
 	</tr>
 	<tr>
-		<td>29</td><td>30</td><td>31</td>
-		<td class="pad" colspan="4">&nbsp;</td>
+		<td>26</td><td>27</td><td>28</td><td>29</td><td>30</td><td>31</td>
+		<td class="pad" colspan="1">&nbsp;</td>
 	</tr>
 	</tbody>
 	</table></div></li><li class="widget widget_categories"><h3>分类目录</h3>		<ul>
@@ -395,7 +402,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 </li>
 	<li class="cat-item cat-item-24"><a href="../category/ios-dev/index.html" title="查看 IOSDev 下的所有文章">IOSDev</a>
 </li>
-	<li class="cat-item cat-item-23"><a href="../category/java/index.html" title="查看 java 下的所有文章">java</a>
+	<li class="cat-item cat-item-23"><a href="../category/java/index.html" title="查看 Java 下的所有文章">Java</a>
 </li>
 	<li class="cat-item cat-item-5"><a href="../category/lamp/index.html" title="查看 LAMP 下的所有文章">LAMP</a>
 </li>
@@ -434,6 +441,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 </li><li class="widget widget_links"><h3>链接表</h3>
 	<ul class='xoxo blogroll'>
 <li><a href="http://blog.csdn.net/Android_Tutor" rel="colleague" title="Android_Tutor的专栏" target="_blank">Android学习系列</a></li>
+<li><a href="http://ihower.tw/rails3/" title="Rails3学习,写得不错!">Rails3学习</a></li>
 <li><a href="http://wpotp.com" rel="me" title="食品找茬网" target="_blank">找茬网</a></li>
 <li><a href="http://www.sz95000.com/" title="深圳长途汽车网上订票，官方网站，这次不会忘记了。。。" target="_blank">深圳长途汽车网上订票</a></li>
 
@@ -493,10 +501,11 @@ var WPGroHo = {"my_hash":""};
 <script type='text/javascript' src='../../wp-content/plugins/jetpack/modules/wpgroho.js?ver=3.4.1'></script>
 	<div style="display:none">
 	</div>
+<script type='text/javascript' src='http://s0.wp.com/wp-content/js/devicepx-jetpack.js?ver=201233'></script>
 
-	<script src="http://stats.wordpress.com/e-201228.js" type="text/javascript"></script>
+	<script src="http://stats.wordpress.com/e-201233.js" type="text/javascript"></script>
 	<script type="text/javascript">
-	st_go({v:'ext',j:'1:1.4.2',blog:'17044931',post:'48'});
+	st_go({v:'ext',j:'1:1.6.1',blog:'17044931',post:'48'});
 	var load_cmc = function(){linktracker_init(17044931,48,2);};
 	if ( typeof addLoadEvent != 'undefined' ) addLoadEvent(load_cmc);
 	else load_cmc();
@@ -516,3 +525,7 @@ var WPGroHo = {"my_hash":""};
 </script> 
 </body>
 </html>
+
+<!-- Dynamic page generated in 0.659 seconds. -->
+<!-- Cached page generated by WP-Super-Cache on 2012-08-14 22:03:29 -->
+<!-- super cache -->

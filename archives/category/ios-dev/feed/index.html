@@ -13,11 +13,11 @@
 	<atom:link href="http://imzc.net/archives/category/ios-dev/feed/" rel="self" type="application/rss+xml" />
 	<link>http://imzc.net</link>
 	<description>-More Thinking,And Then Just do it~~~</description>
-	<lastBuildDate>Thu, 12 Jul 2012 17:15:18 +0000</lastBuildDate>
+	<lastBuildDate>Thu, 20 Sep 2012 16:40:36 +0000</lastBuildDate>
 	<language>zh-CN</language>
 	<sy:updatePeriod>hourly</sy:updatePeriod>
 	<sy:updateFrequency>1</sy:updateFrequency>
-	<generator>http://wordpress.org/?v=3.4.1</generator>
+	<generator>http://wordpress.org/?v=3.4.2</generator>
 		<item>
 		<title>ios5实现访问通话记录(需越狱)</title>
 		<link>http://imzc.net/archives/259/</link>
@@ -27,201 +27,193 @@
 				<category><![CDATA[IOSDev]]></category>
 
 		<guid isPermaLink="false">http://imzc.net/?p=259</guid>
-		<description><![CDATA[ios5的通话记录都保存在一个sqlite db文件中: 可以用下面代码测试，能否访问到对应的db： -&#4 [...]]]></description>
+		<description><![CDATA[ios5的通话记录都保存在一个sqlite db文件中: 可以用下面代码测试，能否访问到对应的db： [cra [...]]]></description>
 			<content:encoded><![CDATA[<p>ios5的通话记录都保存在一个sqlite db文件中:</p>
-<p>可以用下面代码测试，能否访问到对应的db：</p>
-
-<div class="wp_syntax"><div class="code"><pre class="c_mac" style="font-family:monospace;"><span style="color: #000000;">-</span><span style="color: #000000;">&#40;</span>IBAction<span style="color: #000000;">&#41;</span>checkDBClick<span style="color: #000000;">:</span><span style="color: #000000;">&#40;</span>id<span style="color: #000000;">&#41;</span>sender<span style="color: #000000;">&#123;</span>
-	NSFileManager <span style="color: #000000;">*</span>fileManager <span style="color: #000000;">=</span> <span style="color: #000000;">&#91;</span>NSFileManager defaultManager<span style="color: #000000;">&#93;</span>; 
-	NSDirectoryEnumerator <span style="color: #000000;">*</span>dirnum <span style="color: #000000;">=</span> <span style="color: #000000;">&#91;</span><span style="color: #000000;">&#91;</span>NSFileManager defaultManager<span style="color: #000000;">&#93;</span> enumeratorAtPath<span style="color: #000000;">:</span> @<span style="color: #666666;">&quot;/private/&quot;</span><span style="color: #000000;">&#93;</span>; 
-	NSString <span style="color: #000000;">*</span>nextItem <span style="color: #000000;">=</span> <span style="color: #000000;">&#91;</span>NSString string<span style="color: #000000;">&#93;</span>; 
-	NSUInteger pos <span style="color: #000000;">=</span> <span style="color: #0000dd;">0</span>;		
-	uTextView.<span style="color: #00eeff;">text</span>  <span style="color: #000000;">=</span> @<span style="color: #666666;">&quot;checkDBClick&quot;</span>;	
-	<span style="color: #0000ff;">while</span><span style="color: #000000;">&#40;</span> <span style="color: #000000;">&#40;</span>nextItem <span style="color: #000000;">=</span> <span style="color: #000000;">&#91;</span>dirnum nextObject<span style="color: #000000;">&#93;</span><span style="color: #000000;">&#41;</span><span style="color: #000000;">&#41;</span> <span style="color: #000000;">&#123;</span>
-		<span style="color: #0000ff;">if</span> <span style="color: #000000;">&#40;</span><span style="color: #000000;">&#91;</span><span style="color: #000000;">&#91;</span>nextItem pathExtension<span style="color: #000000;">&#93;</span> isEqualToString<span style="color: #000000;">:</span> @<span style="color: #666666;">&quot;db&quot;</span><span style="color: #000000;">&#93;</span> || 
-			<span style="color: #000000;">&#91;</span><span style="color: #000000;">&#91;</span>nextItem pathExtension<span style="color: #000000;">&#93;</span> isEqualToString<span style="color: #000000;">:</span> @<span style="color: #666666;">&quot;sqlitedb&quot;</span><span style="color: #000000;">&#93;</span><span style="color: #000000;">&#41;</span> <span style="color: #000000;">&#123;</span> 
-			<span style="color: #0000ff;">if</span> <span style="color: #000000;">&#40;</span><span style="color: #000000;">&#91;</span>fileManager isReadableFileAtPath<span style="color: #000000;">:</span>nextItem<span style="color: #000000;">&#93;</span><span style="color: #000000;">&#41;</span> <span style="color: #000000;">&#123;</span> 
-				NSLog<span style="color: #000000;">&#40;</span>@<span style="color: #666666;">&quot;%@&quot;</span>, nextItem<span style="color: #000000;">&#41;</span>; 
-				pos<span style="color: #000000;">++</span>;
-				NSString <span style="color: #000000;">*</span> tmp <span style="color: #000000;">=</span> <span style="color: #000000;">&#91;</span><span style="color: #000000;">&#91;</span>NSString alloc<span style="color: #000000;">&#93;</span> initWithFormat<span style="color: #000000;">:</span>@<span style="color: #666666;">&quot;%@<span style="color: #000099; font-weight: bold;">\n</span>next(%d):%@&quot;</span>,uTextView.<span style="color: #00eeff;">text</span>,pos,nextItem<span style="color: #000000;">&#93;</span>;
-				uTextView.<span style="color: #00eeff;">text</span> <span style="color: #000000;">=</span> tmp;
-&nbsp;
-				<span style="color: #000000;">&#91;</span>tmp release<span style="color: #000000;">&#93;</span>;
-			<span style="color: #000000;">&#125;</span> 
-		<span style="color: #000000;">&#125;</span> 
-	<span style="color: #000000;">&#125;</span>
-<span style="color: #000000;">&#125;</span></pre></div></div>
-
-<p>&nbsp;</p>
+<p>可以用下面代码测试，能否访问到对应的db：</p><pre class="crayon-plain-tag">-(IBAction)checkDBClick:(id)sender{
+	NSFileManager *fileManager = [NSFileManager defaultManager]; 
+	NSDirectoryEnumerator *dirnum = [[NSFileManager defaultManager] enumeratorAtPath: @&quot;/private/&quot;]; 
+	NSString *nextItem = [NSString string]; 
+	NSUInteger pos = 0;		
+	uTextView.text  = @&quot;checkDBClick&quot;;	
+	while( (nextItem = [dirnum nextObject])) {
+		if ([[nextItem pathExtension] isEqualToString: @&quot;db&quot;] || 
+			[[nextItem pathExtension] isEqualToString: @&quot;sqlitedb&quot;]) { 
+			if ([fileManager isReadableFileAtPath:nextItem]) { 
+				NSLog(@&quot;%@&quot;, nextItem); 
+				pos++;
+				NSString * tmp = [[NSString alloc] initWithFormat:@&quot;%@\nnext(%d):%@&quot;,uTextView.text,pos,nextItem];
+				uTextView.text = tmp;
+				
+				[tmp release];
+			} 
+		} 
+	}
+}</pre><p>&nbsp;</p>
 <p>ios5中，位于目录： /private/var/wireless/Library/CallHistory/call_history.db 下。由于ios5以后，所有程序运行在沙盒下，仅能访问程序自己的目录，以及有限的几个目录，故，在不越狱的情况下，是访问不到对应的数据的。程序中用到的telocation.db，来电归属地数据库，请直接google得到。<br />
 PS：有谁能在不越狱的基础上，利用私有API或者其他方式获取到手机号的话，麻烦email我一下方法，多谢~~~<br />
-假定已经获得了手机号码，可通过下述代码获取，并得到对应的归属地：</p>
+假定已经获得了手机号码，可通过下述代码获取，并得到对应的归属地：</p><pre class="crayon-plain-tag">-(NSString *)getPhoneNumberLocation: (NSString * )phoneNum{
+	//call area 
+	
+	NSString *teLocationDatabasePath = [[NSString alloc] initWithFormat:@&quot;%@/%@&quot;,[[NSBundle mainBundle] resourcePath], @&quot;telocation.db&quot;];
+	BOOL dbFileExist = FALSE;
+	NSMutableString * area = [[[NSMutableString alloc] autorelease] initWithString:@&quot;&quot;];
+	
+	NSFileManager *fileManager = [NSFileManager defaultManager]; 
+	dbFileExist = [fileManager fileExistsAtPath:teLocationDatabasePath];
+	[fileManager release]; 
+	
+	NSLog(@&quot;teLocationDatabasePath:%@&quot;,teLocationDatabasePath);
+	
+	if(dbFileExist) {
+		if ([fileManager isReadableFileAtPath:teLocationDatabasePath]) {
+			sqlite3 *database;
+			if(sqlite3_open([teLocationDatabasePath UTF8String], &amp;database) == SQLITE_OK) {
+				sqlite3_stmt *compiledStatement;
+				NSString *sqlStatement = [NSString stringWithFormat:@&quot;SELECT * FROM mob_location WHERE _id='%@';&quot;,[phoneNum substringToIndex:7]];
+				NSLog(@&quot;sql:%@&quot;,sqlStatement);
+								
+				
+				int errorCode = sqlite3_prepare_v2(database, [sqlStatement UTF8String], -1, 
+												   &amp;compiledStatement, NULL);
+				if( errorCode == SQLITE_OK) {
+					int count = 1;
+					
+					while(sqlite3_step(compiledStatement) == SQLITE_ROW) {
+						// Read the data from the result row
+						int numberOfColumns = sqlite3_column_count(compiledStatement);
+						NSString *data;
+						NSString *columnName;
+						
+						for (int i = 0; i &lt; numberOfColumns; i++) {
+							columnName = [[NSString alloc] initWithUTF8String:
+										  (char *)sqlite3_column_name(compiledStatement, i)];
+							data = [[NSString alloc] initWithUTF8String:
+									(char *)sqlite3_column_text(compiledStatement, i)];
+							
+							
+							
+							if ([columnName isEqualToString:@&quot;location&quot;]) { 
+								[area appendString:data];
+								
+								NSLog(@&quot;%d:%@=&gt;%@&quot;,count,columnName,data);
+							}
+							[columnName release];
+							[data release];
+						}  
+						count++;
+					}
+					
+				}
+				else {
+					NSLog(@&quot;Failed to retrieve table&quot;);
+					NSLog(@&quot;Error Code: %d&quot;, errorCode);
+				}
+				sqlite3_finalize(compiledStatement);
+			}
+		}
+		
+	}
+	[teLocationDatabasePath release];
+	NSLog(@&quot;area:%@&quot;,area);
+	return area;
+}
 
-<div class="wp_syntax"><div class="code"><pre class="c_mac" style="font-family:monospace;">&nbsp;
-<span style="color: #000000;">-</span><span style="color: #000000;">&#40;</span>NSString <span style="color: #000000;">*</span><span style="color: #000000;">&#41;</span>getPhoneNumberLocation<span style="color: #000000;">:</span> <span style="color: #000000;">&#40;</span>NSString <span style="color: #000000;">*</span> <span style="color: #000000;">&#41;</span>phoneNum<span style="color: #000000;">&#123;</span>
-	<span style="color: #ff0000;">//call area </span>
-&nbsp;
-	NSString <span style="color: #000000;">*</span>teLocationDatabasePath <span style="color: #000000;">=</span> <span style="color: #000000;">&#91;</span><span style="color: #000000;">&#91;</span>NSString alloc<span style="color: #000000;">&#93;</span> initWithFormat<span style="color: #000000;">:</span>@<span style="color: #666666;">&quot;%@/%@&quot;</span>,<span style="color: #000000;">&#91;</span><span style="color: #000000;">&#91;</span>NSBundle mainBundle<span style="color: #000000;">&#93;</span> resourcePath<span style="color: #000000;">&#93;</span>, @<span style="color: #666666;">&quot;telocation.db&quot;</span><span style="color: #000000;">&#93;</span>;
-	BOOL dbFileExist <span style="color: #000000;">=</span> FALSE;
-	NSMutableString <span style="color: #000000;">*</span> area <span style="color: #000000;">=</span> <span style="color: #000000;">&#91;</span><span style="color: #000000;">&#91;</span><span style="color: #000000;">&#91;</span>NSMutableString alloc<span style="color: #000000;">&#93;</span> autorelease<span style="color: #000000;">&#93;</span> initWithString<span style="color: #000000;">:</span>@<span style="color: #666666;">&quot;&quot;</span><span style="color: #000000;">&#93;</span>;
-&nbsp;
-	NSFileManager <span style="color: #000000;">*</span>fileManager <span style="color: #000000;">=</span> <span style="color: #000000;">&#91;</span>NSFileManager defaultManager<span style="color: #000000;">&#93;</span>; 
-	dbFileExist <span style="color: #000000;">=</span> <span style="color: #000000;">&#91;</span>fileManager fileExistsAtPath<span style="color: #000000;">:</span>teLocationDatabasePath<span style="color: #000000;">&#93;</span>;
-	<span style="color: #000000;">&#91;</span>fileManager release<span style="color: #000000;">&#93;</span>; 
-&nbsp;
-	NSLog<span style="color: #000000;">&#40;</span>@<span style="color: #666666;">&quot;teLocationDatabasePath:%@&quot;</span>,teLocationDatabasePath<span style="color: #000000;">&#41;</span>;
-&nbsp;
-	<span style="color: #0000ff;">if</span><span style="color: #000000;">&#40;</span>dbFileExist<span style="color: #000000;">&#41;</span> <span style="color: #000000;">&#123;</span>
-		<span style="color: #0000ff;">if</span> <span style="color: #000000;">&#40;</span><span style="color: #000000;">&#91;</span>fileManager isReadableFileAtPath<span style="color: #000000;">:</span>teLocationDatabasePath<span style="color: #000000;">&#93;</span><span style="color: #000000;">&#41;</span> <span style="color: #000000;">&#123;</span>
-			sqlite3 <span style="color: #000000;">*</span>database;
-			<span style="color: #0000ff;">if</span><span style="color: #000000;">&#40;</span>sqlite3_open<span style="color: #000000;">&#40;</span><span style="color: #000000;">&#91;</span>teLocationDatabasePath UTF8String<span style="color: #000000;">&#93;</span>, <span style="color: #000000;">&amp;</span>database<span style="color: #000000;">&#41;</span> <span style="color: #000000;">==</span> SQLITE_OK<span style="color: #000000;">&#41;</span> <span style="color: #000000;">&#123;</span>
-				sqlite3_stmt <span style="color: #000000;">*</span>compiledStatement;
-				NSString <span style="color: #000000;">*</span>sqlStatement <span style="color: #000000;">=</span> <span style="color: #000000;">&#91;</span>NSString stringWithFormat<span style="color: #000000;">:</span>@<span style="color: #666666;">&quot;SELECT * FROM mob_location WHERE _id='%@';&quot;</span>,<span style="color: #000000;">&#91;</span>phoneNum substringToIndex<span style="color: #000000;">:</span><span style="color: #0000dd;">7</span><span style="color: #000000;">&#93;</span><span style="color: #000000;">&#93;</span>;
-				NSLog<span style="color: #000000;">&#40;</span>@<span style="color: #666666;">&quot;sql:%@&quot;</span>,sqlStatement<span style="color: #000000;">&#41;</span>;
-&nbsp;
-&nbsp;
-				<span style="color: #0000ff;">int</span> errorCode <span style="color: #000000;">=</span> sqlite3_prepare_v2<span style="color: #000000;">&#40;</span>database, <span style="color: #000000;">&#91;</span>sqlStatement UTF8String<span style="color: #000000;">&#93;</span>, <span style="color: #000000;">-</span><span style="color: #0000dd;">1</span>, 
-												   <span style="color: #000000;">&amp;</span>compiledStatement, <span style="color: #0000ff;">NULL</span><span style="color: #000000;">&#41;</span>;
-				<span style="color: #0000ff;">if</span><span style="color: #000000;">&#40;</span> errorCode <span style="color: #000000;">==</span> SQLITE_OK<span style="color: #000000;">&#41;</span> <span style="color: #000000;">&#123;</span>
-					<span style="color: #0000ff;">int</span> count <span style="color: #000000;">=</span> <span style="color: #0000dd;">1</span>;
-&nbsp;
-					<span style="color: #0000ff;">while</span><span style="color: #000000;">&#40;</span>sqlite3_step<span style="color: #000000;">&#40;</span>compiledStatement<span style="color: #000000;">&#41;</span> <span style="color: #000000;">==</span> SQLITE_ROW<span style="color: #000000;">&#41;</span> <span style="color: #000000;">&#123;</span>
-						<span style="color: #ff0000;">// Read the data from the result row</span>
-						<span style="color: #0000ff;">int</span> numberOfColumns <span style="color: #000000;">=</span> sqlite3_column_count<span style="color: #000000;">&#40;</span>compiledStatement<span style="color: #000000;">&#41;</span>;
-						NSString <span style="color: #000000;">*</span>data;
-						NSString <span style="color: #000000;">*</span>columnName;
-&nbsp;
-						<span style="color: #0000ff;">for</span> <span style="color: #000000;">&#40;</span><span style="color: #0000ff;">int</span> i <span style="color: #000000;">=</span> <span style="color: #0000dd;">0</span>; i &lt; numberOfColumns; i<span style="color: #000000;">++</span><span style="color: #000000;">&#41;</span> <span style="color: #000000;">&#123;</span>
-							columnName <span style="color: #000000;">=</span> <span style="color: #000000;">&#91;</span><span style="color: #000000;">&#91;</span>NSString alloc<span style="color: #000000;">&#93;</span> initWithUTF8String<span style="color: #000000;">:</span>
-										  <span style="color: #000000;">&#40;</span><span style="color: #0000ff;">char</span> <span style="color: #000000;">*</span><span style="color: #000000;">&#41;</span>sqlite3_column_name<span style="color: #000000;">&#40;</span>compiledStatement, i<span style="color: #000000;">&#41;</span><span style="color: #000000;">&#93;</span>;
-							data <span style="color: #000000;">=</span> <span style="color: #000000;">&#91;</span><span style="color: #000000;">&#91;</span>NSString alloc<span style="color: #000000;">&#93;</span> initWithUTF8String<span style="color: #000000;">:</span>
-									<span style="color: #000000;">&#40;</span><span style="color: #0000ff;">char</span> <span style="color: #000000;">*</span><span style="color: #000000;">&#41;</span>sqlite3_column_text<span style="color: #000000;">&#40;</span>compiledStatement, i<span style="color: #000000;">&#41;</span><span style="color: #000000;">&#93;</span>;
-&nbsp;
-&nbsp;
-&nbsp;
-							<span style="color: #0000ff;">if</span> <span style="color: #000000;">&#40;</span><span style="color: #000000;">&#91;</span>columnName isEqualToString<span style="color: #000000;">:</span>@<span style="color: #666666;">&quot;location&quot;</span><span style="color: #000000;">&#93;</span><span style="color: #000000;">&#41;</span> <span style="color: #000000;">&#123;</span> 
-								<span style="color: #000000;">&#91;</span>area appendString<span style="color: #000000;">:</span>data<span style="color: #000000;">&#93;</span>;
-&nbsp;
-								NSLog<span style="color: #000000;">&#40;</span>@<span style="color: #666666;">&quot;%d:%@=&gt;%@&quot;</span>,count,columnName,data<span style="color: #000000;">&#41;</span>;
-							<span style="color: #000000;">&#125;</span>
-							<span style="color: #000000;">&#91;</span>columnName release<span style="color: #000000;">&#93;</span>;
-							<span style="color: #000000;">&#91;</span>data release<span style="color: #000000;">&#93;</span>;
-						<span style="color: #000000;">&#125;</span>  
-						count<span style="color: #000000;">++</span>;
-					<span style="color: #000000;">&#125;</span>
-&nbsp;
-				<span style="color: #000000;">&#125;</span>
-				<span style="color: #0000ff;">else</span> <span style="color: #000000;">&#123;</span>
-					NSLog<span style="color: #000000;">&#40;</span>@<span style="color: #666666;">&quot;Failed to retrieve table&quot;</span><span style="color: #000000;">&#41;</span>;
-					NSLog<span style="color: #000000;">&#40;</span>@<span style="color: #666666;">&quot;Error Code: %d&quot;</span>, errorCode<span style="color: #000000;">&#41;</span>;
-				<span style="color: #000000;">&#125;</span>
-				sqlite3_finalize<span style="color: #000000;">&#40;</span>compiledStatement<span style="color: #000000;">&#41;</span>;
-			<span style="color: #000000;">&#125;</span>
-		<span style="color: #000000;">&#125;</span>
-&nbsp;
-	<span style="color: #000000;">&#125;</span>
-	<span style="color: #000000;">&#91;</span>teLocationDatabasePath release<span style="color: #000000;">&#93;</span>;
-	NSLog<span style="color: #000000;">&#40;</span>@<span style="color: #666666;">&quot;area:%@&quot;</span>,area<span style="color: #000000;">&#41;</span>;
-	<span style="color: #0000ff;">return</span> area;
-<span style="color: #000000;">&#125;</span>
-&nbsp;
-<span style="color: #000000;">-</span><span style="color: #000000;">&#40;</span>IBAction<span style="color: #000000;">&#41;</span>getInfoClick<span style="color: #000000;">:</span><span style="color: #000000;">&#40;</span>id<span style="color: #000000;">&#41;</span>sender<span style="color: #000000;">&#123;</span>
-&nbsp;
-<span style="color: #339900;">#define DB_FILE  [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@&quot;call_history.db&quot;]</span>
-&nbsp;
-	NSLog<span style="color: #000000;">&#40;</span>@<span style="color: #666666;">&quot;getInfoClick:%@&quot;</span>,DB_FILE<span style="color: #000000;">&#41;</span>;
-	uTextView.<span style="color: #00eeff;">text</span> <span style="color: #000000;">=</span> @<span style="color: #666666;">&quot;getInfoClick:&quot;</span>; 
-&nbsp;
-	NSFileManager <span style="color: #000000;">*</span>fileManager <span style="color: #000000;">=</span> <span style="color: #000000;">&#91;</span>NSFileManager defaultManager<span style="color: #000000;">&#93;</span>; 	
-	NSString <span style="color: #000000;">*</span>callHisoryDatabasePath <span style="color: #000000;">=</span> DB_FILE;<span style="color: #ff0000;">//@&quot;/private/var/wireless/Library/CallHistory/call_history.db&quot;;</span>
-	BOOL callHistoryFileExist <span style="color: #000000;">=</span> FALSE;
-	callHistoryFileExist <span style="color: #000000;">=</span> <span style="color: #000000;">&#91;</span>fileManager fileExistsAtPath<span style="color: #000000;">:</span>callHisoryDatabasePath<span style="color: #000000;">&#93;</span>;
-	<span style="color: #ff0000;">//	[fileManager release];</span>
-	NSMutableArray <span style="color: #000000;">*</span>callHistory <span style="color: #000000;">=</span> <span style="color: #000000;">&#91;</span><span style="color: #000000;">&#91;</span>NSMutableArray alloc<span style="color: #000000;">&#93;</span> init<span style="color: #000000;">&#93;</span>;
-&nbsp;
-&nbsp;
-	<span style="color: #0000ff;">if</span><span style="color: #000000;">&#40;</span>callHistoryFileExist<span style="color: #000000;">&#41;</span> <span style="color: #000000;">&#123;</span>
-		NSLog<span style="color: #000000;">&#40;</span>@<span style="color: #666666;">&quot;path is exists...&quot;</span><span style="color: #000000;">&#41;</span>;
-		<span style="color: #0000ff;">if</span> <span style="color: #000000;">&#40;</span><span style="color: #000000;">&#91;</span>fileManager isReadableFileAtPath<span style="color: #000000;">:</span>callHisoryDatabasePath<span style="color: #000000;">&#93;</span><span style="color: #000000;">&#41;</span> <span style="color: #000000;">&#123;</span>
-			NSLog<span style="color: #000000;">&#40;</span>@<span style="color: #666666;">&quot;path can read...&quot;</span><span style="color: #000000;">&#41;</span>;
-			sqlite3 <span style="color: #000000;">*</span>database;
-			<span style="color: #0000ff;">if</span><span style="color: #000000;">&#40;</span>sqlite3_open<span style="color: #000000;">&#40;</span><span style="color: #000000;">&#91;</span>callHisoryDatabasePath UTF8String<span style="color: #000000;">&#93;</span>, <span style="color: #000000;">&amp;</span>database<span style="color: #000000;">&#41;</span> <span style="color: #000000;">==</span> SQLITE_OK<span style="color: #000000;">&#41;</span> <span style="color: #000000;">&#123;</span>
-				sqlite3_stmt <span style="color: #000000;">*</span>compiledStatement;
-				NSString <span style="color: #000000;">*</span>sqlStatement <span style="color: #000000;">=</span> <span style="color: #000000;">&#91;</span>NSString stringWithString<span style="color: #000000;">:</span>@<span style="color: #666666;">&quot;SELECT * FROM call;&quot;</span><span style="color: #000000;">&#93;</span>;
-&nbsp;
-				<span style="color: #0000ff;">int</span> errorCode <span style="color: #000000;">=</span> sqlite3_prepare_v2<span style="color: #000000;">&#40;</span>database, <span style="color: #000000;">&#91;</span>sqlStatement UTF8String<span style="color: #000000;">&#93;</span>, <span style="color: #000000;">-</span><span style="color: #0000dd;">1</span>, 
-												   <span style="color: #000000;">&amp;</span>compiledStatement, <span style="color: #0000ff;">NULL</span><span style="color: #000000;">&#41;</span>;
-				<span style="color: #0000ff;">if</span><span style="color: #000000;">&#40;</span> errorCode <span style="color: #000000;">==</span> SQLITE_OK<span style="color: #000000;">&#41;</span> <span style="color: #000000;">&#123;</span>
-					<span style="color: #0000ff;">int</span> count <span style="color: #000000;">=</span> <span style="color: #0000dd;">1</span>;
-&nbsp;
-					<span style="color: #0000ff;">while</span><span style="color: #000000;">&#40;</span>sqlite3_step<span style="color: #000000;">&#40;</span>compiledStatement<span style="color: #000000;">&#41;</span> <span style="color: #000000;">==</span> SQLITE_ROW<span style="color: #000000;">&#41;</span> <span style="color: #000000;">&#123;</span>
-						<span style="color: #ff0000;">// Read the data from the result row</span>
-						NSMutableDictionary <span style="color: #000000;">*</span>callHistoryItem <span style="color: #000000;">=</span> <span style="color: #000000;">&#91;</span><span style="color: #000000;">&#91;</span>NSMutableDictionary alloc<span style="color: #000000;">&#93;</span> init<span style="color: #000000;">&#93;</span>;
-						<span style="color: #0000ff;">int</span> numberOfColumns <span style="color: #000000;">=</span> sqlite3_column_count<span style="color: #000000;">&#40;</span>compiledStatement<span style="color: #000000;">&#41;</span>;
-						NSString <span style="color: #000000;">*</span>data;
-						NSString <span style="color: #000000;">*</span>columnName;
-&nbsp;
-						<span style="color: #0000ff;">for</span> <span style="color: #000000;">&#40;</span><span style="color: #0000ff;">int</span> i <span style="color: #000000;">=</span> <span style="color: #0000dd;">0</span>; i &lt; numberOfColumns; i<span style="color: #000000;">++</span><span style="color: #000000;">&#41;</span> <span style="color: #000000;">&#123;</span>
-							columnName <span style="color: #000000;">=</span> <span style="color: #000000;">&#91;</span><span style="color: #000000;">&#91;</span>NSString alloc<span style="color: #000000;">&#93;</span> initWithUTF8String<span style="color: #000000;">:</span>
-										  <span style="color: #000000;">&#40;</span><span style="color: #0000ff;">char</span> <span style="color: #000000;">*</span><span style="color: #000000;">&#41;</span>sqlite3_column_name<span style="color: #000000;">&#40;</span>compiledStatement, i<span style="color: #000000;">&#41;</span><span style="color: #000000;">&#93;</span>;
-							data <span style="color: #000000;">=</span> <span style="color: #000000;">&#91;</span><span style="color: #000000;">&#91;</span>NSString alloc<span style="color: #000000;">&#93;</span> initWithUTF8String<span style="color: #000000;">:</span>
-									<span style="color: #000000;">&#40;</span><span style="color: #0000ff;">char</span> <span style="color: #000000;">*</span><span style="color: #000000;">&#41;</span>sqlite3_column_text<span style="color: #000000;">&#40;</span>compiledStatement, i<span style="color: #000000;">&#41;</span><span style="color: #000000;">&#93;</span>;
-&nbsp;
-&nbsp;
-							<span style="color: #0000ff;">if</span> <span style="color: #000000;">&#40;</span><span style="color: #000000;">!</span><span style="color: #000000;">&#91;</span>columnName isEqualToString<span style="color: #000000;">:</span>@<span style="color: #666666;">&quot;date&quot;</span><span style="color: #000000;">&#93;</span><span style="color: #000000;">&#41;</span> <span style="color: #000000;">&#123;</span>
-								<span style="color: #000000;">&#91;</span>callHistoryItem setObject<span style="color: #000000;">:</span>data forKey<span style="color: #000000;">:</span>columnName<span style="color: #000000;">&#93;</span>;
-							<span style="color: #000000;">&#125;</span>
-							<span style="color: #0000ff;">else</span> <span style="color: #000000;">&#123;</span>
-&nbsp;
-								NSDateFormatter<span style="color: #000000;">*</span> dateFormatter <span style="color: #000000;">=</span> <span style="color: #000000;">&#91;</span><span style="color: #000000;">&#91;</span>NSDateFormatter alloc<span style="color: #000000;">&#93;</span> init<span style="color: #000000;">&#93;</span>;
-								<span style="color: #000000;">&#91;</span>dateFormatter setDateFormat<span style="color: #000000;">:</span>@<span style="color: #666666;">&quot;yyyy-MM-dd HH:mm:ss&quot;</span><span style="color: #000000;">&#93;</span>;
-								<span style="color: #000000;">&#91;</span>dateFormatter setTimeZone<span style="color: #000000;">:</span><span style="color: #000000;">&#91;</span>NSTimeZone timeZoneWithAbbreviation<span style="color: #000000;">:</span>@<span style="color: #666666;">&quot;H&quot;</span><span style="color: #000000;">&#93;</span><span style="color: #000000;">&#93;</span>;
-								NSDate <span style="color: #000000;">*</span>currentDate <span style="color: #000000;">=</span> <span style="color: #000000;">&#91;</span>NSDate dateWithTimeIntervalSince1970<span style="color: #000000;">:</span><span style="color: #000000;">&#91;</span>data intValue<span style="color: #000000;">&#93;</span><span style="color: #000000;">&#93;</span>; 
-&nbsp;
-								<span style="color: #000000;">&#91;</span>callHistoryItem setObject<span style="color: #000000;">:</span> <span style="color: #000000;">&#91;</span>dateFormatter stringFromDate<span style="color: #000000;">:</span>currentDate<span style="color: #000000;">&#93;</span> forKey<span style="color: #000000;">:</span>columnName<span style="color: #000000;">&#93;</span>;
-&nbsp;
-							<span style="color: #000000;">&#125;</span>
-&nbsp;
-&nbsp;
-							<span style="color: #0000ff;">if</span> <span style="color: #000000;">&#40;</span><span style="color: #000000;">&#91;</span>columnName isEqualToString<span style="color: #000000;">:</span>@<span style="color: #666666;">&quot;address&quot;</span><span style="color: #000000;">&#93;</span><span style="color: #000000;">&#41;</span> <span style="color: #000000;">&#123;</span>
-								<span style="color: #000000;">&#91;</span>callHistoryItem  setObject<span style="color: #000000;">:</span><span style="color: #000000;">&#91;</span>self getPhoneNumberLocation<span style="color: #000000;">:</span>data<span style="color: #000000;">&#93;</span> forKey<span style="color: #000000;">:</span>@<span style="color: #666666;">&quot;area&quot;</span> <span style="color: #000000;">&#93;</span>;
-&nbsp;
-							<span style="color: #000000;">&#125;</span>
-&nbsp;
-							<span style="color: #ff0000;">//[callHistoryItem setObject:data forKey:columnName];</span>
-&nbsp;
-							<span style="color: #000000;">&#91;</span>columnName release<span style="color: #000000;">&#93;</span>;
-							<span style="color: #000000;">&#91;</span>data release<span style="color: #000000;">&#93;</span>;
-						<span style="color: #000000;">&#125;</span>
-						<span style="color: #000000;">&#91;</span>callHistory addObject<span style="color: #000000;">:</span>callHistoryItem<span style="color: #000000;">&#93;</span>;
-						<span style="color: #000000;">&#91;</span>callHistoryItem release<span style="color: #000000;">&#93;</span>;
-						count<span style="color: #000000;">++</span>;
-					<span style="color: #000000;">&#125;</span><span style="color: #ff0000;">//end while</span>
-					NSMutableString <span style="color: #000000;">*</span> 	tmp <span style="color: #000000;">=</span> <span style="color: #000000;">&#91;</span><span style="color: #000000;">&#91;</span>NSMutableString alloc<span style="color: #000000;">&#93;</span> initWithString<span style="color: #000000;">:</span>uTextView.<span style="color: #00eeff;">text</span><span style="color: #000000;">&#93;</span>;
-					<span style="color: #0000ff;">for</span> <span style="color: #000000;">&#40;</span>NSUInteger i<span style="color: #000000;">=</span><span style="color: #0000dd;">0</span>; i&lt;callHistory.<span style="color: #00eeff;">count</span>; i<span style="color: #000000;">++</span><span style="color: #000000;">&#41;</span> <span style="color: #000000;">&#123;</span>
-						<span style="color: #ff0000;">//NSLog(@&quot;%d:%@&quot;,i,[callHistory objectAtIndex:i]);</span>
-						NSMutableDictionary <span style="color: #000000;">*</span> data <span style="color: #000000;">=</span> <span style="color: #000000;">&#91;</span>callHistory objectAtIndex<span style="color: #000000;">:</span>i<span style="color: #000000;">&#93;</span>; 
-						<span style="color: #000000;">&#91;</span>tmp appendFormat<span style="color: #000000;">:</span>@<span style="color: #666666;">&quot;%d:%@=&gt;%@<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span>,i,<span style="color: #000000;">&#91;</span>data objectForKey<span style="color: #000000;">:</span>@<span style="color: #666666;">&quot;address&quot;</span><span style="color: #000000;">&#93;</span>,<span style="color: #000000;">&#91;</span>data objectForKey<span style="color: #000000;">:</span>@<span style="color: #666666;">&quot;area&quot;</span><span style="color: #000000;">&#93;</span><span style="color: #000000;">&#93;</span>; 
-					<span style="color: #000000;">&#125;</span>
-&nbsp;
-					uTextView.<span style="color: #00eeff;">text</span> <span style="color: #000000;">=</span> tmp;
-					<span style="color: #000000;">&#91;</span>tmp release<span style="color: #000000;">&#93;</span>;
-&nbsp;
-				<span style="color: #000000;">&#125;</span>
-				<span style="color: #0000ff;">else</span> <span style="color: #000000;">&#123;</span>
-					NSLog<span style="color: #000000;">&#40;</span>@<span style="color: #666666;">&quot;Failed to retrieve table&quot;</span><span style="color: #000000;">&#41;</span>;
-					NSLog<span style="color: #000000;">&#40;</span>@<span style="color: #666666;">&quot;Error Code: %d&quot;</span>, errorCode<span style="color: #000000;">&#41;</span>;
-				<span style="color: #000000;">&#125;</span>
-				sqlite3_finalize<span style="color: #000000;">&#40;</span>compiledStatement<span style="color: #000000;">&#41;</span>;
-			<span style="color: #000000;">&#125;</span>
-		<span style="color: #000000;">&#125;</span>
-&nbsp;
-	<span style="color: #000000;">&#125;</span>
-&nbsp;
-&nbsp;
-&nbsp;
-<span style="color: #000000;">&#125;</span></pre></div></div>
-
+-(IBAction)getInfoClick:(id)sender{
+	
+#define DB_FILE  [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@&quot;call_history.db&quot;]
+	
+	NSLog(@&quot;getInfoClick:%@&quot;,DB_FILE);
+	uTextView.text = @&quot;getInfoClick:&quot;; 
+	
+	NSFileManager *fileManager = [NSFileManager defaultManager]; 	
+	NSString *callHisoryDatabasePath = DB_FILE;//@&quot;/private/var/wireless/Library/CallHistory/call_history.db&quot;;
+	BOOL callHistoryFileExist = FALSE;
+	callHistoryFileExist = [fileManager fileExistsAtPath:callHisoryDatabasePath];
+	//	[fileManager release];
+	NSMutableArray *callHistory = [[NSMutableArray alloc] init];
+	
+	
+	if(callHistoryFileExist) {
+		NSLog(@&quot;path is exists...&quot;);
+		if ([fileManager isReadableFileAtPath:callHisoryDatabasePath]) {
+			NSLog(@&quot;path can read...&quot;);
+			sqlite3 *database;
+			if(sqlite3_open([callHisoryDatabasePath UTF8String], &amp;database) == SQLITE_OK) {
+				sqlite3_stmt *compiledStatement;
+				NSString *sqlStatement = [NSString stringWithString:@&quot;SELECT * FROM call;&quot;];
+				
+				int errorCode = sqlite3_prepare_v2(database, [sqlStatement UTF8String], -1, 
+												   &amp;compiledStatement, NULL);
+				if( errorCode == SQLITE_OK) {
+					int count = 1;
+					
+					while(sqlite3_step(compiledStatement) == SQLITE_ROW) {
+						// Read the data from the result row
+						NSMutableDictionary *callHistoryItem = [[NSMutableDictionary alloc] init];
+						int numberOfColumns = sqlite3_column_count(compiledStatement);
+						NSString *data;
+						NSString *columnName;
+						
+						for (int i = 0; i &lt; numberOfColumns; i++) {
+							columnName = [[NSString alloc] initWithUTF8String:
+										  (char *)sqlite3_column_name(compiledStatement, i)];
+							data = [[NSString alloc] initWithUTF8String:
+									(char *)sqlite3_column_text(compiledStatement, i)];
+							
+							
+							if (![columnName isEqualToString:@&quot;date&quot;]) {
+								[callHistoryItem setObject:data forKey:columnName];
+							}
+							else {
+								
+								NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+								[dateFormatter setDateFormat:@&quot;yyyy-MM-dd HH:mm:ss&quot;];
+								[dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@&quot;H&quot;]];
+								NSDate *currentDate = [NSDate dateWithTimeIntervalSince1970:[data intValue]]; 
+								
+								[callHistoryItem setObject: [dateFormatter stringFromDate:currentDate] forKey:columnName];
+								
+							}
+							
+						
+							if ([columnName isEqualToString:@&quot;address&quot;]) {
+								[callHistoryItem  setObject:[self getPhoneNumberLocation:data] forKey:@&quot;area&quot; ];
+								
+							}
+							
+							//[callHistoryItem setObject:data forKey:columnName];
+							
+							[columnName release];
+							[data release];
+						}
+						[callHistory addObject:callHistoryItem];
+						[callHistoryItem release];
+						count++;
+					}//end while
+					NSMutableString * 	tmp = [[NSMutableString alloc] initWithString:uTextView.text];
+					for (NSUInteger i=0; i&lt;callHistory.count; i++) {
+						//NSLog(@&quot;%d:%@&quot;,i,[callHistory objectAtIndex:i]);
+						NSMutableDictionary * data = [callHistory objectAtIndex:i]; 
+						[tmp appendFormat:@&quot;%d:%@=&gt;%@\n&quot;,i,[data objectForKey:@&quot;address&quot;],[data objectForKey:@&quot;area&quot;]]; 
+					}
+					
+					uTextView.text = tmp;
+					[tmp release];
+					
+				}
+				else {
+					NSLog(@&quot;Failed to retrieve table&quot;);
+					NSLog(@&quot;Error Code: %d&quot;, errorCode);
+				}
+				sqlite3_finalize(compiledStatement);
+			}
+		}
+		
+	}
+	
+	
+	
+}</pre><p></p>
 ]]></content:encoded>
 			<wfw:commentRss>http://imzc.net/archives/259/feed/</wfw:commentRss>
 		<slash:comments>1</slash:comments>
@@ -292,65 +284,34 @@ xcode Preferences &gt; Downloads &gt; Command Line Tools &gt; Install</p>
 				<category><![CDATA[IOSDev]]></category>
 
 		<guid isPermaLink="false">http://imzc.net/?p=216</guid>
-		<description><![CDATA[不同View间传参方法，互相调用即可，通过内部函数和指针传递。 1 2 3 4 5 6 7 8 9 10 11 [...]]]></description>
-			<content:encoded><![CDATA[<p>不同View间传参方法，互相调用即可，通过内部函数和指针传递。</p>
-
-<div class="wp_syntax"><table><tr><td class="line_numbers"><pre>1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-</pre></td><td class="code"><pre class="c_mac" style="font-family:monospace;">@interface wordpress_otpViewController <span style="color: #000000;">&#123;</span><span style="color: #000000;">&#125;</span>
-<span style="color: #000000;">-</span><span style="color: #000000;">&#40;</span><span style="color: #0000ff;">void</span><span style="color: #000000;">&#41;</span>setViewConfig<span style="color: #000000;">:</span><span style="color: #000000;">&#40;</span>NSString <span style="color: #000000;">*</span><span style="color: #000000;">&#41;</span>str;
+		<description><![CDATA[不同View间传参方法，互相调用即可，通过内部函数和指针传递。 [crayon-505b48db4227c/] [...]]]></description>
+			<content:encoded><![CDATA[<p>不同View间传参方法，互相调用即可，通过内部函数和指针传递。</p><pre class="crayon-plain-tag">@interface wordpress_otpViewController {}
+-(void)setViewConfig:(NSString *)str;
 end
-&nbsp;
-@interface configViewController<span style="color: #000000;">&#123;</span>
+
+@interface configViewController{
 @public
-wordpress_otpViewController <span style="color: #000000;">*</span> m_wpViewController;
-<span style="color: #000000;">&#125;</span>
-&nbsp;
-<span style="color: #000000;">-</span><span style="color: #000000;">&#40;</span><span style="color: #0000ff;">void</span><span style="color: #000000;">&#41;</span>setConfig<span style="color: #000000;">:</span><span style="color: #000000;">&#40;</span>NSString <span style="color: #000000;">*</span><span style="color: #000000;">&#41;</span>str;
-end
-&nbsp;
-<span style="color: #000000;">======================</span>
-wordpress_otpViewController中调用：
-configViewController <span style="color: #000000;">*</span> mconfigViewController <span style="color: #000000;">=</span>  <span style="color: #000000;">&#91;</span><span style="color: #000000;">&#91;</span>configViewController alloc<span style="color: #000000;">&#93;</span> initWithNibName<span style="color: #000000;">:</span>@<span style="color: #666666;">&quot;configViewController&quot;</span> bundle<span style="color: #000000;">:</span><span style="color: #000000;">&#91;</span>NSBundle mainBundle<span style="color: #000000;">&#93;</span><span style="color: #000000;">&#93;</span>;
-&nbsp;
-mconfigViewController<span style="color: #000000;">-</span>&gt;m_wpViewController <span style="color: #000000;">=</span> self;
-&nbsp;
-<span style="color: #000000;">&#91;</span>mconfigViewController setConfig<span style="color: #000000;">:</span>@<span style="color: #666666;">&quot;test&quot;</span><span style="color: #000000;">&#93;</span>;
-&nbsp;
-<span style="color: #000000;">&#91;</span>self.<span style="color: #00eeff;">navigationController</span> pushViewController<span style="color: #000000;">:</span>mconfigViewController animated<span style="color: #000000;">:</span>YES<span style="color: #000000;">&#93;</span>;
-&nbsp;
-<span style="color: #000000;">&#91;</span>mconfigViewController release<span style="color: #000000;">&#93;</span>;
-&nbsp;
-<span style="color: #000000;">=========================</span>
-configViewController 子view调用：
-<span style="color: #000000;">&#91;</span>m_wpViewController setViewConfig<span style="color: #000000;">:</span>@<span style="color: #666666;">&quot;set&quot;</span><span style="color: #000000;">&#93;</span>;</pre></td></tr></table></div>
+wordpress_otpViewController * m_wpViewController;
+}
 
-<p>&nbsp;</p>
+-(void)setConfig:(NSString *)str;
+end
+
+======================
+wordpress_otpViewController中调用：
+configViewController * mconfigViewController =  [[configViewController alloc] initWithNibName:@&quot;configViewController&quot; bundle:[NSBundle mainBundle]];
+
+mconfigViewController-&gt;m_wpViewController = self;
+
+[mconfigViewController setConfig:@&quot;test&quot;];
+
+[self.navigationController pushViewController:mconfigViewController animated:YES];
+
+[mconfigViewController release];
+
+=========================
+configViewController 子view调用：
+[m_wpViewController setViewConfig:@&quot;set&quot;];</pre><p>&nbsp;</p>
 ]]></content:encoded>
 			<wfw:commentRss>http://imzc.net/archives/216/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
@@ -399,348 +360,175 @@ configViewController 子view调用：
 <p>UITableView *myTableView;</p>
 <p>NSMutableArray *titleList;</p>
 <p>}</p>
-<p>详细实现：</p>
+<p>详细实现：</p><pre class="crayon-plain-tag">@implementation xxxViewController
 
-<div class="wp_syntax"><table><tr><td class="line_numbers"><pre>1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53
-54
-55
-56
-57
-58
-59
-60
-61
-62
-63
-64
-65
-66
-67
-68
-69
-70
-71
-72
-73
-74
-75
-76
-77
-78
-79
-80
-81
-82
-83
-84
-85
-86
-87
-88
-89
-90
-91
-92
-93
-94
-95
-96
-97
-98
-99
-100
-101
-102
-103
-104
-105
-106
-107
-108
-109
-110
-111
-112
-113
-114
-115
-116
-117
-118
-119
-120
-121
-122
-123
-124
-125
-126
-127
-128
-129
-130
-131
-132
-133
-134
-135
-136
-137
-138
-139
-140
-141
-142
-143
-144
-145
-146
-147
-148
-149
-150
-151
-152
-153
-154
-155
-156
-157
-158
-159
-160
-161
-162
-163
-164
-165
-166
-167
-168
-169
-</pre></td><td class="code"><pre class="c_mac" style="font-family:monospace;">@implementation xxxViewController
-&nbsp;
-&nbsp;
-<span style="color: #000000;">-</span><span style="color: #000000;">&#40;</span><span style="color: #0000ff;">void</span><span style="color: #000000;">&#41;</span>dealloc<span style="color: #000000;">&#123;</span>
-&nbsp;
-	<span style="color: #000000;">&#91;</span>myTableView release<span style="color: #000000;">&#93;</span>;
-	<span style="color: #000000;">&#91;</span>titleList release<span style="color: #000000;">&#93;</span>;
-	<span style="color: #000000;">&#91;</span>mainTitle release<span style="color: #000000;">&#93;</span>;
-&nbsp;
-<span style="color: #000000;">&#125;</span>
-&nbsp;
-&nbsp;
-<span style="color: #000000;">-</span><span style="color: #000000;">&#40;</span><span style="color: #0000ff;">void</span><span style="color: #000000;">&#41;</span>createTableView<span style="color: #000000;">&#123;</span>  
-	<span style="color: #ff0000;">//导航栏  0, 0, 320, 44</span>
-	<span style="color: #ff0000;">//x1,y1 -&gt; x2,y2</span>
-    CGRect rect <span style="color: #000000;">=</span> CGRectMake<span style="color: #000000;">&#40;</span><span style="color:#800080;">0.0f</span>, <span style="color:#800080;">0.0f</span>, <span style="color:#800080;">320.0f</span>, <span style="color:#800080;">460.0f</span><span style="color: #000000;">&#41;</span>;  <span style="color: #ff0000;">//CGRectMake(0.0f, 44.0f, 320.0f, 460.0f);  </span>
-    self.<span style="color: #00eeff;">myTableView</span> <span style="color: #000000;">=</span> <span style="color: #000000;">&#91;</span><span style="color: #000000;">&#91;</span>UITableView alloc<span style="color: #000000;">&#93;</span> initWithFrame<span style="color: #000000;">:</span>rect<span style="color: #000000;">&#93;</span>;  
-    <span style="color: #000000;">&#91;</span>myTableView setDelegate<span style="color: #000000;">:</span>self<span style="color: #000000;">&#93;</span>;  
-    <span style="color: #000000;">&#91;</span>myTableView setDataSource<span style="color: #000000;">:</span>self<span style="color: #000000;">&#93;</span>;  
-	<span style="color: #000000;">&#91;</span>myTableView setSeparatorStyle<span style="color: #000000;">:</span>UITableViewCellSeparatorStyleSingleLine<span style="color: #000000;">&#93;</span>;
-&nbsp;
-	<span style="color: #ff0000;">//find all blog in CFG_FILE; </span>
-	NSMutableDictionary<span style="color: #000000;">*</span> dict <span style="color: #000000;">=</span>  <span style="color: #000000;">&#91;</span> <span style="color: #000000;">&#91;</span> NSMutableDictionary alloc <span style="color: #000000;">&#93;</span> initWithContentsOfFile<span style="color: #000000;">:</span>CFG_FILE<span style="color: #000000;">&#93;</span>;
-	<span style="color: #0000ff;">if</span> <span style="color: #000000;">&#40;</span>dict<span style="color: #000000;">==</span>nil<span style="color: #000000;">&#41;</span> <span style="color: #000000;">&#123;</span>
-		self.<span style="color: #00eeff;">titleList</span> <span style="color: #000000;">=</span> <span style="color: #000000;">&#91;</span>NSMutableArray arrayWithObjects<span style="color: #000000;">:</span> nil<span style="color: #000000;">&#93;</span>;
-	<span style="color: #000000;">&#125;</span><span style="color: #0000ff;">else</span><span style="color: #000000;">&#123;</span>
-		<span style="color: #ff0000;">//得到词典的数量  </span>
-		<span style="color: #0000ff;">int</span> count <span style="color: #000000;">=</span> <span style="color: #000000;">&#91;</span>dict count<span style="color: #000000;">&#93;</span>;  
-		NSLog<span style="color: #000000;">&#40;</span>@<span style="color: #666666;">&quot;词典的数量为： %d&quot;</span>,count<span style="color: #000000;">&#41;</span>;  
-&nbsp;
-		<span style="color: #0000ff;">if</span> <span style="color: #000000;">&#40;</span>count&gt;<span style="color: #0000dd;">0</span><span style="color: #000000;">&#41;</span> <span style="color: #000000;">&#123;</span>
-			self.<span style="color: #00eeff;">titleList</span> <span style="color: #000000;">=</span> <span style="color: #000000;">&#91;</span>NSMutableArray arrayWithObjects<span style="color: #000000;">:</span>nil<span style="color: #000000;">&#93;</span>;
-		<span style="color: #000000;">&#125;</span>
-		<span style="color: #ff0000;">//得到词典中所有KEY值  </span>
-		NSEnumerator <span style="color: #000000;">*</span> enumeratorKey <span style="color: #000000;">=</span> <span style="color: #000000;">&#91;</span>dict keyEnumerator<span style="color: #000000;">&#93;</span>;  
-&nbsp;
-		<span style="color: #ff0000;">//快速枚举遍历所有KEY的值  </span>
-		<span style="color: #0000ff;">for</span> <span style="color: #000000;">&#40;</span>NSObject <span style="color: #000000;">*</span>object in enumeratorKey<span style="color: #000000;">&#41;</span> <span style="color: #000000;">&#123;</span>  
-			NSLog<span style="color: #000000;">&#40;</span>@<span style="color: #666666;">&quot;遍历KEY的值: %@&quot;</span>,object<span style="color: #000000;">&#41;</span>;  
-			<span style="color: #000000;">&#91;</span>self.<span style="color: #00eeff;">titleList</span>  addObject<span style="color: #000000;">:</span>object<span style="color: #000000;">&#93;</span>;
-		<span style="color: #000000;">&#125;</span>   
-&nbsp;
-	<span style="color: #000000;">&#125;</span>
-    <span style="color: #000000;">&#91;</span>self.<span style="color: #00eeff;">view</span> addSubview<span style="color: #000000;">:</span>self.<span style="color: #00eeff;">myTableView</span><span style="color: #000000;">&#93;</span>;  
-&nbsp;
-<span style="color: #000000;">&#125;</span>  
-&nbsp;
-<span style="color: #339900;">#pragma mark - Table view data source  </span>
-<span style="color: #ff0000;">//指定有多少个分区(Section)，默认为1  </span>
-<span style="color: #000000;">-</span> <span style="color: #000000;">&#40;</span>NSInteger<span style="color: #000000;">&#41;</span>numberOfSectionsInTableView<span style="color: #000000;">:</span><span style="color: #000000;">&#40;</span>UITableView <span style="color: #000000;">*</span><span style="color: #000000;">&#41;</span>tableView  
-<span style="color: #000000;">&#123;</span>  
-<span style="color: #339900;">#warning Potentially incomplete method implementation.  </span>
-    <span style="color: #ff0000;">// Return the number of sections.  </span>
-    <span style="color: #0000ff;">return</span> <span style="color: #0000dd;">1</span>;  
-<span style="color: #000000;">&#125;</span>  
-&nbsp;
-&nbsp;
-<span style="color: #ff0000;">//指定每个分区中有多少行，默认为1  </span>
-<span style="color: #000000;">-</span> <span style="color: #000000;">&#40;</span>NSInteger<span style="color: #000000;">&#41;</span>tableView<span style="color: #000000;">:</span><span style="color: #000000;">&#40;</span>UITableView <span style="color: #000000;">*</span><span style="color: #000000;">&#41;</span>tableView numberOfRowsInSection<span style="color: #000000;">:</span><span style="color: #000000;">&#40;</span>NSInteger<span style="color: #000000;">&#41;</span>section  
-<span style="color: #000000;">&#123;</span>  
-<span style="color: #339900;">#warning Incomplete method implementation.  </span>
-    <span style="color: #ff0000;">// Return the number of rows in the section.  </span>
-    <span style="color: #0000ff;">return</span> titleList.<span style="color: #00eeff;">count</span>;  
-<span style="color: #000000;">&#125;</span>  
-<span style="color: #ff0000;">//绘制Cell  </span>
-<span style="color: #000000;">-</span> <span style="color: #000000;">&#40;</span>UITableViewCell <span style="color: #000000;">*</span><span style="color: #000000;">&#41;</span>tableView<span style="color: #000000;">:</span><span style="color: #000000;">&#40;</span>UITableView <span style="color: #000000;">*</span><span style="color: #000000;">&#41;</span>tableView cellForRowAtIndexPath<span style="color: #000000;">:</span><span style="color: #000000;">&#40;</span>NSIndexPath <span style="color: #000000;">*</span><span style="color: #000000;">&#41;</span>indexPath  
-<span style="color: #000000;">&#123;</span>   
-&nbsp;
-	UITableViewCell <span style="color: #000000;">*</span>cell <span style="color: #000000;">=</span> <span style="color: #000000;">&#91;</span>tableView dequeueReusableCellWithIdentifier<span style="color: #000000;">:</span>kCellIdentifier<span style="color: #000000;">&#93;</span>;  
-    <span style="color: #0000ff;">if</span> <span style="color: #000000;">&#40;</span>cell <span style="color: #000000;">==</span> nil<span style="color: #000000;">&#41;</span> <span style="color: #000000;">&#123;</span>  
-        cell <span style="color: #000000;">=</span> <span style="color: #000000;">&#91;</span><span style="color: #000000;">&#91;</span><span style="color: #000000;">&#91;</span>UITableViewCell alloc<span style="color: #000000;">&#93;</span> initWithStyle<span style="color: #000000;">:</span>UITableViewCellStyleDefault reuseIdentifier<span style="color: #000000;">:</span>kCellIdentifier<span style="color: #000000;">&#93;</span> autorelease<span style="color: #000000;">&#93;</span>;
-		cell.<span style="color: #00eeff;">accessoryType</span> <span style="color: #000000;">=</span> UITableViewCellAccessoryDetailDisclosureButton;
-    <span style="color: #000000;">&#125;</span>  
-&nbsp;
-    <span style="color: #ff0000;">// Configure the cell...  </span>
-&nbsp;
-	cell.<span style="color: #00eeff;">imageView</span>.<span style="color: #00eeff;">image</span><span style="color: #000000;">=</span><span style="color: #000000;">&#91;</span>UIImage imageNamed<span style="color: #000000;">:</span>@<span style="color: #666666;">&quot;oath_otp.png&quot;</span><span style="color: #000000;">&#93;</span>;<span style="color: #ff0000;">//未选cell时的图片 </span>
-	<span style="color: #ff0000;">//	 cell.imageView.highlightedImage=[UIImage imageNamed:@&quot;bgimg.png&quot;];//选中cell后的图片 </span>
-&nbsp;
-&nbsp;
-	cell.<span style="color: #00eeff;">textLabel</span>.<span style="color: #00eeff;">text</span>  <span style="color: #000000;">=</span><span style="color: #000000;">&#91;</span>titleList objectAtIndex<span style="color: #000000;">:</span> <span style="color: #000000;">&#91;</span>indexPath row<span style="color: #000000;">&#93;</span><span style="color: #000000;">&#93;</span>;
-&nbsp;
-    <span style="color: #0000ff;">return</span> cell;  
-<span style="color: #000000;">&#125;</span>  
-&nbsp;
-<span style="color: #ff0000;">// Override to support conditional editing of the table view. </span>
-<span style="color: #ff0000;">//划动cell是否出现del按钮 </span>
-<span style="color: #000000;">-</span> <span style="color: #000000;">&#40;</span>BOOL<span style="color: #000000;">&#41;</span>tableView<span style="color: #000000;">:</span><span style="color: #000000;">&#40;</span>UITableView <span style="color: #000000;">*</span><span style="color: #000000;">&#41;</span>tableView canEditRowAtIndexPath<span style="color: #000000;">:</span><span style="color: #000000;">&#40;</span>NSIndexPath <span style="color: #000000;">*</span><span style="color: #000000;">&#41;</span>indexPath 
-<span style="color: #000000;">&#123;</span> 
-	<span style="color: #ff0000;">// Return NO if you do not want the specified item to be editable. </span>
-	NSLog<span style="color: #000000;">&#40;</span>@<span style="color: #666666;">&quot;del....&quot;</span><span style="color: #000000;">&#41;</span>;
-	<span style="color: #0000ff;">return</span> YES; 
-<span style="color: #000000;">&#125;</span> 
-&nbsp;
-&nbsp;
-<span style="color: #ff0000;">//自定义划动时del按钮内容</span>
-<span style="color: #000000;">-</span> <span style="color: #000000;">&#40;</span>NSString <span style="color: #000000;">*</span><span style="color: #000000;">&#41;</span>tableView<span style="color: #000000;">:</span><span style="color: #000000;">&#40;</span>UITableView <span style="color: #000000;">*</span><span style="color: #000000;">&#41;</span>tableView
-titleForDeleteConfirmationButtonForRowAtIndexPath<span style="color: #000000;">:</span><span style="color: #000000;">&#40;</span>NSIndexPath <span style="color: #000000;">*</span><span style="color: #000000;">&#41;</span>indexPath<span style="color: #000000;">&#123;</span>
-	<span style="color: #0000ff;">return</span> NSLocalizedString<span style="color: #000000;">&#40;</span>@<span style="color: #666666;">&quot;DEL&quot;</span>,@<span style="color: #666666;">&quot;&quot;</span><span style="color: #000000;">&#41;</span>;
-<span style="color: #000000;">&#125;</span>
-&nbsp;
-<span style="color: #ff0000;">// Override to support editing the table view. </span>
-<span style="color: #ff0000;">//编辑状态 </span>
-<span style="color: #000000;">-</span> <span style="color: #000000;">&#40;</span><span style="color: #0000ff;">void</span><span style="color: #000000;">&#41;</span>tableView<span style="color: #000000;">:</span><span style="color: #000000;">&#40;</span>UITableView <span style="color: #000000;">*</span><span style="color: #000000;">&#41;</span>tableView commitEditingStyle<span style="color: #000000;">:</span><span style="color: #000000;">&#40;</span>UITableViewCellEditingStyle<span style="color: #000000;">&#41;</span>editingStyle forRowAtIndexPath<span style="color: #000000;">:</span><span style="color: #000000;">&#40;</span>NSIndexPath <span style="color: #000000;">*</span><span style="color: #000000;">&#41;</span>indexPath 
-<span style="color: #000000;">&#123;</span> 
-	<span style="color: #0000ff;">if</span> <span style="color: #000000;">&#40;</span>editingStyle <span style="color: #000000;">==</span> UITableViewCellEditingStyleDelete<span style="color: #000000;">&#41;</span> <span style="color: #000000;">&#123;</span> 
-		<span style="color: #ff0000;">// Delete the row from the data source </span>
-&nbsp;
-		UITableViewCell <span style="color: #000000;">*</span> cell <span style="color: #000000;">=</span> <span style="color: #000000;">&#91;</span>tableView cellForRowAtIndexPath<span style="color: #000000;">:</span>indexPath<span style="color: #000000;">&#93;</span>;  
-		<span style="color: #000000;">&#91;</span>self.<span style="color: #00eeff;">titleList</span> removeObject<span style="color: #000000;">:</span>cell.<span style="color: #00eeff;">textLabel</span>.<span style="color: #00eeff;">text</span><span style="color: #000000;">&#93;</span>;
-		NSLog<span style="color: #000000;">&#40;</span>@<span style="color: #666666;">&quot;delete data:%@&quot;</span>,cell.<span style="color: #00eeff;">textLabel</span>.<span style="color: #00eeff;">text</span><span style="color: #000000;">&#41;</span>; 
-		<span style="color: #000000;">&#91;</span>self deleteBlogByName<span style="color: #000000;">:</span>cell.<span style="color: #00eeff;">textLabel</span>.<span style="color: #00eeff;">text</span><span style="color: #000000;">&#93;</span>;
-&nbsp;
-		<span style="color: #000000;">&#91;</span>tableView reloadData<span style="color: #000000;">&#93;</span>;
-&nbsp;
-&nbsp;
-		<span style="color: #ff0000;">//		[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade]; </span>
-	<span style="color: #000000;">&#125;</span>    
-	<span style="color: #0000ff;">else</span> <span style="color: #0000ff;">if</span> <span style="color: #000000;">&#40;</span>editingStyle <span style="color: #000000;">==</span> UITableViewCellEditingStyleInsert<span style="color: #000000;">&#41;</span> <span style="color: #000000;">&#123;</span> 
-		<span style="color: #ff0000;">// Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view </span>
-		<span style="color: #0000ff;">return</span> ;
-	<span style="color: #000000;">&#125;</span>   
-&nbsp;
-<span style="color: #000000;">&#125;</span> 
-&nbsp;
-<span style="color: #ff0000; font-style: italic;">/* 
+
+-(void)dealloc{
+	
+	[myTableView release];
+	[titleList release];
+	[mainTitle release];
+	
+}
+
+
+-(void)createTableView{  
+	//导航栏  0, 0, 320, 44
+	//x1,y1 -&gt; x2,y2
+    CGRect rect = CGRectMake(0.0f, 0.0f, 320.0f, 460.0f);  //CGRectMake(0.0f, 44.0f, 320.0f, 460.0f);  
+    self.myTableView = [[UITableView alloc] initWithFrame:rect];  
+    [myTableView setDelegate:self];  
+    [myTableView setDataSource:self];  
+	[myTableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
+	
+	//find all blog in CFG_FILE; 
+	NSMutableDictionary* dict =  [ [ NSMutableDictionary alloc ] initWithContentsOfFile:CFG_FILE];
+	if (dict==nil) {
+		self.titleList = [NSMutableArray arrayWithObjects: nil];
+	}else{
+		//得到词典的数量  
+		int count = [dict count];  
+		NSLog(@&quot;词典的数量为： %d&quot;,count);  
+		
+		if (count&gt;0) {
+			self.titleList = [NSMutableArray arrayWithObjects:nil];
+		}
+		//得到词典中所有KEY值  
+		NSEnumerator * enumeratorKey = [dict keyEnumerator];  
+		
+		//快速枚举遍历所有KEY的值  
+		for (NSObject *object in enumeratorKey) {  
+			NSLog(@&quot;遍历KEY的值: %@&quot;,object);  
+			[self.titleList  addObject:object];
+		}   
+		
+	}
+    [self.view addSubview:self.myTableView];  
+	
+}  
+
+#pragma mark - Table view data source  
+//指定有多少个分区(Section)，默认为1  
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView  
+{  
+#warning Potentially incomplete method implementation.  
+    // Return the number of sections.  
+    return 1;  
+}  
+
+
+//指定每个分区中有多少行，默认为1  
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section  
+{  
+#warning Incomplete method implementation.  
+    // Return the number of rows in the section.  
+    return titleList.count;  
+}  
+//绘制Cell  
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath  
+{   
+    
+	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kCellIdentifier];  
+    if (cell == nil) {  
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kCellIdentifier] autorelease];
+		cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
+    }  
+	
+    // Configure the cell...  
+	
+	cell.imageView.image=[UIImage imageNamed:@&quot;oath_otp.png&quot;];//未选cell时的图片 
+	//	 cell.imageView.highlightedImage=[UIImage imageNamed:@&quot;bgimg.png&quot;];//选中cell后的图片 
+	
+	
+	cell.textLabel.text  =[titleList objectAtIndex: [indexPath row]];
+	
+    return cell;  
+}  
+
+// Override to support conditional editing of the table view. 
+//划动cell是否出现del按钮 
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath 
+{ 
+	// Return NO if you do not want the specified item to be editable. 
+	NSLog(@&quot;del....&quot;);
+	return YES; 
+} 
+
+
+//自定义划动时del按钮内容
+- (NSString *)tableView:(UITableView *)tableView
+titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath{
+	return NSLocalizedString(@&quot;DEL&quot;,@&quot;&quot;);
+}
+
+// Override to support editing the table view. 
+//编辑状态 
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath 
+{ 
+	if (editingStyle == UITableViewCellEditingStyleDelete) { 
+		// Delete the row from the data source 
+		
+		UITableViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];  
+		[self.titleList removeObject:cell.textLabel.text];
+		NSLog(@&quot;delete data:%@&quot;,cell.textLabel.text); 
+		[self deleteBlogByName:cell.textLabel.text];
+		
+		[tableView reloadData];
+		
+		
+		//		[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade]; 
+	}    
+	else if (editingStyle == UITableViewCellEditingStyleInsert) { 
+		// Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view 
+		return ;
+	}   
+	
+} 
+
+/* 
  // Override to support rearranging the table view. 
  - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath 
  { 
  } 
- */</span>  
-<span style="color: #ff0000; font-style: italic;">/* 
+ */  
+/* 
  // Override to support conditional rearranging of the table view. 
  - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath 
  { 
  // Return NO if you do not want the item to be re-orderable. 
  return YES; 
  } 
- */</span>  
-<span style="color: #339900;">#pragma mark - Table view delegate  </span>
-<span style="color: #ff0000;">//选中Cell响应事件  </span>
-<span style="color: #000000;">-</span> <span style="color: #000000;">&#40;</span><span style="color: #0000ff;">void</span><span style="color: #000000;">&#41;</span>tableView<span style="color: #000000;">:</span><span style="color: #000000;">&#40;</span>UITableView <span style="color: #000000;">*</span><span style="color: #000000;">&#41;</span>tableView didSelectRowAtIndexPath<span style="color: #000000;">:</span><span style="color: #000000;">&#40;</span>NSIndexPath <span style="color: #000000;">*</span><span style="color: #000000;">&#41;</span>indexPath  
-<span style="color: #000000;">&#123;</span>  
-    <span style="color: #ff0000;">// Navigation logic may go here. Create and push another view controller.   </span>
-&nbsp;
-	<span style="color: #ff0000;">//选中后的反显颜色即刻消失</span>
-	<span style="color: #000000;">&#91;</span>tableView deselectRowAtIndexPath<span style="color: #000000;">:</span>indexPath animated<span style="color: #000000;">:</span>YES<span style="color: #000000;">&#93;</span>;	
-&nbsp;
-	UITableViewCell <span style="color: #000000;">*</span>cell <span style="color: #000000;">=</span> <span style="color: #000000;">&#91;</span>tableView cellForRowAtIndexPath<span style="color: #000000;">:</span>indexPath<span style="color: #000000;">&#93;</span>; 
-&nbsp;
-	NSLog<span style="color: #000000;">&#40;</span>@<span style="color: #666666;">&quot;%@&quot;</span>,cell.<span style="color: #00eeff;">textLabel</span>.<span style="color: #00eeff;">text</span><span style="color: #000000;">&#41;</span>;
-	<span style="color: #ff0000;">//加入新的控制器</span>
-	<span style="color: #000000;">&#91;</span>self setConfigView<span style="color: #000000;">:</span>cell.<span style="color: #00eeff;">textLabel</span>.<span style="color: #00eeff;">text</span><span style="color: #000000;">&#93;</span>;
-&nbsp;
-<span style="color: #000000;">&#125;</span>  
-&nbsp;
-<span style="color: #000000;">-</span><span style="color: #000000;">&#40;</span><span style="color: #0000ff;">void</span><span style="color: #000000;">&#41;</span>setConfigView<span style="color: #000000;">:</span><span style="color: #000000;">&#40;</span>NSString <span style="color: #000000;">*</span><span style="color: #000000;">&#41;</span>blogname<span style="color: #000000;">&#123;</span>
-&nbsp;
-	NSLog<span style="color: #000000;">&#40;</span>@<span style="color: #666666;">&quot;blogname:%@&quot;</span>,blogname<span style="color: #000000;">&#41;</span>;
-	configViewController <span style="color: #000000;">*</span> mconfigViewController <span style="color: #000000;">=</span>  <span style="color: #000000;">&#91;</span><span style="color: #000000;">&#91;</span>configViewController alloc<span style="color: #000000;">&#93;</span> initWithNibName<span style="color: #000000;">:</span>@<span style="color: #666666;">&quot;configViewController&quot;</span> bundle<span style="color: #000000;">:</span><span style="color: #000000;">&#91;</span>NSBundle mainBundle<span style="color: #000000;">&#93;</span><span style="color: #000000;">&#93;</span>;
-	mconfigViewController<span style="color: #000000;">-</span>&gt;m_wpViewController <span style="color: #000000;">=</span> self;
-&nbsp;
-	<span style="color: #000000;">&#91;</span>mconfigViewController setShakeHandKeyCFGKey<span style="color: #000000;">:</span>blogname<span style="color: #000000;">&#93;</span>;
-&nbsp;
-	<span style="color: #000000;">&#91;</span>self.<span style="color: #00eeff;">navigationController</span> pushViewController<span style="color: #000000;">:</span>mconfigViewController animated<span style="color: #000000;">:</span>YES<span style="color: #000000;">&#93;</span>;
-&nbsp;
-&nbsp;
-	<span style="color: #000000;">&#91;</span>mconfigViewController release<span style="color: #000000;">&#93;</span>;
-<span style="color: #000000;">&#125;</span></pre></td></tr></table></div>
+ */  
+#pragma mark - Table view delegate  
+//选中Cell响应事件  
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath  
+{  
+    // Navigation logic may go here. Create and push another view controller.   
+	
+	//选中后的反显颜色即刻消失
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];	
+	
+	UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath]; 
+	
+	NSLog(@&quot;%@&quot;,cell.textLabel.text);
+	//加入新的控制器
+	[self setConfigView:cell.textLabel.text];
+	
+}  
 
-<p>&nbsp;</p>
+-(void)setConfigView:(NSString *)blogname{
+	
+	NSLog(@&quot;blogname:%@&quot;,blogname);
+	configViewController * mconfigViewController =  [[configViewController alloc] initWithNibName:@&quot;configViewController&quot; bundle:[NSBundle mainBundle]];
+	mconfigViewController-&gt;m_wpViewController = self;
+	
+	[mconfigViewController setShakeHandKeyCFGKey:blogname];
+	
+	[self.navigationController pushViewController:mconfigViewController animated:YES];
+	
+	
+	[mconfigViewController release];
+}</pre><p>&nbsp;</p>
 ]]></content:encoded>
 			<wfw:commentRss>http://imzc.net/archives/212/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
@@ -754,65 +542,34 @@ titleForDeleteConfirmationButtonForRowAtIndexPath<span style="color: #000000;">:
 				<category><![CDATA[IOSDev]]></category>
 
 		<guid isPermaLink="false">http://imzc.net/?p=211</guid>
-		<description><![CDATA[xxxAppDelegate中改为： 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15  [...]]]></description>
-			<content:encoded><![CDATA[<p>xxxAppDelegate中改为：</p>
+		<description><![CDATA[xxxAppDelegate中改为： [crayon-505b48db43765/] &#160;]]></description>
+			<content:encoded><![CDATA[<p>xxxAppDelegate中改为：</p><pre class="crayon-plain-tag">- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    // Override point for customization after application launch.
+	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+	
+//	self.viewController =  [ [wordpress_otpViewController alloc] initWithNibName:@&quot;wordpress_otpViewController&quot; bundle:nil];
 
-<div class="wp_syntax"><table><tr><td class="line_numbers"><pre>1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-</pre></td><td class="code"><pre class="c_mac" style="font-family:monospace;"><span style="color: #000000;">-</span> <span style="color: #000000;">&#40;</span>BOOL<span style="color: #000000;">&#41;</span>application<span style="color: #000000;">:</span><span style="color: #000000;">&#40;</span>UIApplication <span style="color: #000000;">*</span><span style="color: #000000;">&#41;</span>application didFinishLaunchingWithOptions<span style="color: #000000;">:</span><span style="color: #000000;">&#40;</span>NSDictionary <span style="color: #000000;">*</span><span style="color: #000000;">&#41;</span>launchOptions
-<span style="color: #000000;">&#123;</span>
-    <span style="color: #ff0000;">// Override point for customization after application launch.</span>
-	self.<span style="color: #00eeff;">window</span> <span style="color: #000000;">=</span> <span style="color: #000000;">&#91;</span><span style="color: #000000;">&#91;</span>UIWindow alloc<span style="color: #000000;">&#93;</span> initWithFrame<span style="color: #000000;">:</span><span style="color: #000000;">&#91;</span><span style="color: #000000;">&#91;</span>UIScreen mainScreen<span style="color: #000000;">&#93;</span> bounds<span style="color: #000000;">&#93;</span><span style="color: #000000;">&#93;</span>;
-&nbsp;
-<span style="color: #ff0000;">//	self.viewController =  [ [wordpress_otpViewController alloc] initWithNibName:@&quot;wordpress_otpViewController&quot; bundle:nil];</span>
-&nbsp;
-	UINavigationController <span style="color: #000000;">*</span> nav <span style="color: #000000;">=</span>  <span style="color: #000000;">&#91;</span><span style="color: #000000;">&#91;</span>UINavigationController alloc<span style="color: #000000;">&#93;</span>initWithRootViewController<span style="color: #000000;">:</span><span style="color: #000000;">&#91;</span><span style="color: #000000;">&#91;</span>wordpress_otpViewController alloc<span style="color: #000000;">&#93;</span> initWithNibName<span style="color: #000000;">:</span>@<span style="color: #666666;">&quot;wordpress_otpViewController&quot;</span> bundle<span style="color: #000000;">:</span>nil<span style="color: #000000;">&#93;</span><span style="color: #000000;">&#93;</span>;
-	<span style="color: #000000;">&#91;</span>self.<span style="color: #00eeff;">window</span> addSubview<span style="color: #000000;">:</span>nav.<span style="color: #00eeff;">view</span><span style="color: #000000;">&#93;</span>;
-&nbsp;
-	self.<span style="color: #00eeff;">window</span>.<span style="color: #00eeff;">rootViewController</span> <span style="color: #000000;">=</span> nav;<span style="color: #ff0000;">//self.viewController;</span>
-    <span style="color: #000000;">&#91;</span>self.<span style="color: #00eeff;">window</span> makeKeyAndVisible<span style="color: #000000;">&#93;</span>;
-    <span style="color: #0000ff;">return</span> YES;
-<span style="color: #000000;">&#125;</span>
-&nbsp;
-<span style="color: #ff0000;">//后续函数切换视图</span>
-	configViewController <span style="color: #000000;">*</span> mconfigViewController <span style="color: #000000;">=</span>  <span style="color: #000000;">&#91;</span><span style="color: #000000;">&#91;</span>configViewController alloc<span style="color: #000000;">&#93;</span> initWithNibName<span style="color: #000000;">:</span>@<span style="color: #666666;">&quot;configViewController&quot;</span> bundle<span style="color: #000000;">:</span><span style="color: #000000;">&#91;</span>NSBundle mainBundle<span style="color: #000000;">&#93;</span><span style="color: #000000;">&#93;</span>;
-	mconfigViewController<span style="color: #000000;">-</span>&gt;m_wpViewController <span style="color: #000000;">=</span> self;
-&nbsp;
-	<span style="color: #000000;">&#91;</span>mconfigViewController setShakeHandKeyCFGKey<span style="color: #000000;">:</span>blogname<span style="color: #000000;">&#93;</span>;
-&nbsp;
-<span style="color: #ff0000;">//一定要为根视图控制器，pushViewController才会生效，才能切换。 对应手动弹出，为popViewController</span>
-<span style="color: #ff0000;">//[self.navigationController popViewControllerAnimated:YES]</span>
-	<span style="color: #000000;">&#91;</span>self.<span style="color: #00eeff;">navigationController</span> pushViewController<span style="color: #000000;">:</span>mconfigViewController animated<span style="color: #000000;">:</span>YES<span style="color: #000000;">&#93;</span>;
-&nbsp;
-&nbsp;
-	<span style="color: #000000;">&#91;</span>mconfigViewController release<span style="color: #000000;">&#93;</span>;</pre></td></tr></table></div>
+	UINavigationController * nav =  [[UINavigationController alloc]initWithRootViewController:[[wordpress_otpViewController alloc] initWithNibName:@&quot;wordpress_otpViewController&quot; bundle:nil]];
+	[self.window addSubview:nav.view];
+	
+	self.window.rootViewController = nav;//self.viewController;
+    [self.window makeKeyAndVisible];
+    return YES;
+}
 
-<p>&nbsp;</p>
+//后续函数切换视图
+	configViewController * mconfigViewController =  [[configViewController alloc] initWithNibName:@&quot;configViewController&quot; bundle:[NSBundle mainBundle]];
+	mconfigViewController-&gt;m_wpViewController = self;
+ 
+	[mconfigViewController setShakeHandKeyCFGKey:blogname];
+ 
+//一定要为根视图控制器，pushViewController才会生效，才能切换。 对应手动弹出，为popViewController
+//[self.navigationController popViewControllerAnimated:YES]
+	[self.navigationController pushViewController:mconfigViewController animated:YES];
+ 
+ 
+	[mconfigViewController release];</pre><p>&nbsp;</p>
 ]]></content:encoded>
 			<wfw:commentRss>http://imzc.net/archives/211/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
@@ -830,488 +587,245 @@ titleForDeleteConfirmationButtonForRowAtIndexPath<span style="color: #000000;">:
 		<guid isPermaLink="false">http://imzc.net/?p=202</guid>
 		<description><![CDATA[worldpress插件编写-WP_OTP,结合多个示例,理解后编写而成. 实际运行效果和介绍见:WP_OTP [...]]]></description>
 			<content:encoded><![CDATA[<p>worldpress插件编写-WP_OTP,结合多个示例,理解后编写而成.<br />
-实际运行效果和介绍见:<a href="http://imzc.net/wp_otp" target="_blank">WP_OTP</a></p>
-
-<div class="wp_syntax"><table><tr><td class="line_numbers"><pre>1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53
-54
-55
-56
-57
-58
-59
-60
-61
-62
-63
-64
-65
-66
-67
-68
-69
-70
-71
-72
-73
-74
-75
-76
-77
-78
-79
-80
-81
-82
-83
-84
-85
-86
-87
-88
-89
-90
-91
-92
-93
-94
-95
-96
-97
-98
-99
-100
-101
-102
-103
-104
-105
-106
-107
-108
-109
-110
-111
-112
-113
-114
-115
-116
-117
-118
-119
-120
-121
-122
-123
-124
-125
-126
-127
-128
-129
-130
-131
-132
-133
-134
-135
-136
-137
-138
-139
-140
-141
-142
-143
-144
-145
-146
-147
-148
-149
-150
-151
-152
-153
-154
-155
-156
-157
-158
-159
-160
-161
-162
-163
-164
-165
-166
-167
-168
-169
-170
-171
-172
-173
-174
-175
-176
-177
-178
-179
-180
-181
-182
-183
-184
-185
-186
-187
-188
-189
-190
-191
-192
-193
-194
-195
-196
-197
-198
-199
-200
-201
-202
-203
-204
-205
-206
-207
-208
-209
-210
-211
-212
-213
-214
-215
-216
-217
-218
-219
-220
-221
-222
-223
-224
-225
-226
-227
-228
-229
-230
-231
-232
-233
-234
-235
-236
-237
-238
-239
-</pre></td><td class="code"><pre class="php" style="font-family:monospace;"><span style="color: #000000; font-weight: bold;">&lt;?php</span>
- <span style="color: #666666; font-style: italic;">/*
+实际运行效果和介绍见:<a href="http://imzc.net/wp_otp" target="_blank">WP_OTP</a></p><pre class="crayon-plain-tag">&lt;?php
+ /*
  Plugin Name: OATH_OTP
  Plugin URI: http://imzc.net/wp_otp
  Version: 0.0.1
  Author: Richard Chou
  Description: OATH_OTP
- */</span>
-&nbsp;
-<span style="color: #666666; font-style: italic;">// error_reporting(E_ALL);</span>
-&nbsp;
-<span style="color: #000000; font-weight: bold;">global</span> <span style="color: #000088;">$shakehand_key</span><span style="color: #339933;">;</span>
-&nbsp;
-<span style="color: #666666; font-style: italic;">//20bit</span>
-<span style="color: #000088;">$shakehand_key</span> <span style="color: #339933;">=</span> get_option<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">&quot;shakehand_key&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-&nbsp;
-<span style="color: #666666; font-style: italic;">//translate language, not completed.</span>
-<span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span><span style="color: #339933;">!</span><span style="color: #990000;">function_exists</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'tr'</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
-	<span style="color: #000000; font-weight: bold;">function</span> tr<span style="color: #009900;">&#40;</span><span style="color: #000088;">$str</span> <span style="color: #339933;">,</span><span style="color: #000088;">$section</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
-		<span style="color: #b1b100;">return</span> <span style="color: #000088;">$str</span> <span style="color: #339933;">;</span>
-	<span style="color: #009900;">&#125;</span>
-<span style="color: #009900;">&#125;</span>
-&nbsp;
-&nbsp;
-<span style="color: #000000; font-weight: bold;">function</span> auth_check<span style="color: #009900;">&#40;</span><span style="color: #000088;">$clientSideSha1Str</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
-	<span style="color: #000000; font-weight: bold;">global</span> <span style="color: #000088;">$shakehand_key</span><span style="color: #339933;">;</span>
-	<span style="color: #666666; font-style: italic;">//die($shakehand_key);</span>
-	<span style="color: #000088;">$seed</span> <span style="color: #339933;">=</span> <span style="color: #990000;">time</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-	<span style="color: #000088;">$seed</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$seed</span> <span style="color: #339933;">-</span> <span style="color: #000088;">$seed</span><span style="color: #339933;">%</span><span style="color:#800080;">30</span> <span style="color: #339933;">;</span>
-	<span style="color: #666666; font-style: italic;">//$clientSideSha1Str = sha1($code.$shakehand_key);</span>
-	<span style="color: #000088;">$webSideSha1Str</span> <span style="color: #339933;">=</span><span style="color: #990000;">sha1</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$seed</span><span style="color: #339933;">.</span><span style="color: #000088;">$shakehand_key</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-	<span style="color: #666666; font-style: italic;">//echo &quot;====seed:$seed=====&quot;.$webSideSha1Str.&quot;,&quot;.$clientSideSha1Str.&quot;===&quot;;</span>
-&nbsp;
-	<span style="color: #000088;">$clientSideCode</span> <span style="color: #339933;">=</span> <span style="color: #990000;">substr</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$clientSideSha1Str</span><span style="color: #339933;">,</span><span style="color: #cc66cc;">0</span><span style="color: #339933;">,</span><span style="color: #cc66cc;">6</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-	<span style="color: #000088;">$webSideCode</span> <span style="color: #339933;">=</span> <span style="color: #990000;">substr</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$webSideSha1Str</span><span style="color: #339933;">,</span><span style="color: #cc66cc;">0</span><span style="color: #339933;">,</span><span style="color: #cc66cc;">6</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-&nbsp;
-	<span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$clientSideCode</span> <span style="color: #339933;">==</span> <span style="color: #000088;">$webSideCode</span> <span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
-		<span style="color: #b1b100;">return</span> <span style="color: #009900; font-weight: bold;">true</span><span style="color: #339933;">;</span>
-	<span style="color: #009900;">&#125;</span><span style="color: #b1b100;">else</span><span style="color: #009900;">&#123;</span>
-		<span style="color: #b1b100;">return</span> <span style="color: #009900; font-weight: bold;">false</span><span style="color: #339933;">;</span>
-	<span style="color: #009900;">&#125;</span>
-<span style="color: #009900;">&#125;</span>
-<span style="color: #666666; font-style: italic;">// this function adds captcha to the login form</span>
-<span style="color: #000000; font-weight: bold;">function</span> oath_login_form<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-	<span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span> <span style="color: #990000;">session_id</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #339933;">==</span> <span style="color: #0000ff;">&quot;&quot;</span> <span style="color: #009900;">&#41;</span>
-		<span style="color: #990000;">session_start</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-	<span style="color: #000000; font-weight: bold;">global</span> <span style="color: #000088;">$cptch_options</span><span style="color: #339933;">;</span>
-&nbsp;
-	<span style="color: #666666; font-style: italic;">// captcha html - login form</span>
-	<span style="color: #b1b100;">echo</span> <span style="color: #0000ff;">'&lt;p class=&quot;cptch_block&quot;&gt;'</span><span style="color: #339933;">;</span>
-	<span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">&quot;&quot;</span> <span style="color: #339933;">!=</span> <span style="color: #000088;">$cptch_options</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'cptch_label_form'</span><span style="color: #009900;">&#93;</span> <span style="color: #009900;">&#41;</span>	
-		<span style="color: #b1b100;">echo</span> <span style="color: #0000ff;">'&lt;label&gt;'</span><span style="color: #339933;">.</span> <span style="color: #990000;">stripslashes</span><span style="color: #009900;">&#40;</span> <span style="color: #000088;">$cptch_options</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'cptch_label_form'</span><span style="color: #009900;">&#93;</span> <span style="color: #009900;">&#41;</span> <span style="color: #339933;">.</span><span style="color: #0000ff;">'&lt;/label&gt;&lt;br /&gt;'</span><span style="color: #339933;">;</span>
-	<span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span> <span style="color: #990000;">isset</span><span style="color: #009900;">&#40;</span> <span style="color: #000088;">$_SESSION</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'cptch_error'</span><span style="color: #009900;">&#93;</span> <span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-		<span style="color: #b1b100;">echo</span> <span style="color: #0000ff;">&quot;&lt;br /&gt;&lt;span style='color:red'&gt;&quot;</span><span style="color: #339933;">.</span> <span style="color: #000088;">$_SESSION</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'cptch_error'</span><span style="color: #009900;">&#93;</span> <span style="color: #339933;">.</span><span style="color: #0000ff;">&quot;&lt;/span&gt;&lt;br /&gt;&quot;</span><span style="color: #339933;">;</span>
-		<span style="color: #990000;">unset</span><span style="color: #009900;">&#40;</span> <span style="color: #000088;">$_SESSION</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'cptch_error'</span><span style="color: #009900;">&#93;</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-	<span style="color: #009900;">&#125;</span>
-	<span style="color: #b1b100;">echo</span> <span style="color: #0000ff;">'&lt;br /&gt;'</span><span style="color: #339933;">;</span>
-	oath_display_captcha<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-	<span style="color: #b1b100;">echo</span> <span style="color: #0000ff;">'&lt;/p&gt;
-	&lt;br /&gt;'</span><span style="color: #339933;">;</span>
-&nbsp;
-	<span style="color: #b1b100;">return</span> <span style="color: #009900; font-weight: bold;">true</span><span style="color: #339933;">;</span>
-&nbsp;
-<span style="color: #009900;">&#125;</span> <span style="color: #666666; font-style: italic;">//  end function oath_login_form</span>
-&nbsp;
-<span style="color: #666666; font-style: italic;">// this function checks captcha posted with a login</span>
-<span style="color: #000000; font-weight: bold;">function</span> oath_login_post<span style="color: #009900;">&#40;</span><span style="color: #000088;">$errors</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-	<span style="color: #000000; font-weight: bold;">global</span> <span style="color: #000088;">$str_key</span><span style="color: #339933;">;</span>
-	<span style="color: #000088;">$str_key</span> <span style="color: #339933;">=</span> <span style="color: #0000ff;">&quot;123&quot;</span><span style="color: #339933;">;</span>
-	<span style="color: #666666; font-style: italic;">// Delete errors, if they set</span>
-	<span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span> <span style="color: #990000;">isset</span><span style="color: #009900;">&#40;</span> <span style="color: #000088;">$_SESSION</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'cptch_error'</span><span style="color: #009900;">&#93;</span> <span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#41;</span>
-		<span style="color: #990000;">unset</span><span style="color: #009900;">&#40;</span> <span style="color: #000088;">$_SESSION</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'cptch_error'</span><span style="color: #009900;">&#93;</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-&nbsp;
-	<span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span> <span style="color: #990000;">isset</span><span style="color: #009900;">&#40;</span> <span style="color: #000088;">$_REQUEST</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'action'</span><span style="color: #009900;">&#93;</span> <span style="color: #009900;">&#41;</span> <span style="color: #339933;">&amp;&amp;</span> <span style="color: #0000ff;">'register'</span> <span style="color: #339933;">==</span> <span style="color: #000088;">$_REQUEST</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'action'</span><span style="color: #009900;">&#93;</span> <span style="color: #009900;">&#41;</span>
-		<span style="color: #b1b100;">return</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$errors</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-&nbsp;
-	<span style="color: #666666; font-style: italic;">// If captcha not complete, return error</span>
-	<span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span> <span style="color: #990000;">isset</span><span style="color: #009900;">&#40;</span> <span style="color: #000088;">$_REQUEST</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'cptch_number'</span><span style="color: #009900;">&#93;</span> <span style="color: #009900;">&#41;</span> <span style="color: #339933;">&amp;&amp;</span> <span style="color: #0000ff;">&quot;&quot;</span> <span style="color: #339933;">==</span>  <span style="color: #000088;">$_REQUEST</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'cptch_number'</span><span style="color: #009900;">&#93;</span> <span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>	
-		<span style="color: #b1b100;">return</span> <span style="color: #000088;">$errors</span><span style="color: #339933;">.</span><span style="color: #0000ff;">'&lt;strong&gt;'</span><span style="color: #339933;">.</span> tr<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">'ERROR'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'captcha'</span> <span style="color: #009900;">&#41;</span> <span style="color: #339933;">.</span><span style="color: #0000ff;">'&lt;/strong&gt;: '</span><span style="color: #339933;">.</span> tr<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">'Please complete the CAPTCHA.'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'captcha'</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-	<span style="color: #009900;">&#125;</span>
-&nbsp;
-	<span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span>auth_check<span style="color: #009900;">&#40;</span><span style="color: #990000;">trim</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$_REQUEST</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'cptch_number'</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">===</span><span style="color: #009900; font-weight: bold;">true</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
-		<span style="color: #666666; font-style: italic;">// captcha was matched						</span>
-	<span style="color: #009900;">&#125;</span> <span style="color: #b1b100;">else</span> <span style="color: #009900;">&#123;</span>
-		<span style="color: #b1b100;">return</span> <span style="color: #000088;">$errors</span><span style="color: #339933;">.</span><span style="color: #0000ff;">'&lt;strong&gt;'</span><span style="color: #339933;">.</span> tr<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">'ERROR'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'captcha'</span> <span style="color: #009900;">&#41;</span> <span style="color: #339933;">.</span><span style="color: #0000ff;">'&lt;/strong&gt;: '</span><span style="color: #339933;">.</span> tr<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">'That CAPTCHA was incorrect.'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'captcha'</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-	<span style="color: #009900;">&#125;</span>
-  <span style="color: #b1b100;">return</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$errors</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<span style="color: #009900;">&#125;</span> <span style="color: #666666; font-style: italic;">// end function oath_login_post</span>
-&nbsp;
-<span style="color: #666666; font-style: italic;">// this function checks the captcha posted with a login when login errors are absent</span>
-<span style="color: #000000; font-weight: bold;">function</span> oath_login_check<span style="color: #009900;">&#40;</span><span style="color: #000088;">$url</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-	<span style="color: #000000; font-weight: bold;">global</span> <span style="color: #000088;">$str_key</span><span style="color: #339933;">;</span>
-	<span style="color: #000000; font-weight: bold;">global</span> <span style="color: #000088;">$auth_tmp_key</span><span style="color: #339933;">;</span>
-	<span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span> <span style="color: #990000;">session_id</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #339933;">==</span> <span style="color: #0000ff;">&quot;&quot;</span> <span style="color: #009900;">&#41;</span>
-		<span style="color: #990000;">session_start</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-&nbsp;
-	<span style="color: #000088;">$str_key</span> <span style="color: #339933;">=</span> <span style="color: #0000ff;">&quot;123&quot;</span><span style="color: #339933;">;</span>
-	<span style="color: #666666; font-style: italic;">// Add error if captcha is empty</span>
-	<span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span> <span style="color: #990000;">isset</span><span style="color: #009900;">&#40;</span> <span style="color: #000088;">$_REQUEST</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'cptch_number'</span><span style="color: #009900;">&#93;</span> <span style="color: #009900;">&#41;</span> <span style="color: #339933;">&amp;&amp;</span> <span style="color: #0000ff;">&quot;&quot;</span> <span style="color: #339933;">==</span>  <span style="color: #000088;">$_REQUEST</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'cptch_number'</span><span style="color: #009900;">&#93;</span> <span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-		<span style="color: #000088;">$_SESSION</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'cptch_error'</span><span style="color: #009900;">&#93;</span> <span style="color: #339933;">=</span> tr<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">'Please complete the CAPTCHA.'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'captcha'</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-		<span style="color: #666666; font-style: italic;">// Redirect to wp-login.php</span>
-		<span style="color: #b1b100;">return</span> <span style="color: #000088;">$_SERVER</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">&quot;REQUEST_URI&quot;</span><span style="color: #009900;">&#93;</span><span style="color: #339933;">;</span>
-	<span style="color: #009900;">&#125;</span>
-	<span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span> <span style="color: #990000;">isset</span><span style="color: #009900;">&#40;</span> <span style="color: #000088;">$_REQUEST</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'cptch_result'</span><span style="color: #009900;">&#93;</span> <span style="color: #009900;">&#41;</span> <span style="color: #339933;">&amp;&amp;</span> <span style="color: #990000;">isset</span><span style="color: #009900;">&#40;</span> <span style="color: #000088;">$_REQUEST</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'cptch_number'</span><span style="color: #009900;">&#93;</span> <span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-		<span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span>auth_check<span style="color: #009900;">&#40;</span><span style="color: #990000;">trim</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$_REQUEST</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'cptch_number'</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">===</span><span style="color: #009900; font-weight: bold;">true</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
-			<span style="color: #b1b100;">return</span> <span style="color: #000088;">$url</span><span style="color: #339933;">;</span>		<span style="color: #666666; font-style: italic;">// captcha was matched						</span>
-		<span style="color: #009900;">&#125;</span> <span style="color: #b1b100;">else</span> <span style="color: #009900;">&#123;</span>
-			<span style="color: #666666; font-style: italic;">// Add error if captcha is incorrect</span>
-			<span style="color: #000088;">$_SESSION</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'cptch_error'</span><span style="color: #009900;">&#93;</span> <span style="color: #339933;">=</span> tr<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'That CAPTCHA was incorrect.'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'captcha'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-			<span style="color: #666666; font-style: italic;">// Redirect to wp-login.php</span>
-			<span style="color: #b1b100;">return</span> <span style="color: #000088;">$_SERVER</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">&quot;REQUEST_URI&quot;</span><span style="color: #009900;">&#93;</span><span style="color: #339933;">;</span>
-		<span style="color: #009900;">&#125;</span>
-	<span style="color: #009900;">&#125;</span>
-	<span style="color: #b1b100;">else</span> <span style="color: #009900;">&#123;</span>
-		<span style="color: #b1b100;">return</span> <span style="color: #000088;">$url</span><span style="color: #339933;">;</span>		<span style="color: #666666; font-style: italic;">// captcha was matched						</span>
-	<span style="color: #009900;">&#125;</span>
-<span style="color: #009900;">&#125;</span> <span style="color: #666666; font-style: italic;">// end function oath_login_post</span>
-&nbsp;
-&nbsp;
-&nbsp;
-<span style="color: #666666; font-style: italic;">// Functionality of the captcha logic work</span>
-<span style="color: #000000; font-weight: bold;">function</span> oath_display_captcha<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>
-<span style="color: #009900;">&#123;</span>
-	<span style="color: #000000; font-weight: bold;">global</span> <span style="color: #000088;">$cptch_options</span><span style="color: #339933;">,</span><span style="color: #000088;">$auth_tmp_key</span> <span style="color: #339933;">;</span>
-    <span style="color: #000000; font-weight: bold;">global</span> <span style="color: #000088;">$shakehand_key</span><span style="color: #339933;">;</span>
-&nbsp;
-	<span style="color: #666666; font-style: italic;">// String for display </span>
-	<span style="color: #000088;">$seed</span> <span style="color: #339933;">=</span> <span style="color: #990000;">time</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<span style="color: #000000; font-weight: bold;">?&gt;</span>
-    OATH_OTP(<span style="color: #000000; font-weight: bold;">&lt;?php</span> <span style="color: #b1b100;">echo</span> <span style="color: #990000;">substr</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">&quot;<span style="color: #006699; font-weight: bold;">$seed</span>&quot;</span><span style="color: #339933;">,-</span><span style="color: #cc66cc;">3</span><span style="color: #339933;">,</span><span style="color: #cc66cc;">3</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span><span style="color: #000000; font-weight: bold;">?&gt;</span>):&lt;input type=&quot;text&quot; name=&quot;cptch_number&quot; tabindex=&quot;30&quot; value=&quot;&quot; maxlength=&quot;10&quot; size=&quot;1&quot; style=&quot;width:100px;margin-bottom:0;display:inline;&quot; /&gt;&lt;br /&gt;
-	&lt;input type=&quot;hidden&quot; name=&quot;cptch_result&quot; value=&quot; <span style="color: #000000; font-weight: bold;">&lt;?php</span> <span style="color: #b1b100;">echo</span> <span style="color: #000088;">$auth_tmp_key</span><span style="color: #339933;">;</span> <span style="color: #000000; font-weight: bold;">?&gt;</span>&quot; /&gt;&lt;input type=&quot;hidden&quot; value=&quot;Version: 0.0.1&quot; /&gt;
-&nbsp;
-<span style="color: #000000; font-weight: bold;">&lt;?php</span>
-<span style="color: #009900;">&#125;</span>
-&nbsp;
-&nbsp;
-	add_action<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">'login_form'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'oath_login_form'</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-	add_filter<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">'login_errors'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'oath_login_post'</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-	add_filter<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">'login_redirect'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'oath_login_check'</span><span style="color: #339933;">,</span> <span style="color: #cc66cc;">10</span><span style="color: #339933;">,</span> <span style="color: #cc66cc;">3</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span> 
-&nbsp;
-&nbsp;
-&nbsp;
-<span style="color: #666666; font-style: italic;">// Function for display oather settings page in the admin area</span>
-&nbsp;
-<span style="color: #000000; font-weight: bold;">function</span> oather_activate<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-    add_option<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">'shakehand_key'</span><span style="color: #339933;">,</span>  <span style="color: #0000ff;">&quot;testcoco&quot;</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-    <span style="color: #666666; font-style: italic;">//这里也可以用update_option，区别是使用update_action会在每一次重新启用插件时重置用户设置为默认值。</span>
-&nbsp;
-<span style="color: #009900;">&#125;</span>
-register_activation_hook<span style="color: #009900;">&#40;</span><span style="color: #009900; font-weight: bold;">__FILE__</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'oather_activate'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-&nbsp;
-&nbsp;
-<span style="color: #000000; font-weight: bold;">function</span> oather_admin_init<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
-    <span style="color: #666666; font-style: italic;">//注册配置，第3个参数是回调函数，用于过滤提交的内容</span>
-	<span style="color: #666666; font-style: italic;">//register_setting( $option_group, $option_name, $sanitize_callback )</span>
-    register_setting<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">'shakehand_key'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'oather_options'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'oather_options_validate'</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-&nbsp;
-	 <span style="color: #666666; font-style: italic;">//添加设置群</span>
-	 <span style="color: #666666; font-style: italic;">//add_settings_section( $id, $title, $callback, $page ); </span>
-    add_settings_section<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'oather_main'</span><span style="color: #339933;">,</span> tr<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'Settings'</span><span style="color: #339933;">,</span><span style="color: #0000ff;">'oath'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'oather_section'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'oather'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-&nbsp;
-   <span style="color: #666666; font-style: italic;">//添加具体配置</span>
-    <span style="color: #666666; font-style: italic;">//add_settings_field( $id,                  $title,                               $callback,    $page,      $section,   $args );</span>
-    add_settings_field<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'oather_shakehand_key'</span><span style="color: #339933;">,</span> tr<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'oather_shakehand_key'</span><span style="color: #339933;">,</span><span style="color: #0000ff;">'oath'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'oather_authkey'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'oather'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'oather_main'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span> 
-&nbsp;
-&nbsp;
-<span style="color: #009900;">&#125;</span>
-add_action<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'admin_init'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'oather_admin_init'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-&nbsp;
-&nbsp;
-&nbsp;
-<span style="color: #000000; font-weight: bold;">function</span> oather_authkey<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>
-<span style="color: #009900;">&#123;</span>
-    <span style="color: #000088;">$shakehand_key</span> <span style="color: #339933;">=</span> get_option<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">'shakehand_key'</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span> 
-<span style="color: #666666; font-style: italic;">//	echo &quot;&lt;br&gt; $shakehand_key:&quot;;print_r($shakehand_key);</span>
-<span style="color: #000000; font-weight: bold;">?&gt;</span>&lt;input id=&quot;oather_shakehand_key&quot; name=&quot;oather_shakehand_key&quot; style=&quot;width:200px;&quot; maxlength=&quot;20&quot;  value=&quot;<span style="color: #000000; font-weight: bold;">&lt;?php</span> <span style="color: #b1b100;">echo</span> <span style="color: #000088;">$shakehand_key</span><span style="color: #339933;">;</span><span style="color: #000000; font-weight: bold;">?&gt;</span>&quot; /&gt;(6-20 chars)&lt;br /&gt;
-<span style="color: #000000; font-weight: bold;">&lt;?php</span>
-<span style="color: #009900;">&#125;</span>
-&nbsp;
-&nbsp;
-&nbsp;
-<span style="color: #000000; font-weight: bold;">function</span> oather_section<span style="color: #009900;">&#40;</span><span style="color: #000088;">$section</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
-	<span style="color: #b1b100;">return</span> <span style="color: #000088;">$section</span><span style="color: #339933;">;</span>
-<span style="color: #009900;">&#125;</span>
-<span style="color: #000000; font-weight: bold;">function</span> oather_options_validate<span style="color: #009900;">&#40;</span><span style="color: #000088;">$input</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span> 
-    <span style="color: #b1b100;">return</span> <span style="color: #000088;">$input</span><span style="color: #339933;">;</span>
-<span style="color: #009900;">&#125;</span>
-&nbsp;
-<span style="color: #000000; font-weight: bold;">function</span> oather_options_page<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-<span style="color: #000000; font-weight: bold;">?&gt;</span>
+ */
+ 
+// error_reporting(E_ALL);
+
+global $shakehand_key;
+ 
+//20bit
+$shakehand_key = get_option(&quot;shakehand_key&quot;);
+   
+//translate language, not completed.
+if(!function_exists('tr')){
+	function tr($str ,$section){
+		return $str ;
+	}
+}
+
+
+function auth_check($clientSideSha1Str){
+	global $shakehand_key;
+	//die($shakehand_key);
+	$seed = time();
+	$seed = $seed - $seed%30 ;
+	//$clientSideSha1Str = sha1($code.$shakehand_key);
+	$webSideSha1Str =sha1($seed.$shakehand_key);
+	//echo &quot;====seed:$seed=====&quot;.$webSideSha1Str.&quot;,&quot;.$clientSideSha1Str.&quot;===&quot;;
+	
+	$clientSideCode = substr($clientSideSha1Str,0,6);
+	$webSideCode = substr($webSideSha1Str,0,6);
+	
+	if($clientSideCode == $webSideCode ){
+		return true;
+	}else{
+		return false;
+	}
+}
+// this function adds captcha to the login form
+function oath_login_form() {
+	if( session_id() == &quot;&quot; )
+		session_start();
+	global $cptch_options;
+	
+	// captcha html - login form
+	echo '&lt;p class=&quot;cptch_block&quot;&gt;';
+	if( &quot;&quot; != $cptch_options['cptch_label_form'] )	
+		echo '&lt;label&gt;'. stripslashes( $cptch_options['cptch_label_form'] ) .'&lt;/label&gt;&lt;br /&gt;';
+	if( isset( $_SESSION['cptch_error'] ) ) {
+		echo &quot;&lt;br /&gt;&lt;span style='color:red'&gt;&quot;. $_SESSION['cptch_error'] .&quot;&lt;/span&gt;&lt;br /&gt;&quot;;
+		unset( $_SESSION['cptch_error'] );
+	}
+	echo '&lt;br /&gt;';
+	oath_display_captcha();
+	echo '&lt;/p&gt;
+	&lt;br /&gt;';
+
+	return true;
+
+} //  end function oath_login_form
+
+// this function checks captcha posted with a login
+function oath_login_post($errors) {
+	global $str_key;
+	$str_key = &quot;123&quot;;
+	// Delete errors, if they set
+	if( isset( $_SESSION['cptch_error'] ) )
+		unset( $_SESSION['cptch_error'] );
+
+	if( isset( $_REQUEST['action'] ) &amp;&amp; 'register' == $_REQUEST['action'] )
+		return($errors);
+
+	// If captcha not complete, return error
+	if ( isset( $_REQUEST['cptch_number'] ) &amp;&amp; &quot;&quot; ==  $_REQUEST['cptch_number'] ) {	
+		return $errors.'&lt;strong&gt;'. tr( 'ERROR', 'captcha' ) .'&lt;/strong&gt;: '. tr( 'Please complete the CAPTCHA.', 'captcha' );
+	}
+ 
+	if(auth_check(trim($_REQUEST['cptch_number']))===true){
+		// captcha was matched						
+	} else {
+		return $errors.'&lt;strong&gt;'. tr( 'ERROR', 'captcha' ) .'&lt;/strong&gt;: '. tr( 'That CAPTCHA was incorrect.', 'captcha' );
+	}
+  return($errors);
+} // end function oath_login_post
+
+// this function checks the captcha posted with a login when login errors are absent
+function oath_login_check($url) {
+	global $str_key;
+	global $auth_tmp_key;
+	if( session_id() == &quot;&quot; )
+		session_start();
+
+	$str_key = &quot;123&quot;;
+	// Add error if captcha is empty
+	if ( isset( $_REQUEST['cptch_number'] ) &amp;&amp; &quot;&quot; ==  $_REQUEST['cptch_number'] ) {
+		$_SESSION['cptch_error'] = tr( 'Please complete the CAPTCHA.', 'captcha' );
+		// Redirect to wp-login.php
+		return $_SERVER[&quot;REQUEST_URI&quot;];
+	}
+	if ( isset( $_REQUEST['cptch_result'] ) &amp;&amp; isset( $_REQUEST['cptch_number'] ) ) {
+		if(auth_check(trim($_REQUEST['cptch_number']))===true){
+			return $url;		// captcha was matched						
+		} else {
+			// Add error if captcha is incorrect
+			$_SESSION['cptch_error'] = tr('That CAPTCHA was incorrect.', 'captcha');
+			// Redirect to wp-login.php
+			return $_SERVER[&quot;REQUEST_URI&quot;];
+		}
+	}
+	else {
+		return $url;		// captcha was matched						
+	}
+} // end function oath_login_post
+
+
+
+// Functionality of the captcha logic work
+function oath_display_captcha()
+{
+	global $cptch_options,$auth_tmp_key ;
+    global $shakehand_key;
+	
+	// String for display 
+	$seed = time();
+?&gt;
+    OATH_OTP(&lt;?php echo substr(&quot;$seed&quot;,-3,3);?&gt;):&lt;input type=&quot;text&quot; name=&quot;cptch_number&quot; tabindex=&quot;30&quot; value=&quot;&quot; maxlength=&quot;10&quot; size=&quot;1&quot; style=&quot;width:100px;margin-bottom:0;display:inline;&quot; /&gt;&lt;br /&gt;
+	&lt;input type=&quot;hidden&quot; name=&quot;cptch_result&quot; value=&quot; &lt;?php echo $auth_tmp_key; ?&gt;&quot; /&gt;&lt;input type=&quot;hidden&quot; value=&quot;Version: 0.0.1&quot; /&gt;
+	 
+&lt;?php
+}
+ 
+
+	add_action( 'login_form', 'oath_login_form' );
+	add_filter( 'login_errors', 'oath_login_post' );
+	add_filter( 'login_redirect', 'oath_login_check', 10, 3 ); 
+
+  
+  
+// Function for display oather settings page in the admin area
+
+function oather_activate() {
+    add_option( 'shakehand_key',  &quot;testcoco&quot; );
+    //这里也可以用update_option，区别是使用update_action会在每一次重新启用插件时重置用户设置为默认值。
+	 
+}
+register_activation_hook(__FILE__, 'oather_activate');
+
+
+function oather_admin_init(){
+    //注册配置，第3个参数是回调函数，用于过滤提交的内容
+	//register_setting( $option_group, $option_name, $sanitize_callback )
+    register_setting( 'shakehand_key', 'oather_options', 'oather_options_validate' );
+	
+	 //添加设置群
+	 //add_settings_section( $id, $title, $callback, $page ); 
+    add_settings_section('oather_main', tr('Settings','oath'), 'oather_section', 'oather');
+   
+   //添加具体配置
+    //add_settings_field( $id,                  $title,                               $callback,    $page,      $section,   $args );
+    add_settings_field('oather_shakehand_key', tr('oather_shakehand_key','oath'), 'oather_authkey', 'oather', 'oather_main'); 
+    
+	 
+}
+add_action('admin_init', 'oather_admin_init');
+
+
+
+function oather_authkey()
+{
+    $shakehand_key = get_option( 'shakehand_key' ); 
+//	echo &quot;&lt;br&gt; $shakehand_key:&quot;;print_r($shakehand_key);
+?&gt;&lt;input id=&quot;oather_shakehand_key&quot; name=&quot;oather_shakehand_key&quot; style=&quot;width:200px;&quot; maxlength=&quot;20&quot;  value=&quot;&lt;?php echo $shakehand_key;?&gt;&quot; /&gt;(6-20 chars)&lt;br /&gt;
+&lt;?php
+}
+
+
+
+function oather_section($section){
+	return $section;
+}
+function oather_options_validate($input) { 
+    return $input;
+}
+
+function oather_options_page() {
+?&gt;
     &lt;div class=&quot;wrap&quot;&gt;
-        &lt;h2&gt;<span style="color: #000000; font-weight: bold;">&lt;?php</span> <span style="color: #b1b100;">echo</span> tr<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'OATH_OTP'</span><span style="color: #339933;">,</span><span style="color: #0000ff;">'oath'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span> <span style="color: #000000; font-weight: bold;">?&gt;</span>&lt;/h2&gt;
+        &lt;h2&gt;&lt;?php echo tr('OATH_OTP','oath'); ?&gt;&lt;/h2&gt;
         &lt;div class=&quot;narrow&quot;&gt;
             &lt;form action=&quot;options.php&quot; method=&quot;post&quot;&gt;
-                &lt;p&gt;<span style="color: #000000; font-weight: bold;">&lt;?php</span> <span style="color: #b1b100;">echo</span> tr<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'OATH_OTP目前仅有ios配对客户端,使用时间戳和shakehandKey结合认证.'</span><span style="color: #339933;">,</span><span style="color: #0000ff;">'oath'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span> <span style="color: #000000; font-weight: bold;">?&gt;</span>&lt;/p&gt;
-                <span style="color: #000000; font-weight: bold;">&lt;?php</span> settings_fields<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'shakehand_key'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span> <span style="color: #000000; font-weight: bold;">?&gt;</span>
-                <span style="color: #000000; font-weight: bold;">&lt;?php</span> do_settings_sections<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'oather'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span> <span style="color: #000000; font-weight: bold;">?&gt;</span>
+                &lt;p&gt;&lt;?php echo tr('OATH_OTP目前仅有ios配对客户端,使用时间戳和shakehandKey结合认证.','oath'); ?&gt;&lt;/p&gt;
+                &lt;?php settings_fields('shakehand_key'); ?&gt;
+                &lt;?php do_settings_sections('oather'); ?&gt;
                 &lt;p class=&quot;submit&quot;&gt;
-                    &lt;input name=&quot;submit&quot; type=&quot;submit&quot; class=&quot;button-primary&quot; value=&quot;<span style="color: #000000; font-weight: bold;">&lt;?php</span> <span style="color: #b1b100;">echo</span> tr<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'Save Changes'</span><span style="color: #339933;">,</span><span style="color: #0000ff;">'oath'</span><span style="color: #009900;">&#41;</span> <span style="color: #000000; font-weight: bold;">?&gt;</span>&quot; /&gt;
+                    &lt;input name=&quot;submit&quot; type=&quot;submit&quot; class=&quot;button-primary&quot; value=&quot;&lt;?php echo tr('Save Changes','oath') ?&gt;&quot; /&gt;
                 &lt;/p&gt;
             &lt;/form&gt;
         &lt;/div&gt;
     &lt;/div&gt;
-<span style="color: #000000; font-weight: bold;">&lt;?php</span>
-<span style="color: #009900;">&#125;</span>
-&nbsp;
- <span style="color: #666666; font-style: italic;">//在设置页添加链接</span>
-<span style="color: #000000; font-weight: bold;">function</span> oather_menu<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-    add_options_page<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'OATH_OTP Settings'</span><span style="color: #339933;">,</span>  tr<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'OATH_OTP'</span><span style="color: #339933;">,</span><span style="color: #0000ff;">'oath'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'manage_options'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'oath_otp'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'oather_options_page'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<span style="color: #009900;">&#125;</span>
-&nbsp;
-<span style="color: #000000; font-weight: bold;">function</span> oather_action_links<span style="color: #009900;">&#40;</span> <span style="color: #000088;">$links</span><span style="color: #339933;">,</span> <span style="color: #000088;">$file</span> <span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-    <span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span> <span style="color: #000088;">$file</span> <span style="color: #339933;">!=</span> plugin_basename<span style="color: #009900;">&#40;</span> <span style="color: #009900; font-weight: bold;">__FILE__</span> <span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span>
-        <span style="color: #b1b100;">return</span> <span style="color: #000088;">$links</span><span style="color: #339933;">;</span>
-    <span style="color: #000088;">$settings_link</span> <span style="color: #339933;">=</span> <span style="color: #0000ff;">'&lt;a href=&quot;options-general.php?page=oath_otp&quot;&gt;Settings&lt;/a&gt;'</span><span style="color: #339933;">;</span>
-    <span style="color: #990000;">array_unshift</span><span style="color: #009900;">&#40;</span> <span style="color: #000088;">$links</span><span style="color: #339933;">,</span> <span style="color: #000088;">$settings_link</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-    <span style="color: #b1b100;">return</span> <span style="color: #000088;">$links</span><span style="color: #339933;">;</span>
-    <span style="color: #666666; font-style: italic;">//在插件页添加链接</span>
-<span style="color: #009900;">&#125;</span>
-add_filter<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">'plugin_action_links'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'oather_action_links'</span><span style="color: #339933;">,</span><span style="color: #cc66cc;">10</span><span style="color: #339933;">,</span><span style="color: #cc66cc;">2</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-add_action<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'admin_menu'</span><span style="color: #339933;">,</span><span style="color: #0000ff;">'oather_menu'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-&nbsp;
-&nbsp;
-&nbsp;
-<span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span><span style="color: #990000;">isset</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$_POST</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'oather_shakehand_key'</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
-	<span style="color: #666666; font-style: italic;">//update post</span>
-	<span style="color: #000088;">$shakehand_len</span> <span style="color: #339933;">=</span> <span style="color: #990000;">strlen</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$_POST</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'oather_shakehand_key'</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-		<span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$shakehand_len</span> <span style="color: #339933;">&gt;=</span><span style="color: #cc66cc;">6</span>  <span style="color: #339933;">&amp;&amp;</span> <span style="color: #000088;">$shakehand_len</span> <span style="color: #339933;">&lt;=</span><span style="color: #cc66cc;">20</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span> 
-		 	 update_option<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">'shakehand_key'</span><span style="color: #339933;">,</span> <span style="color: #000088;">$_POST</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'oather_shakehand_key'</span><span style="color: #009900;">&#93;</span> <span style="color: #339933;">,</span><span style="color: #0000ff;">''</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'yes'</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span> 
-               <span style="color: #666666; font-style: italic;">//  print_r($_POST);   </span>
-			 <span style="color: #000088;">$message</span> <span style="color: #339933;">=</span> __<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">&quot;Options saved.&quot;</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'oath'</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-		<span style="color: #009900;">&#125;</span><span style="color: #b1b100;">else</span><span style="color: #009900;">&#123;</span>
-			 <span style="color: #000088;">$message</span> <span style="color: #339933;">=</span> tr<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">&quot;Options save failed,shakehand_key must be in 6 to 20 chars.&quot;</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'oath'</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-		 <span style="color: #009900;">&#125;</span>
-<span style="color: #009900;">&#125;</span>
-&nbsp;
-&nbsp;
-&nbsp;
- <span style="color: #000000; font-weight: bold;">?&gt;</span></pre></td></tr></table></div>
+&lt;?php
+}
+ 
+ //在设置页添加链接
+function oather_menu() {
+    add_options_page('OATH_OTP Settings',  tr('OATH_OTP','oath'), 'manage_options', 'oath_otp', 'oather_options_page');
+}
 
-<p>&nbsp;</p>
+function oather_action_links( $links, $file ) {
+    if ( $file != plugin_basename( __FILE__ ))
+        return $links;
+    $settings_link = '&lt;a href=&quot;options-general.php?page=oath_otp&quot;&gt;Settings&lt;/a&gt;';
+    array_unshift( $links, $settings_link );
+    return $links;
+    //在插件页添加链接
+}
+add_filter( 'plugin_action_links', 'oather_action_links',10,2);
+add_action('admin_menu','oather_menu');
+
+
+
+if(isset($_POST['oather_shakehand_key'])){
+	//update post
+	$shakehand_len = strlen($_POST['oather_shakehand_key']);
+		if($shakehand_len &gt;=6  &amp;&amp; $shakehand_len &lt;=20){ 
+		 	 update_option( 'shakehand_key', $_POST['oather_shakehand_key'] ,'', 'yes' ); 
+               //  print_r($_POST);   
+			 $message = __( &quot;Options saved.&quot;, 'oath' );
+		}else{
+			 $message = tr( &quot;Options save failed,shakehand_key must be in 6 to 20 chars.&quot;, 'oath' );
+		 }
+}
+  
+
+
+ ?&gt;</pre><p>&nbsp;</p>
 ]]></content:encoded>
 			<wfw:commentRss>http://imzc.net/archives/202/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
@@ -1325,57 +839,30 @@ add_action<span style="color: #009900;">&#40;</span><span style="color: #0000ff;
 				<category><![CDATA[IOSDev]]></category>
 
 		<guid isPermaLink="false">http://imzc.net/?p=190</guid>
-		<description><![CDATA[直接看代码吧~ 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 [...]]]></description>
-			<content:encoded><![CDATA[<p>直接看代码吧~</p>
+		<description><![CDATA[直接看代码吧~ [crayon-505b48db44996/] &#160;]]></description>
+			<content:encoded><![CDATA[<p>直接看代码吧~</p><pre class="crayon-plain-tag">//set backgroud image 
+UIImage * bg = [self scaleToSize:[UIImage imageNamed:@&quot;bgimg.png&quot;] size:CGSizeMake(340, 480)];
+self.view.backgroundColor = [UIColor colorWithPatternImage:bg]; 
 
-<div class="wp_syntax"><table><tr><td class="line_numbers"><pre>1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-</pre></td><td class="code"><pre class="c_mac" style="font-family:monospace;"><span style="color: #ff0000;">//set backgroud image </span>
-UIImage <span style="color: #000000;">*</span> bg <span style="color: #000000;">=</span> <span style="color: #000000;">&#91;</span>self scaleToSize<span style="color: #000000;">:</span><span style="color: #000000;">&#91;</span>UIImage imageNamed<span style="color: #000000;">:</span>@<span style="color: #666666;">&quot;bgimg.png&quot;</span><span style="color: #000000;">&#93;</span> size<span style="color: #000000;">:</span>CGSizeMake<span style="color: #000000;">&#40;</span><span style="color: #0000dd;">340</span>, <span style="color: #0000dd;">480</span><span style="color: #000000;">&#41;</span><span style="color: #000000;">&#93;</span>;
-self.<span style="color: #00eeff;">view</span>.<span style="color: #00eeff;">backgroundColor</span> <span style="color: #000000;">=</span> <span style="color: #000000;">&#91;</span>UIColor colorWithPatternImage<span style="color: #000000;">:</span>bg<span style="color: #000000;">&#93;</span>; 
-&nbsp;
-<span style="color: #ff0000;">//缩放图片函数，这个从网上搜索而来</span>
-<span style="color: #000000;">-</span><span style="color: #000000;">&#40;</span>UIImage<span style="color: #000000;">*</span><span style="color: #000000;">&#41;</span>scaleToSize<span style="color: #000000;">:</span><span style="color: #000000;">&#40;</span>UIImage<span style="color: #000000;">*</span><span style="color: #000000;">&#41;</span>img size<span style="color: #000000;">:</span><span style="color: #000000;">&#40;</span>CGSize<span style="color: #000000;">&#41;</span>size  
-<span style="color: #000000;">&#123;</span>  
-    <span style="color: #ff0000;">// 创建一个bitmap的context  </span>
-    <span style="color: #ff0000;">// 并把它设置成为当前正在使用的context  </span>
-    UIGraphicsBeginImageContext<span style="color: #000000;">&#40;</span>size<span style="color: #000000;">&#41;</span>;  
-&nbsp;
-    <span style="color: #ff0000;">// 绘制改变大小的图片  </span>
-    <span style="color: #000000;">&#91;</span>img drawInRect<span style="color: #000000;">:</span>CGRectMake<span style="color: #000000;">&#40;</span><span style="color: #0000dd;">0</span>, <span style="color: #0000dd;">0</span>, size.<span style="color: #00eeff;">width</span>, size.<span style="color: #00eeff;">height</span><span style="color: #000000;">&#41;</span><span style="color: #000000;">&#93;</span>;  
-&nbsp;
-    <span style="color: #ff0000;">// 从当前context中创建一个改变大小后的图片  </span>
-    UIImage<span style="color: #000000;">*</span> scaledImage <span style="color: #000000;">=</span> UIGraphicsGetImageFromCurrentImageContext<span style="color: #000000;">&#40;</span><span style="color: #000000;">&#41;</span>;  
-&nbsp;
-    <span style="color: #ff0000;">// 使当前的context出堆栈  </span>
-    UIGraphicsEndImageContext<span style="color: #000000;">&#40;</span><span style="color: #000000;">&#41;</span>;  
-&nbsp;
-    <span style="color: #ff0000;">// 返回新的改变大小后的图片  </span>
-    <span style="color: #0000ff;">return</span> scaledImage;  
-<span style="color: #000000;">&#125;</span></pre></td></tr></table></div>
-
-<p>&nbsp;</p>
+//缩放图片函数，这个从网上搜索而来
+-(UIImage*)scaleToSize:(UIImage*)img size:(CGSize)size  
+{  
+    // 创建一个bitmap的context  
+    // 并把它设置成为当前正在使用的context  
+    UIGraphicsBeginImageContext(size);  
+    
+    // 绘制改变大小的图片  
+    [img drawInRect:CGRectMake(0, 0, size.width, size.height)];  
+    
+    // 从当前context中创建一个改变大小后的图片  
+    UIImage* scaledImage = UIGraphicsGetImageFromCurrentImageContext();  
+    
+    // 使当前的context出堆栈  
+    UIGraphicsEndImageContext();  
+    
+    // 返回新的改变大小后的图片  
+    return scaledImage;  
+}</pre><p>&nbsp;</p>
 ]]></content:encoded>
 			<wfw:commentRss>http://imzc.net/archives/190/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>

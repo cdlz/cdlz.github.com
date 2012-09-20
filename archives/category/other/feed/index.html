@@ -13,11 +13,85 @@
 	<atom:link href="http://imzc.net/archives/category/other/feed/" rel="self" type="application/rss+xml" />
 	<link>http://imzc.net</link>
 	<description>-More Thinking,And Then Just do it~~~</description>
-	<lastBuildDate>Thu, 12 Jul 2012 17:15:18 +0000</lastBuildDate>
+	<lastBuildDate>Thu, 20 Sep 2012 16:40:36 +0000</lastBuildDate>
 	<language>zh-CN</language>
 	<sy:updatePeriod>hourly</sy:updatePeriod>
 	<sy:updateFrequency>1</sy:updateFrequency>
-	<generator>http://wordpress.org/?v=3.4.1</generator>
+	<generator>http://wordpress.org/?v=3.4.2</generator>
+		<item>
+		<title>简单提取页面中所有迅雷下载资源链接</title>
+		<link>http://imzc.net/archives/286/</link>
+		<comments>http://imzc.net/archives/286/#comments</comments>
+		<pubDate>Sat, 18 Aug 2012 10:00:06 +0000</pubDate>
+		<dc:creator>imzc</dc:creator>
+				<category><![CDATA[Other]]></category>
+
+		<guid isPermaLink="false">http://imzc.net/?p=286</guid>
+		<description><![CDATA[在遇到下电视剧的时候，N多集，一个一个的链接，比较D疼。而大部分网站都有引入jquery， 所以写个小脚本提取 [...]]]></description>
+			<content:encoded><![CDATA[<p>在遇到下电视剧的时候，N多集，一个一个的链接，比较D疼。而大部分网站都有引入jquery，<br />
+所以写个小脚本提取所有的thunder://开头的链接吧，方便批量下载。<br />
+在Google Chrome浏览器开发者工具（F12）/Firefox Firebug插件 /IE8及以上的开发者工具（F12）的命令行中运行：</p><pre class="crayon-plain-tag">$(&quot;#result&quot;).remove();
+$('body').append('&lt;div id=&quot;result&quot;&gt;&lt;/div&gt;')
+$.each($('a'),function(i,s){ 
+   if(s.href.toString().match(/^thunder/i)){
+     $(&quot;#result&quot;).append(s.href+'&lt;br&gt;')
+   }
+})</pre><p>之后，所有迅雷下载链接会在页面底部出现，复制到迅雷批量下载即可。<br />
+如果网站不带有jquery，自行引入即可。如：</p><pre class="crayon-plain-tag">var head = document.getElementsByTagName('head')[0];
+var script = document.createElement('script');
+script.src = &quot;http://code.jquery.com/jquery-latest.js&quot;;
+script.type = 'text/javascript';
+head.appendChild(script);
+
+var j = jQuery.noConflict(true); 
+j(&quot;#result&quot;).remove();
+j('body').append('&lt;div id=&quot;result&quot;&gt;&lt;/div&gt;')
+j.each(j('a'),function(i,s){ 
+   if(s.href.toString().match(/^thunder/i)){
+     j(&quot;#result&quot;).append(s.href+'&lt;br&gt;')
+   }
+})</pre><p></p>
+]]></content:encoded>
+			<wfw:commentRss>http://imzc.net/archives/286/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>There was a problem installing &#8220;Mac OS X&#8221;.Try Reinstalling.</title>
+		<link>http://imzc.net/archives/284/</link>
+		<comments>http://imzc.net/archives/284/#comments</comments>
+		<pubDate>Sat, 04 Aug 2012 09:56:04 +0000</pubDate>
+		<dc:creator>imzc</dc:creator>
+				<category><![CDATA[Other]]></category>
+
+		<guid isPermaLink="false">http://imzc.net/?p=284</guid>
+		<description><![CDATA[Mountain Lion出来了，顺便入了一个镁光的128GB SSD； 按照原来的步骤，将Mountain  [...]]]></description>
+			<content:encoded><![CDATA[<p>Mountain Lion出来了，顺便入了一个镁光的128GB SSD；<br />
+按照原来的步骤，将Mountain Lion的dmg通过磁盘工具写入到分区后，<br />
+重启macbook，选择进入安装时，提示如下：</p>
+<blockquote><p>
+There was a problem installing “Mac OS X”. Try Reinstalling.
+</p></blockquote>
+<p>反复重试多次均是如此，而此dmg确定是OK的。因此网上google之，终于找到如下的<a href="http://www.lowfokus.com/2011/08/10/there-was-a-problem-installing-mac-os-x-try-reinstalling/" target="_blank">解决方案</a>：</p>
+<blockquote><p>
+If you get this message after trying to clean install Lion from a USB drive (the install for me seemed to hang on my i7 MBP), you can try this as it worked for me:<br />
+1.  Power off the machine.<br />
+2.  Unplug the USB stick and power.<br />
+3.  Replace the USB stick, but in a different USB port.<br />
+4.  Hold down CMD-OPTION-P-R keys and turn the machine on (hold them until the machine reboots itself for a second BONG sound.)  This resets the PRAM, if you want to google it<br />
+5.  Hold down Option and select your USB installer.<br />
+Should bring you to the familiar language selection screen
+</p></blockquote>
+<p>简单介绍下：<br />
+1.完全关闭macbook，取出U盘/移动硬盘；<br />
+2.重新插在另外一个USB孔中（实际上我操作时，这一步不需要）<br />
+3.一直按住CMD-OPTION-P-R四个键，然后打开macbook的电源，直到第二次提示苹果开机声音的时候放开。<br />
+  ==> 这个步骤比较关键，作用是重置mac的PRAM ，可以看看<a href="http://support.apple.com/kb/HT1379?viewlocale=zh_CN" target="_blank">官网的介绍</a>。<br />
+4.按住Option（Alt），选择启动盘为dmg所在盘即可安装了。<br />
+我按照上述几个步骤，安装又恢复正常了~</p>
+]]></content:encoded>
+			<wfw:commentRss>http://imzc.net/archives/284/feed/</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+		</item>
 		<item>
 		<title>六月随笔</title>
 		<link>http://imzc.net/archives/265/</link>
@@ -136,190 +210,80 @@ FINAL SCORE 437.4</p>
 <p>当然,传统的编程有他的优势,这类软件也有自己的优势,个人觉得,是比较方便的.比QTP简单~算是个轻量级的工具了.</p>
 <p>PS: 推荐快手(AAuto Quicker)的原因是&#8212;免费+无广告~</p>
 <p>下面附上本示例主要改动部分(结合MySQL示例修改):</p>
-<p>&nbsp;</p>
+<p>&nbsp;</p><pre class="crayon-plain-tag">get_blog_from_db = function(id) {
+//...
+//发表文章函数修改片段:
+  	   var tab =  get_blog_from_db(i);
 
-<div class="wp_syntax"><table><tr><td class="line_numbers"><pre>1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53
-54
-55
-56
-57
-58
-59
-60
-61
-62
-63
-64
-65
-66
-67
-68
-69
-70
-71
-72
-73
-74
-75
-76
-77
-78
-79
-80
-81
-82
-83
-84
-85
-86
-87
-88
-89
-90
-91
-92
-93
-94
-95
-96
-97
-98
-99
-100
-101
-102
-103
-104
-105
-106
-107
-108
-</pre></td><td class="code"><pre class="javascript" style="font-family:monospace;">get_blog_from_db <span style="color: #339933;">=</span> <span style="color: #003366; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span>id<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-<span style="color: #006600; font-style: italic;">//...</span>
-<span style="color: #006600; font-style: italic;">//发表文章函数修改片段:</span>
-  	   <span style="color: #003366; font-weight: bold;">var</span> tab <span style="color: #339933;">=</span>  get_blog_from_db<span style="color: #009900;">&#40;</span>i<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-&nbsp;
-		<span style="color: #000066; font-weight: bold;">for</span> k<span style="color: #339933;">,</span>v <span style="color: #000066; font-weight: bold;">in</span> tab <span style="color: #009900;">&#123;</span>
-		<span style="color: #006600; font-style: italic;">//k为键,v是匹配的值,在这里键值对无序的随机出现。</span>
-		 <span style="color: #006600; font-style: italic;">// zcdebug(k+&quot;=&gt;&quot;+&quot;title:&quot;+v.title,&quot;\r\n,content:&quot;+v.content+&quot;\r\n\r\n&quot;); //显示: 键,值</span>
-		 		 send_blog<span style="color: #009900;">&#40;</span>v.<span style="color: #660066;">title</span><span style="color: #339933;">,</span> v.<span style="color: #660066;">content</span><span style="color: #339933;">,</span> <span style="color: #3366CC;">&quot;it 计算机语言&quot;</span><span style="color: #009900;">&#41;</span>
-                 wb.<span style="color: #660066;">location</span> <span style="color: #339933;">=</span> <span style="color: #3366CC;">&quot;http://control.blog.sina.com.cn/admin/article/article_add.php&quot;</span>
-&nbsp;
-		<span style="color: #009900;">&#125;</span>
-&nbsp;
-<span style="color: #006600; font-style: italic;">//...</span>
-&nbsp;
-        <span style="color: #003366; font-weight: bold;">var</span> blog_info_table <span style="color: #339933;">=</span> <span style="color: #009900;">&#123;</span><span style="color: #009900;">&#125;</span><span style="color: #339933;">;</span>
-        <span style="color: #006600; font-style: italic;">// mysql</span>
-       <span style="color: #003366; font-weight: bold;">var</span> link <span style="color: #339933;">=</span>  mysql_get_conn <span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'localhost'</span><span style="color: #339933;">,</span><span style="color: #3366CC;">'test'</span><span style="color: #339933;">,</span><span style="color: #3366CC;">'test'</span><span style="color: #339933;">,</span><span style="color: #3366CC;">'test'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-          <span style="color: #006600; font-style: italic;">// 倒序读出数据</span>
-    	<span style="color: #006600; font-style: italic;">//zcdebug(&quot;正在倒序读出数据...&quot;);</span>
-    	<span style="color: #006600; font-style: italic;">// link.query 返回的是一个记录集</span>
-    	<span style="color: #003366; font-weight: bold;">var</span> result <span style="color: #339933;">=</span> link.<span style="color: #660066;">query</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">&quot;SELECT `id`,`title`,`content` FROM `posts`   ORDER BY `id` DESC&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-    	<span style="color: #000066; font-weight: bold;">if</span> <span style="color: #009900;">&#40;</span><span style="color: #339933;">!</span>result<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-        <span style="color: #006600; font-style: italic;">//	zcdebug(&quot;读取数据失败: &quot; + link.error);</span>
-        	link.<span style="color: #000066;">close</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-        	<span style="color: #000066; font-weight: bold;">return</span><span style="color: #339933;">;</span>
-    	<span style="color: #009900;">&#125;</span>
-    	<span style="color: #003366; font-weight: bold;">var</span> row <span style="color: #339933;">=</span> result.<span style="color: #660066;">fetch_array</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-    	<span style="color: #003366; font-weight: bold;">var</span> pos <span style="color: #339933;">=</span> <span style="color: #CC0000;">0</span><span style="color: #339933;">;</span>
-    	<span style="color: #000066; font-weight: bold;">while</span> <span style="color: #009900;">&#40;</span>row<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-&nbsp;
-            <span style="color: #003366; font-weight: bold;">var</span> blog_info <span style="color: #339933;">=</span> <span style="color: #009900;">&#123;</span>title<span style="color: #339933;">:</span> <span style="color: #3366CC;">''</span><span style="color: #339933;">;</span> content <span style="color: #339933;">:</span> <span style="color: #3366CC;">''</span><span style="color: #009900;">&#125;</span>
-        	blog_info.<span style="color: #660066;">id</span> <span style="color: #339933;">=</span>  row.<span style="color: #660066;">id</span> <span style="color: #339933;">;</span>
-        	blog_info.<span style="color: #660066;">title</span> <span style="color: #339933;">=</span>  row.<span style="color: #660066;">title</span> <span style="color: #339933;">;</span>
-			blog_info.<span style="color: #660066;">content</span> <span style="color: #339933;">=</span>  row.<span style="color: #660066;">content</span><span style="color: #339933;">;</span>
-			<span style="color: #006600; font-style: italic;">//zcdebug(&quot;title:&quot;+blog_info.title+&quot;,content:&quot;+blog_info.content+&quot;\r&quot;);</span>
-			table.<span style="color: #660066;">push</span><span style="color: #009900;">&#40;</span>blog_info_table<span style="color: #339933;">,</span>blog_info<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-			pos <span style="color: #339933;">++;</span>
-        	row <span style="color: #339933;">=</span> result.<span style="color: #660066;">fetch_array</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-    	<span style="color: #009900;">&#125;</span>
-    	result.<span style="color: #660066;">free</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span> <span style="color: #006600; font-style: italic;">// 释放记录集</span>
-     	link.<span style="color: #000066;">close</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span> 
-&nbsp;
-        <span style="color: #000066; font-weight: bold;">return</span> blog_info_table
-<span style="color: #009900;">&#125;</span>
-&nbsp;
-zcdebug <span style="color: #339933;">=</span>  <span style="color: #003366; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span>str<span style="color: #339933;">,</span>...<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
-	<span style="color: #006600; font-style: italic;">//	io.print(str);</span>
-<span style="color: #009900;">&#125;</span>
-mysql_get_conn <span style="color: #339933;">=</span> <span style="color: #003366; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span>host<span style="color: #339933;">,</span>usr<span style="color: #339933;">,</span>pwd<span style="color: #339933;">,</span>dbname<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
-&nbsp;
-	zcdebug<span style="color: #009900;">&#40;</span><span style="color: #3366CC;">&quot;正在连接到 MySQL 服务器...&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-	<span style="color: #003366; font-weight: bold;">var</span> link <span style="color: #339933;">=</span> mysql<span style="color: #009900;">&#40;</span>
-    	host<span style="color: #339933;">,</span>    <span style="color: #006600; font-style: italic;">// IP</span>
-    	usr<span style="color: #339933;">,</span>         <span style="color: #006600; font-style: italic;">// 用户名</span>
-   	pwd              <span style="color: #006600; font-style: italic;">// 密码</span>
-	<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-&nbsp;
-	<span style="color: #000066; font-weight: bold;">if</span> <span style="color: #009900;">&#40;</span> <span style="color: #339933;">!</span> link.<span style="color: #660066;">handle</span> <span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-    	zcdebug<span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'<span style="color: #000099; font-weight: bold;">\r</span> ...连接到 MySQL 服务器失败'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-	<span style="color: #009900;">&#125;</span><span style="color: #000066; font-weight: bold;">else</span><span style="color: #009900;">&#123;</span>
-    zcdebug<span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'<span style="color: #000099; font-weight: bold;">\r</span> ...已连接到 MySQL 服务器'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-&nbsp;
-    link.<span style="color: #660066;">query</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">&quot;SET NAMES 'gbk'&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span> <span style="color: #006600; font-style: italic;">// 设置 MySQL 编码</span>
-    <span style="color: #006600; font-style: italic;">// 也可用 link.set_charset(&quot;gbk&quot;);</span>
-&nbsp;
-    <span style="color: #006600; font-style: italic;">// 选择数据库: aautotest</span>
-    zcdebug<span style="color: #009900;">&#40;</span><span style="color: #3366CC;">&quot;正在选择数据库: &quot;</span><span style="color: #339933;">+</span>dbname<span style="color: #339933;">+</span><span style="color: #3366CC;">&quot; ...&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-    <span style="color: #000066; font-weight: bold;">if</span> <span style="color: #009900;">&#40;</span><span style="color: #339933;">!</span>link.<span style="color: #660066;">select_db</span><span style="color: #009900;">&#40;</span>dbname<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-        zcdebug<span style="color: #009900;">&#40;</span><span style="color: #3366CC;">&quot;选择库失败: &quot;</span> <span style="color: #339933;">+</span> link.<span style="color: #660066;">error</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-        link.<span style="color: #000066;">close</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-        <span style="color: #000066; font-weight: bold;">return</span><span style="color: #339933;">;</span>
-    <span style="color: #009900;">&#125;</span>
-    <span style="color: #006600; font-style: italic;">/*
+		for k,v in tab {
+		//k为键,v是匹配的值,在这里键值对无序的随机出现。
+		 // zcdebug(k+&quot;=&amp;gt;&quot;+&quot;title:&quot;+v.title,&quot;\r\n,content:&quot;+v.content+&quot;\r\n\r\n&quot;); //显示: 键,值
+		 		 send_blog(v.title, v.content, &quot;it 计算机语言&quot;)
+                 wb.location = &quot;http://control.blog.sina.com.cn/admin/article/article_add.php&quot;
+
+		}
+
+//...
+
+        var blog_info_table = {};
+        // mysql
+       var link =  mysql_get_conn ('localhost','test','test','test');
+          // 倒序读出数据
+    	//zcdebug(&quot;正在倒序读出数据...&quot;);
+    	// link.query 返回的是一个记录集
+    	var result = link.query(&quot;SELECT `id`,`title`,`content` FROM `posts`   ORDER BY `id` DESC&quot;);
+    	if (!result) {
+        //	zcdebug(&quot;读取数据失败: &quot; + link.error);
+        	link.close();
+        	return;
+    	}
+    	var row = result.fetch_array();
+    	var pos = 0;
+    	while (row) {
+
+            var blog_info = {title: ''; content : ''}
+        	blog_info.id =  row.id ;
+        	blog_info.title =  row.title ;
+			blog_info.content =  row.content;
+			//zcdebug(&quot;title:&quot;+blog_info.title+&quot;,content:&quot;+blog_info.content+&quot;\r&quot;);
+			table.push(blog_info_table,blog_info);
+			pos ++;
+        	row = result.fetch_array();
+    	}
+    	result.free(); // 释放记录集
+     	link.close(); 
+
+        return blog_info_table
+}
+
+zcdebug =  function(str,...){
+	//	io.print(str);
+}
+mysql_get_conn = function(host,usr,pwd,dbname){
+
+	zcdebug(&quot;正在连接到 MySQL 服务器...&quot;);
+	var link = mysql(
+    	host,    // IP
+    	usr,         // 用户名
+   	pwd              // 密码
+	);
+
+	if ( ! link.handle ) {
+    	zcdebug('\r ...连接到 MySQL 服务器失败');
+	}else{
+    zcdebug('\r ...已连接到 MySQL 服务器');
+
+    link.query(&quot;SET NAMES 'gbk'&quot;); // 设置 MySQL 编码
+    // 也可用 link.set_charset(&quot;gbk&quot;);
+
+    // 选择数据库: aautotest
+    zcdebug(&quot;正在选择数据库: &quot;+dbname+&quot; ...&quot;);
+    if (!link.select_db(dbname)) {
+        zcdebug(&quot;选择库失败: &quot; + link.error);
+        link.close();
+        return;
+    }
+    /*
     // 加入数据
     zcdebug(&quot;正在向表中加入数据...&quot;);
     link.query(
@@ -334,7 +298,7 @@ mysql_get_conn <span style="color: #339933;">=</span> <span style="color: #00336
             string.md5(&quot;test&quot;)
         )
     );
-&nbsp;
+
     // 倒序读出数据
     zcdebug(&quot;正在倒序读出数据...&quot;);
     // link.query 返回的是一个记录集
@@ -351,11 +315,9 @@ mysql_get_conn <span style="color: #339933;">=</span> <span style="color: #00336
         row = result.fetch_array();
     }
     result.free(); // 释放记录集
-    */</span>
-    <span style="color: #000066; font-weight: bold;">return</span> link<span style="color: #339933;">;</span>
-<span style="color: #009900;">&#125;</span></pre></td></tr></table></div>
-
-<p>源代码下载: <a href="http://imzc.net/wp-content/uploads/2011/06/新浪博客.zip">新浪博客</a></p>
+    */
+    return link;
+}</pre><p>源代码下载: <a href="http://imzc.net/wp-content/uploads/2011/06/新浪博客.zip">新浪博客</a></p>
 ]]></content:encoded>
 			<wfw:commentRss>http://imzc.net/archives/127/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
@@ -456,26 +418,6 @@ echo &#8217;210=&gt;&#8217;.getRankImgDir(210).&#8217;&lt;br&gt;&#8217;; ﻿</p>
 ]]></content:encoded>
 			<wfw:commentRss>http://imzc.net/archives/14/feed/</wfw:commentRss>
 		<slash:comments>299</slash:comments>
-		</item>
-		<item>
-		<title>更久的博客请访问http://imzc.net/blog/</title>
-		<link>http://imzc.net/archives/65/</link>
-		<comments>http://imzc.net/archives/65/#comments</comments>
-		<pubDate>Wed, 13 Aug 2008 09:39:00 +0000</pubDate>
-		<dc:creator>imzc</dc:creator>
-				<category><![CDATA[Other]]></category>
-
-		<guid isPermaLink="false">http://imzc.net/?action=show&#038;id=22</guid>
-		<description><![CDATA[]]></description>
-			<content:encoded><![CDATA[<p><!--[CDATA[</p>
-<div class="tit">javascript事件列表（一般事件、页面相关事件、表单相关事件、滚动字幕事件）</div>
-<div class="tit">-><b><font color="#ff6600">在DW中设计网页时,按空格有提示列表,选择即可.</font></b></div>
-<div class="date">&#8211;></p>
-<p>由于建站平台转换问题,更久的博客请访问http://imzc.net/blog/.</p>
-<p>附件下载为http://imzc.net/<strong><span style="color: #ff0000;">blog</span></strong>/attachment.php?id=74</p>
-]]></content:encoded>
-			<wfw:commentRss>http://imzc.net/archives/65/feed/</wfw:commentRss>
-		<slash:comments>0</slash:comments>
 		</item>
 	</channel>
 </rss>

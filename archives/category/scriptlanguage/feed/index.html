@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Only For Sunshine~ &#187; 脚本语言</title>
+	<atom:link href="http://imzc.net/archives/category/scriptlanguage/feed/" rel="self" type="application/rss+xml" />
+	<link>http://imzc.net</link>
+	<description>-More Thinking,And Then Just do it~~~</description>
+	<lastBuildDate>Thu, 20 Sep 2012 16:40:36 +0000</lastBuildDate>
+	<language>zh-CN</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.4.2</generator>
+		<item>
+		<title>使用python脚本简单切换hosts文件</title>
+		<link>http://imzc.net/archives/288/</link>
+		<comments>http://imzc.net/archives/288/#comments</comments>
+		<pubDate>Thu, 23 Aug 2012 05:24:44 +0000</pubDate>
+		<dc:creator>imzc</dc:creator>
+				<category><![CDATA[脚本语言]]></category>
+
+		<guid isPermaLink="false">http://imzc.net/?p=288</guid>
+		<description><![CDATA[开发或者测试时，我们很多时候都会遇到多个hosts文件来回切换，windows的hosts文件目录比较深，麻烦 [...]]]></description>
+			<content:encoded><![CDATA[<p>开发或者测试时，我们很多时候都会遇到多个hosts文件来回切换，windows的hosts文件目录比较深，麻烦，因此，用python写了个小脚本来简化此功能。<br />
+win7以上需要使用管理员权限操作。</p>
+<p></p><pre class="crayon-plain-tag"># -*- coding: utf-8 -*-
+import os
+import glob
+import shutil
+
+def format_file_list(files):
+        all_files_str = &quot;&quot;
+        for i in range(len(files)):
+                all_files_str +=  str(i)+&quot;:&quot;+files[i]+&quot;\n&quot;
+        return all_files_str
+        
+hosts_path = &quot;C:\\Windows\\System32\\drivers\\etc&quot;
+files =  os.listdir(hosts_path)
+os.chdir(hosts_path)
+
+if os.getcwd() != hosts_path:
+        print(&quot;Switch Dir to System32 Error,check permission!\npwd:&quot;+os.getcwd())
+        exit()
+        
+hosts_files = glob.glob(&quot;host*&quot;)
+choosed_file_idx = int(input(&quot;Choose Hosts File Index:\n&quot;+format_file_list(hosts_files)))
+files_num = len(hosts_files)
+
+if (choosed_file_idx &amp;lt; 0 or choosed_file_idx &amp;gt;= files_num) :
+        print(&quot;Please choose a file in the lists!&quot;)
+        exit()
+    
+print(&quot;Choosed idx:{0},file:{1}.&quot;.format(choosed_file_idx,hosts_files[choosed_file_idx]))
+shutil.copy(&quot;hosts&quot;,&quot;hosts.bak&quot;)
+shutil.copy(hosts_files[choosed_file_idx],&quot;hosts&quot;)
+print(&quot;Copy ok,then flush dns...&quot;)
+os.system(&quot;ipconfig /flushdns&quot;)</pre><p> </p>
+]]></content:encoded>
+			<wfw:commentRss>http://imzc.net/archives/288/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

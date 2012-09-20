@@ -1,0 +1,594 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head profile="http://gmpg.org/xfn/11">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+
+	<title>理解函数指针及其应用 | Only For Sunshine~</title>
+	<link rel="alternate" type="application/rss+xml" title="RSS 2.0 - 所有文章" href="../../../feed/index.html" />
+	<link rel="alternate" type="application/rss+xml" title="RSS 2.0 - 所有评论" href="../../../comments/feed/index.html" />
+	<link rel="pingback" href="../../../xmlrpc.php" />
+
+	<!-- style START -->
+	<link rel="stylesheet" href="../../../wp-content/themes/elegant-box/style.css" type="text/css" media="screen" />
+			<link rel="stylesheet" href="../../../wp-content/themes/elegant-box/chinese.css" type="text/css" media="screen" />
+		<!--[if IE]>
+		<link rel="stylesheet" href="http://imzc.net/wp-content/themes/elegant-box/ie.css" type="text/css" media="screen" />
+	<![endif]-->
+
+	<!-- default style -->
+			<link rel="stylesheet" href="../../../wp-content/themes/elegant-box/styles/blue/default.css" type="text/css" media="screen" title="blue" />
+		<link rel="stylesheet" href="../../../wp-content/themes/elegant-box/styles/blue/global.css" type="text/css" media="screen" />
+	
+	<!-- others styles -->
+	<link rel="stylesheet" href="../../../wp-content/themes/elegant-box/styles/green/default.css" type="text/css" media="screen" title="green" />
+	<link rel="stylesheet" href="../../../wp-content/themes/elegant-box/styles/green/global.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="../../../wp-content/themes/elegant-box/styles/purple/default.css" type="text/css" media="screen" title="purple" />
+	<link rel="stylesheet" href="../../../wp-content/themes/elegant-box/styles/purple/global.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="../../../wp-content/themes/elegant-box/styles/brown/default.css" type="text/css" media="screen" title="brown" />
+	<link rel="stylesheet" href="../../../wp-content/themes/elegant-box/styles/brown/global.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="../../../wp-content/themes/elegant-box/styles/white/default.css" type="text/css" media="screen" title="white" />
+	<link rel="stylesheet" href="../../../wp-content/themes/elegant-box/styles/white/global.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="../../../wp-content/themes/elegant-box/styles/black/default.css" type="text/css" media="screen" title="black" />
+	<link rel="stylesheet" href="../../../wp-content/themes/elegant-box/styles/black/global.css" type="text/css" media="screen" />
+	<!-- style END -->
+
+	<!-- javascript START -->
+			<script type="text/javascript" src="../../../wp-content/themes/elegant-box/js/styleswitcher.js"></script>
+		<script type="text/javascript" src="../../../wp-content/themes/elegant-box/js/base.js"></script>
+	<script type="text/javascript" src="../../../wp-content/themes/elegant-box/js/menu.js"></script>
+	<!-- javascript END -->
+
+		<link rel="alternate" type="application/rss+xml" title="Only For Sunshine~ &raquo; 理解函数指针及其应用 评论 Feed" href="../feed/index.html" />
+<link rel='stylesheet' id='jquery.slimbox-css'  href='../../../wp-content/plugins/slimbox/stylesheets/jquery.slimbox.css?ver=2.03' type='text/css' media='all' />
+<link rel='stylesheet' id='crayon_style-css'  href='../../../wp-content/plugins/crayon-syntax-highlighter/css/crayon_style.css?ver=1.11' type='text/css' media='all' />
+<link rel='stylesheet' id='crayon_global_style-css'  href='../../../wp-content/plugins/crayon-syntax-highlighter/css/global_style.css?ver=1.11' type='text/css' media='all' />
+<link rel='stylesheet' id='crayon_fancybox-css'  href='../../../wp-content/plugins/crayon-syntax-highlighter/js/fancybox/jquery.fancybox.css?ver=1.11' type='text/css' media='all' />
+<link rel='stylesheet' id='crayon-theme-classic-css'  href='../../../wp-content/plugins/crayon-syntax-highlighter/themes/classic/classic.css?ver=1.11' type='text/css' media='all' />
+<link rel='stylesheet' id='crayon-font-monaco-css'  href='../../../wp-content/plugins/crayon-syntax-highlighter/fonts/monaco.css?ver=1.11' type='text/css' media='all' />
+<link rel='stylesheet' id='wp-pagenavi-css'  href='../../../wp-content/themes/elegant-box/pagenavi-css.css?ver=2.70' type='text/css' media='all' />
+<script type="text/javascript">
+var duoshuoQuery = {"short_name":"imzc","sso":{"login":"http:\/\/imzc.net\/wp-login.php?action=duoshuo_login","logout":"http:\/\/imzc.net\/wp-login.php?action=logout&_wpnonce=079b4bd6ed"},"remote_auth":"W10= ce7b2326d83449f38b9adbec6448405320ccaf85 1348159746"};
+duoshuoQuery.sso.login += '&redirect_to=' + encodeURIComponent(window.location.href);
+duoshuoQuery.sso.logout += '&redirect_to=' + encodeURIComponent(window.location.href);
+</script>
+<script type='text/javascript' src='../../../wp-includes/js/jquery/jquery.js?ver=1.7.2'></script>
+<script type='text/javascript' src='../../../wp-content/plugins/slimbox/javascript/jquery.slimbox.js?ver=2.03'></script>
+<script type='text/javascript' src='../../../wp-includes/js/json2.js?ver=2011-02-23'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var live_blogging = {"ajaxurl":"http:\/\/imzc.net\/wp-admin\/admin-ajax.php","update_effect":"top"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='../../../wp-content/plugins/live-blogging/live-blogging.js?ver=3.4.2'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var CrayonSyntaxSettings = {"wp_load":"\/var\/www\/html\/wp-load.php","is_admin":"","crayon_wp":"\/var\/www\/html\/wp-content\/plugins\/crayon-syntax-highlighter\/crayon_wp.class.php","prefix":"crayon-","setting":"crayon-setting","selected":"crayon-setting-selected","changed":"crayon-setting-changed","special":"crayon-setting-special","orig_value":"data-orig-value"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='../../../wp-content/plugins/crayon-syntax-highlighter/js/util.js?ver=1.11'></script>
+<script type='text/javascript' src='../../../wp-content/plugins/crayon-syntax-highlighter/js/crayon.js?ver=1.11'></script>
+<script type='text/javascript' src='../../../wp-content/plugins/crayon-syntax-highlighter/js/jquery.popup.js?ver=1.11'></script>
+<script type='text/javascript' src='../../../wp-content/plugins/crayon-syntax-highlighter/js/fancybox/jquery.fancybox.pack.js?ver=1.11'></script>
+<script type='text/javascript' src='../../../wp-content/plugins/crayon-syntax-highlighter/js/crayon_admin.js?ver=1.11'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var thickboxL10n = {"next":"\u4e0b\u4e00\u9875 >","prev":"< \u4e0a\u4e00\u9875","image":"\u56fe\u50cf","of":"\/","close":"\u5173\u95ed","noiframes":"\u8fd9\u4e2a\u529f\u80fd\u9700\u8981 iframe \u7684\u652f\u6301\u3002\u60a8\u53ef\u80fd\u7981\u6b62\u4e86 iframe \u7684\u663e\u793a\uff0c\u6216\u60a8\u7684\u6d4f\u89c8\u5668\u4e0d\u652f\u6301\u6b64\u529f\u80fd\u3002","loadingAnimation":"http:\/\/imzc.net\/wp-includes\/js\/thickbox\/loadingAnimation.gif","closeImage":"http:\/\/imzc.net\/wp-includes\/js\/thickbox\/tb-close.png"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='../../../wp-includes/js/thickbox/thickbox.js?ver=3.1-20111117'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var CrayonTagEditorSettings = {"url":"http:\/\/imzc.net\/wp-content\/plugins\/crayon-syntax-highlighter\/util\/tag-editor\/crayon_te_content.php","home_url":"http:\/\/imzc.net","css":"crayon-te","used":"1","used_setting":"tinymce-used","ajax_url":"http:\/\/imzc.net\/wp-content\/plugins\/crayon-syntax-highlighter\/util\/ajax.php","css_selected":"crayon-selected","code_css":"#crayon-code","url_css":"#crayon-url","url_info_css":"#crayon-te-url-info","lang_css":"#crayon-lang","title_css":"#crayon-title","mark_css":"#crayon-mark","range_css":"#crayon-range","inline_css":"crayon-inline","inline_hide_css":"crayon-hide-inline","inline_hide_only_css":"crayon-hide-inline-only","hl_css":"#crayon-highlight","switch_html":"#content-html","switch_tmce":"#content-tmce","tinymce_button":"a.mce_crayon_tinymce","submit_css":"#crayon-te-ok","cancel_css":"#crayon-te-cancel","content_css":"#crayon-te-content","dialog_title_css":"#crayon-te-title","submit_wrapper_css":"#crayon-te-submit-wrapper","data_value":"data-value","attr_sep":":","css_sep":"_","fallback_lang":"default","dialog_title_add":"\u63d2\u5165\u4ee3\u7801\u9ad8\u4eae","dialog_title_edit":"\u7f16\u8f91\u4ee3\u7801\u9ad8\u4eae","submit_add":"\u786e\u8ba4\u63d2\u5165","submit_edit":"\u4fdd\u5b58","bar":"#crayon-te-bar","bar_content":"#crayon-te-bar-content","extensions":{"scpt":"applescript","applescript":"applescript","swf":"as","fla":"as","cs":"c#","h":"c++","hh":"c++","hpp":"c++","hxx":"c++","h++":"c++","cc":"c++","cpp":"c++","cxx":"c++","c++":"c++","pas":"delphi","java":"java","class":"java","jar":"java","mv":"miva","mvc":"miva","mvt":"miva","m":"objc","mm":"objc","pl":"perl","py":"python","pyw":"python","pyc":"python","pyo":"python","pyd":"python","rb":"ruby","rbx":"ruby","rhtml":"ruby","vbs":"vb"}};
+/* ]]> */
+</script>
+<script type='text/javascript' src='../../../wp-content/plugins/crayon-syntax-highlighter/util/tag-editor/crayon_te.js?ver=1.11'></script>
+<script type='text/javascript' src='../../../wp-includes/js/comment-reply.js?ver=3.4.2'></script>
+<script type='text/javascript' src='http://static.duoshuo.com/embed.js'></script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="../../../xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="../../../wp-includes/wlwmanifest.xml" /> 
+<link rel='prev' title='递归列出目录下文件的全路径' href='../../20/index.html' />
+<link rel='next' title='[转]探索C++的秘密之详解extern &#8220;C&#8221;' href='../../103/index.html' />
+<meta name="generator" content="WordPress 3.4.2" />
+<link rel='shortlink' href='http://wp.me/p19waf-6' />
+
+<!-- All in One SEO Pack 1.6.15 by Michael Torbert of Semper Fi Web Design[343,407] -->
+<meta name="description" content="C函数指针及其应用" />
+<meta name="keywords" content="c,函数指针" />
+<link rel="canonical" href="../index.html" />
+<!-- /all in one seo pack -->
+<script type="text/javascript">
+	jQuery(document).ready(function($){	
+	    var select = $('a[href$=".bmp"],a[href$=".gif"],a[href$=".jpg"],a[href$=".jpeg"], a[href$=".png"],a[href$=".BMP"],a[href$=".GIF"],a[href$=".JPG"],a[href$=".JPEG"],a[href$=".PNG"]');
+		select.slimbox();
+	});
+</script>
+</head>
+
+
+<body>
+	<!-- header START -->
+	<div id="header">
+		<div class="inner">
+			<div class="content">
+				<div class="caption">
+					<h1 id="title"><a href="../../../index.html" title="-More Thinking,And Then Just do it~~~">Only For Sunshine~</a></h1>
+					<div id="tagline">-More Thinking,And Then Just do it~~~</div>
+				</div>
+
+				<!-- search box -->
+									<form action="http://www.google.com/cse" id="search_box" method="get">
+						<div id="searchbox">
+							<input type="text" id="searchtxt" class="textfield" name="q" size="24" />
+							<input type="hidden" name="cx" value="007838838681523399853:u4canb53vle" />
+							<input type="hidden" name="ie" value="UTF-8" />
+						</div>
+					</form>
+				<script type="text/javascript">
+//<![CDATA[
+	var searchbox = document.getElementById("searchbox");
+	var searchtxt = document.getElementById("searchtxt");
+	var tiptext = "请输入关键字...";
+	if(searchtxt.value == "" || searchtxt.value == tiptext) {
+		searchtxt.className += " searchtip";
+		searchtxt.value = tiptext;
+	}
+	searchtxt.onfocus = function(e) {
+		if(searchtxt.value == tiptext) {
+			searchtxt.value = "";
+			searchtxt.className = searchtxt.className.replace(" searchtip", "");
+		}
+	}
+	searchtxt.onblur = function(e) {
+		if(searchtxt.value == "") {
+			searchtxt.className += " searchtip";
+			searchtxt.value = tiptext;
+		}
+	}
+//]]>
+</script>
+
+				<!-- navigation START -->
+				<ul id="navigation">
+
+					<li class="page_item"><a href="../../../index.html">首页</a></li>
+					<li class="page_item page-item-260"><a href="../../../ios/index.html">IOS_PROJ</a></li>
+<li class="page_item page-item-164"><a href="../../../wp_otp/index.html">WP_OTP</a></li>
+<li class="page_item page-item-180"><a href="../../../vps-recommended/index.html">vps推荐</a></li>
+<li class="page_item page-item-139"><a href="../../../mysites/index.html">我的站点</a></li>
+<li class="page_item page-item-2"><a href="../../../aboutme/index.html">关于</a></li>
+					<li id="subscribe">
+						<a rel="external nofollow" title="订阅这个博客的文章" id="feed" href="../../../feed/index.html"><img src="../../../wp-content/themes/elegant-box/images/transparent.gif" alt="RSS 订阅" /></a>
+													<ul>
+								<li class="first"><a rel="external nofollow" title="订阅到有道" href="http://reader.youdao.com/b.do?url=http://imzc.net/feed/"> 有道</a></li>
+								<li><a rel="external nofollow" title="订阅到鲜果" href="http://www.xianguo.com/subscribe.php?url=http://imzc.net/feed/"> 鲜果</a></li>
+								<li><a rel="external nofollow" title="订阅到抓虾" href="http://www.zhuaxia.com/add_channel.php?url=http://imzc.net/feed/"> 抓虾</a></li>
+								<li><a rel="external nofollow" title="订阅到 Google" href="http://fusion.google.com/add?feedurl=http://imzc.net/feed/">  Google</a></li>
+								<li><a rel="external nofollow" title="订阅到 My Yahoo!" href="http://add.my.yahoo.com/rss?url=http://imzc.net/feed/">  My Yahoo!</a></li>
+								<li><a rel="external nofollow" title="订阅到 newsgator" href="http://www.newsgator.com/ngs/subscriber/subfext.aspx?url=http://imzc.net/feed/">  newsgator</a></li>
+								<li><a rel="external nofollow" title="订阅到 Bloglines" href="http://www.bloglines.com/sub/http://imzc.net/feed/">  Bloglines</a></li>
+								<li><a rel="external nofollow" title="订阅到 哪吒" href="http://inezha.com/add?url=http://imzc.net/feed/">  哪吒</a></li>
+							</ul>
+											</li>
+
+				</ul>
+				<!-- navigation END -->
+
+			</div>
+		</div>
+	</div>
+	<!-- header END -->
+
+	<div id="container">
+		<div id="content">
+			<div id="main">
+
+		
+			<div class="post">
+				<div class="title">
+					<h2>理解函数指针及其应用</h2>
+					<div class="fixed"></div>
+				</div>
+
+				<div class="info">
+					
+					<span>2010年10月24日</span>
+											<span> | 分类: <a href="../../category/c_cplusplus/index.html" title="查看 C/C++ 中的全部文章" rel="category tag">C/C++</a></span>
+																<span> | 标签: </span>
+					
+					<div class="fixed"></div>
+				</div>
+
+				<div class="content">
+<div style=”padding:3px 0″>
+<script type="text/javascript"><!--
+google_ad_client = "pub-7220882232307827";
+/* blog_468x15, Created @09-2-19 */
+google_ad_slot = "1127450986";
+google_ad_width = 468;
+google_ad_height = 15;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+</div>
+<br />	
+					<p>本示例主要是为了便于理解函数指针以及其应用.在linux c编程中,常常会用到.<br />
+比如,在*nux中signal函数,在ANSI C中其定义原型如下:<br />
+void (*signal(int signo,void (*func)(int))) (int)<br />
+咱们来试着拆分这个函数,最外层的函数体<br />
+void (* XXX )(int)表明是一个指针,指向一个函数XXX的指针,XXX所代表的函数需要一个int型的参数,返回void类型.<br />
+这个比较好理解.<br />
+signal(int signo, void(*func)(int))是signal函数的主体.<br />
+可以看到,signal函数两个参数:int signo以及一个指向函数的函数void (*func)(int).<br />
+由于其复杂性,在[Plauger 1992]用typedef来对其进行简化.<br />
+typedef void Sigfuc(int);//这里可以看成一个返回值 .<br />
+再对signal函数进行简化就是变为: Sigfunc *signal(int,Sigfuc *);<br />
+typedef之后就变得简单了.<br />
+还有一个用法就是在结构体中应用函数指针,来实现C面向对象编程&#8230;O(∩_∩)O~这个比较酷吧!<br />
+以上的都可在下面的示例中体现.<br />
+返回值为指针的函数,与函数指针:<br />
+char *func();//返回一个字符指针<br />
+char (*func)();//函数指针.<br />
+只要记住函数()的优先级比指针*高，就容易区分.<br />
+将 char *func()和char func()对比,咱们可以将char *func()中的char *看成是有一个括号括起来了。<br />
+而char (*func)()中的func，由于加了括号，所以先和指针*结合，变成一个指针，<br />
+正如普通函数char function()中的function其实也是一个函数指针一样，<br />
+所以你可以将(*func)当成是一个普通变量。<br />
+<span id="more-6"></span></p><!-- Crayon Syntax Highlighter v1.11 -->
+
+		<div id="crayon-505b4902bc706" class="crayon-syntax crayon-theme-classic crayon-font-monaco crayon-os-pc print-yes" data-settings=" scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; float: none; clear: both; ">
+		
+			<div class="crayon-toolbar" data-settings=" mouseover overlay hide delay" style="">
+			<div class="crayon-tools"><span class="crayon-mixed-highlight" title="含多种语言"></span><a class="crayon-nums-button crayon-button" title="显示/隐藏行编号"></a><a class="crayon-copy-button crayon-button" data-text="使用 %s 复制，使用 %s 粘贴。" title="复制代码"></a><a class="crayon-popup-button crayon-button" title="在新窗口中显示代码" onclick="return false;"></a><a class="crayon-plain-button crayon-button" title="纯文本显示代码"></a><span class="crayon-language">C</span></div></div>
+			<div class="crayon-info" style=""></div>
+			<div class="crayon-plain-wrap"><textarea wrap="off" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; ">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+//强制转换0为(void(*)(int))函数指针类型
+#define SIG_ERR (void(*)(int))0
+#define SIG_OK  (void(*)(int))1
+
+typedef struct calc{
+char id[10];
+int (* func)(int x,int y);/*func,为函数指针,接收两个int类型参数,返回一个整型.*/
+}CALC;
+
+int add(int x,int y){
+    return x+y;
+}
+
+int multi(int x,int y){
+   return x*y;
+}
+
+void test1(int t){
+   printf("test1(%d) ing...\n",t);
+}
+void test2(int t){
+   printf("test2(%d) ing...\n",t);
+}
+void test3(int t){
+   printf("test3(%d) ing...\n",t);
+}
+
+typedef  void (* PRTFUNC)(int);
+//void ( *signal( int sig, void( *func )( int ) ) )( int );
+//=&gt; void ( *  signal_test( int sig, void( *func )( int )  )   )( int );
+PRTFUNC  signal_test(int sig,PRTFUNC func){
+    PRTFUNC t;
+    switch(sig){
+     case 1:
+         t=test1;
+         printf("调用函数test1()~\n");
+         break;
+     case 2:
+         t=test2;
+         printf("调用函数test2()~\n");
+         break;
+    default:
+        t=(void(*)(int))0;
+         printf("调用函数test3()~\n");
+    }
+  func(sig);
+  return t;
+}
+
+//测试返回值
+void check_singal_ret(PRTFUNC ret){
+     if(ret==SIG_ERR)
+         printf("signal_test function returns SIG_ERR.\n");
+      else
+        printf("signal_test function returns SIG_OK.\n");
+}
+
+int main()
+{
+    int i;
+    //声明两个CALC结构体变量,分别用指定add函数和multi函数.
+    CALC  test[2] = {{"No.1",add},{"No.2",multi}};
+    PRTFUNC  test_ptr_array[3]={test1,test2,test3};
+
+    printf("1.带有函数指针的结构体:\n");
+    printf("CALC test[0]: %s,and result:%d\n",test[0].id,test[0].func(12,13));
+    printf("CALC test[1]: %s,and result:%d\n",test[1].id,test[1].func(12,13));
+
+    printf("\n2.函数指针数组:\n");
+    for(i=0;i&lt;3;++i)
+      test_ptr_array[i](i*10);
+
+    printf("\n3.函数指针和返回函数指针实验:\n");
+    check_singal_ret(signal_test(1,test2));
+    check_singal_ret(signal_test(2,test1));
+    check_singal_ret(signal_test(3,test3));
+
+    if(signal_test(3,test2)==SIG_ERR){
+      printf("signal_test(3,test2) returns SIG_ERR.");
+    }else{
+      printf("signal_test(3,test2) returns SIG_OK.");
+    }
+    return 0;
+}</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show" style="">
+					<div class="crayon-nums-content"><div class="crayon-num" style="">1</div><div class="crayon-num crayon-striped-num" style="">2</div><div class="crayon-num" style="">3</div><div class="crayon-num crayon-striped-num" style="">4</div><div class="crayon-num" style="">5</div><div class="crayon-num crayon-striped-num" style="">6</div><div class="crayon-num" style="">7</div><div class="crayon-num crayon-striped-num" style="">8</div><div class="crayon-num" style="">9</div><div class="crayon-num crayon-striped-num" style="">10</div><div class="crayon-num" style="">11</div><div class="crayon-num crayon-striped-num" style="">12</div><div class="crayon-num" style="">13</div><div class="crayon-num crayon-striped-num" style="">14</div><div class="crayon-num" style="">15</div><div class="crayon-num crayon-striped-num" style="">16</div><div class="crayon-num" style="">17</div><div class="crayon-num crayon-striped-num" style="">18</div><div class="crayon-num" style="">19</div><div class="crayon-num crayon-striped-num" style="">20</div><div class="crayon-num" style="">21</div><div class="crayon-num crayon-striped-num" style="">22</div><div class="crayon-num" style="">23</div><div class="crayon-num crayon-striped-num" style="">24</div><div class="crayon-num" style="">25</div><div class="crayon-num crayon-striped-num" style="">26</div><div class="crayon-num" style="">27</div><div class="crayon-num crayon-striped-num" style="">28</div><div class="crayon-num" style="">29</div><div class="crayon-num crayon-striped-num" style="">30</div><div class="crayon-num" style="">31</div><div class="crayon-num crayon-striped-num" style="">32</div><div class="crayon-num" style="">33</div><div class="crayon-num crayon-striped-num" style="">34</div><div class="crayon-num" style="">35</div><div class="crayon-num crayon-striped-num" style="">36</div><div class="crayon-num" style="">37</div><div class="crayon-num crayon-striped-num" style="">38</div><div class="crayon-num" style="">39</div><div class="crayon-num crayon-striped-num" style="">40</div><div class="crayon-num" style="">41</div><div class="crayon-num crayon-striped-num" style="">42</div><div class="crayon-num" style="">43</div><div class="crayon-num crayon-striped-num" style="">44</div><div class="crayon-num" style="">45</div><div class="crayon-num crayon-striped-num" style="">46</div><div class="crayon-num" style="">47</div><div class="crayon-num crayon-striped-num" style="">48</div><div class="crayon-num" style="">49</div><div class="crayon-num crayon-striped-num" style="">50</div><div class="crayon-num" style="">51</div><div class="crayon-num crayon-striped-num" style="">52</div><div class="crayon-num" style="">53</div><div class="crayon-num crayon-striped-num" style="">54</div><div class="crayon-num" style="">55</div><div class="crayon-num crayon-striped-num" style="">56</div><div class="crayon-num" style="">57</div><div class="crayon-num crayon-striped-num" style="">58</div><div class="crayon-num" style="">59</div><div class="crayon-num crayon-striped-num" style="">60</div><div class="crayon-num" style="">61</div><div class="crayon-num crayon-striped-num" style="">62</div><div class="crayon-num" style="">63</div><div class="crayon-num crayon-striped-num" style="">64</div><div class="crayon-num" style="">65</div><div class="crayon-num crayon-striped-num" style="">66</div><div class="crayon-num" style="">67</div><div class="crayon-num crayon-striped-num" style="">68</div><div class="crayon-num" style="">69</div><div class="crayon-num crayon-striped-num" style="">70</div><div class="crayon-num" style="">71</div><div class="crayon-num crayon-striped-num" style="">72</div><div class="crayon-num" style="">73</div><div class="crayon-num crayon-striped-num" style="">74</div><div class="crayon-num" style="">75</div><div class="crayon-num crayon-striped-num" style="">76</div><div class="crayon-num" style="">77</div><div class="crayon-num crayon-striped-num" style="">78</div><div class="crayon-num" style="">79</div><div class="crayon-num crayon-striped-num" style="">80</div><div class="crayon-num" style="">81</div><div class="crayon-num crayon-striped-num" style="">82</div><div class="crayon-num" style="">83</div><div class="crayon-num crayon-striped-num" style="">84</div><div class="crayon-num" style="">85</div><div class="crayon-num crayon-striped-num" style="">86</div><div class="crayon-num" style="">87</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style=""><div class="crayon-line" id="crayon-505b4902bc706-1" style=""><span class="p">#include &lt;stdio.h&gt;</span></div><div class="crayon-line crayon-striped-line" id="crayon-505b4902bc706-2" style=""><span class="p">#include &lt;stdlib.h&gt;</span></div><div class="crayon-line" id="crayon-505b4902bc706-3" style=""></div><div class="crayon-line crayon-striped-line" id="crayon-505b4902bc706-4" style=""><span class="c">//强制转换0为(void(*)(int))函数指针类型</span></div><div class="crayon-line" id="crayon-505b4902bc706-5" style=""><span class="p">#define SIG_ERR (void(*)(int))0</span></div><div class="crayon-line crayon-striped-line" id="crayon-505b4902bc706-6" style=""><span class="p">#define SIG_OK&nbsp;&nbsp;(void(*)(int))1</span></div><div class="crayon-line" id="crayon-505b4902bc706-7" style=""></div><div class="crayon-line crayon-striped-line" id="crayon-505b4902bc706-8" style=""><span class="r">typedef</span><span class="h"> </span><span class="t">struct</span><span class="h"> </span><span class="e">calc</span><span class="sy">{</span></div><div class="crayon-line" id="crayon-505b4902bc706-9" style=""><span class="t">char</span><span class="h"> </span><span class="i">id</span><span class="sy">[</span><span class="cn">10</span><span class="sy">]</span><span class="sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-505b4902bc706-10" style=""><span class="t">int</span><span class="h"> </span><span class="sy">(</span><span class="o">*</span><span class="h"> </span><span class="i">func</span><span class="sy">)</span><span class="sy">(</span><span class="t">int</span><span class="h"> </span><span class="i">x</span><span class="sy">,</span><span class="t">int</span><span class="h"> </span><span class="i">y</span><span class="sy">)</span><span class="sy">;</span><span class="c">/*func,为函数指针,接收两个int类型参数,返回一个整型.*/</span></div><div class="crayon-line" id="crayon-505b4902bc706-11" style=""><span class="sy">}</span><span class="i">CALC</span><span class="sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-505b4902bc706-12" style=""></div><div class="crayon-line" id="crayon-505b4902bc706-13" style=""><span class="t">int</span><span class="h"> </span><span class="e">add</span><span class="sy">(</span><span class="t">int</span><span class="h"> </span><span class="i">x</span><span class="sy">,</span><span class="t">int</span><span class="h"> </span><span class="i">y</span><span class="sy">)</span><span class="sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-505b4902bc706-14" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="st">return</span><span class="h"> </span><span class="i">x</span><span class="o">+</span><span class="i">y</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-505b4902bc706-15" style=""><span class="sy">}</span></div><div class="crayon-line crayon-striped-line" id="crayon-505b4902bc706-16" style=""></div><div class="crayon-line" id="crayon-505b4902bc706-17" style=""><span class="t">int</span><span class="h"> </span><span class="e">multi</span><span class="sy">(</span><span class="t">int</span><span class="h"> </span><span class="i">x</span><span class="sy">,</span><span class="t">int</span><span class="h"> </span><span class="i">y</span><span class="sy">)</span><span class="sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-505b4902bc706-18" style=""><span class="h">&nbsp;&nbsp; </span><span class="st">return</span><span class="h"> </span><span class="i">x</span><span class="o">*</span><span class="i">y</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-505b4902bc706-19" style=""><span class="sy">}</span></div><div class="crayon-line crayon-striped-line" id="crayon-505b4902bc706-20" style=""></div><div class="crayon-line" id="crayon-505b4902bc706-21" style=""><span class="t">void</span><span class="h"> </span><span class="e">test1</span><span class="sy">(</span><span class="t">int</span><span class="h"> </span><span class="i">t</span><span class="sy">)</span><span class="sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-505b4902bc706-22" style=""><span class="h">&nbsp;&nbsp; </span><span class="r">printf</span><span class="sy">(</span><span class="s">"test1(%d) ing...\n"</span><span class="sy">,</span><span class="i">t</span><span class="sy">)</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-505b4902bc706-23" style=""><span class="sy">}</span></div><div class="crayon-line crayon-striped-line" id="crayon-505b4902bc706-24" style=""><span class="t">void</span><span class="h"> </span><span class="e">test2</span><span class="sy">(</span><span class="t">int</span><span class="h"> </span><span class="i">t</span><span class="sy">)</span><span class="sy">{</span></div><div class="crayon-line" id="crayon-505b4902bc706-25" style=""><span class="h">&nbsp;&nbsp; </span><span class="r">printf</span><span class="sy">(</span><span class="s">"test2(%d) ing...\n"</span><span class="sy">,</span><span class="i">t</span><span class="sy">)</span><span class="sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-505b4902bc706-26" style=""><span class="sy">}</span></div><div class="crayon-line" id="crayon-505b4902bc706-27" style=""><span class="t">void</span><span class="h"> </span><span class="e">test3</span><span class="sy">(</span><span class="t">int</span><span class="h"> </span><span class="i">t</span><span class="sy">)</span><span class="sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-505b4902bc706-28" style=""><span class="h">&nbsp;&nbsp; </span><span class="r">printf</span><span class="sy">(</span><span class="s">"test3(%d) ing...\n"</span><span class="sy">,</span><span class="i">t</span><span class="sy">)</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-505b4902bc706-29" style=""><span class="sy">}</span></div><div class="crayon-line crayon-striped-line" id="crayon-505b4902bc706-30" style=""></div><div class="crayon-line" id="crayon-505b4902bc706-31" style=""><span class="r">typedef</span><span class="h">&nbsp;&nbsp;</span><span class="t">void</span><span class="h"> </span><span class="sy">(</span><span class="o">*</span><span class="h"> </span><span class="i">PRTFUNC</span><span class="sy">)</span><span class="sy">(</span><span class="t">int</span><span class="sy">)</span><span class="sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-505b4902bc706-32" style=""><span class="c">//void ( *signal( int sig, void( *func )( int ) ) )( int );</span></div><div class="crayon-line" id="crayon-505b4902bc706-33" style=""><span class="c">//=&gt; void ( *&nbsp;&nbsp;signal_test( int sig, void( *func )( int )&nbsp;&nbsp;)&nbsp;&nbsp; )( int );</span></div><div class="crayon-line crayon-striped-line" id="crayon-505b4902bc706-34" style=""><span class="e">PRTFUNC&nbsp;&nbsp;</span><span class="e">signal_test</span><span class="sy">(</span><span class="t">int</span><span class="h"> </span><span class="i">sig</span><span class="sy">,</span><span class="e">PRTFUNC </span><span class="i">func</span><span class="sy">)</span><span class="sy">{</span></div><div class="crayon-line" id="crayon-505b4902bc706-35" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="i">PRTFUNC</span><span class="h"> </span><span class="i">t</span><span class="sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-505b4902bc706-36" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="st">switch</span><span class="sy">(</span><span class="i">sig</span><span class="sy">)</span><span class="sy">{</span></div><div class="crayon-line" id="crayon-505b4902bc706-37" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp; </span><span class="st">case</span><span class="h"> </span><span class="cn">1</span><span class="o">:</span></div><div class="crayon-line crayon-striped-line" id="crayon-505b4902bc706-38" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span class="i">t</span><span class="o">=</span><span class="i">test1</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-505b4902bc706-39" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span class="r">printf</span><span class="sy">(</span><span class="s">"调用函数test1()~\n"</span><span class="sy">)</span><span class="sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-505b4902bc706-40" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span class="st">break</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-505b4902bc706-41" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp; </span><span class="st">case</span><span class="h"> </span><span class="cn">2</span><span class="o">:</span></div><div class="crayon-line crayon-striped-line" id="crayon-505b4902bc706-42" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span class="i">t</span><span class="o">=</span><span class="i">test2</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-505b4902bc706-43" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span class="r">printf</span><span class="sy">(</span><span class="s">"调用函数test2()~\n"</span><span class="sy">)</span><span class="sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-505b4902bc706-44" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span class="st">break</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-505b4902bc706-45" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="st">default</span><span class="o">:</span></div><div class="crayon-line crayon-striped-line" id="crayon-505b4902bc706-46" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="i">t</span><span class="o">=</span><span class="sy">(</span><span class="t">void</span><span class="sy">(</span><span class="o">*</span><span class="sy">)</span><span class="sy">(</span><span class="t">int</span><span class="sy">)</span><span class="sy">)</span><span class="cn">0</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-505b4902bc706-47" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span class="r">printf</span><span class="sy">(</span><span class="s">"调用函数test3()~\n"</span><span class="sy">)</span><span class="sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-505b4902bc706-48" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">}</span></div><div class="crayon-line" id="crayon-505b4902bc706-49" style=""><span class="h">&nbsp;&nbsp;</span><span class="e">func</span><span class="sy">(</span><span class="i">sig</span><span class="sy">)</span><span class="sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-505b4902bc706-50" style=""><span class="h">&nbsp;&nbsp;</span><span class="st">return</span><span class="h"> </span><span class="i">t</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-505b4902bc706-51" style=""><span class="sy">}</span></div><div class="crayon-line crayon-striped-line" id="crayon-505b4902bc706-52" style=""></div><div class="crayon-line" id="crayon-505b4902bc706-53" style=""><span class="c">//测试返回值</span></div><div class="crayon-line crayon-striped-line" id="crayon-505b4902bc706-54" style=""><span class="t">void</span><span class="h"> </span><span class="e">check_singal_ret</span><span class="sy">(</span><span class="e">PRTFUNC </span><span class="i">ret</span><span class="sy">)</span><span class="sy">{</span></div><div class="crayon-line" id="crayon-505b4902bc706-55" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp; </span><span class="st">if</span><span class="sy">(</span><span class="i">ret</span><span class="o">==</span><span class="i">SIG_ERR</span><span class="sy">)</span></div><div class="crayon-line crayon-striped-line" id="crayon-505b4902bc706-56" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span class="r">printf</span><span class="sy">(</span><span class="s">"signal_test function returns SIG_ERR.\n"</span><span class="sy">)</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-505b4902bc706-57" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="st">else</span></div><div class="crayon-line crayon-striped-line" id="crayon-505b4902bc706-58" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="r">printf</span><span class="sy">(</span><span class="s">"signal_test function returns SIG_OK.\n"</span><span class="sy">)</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-505b4902bc706-59" style=""><span class="sy">}</span></div><div class="crayon-line crayon-striped-line" id="crayon-505b4902bc706-60" style=""></div><div class="crayon-line" id="crayon-505b4902bc706-61" style=""><span class="t">int</span><span class="h"> </span><span class="e">main</span><span class="sy">(</span><span class="sy">)</span></div><div class="crayon-line crayon-striped-line" id="crayon-505b4902bc706-62" style=""><span class="sy">{</span></div><div class="crayon-line" id="crayon-505b4902bc706-63" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="t">int</span><span class="h"> </span><span class="i">i</span><span class="sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-505b4902bc706-64" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="c">//声明两个CALC结构体变量,分别用指定add函数和multi函数.</span></div><div class="crayon-line" id="crayon-505b4902bc706-65" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="e">CALC</span><span class="h">&nbsp;&nbsp;</span><span class="e">test</span><span class="sy">[</span><span class="cn">2</span><span class="sy">]</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="sy">{</span><span class="sy">{</span><span class="s">"No.1"</span><span class="sy">,</span><span class="i">add</span><span class="sy">}</span><span class="sy">,</span><span class="sy">{</span><span class="s">"No.2"</span><span class="sy">,</span><span class="i">multi</span><span class="sy">}</span><span class="sy">}</span><span class="sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-505b4902bc706-66" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="e">PRTFUNC</span><span class="h">&nbsp;&nbsp;</span><span class="e">test_ptr_array</span><span class="sy">[</span><span class="cn">3</span><span class="sy">]</span><span class="o">=</span><span class="sy">{</span><span class="i">test1</span><span class="sy">,</span><span class="i">test2</span><span class="sy">,</span><span class="i">test3</span><span class="sy">}</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-505b4902bc706-67" style=""></div><div class="crayon-line crayon-striped-line" id="crayon-505b4902bc706-68" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="r">printf</span><span class="sy">(</span><span class="s">"1.带有函数指针的结构体:\n"</span><span class="sy">)</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-505b4902bc706-69" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="r">printf</span><span class="sy">(</span><span class="s">"CALC test[0]: %s,and result:%d\n"</span><span class="sy">,</span><span class="i">test</span><span class="sy">[</span><span class="cn">0</span><span class="sy">]</span><span class="sy">.</span><span class="v">id</span><span class="sy">,</span><span class="i">test</span><span class="sy">[</span><span class="cn">0</span><span class="sy">]</span><span class="sy">.</span><span class="e">func</span><span class="sy">(</span><span class="cn">12</span><span class="sy">,</span><span class="cn">13</span><span class="sy">)</span><span class="sy">)</span><span class="sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-505b4902bc706-70" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="r">printf</span><span class="sy">(</span><span class="s">"CALC test[1]: %s,and result:%d\n"</span><span class="sy">,</span><span class="i">test</span><span class="sy">[</span><span class="cn">1</span><span class="sy">]</span><span class="sy">.</span><span class="v">id</span><span class="sy">,</span><span class="i">test</span><span class="sy">[</span><span class="cn">1</span><span class="sy">]</span><span class="sy">.</span><span class="e">func</span><span class="sy">(</span><span class="cn">12</span><span class="sy">,</span><span class="cn">13</span><span class="sy">)</span><span class="sy">)</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-505b4902bc706-71" style=""></div><div class="crayon-line crayon-striped-line" id="crayon-505b4902bc706-72" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="r">printf</span><span class="sy">(</span><span class="s">"\n2.函数指针数组:\n"</span><span class="sy">)</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-505b4902bc706-73" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="st">for</span><span class="sy">(</span><span class="i">i</span><span class="o">=</span><span class="cn">0</span><span class="sy">;</span><span class="i">i</span><span class="o">&lt;</span><span class="cn">3</span><span class="sy">;</span><span class="o">++</span><span class="i">i</span><span class="sy">)</span></div><div class="crayon-line crayon-striped-line" id="crayon-505b4902bc706-74" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="i">test_ptr_array</span><span class="sy">[</span><span class="i">i</span><span class="sy">]</span><span class="sy">(</span><span class="i">i</span><span class="o">*</span><span class="cn">10</span><span class="sy">)</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-505b4902bc706-75" style=""></div><div class="crayon-line crayon-striped-line" id="crayon-505b4902bc706-76" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="r">printf</span><span class="sy">(</span><span class="s">"\n3.函数指针和返回函数指针实验:\n"</span><span class="sy">)</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-505b4902bc706-77" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="e">check_singal_ret</span><span class="sy">(</span><span class="e">signal_test</span><span class="sy">(</span><span class="cn">1</span><span class="sy">,</span><span class="i">test2</span><span class="sy">)</span><span class="sy">)</span><span class="sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-505b4902bc706-78" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="e">check_singal_ret</span><span class="sy">(</span><span class="e">signal_test</span><span class="sy">(</span><span class="cn">2</span><span class="sy">,</span><span class="i">test1</span><span class="sy">)</span><span class="sy">)</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-505b4902bc706-79" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="e">check_singal_ret</span><span class="sy">(</span><span class="e">signal_test</span><span class="sy">(</span><span class="cn">3</span><span class="sy">,</span><span class="i">test3</span><span class="sy">)</span><span class="sy">)</span><span class="sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-505b4902bc706-80" style=""></div><div class="crayon-line" id="crayon-505b4902bc706-81" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="st">if</span><span class="sy">(</span><span class="e">signal_test</span><span class="sy">(</span><span class="cn">3</span><span class="sy">,</span><span class="i">test2</span><span class="sy">)</span><span class="o">==</span><span class="i">SIG_ERR</span><span class="sy">)</span><span class="sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-505b4902bc706-82" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="r">printf</span><span class="sy">(</span><span class="s">"signal_test(3,test2) returns SIG_ERR."</span><span class="sy">)</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-505b4902bc706-83" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">}</span><span class="st">else</span><span class="sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-505b4902bc706-84" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="r">printf</span><span class="sy">(</span><span class="s">"signal_test(3,test2) returns SIG_OK."</span><span class="sy">)</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-505b4902bc706-85" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">}</span></div><div class="crayon-line crayon-striped-line" id="crayon-505b4902bc706-86" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="st">return</span><span class="h"> </span><span class="cn">0</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-505b4902bc706-87" style=""><span class="sy">}</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0291 seconds] -->
+<p>源码: <a href="../../../wp-content/uploads/2010/10/ptrfunc.c">ptrfunc</a></p>
+					<div class="fixed"></div>
+				</div>
+
+				<div class="comments comments_single">
+					<a href="index.html#respond">发表评论</a>
+									</div>
+
+				<!-- related posts START -->
+								<!-- related posts END -->
+			</div>
+
+<a name="comments"></a>
+
+<div class="ds-thread" data-thread-key="6" data-author-key="1" data-title="理解函数指针及其应用" data-url="http://imzc.net/archives/6/"></div>
+
+<script type="text/javascript">
+	if (typeof DUOSHUO !== 'undefined')
+		DUOSHUO.EmbedThread('.ds-thread');
+</script>
+	<div id="ds-ssr">
+
+		
+            <ol id="commentlist">
+                		<li class="comment even thread-even depth-1" id="li-comment-2">
+			<article id="comment-2" class="comment">
+				<footer class="comment-meta">
+					<cite class="comment-author vcard">
+						<span class="fn">cdlilo</span> on <a rel="nofollow" href="index.html#comment-2"><time pubdate datetime="2010-10-25T05:50:21+00:00">2010/10/25 at 05:50</time></a> <span class="says">said:</span>					</cite><!-- .comment-author .vcard -->
+				</footer>
+	
+				<div class="comment-content"><p>函数指针需要学好,在linux编程中用得很多. </p>
+</div>
+				
+			</article><!-- #comment-## -->
+		</li>
+            </ol>
+
+		            
+    </div>
+			
+
+	</div>
+
+	<!-- sidebar START -->
+<div id="sidebar">
+
+<!-- Style Switcher START -->
+<div class="widget">
+	<div id="styleswitcher">
+		<span id="style-text">主题风格: </span>
+			<span id="style-green" class="color"><a onclick="TSS.setActiveStyleSheet('green');" href="javascript:void(0);" title="将主题风格更换为green"><img src="../../../wp-content/themes/elegant-box/images/transparent.gif" alt="" /></a></span>
+			<span id="style-purple" class="color"><a onclick="TSS.setActiveStyleSheet('purple');" href="javascript:void(0);" title="将主题风格更换为purple"><img src="../../../wp-content/themes/elegant-box/images/transparent.gif" alt="" /></a></span>
+			<span id="style-brown" class="color"><a onclick="TSS.setActiveStyleSheet('brown');" href="javascript:void(0);" title="将主题风格更换为brown"><img src="../../../wp-content/themes/elegant-box/images/transparent.gif" alt="" /></a></span>
+			<span id="style-blue" class="color"><a onclick="TSS.setActiveStyleSheet('blue');" href="javascript:void(0);" title="将主题风格更换为blue"><img src="../../../wp-content/themes/elegant-box/images/transparent.gif" alt="" /></a></span>
+			<span id="style-white" class="color"><a onclick="TSS.setActiveStyleSheet('white');" href="javascript:void(0);" title="将主题风格更换为white"><img src="../../../wp-content/themes/elegant-box/images/transparent.gif" alt="" /></a></span>
+			<span id="style-black" class="color"><a onclick="TSS.setActiveStyleSheet('black');" href="javascript:void(0);" title="将主题风格更换为black"><img src="../../../wp-content/themes/elegant-box/images/transparent.gif" alt="" /></a></span>
+		<div class="fixed"></div>
+	</div>
+</div>
+<!-- Style Switcher END -->
+
+		<!-- showcase -->
+		
+		<ul id="widgets">
+
+<li class="widget widget_calendar"><h3>Archives</h3><div id="calendar_wrap"><table id="wp-calendar">
+	<caption>2012 年九月</caption>
+	<thead>
+	<tr>
+		<th scope="col" title="星期日">日</th>
+		<th scope="col" title="星期一">一</th>
+		<th scope="col" title="星期二">二</th>
+		<th scope="col" title="星期三">三</th>
+		<th scope="col" title="星期四">四</th>
+		<th scope="col" title="星期五">五</th>
+		<th scope="col" title="星期六">六</th>
+	</tr>
+	</thead>
+
+	<tfoot>
+	<tr>
+		<td colspan="3" id="prev"><a href="../../date/2012/08/index.html" title="查看 2012 年八月的文章">&laquo; 八</a></td>
+		<td class="pad">&nbsp;</td>
+		<td colspan="3" id="next" class="pad">&nbsp;</td>
+	</tr>
+	</tfoot>
+
+	<tbody>
+	<tr>
+		<td colspan="6" class="pad">&nbsp;</td><td>1</td>
+	</tr>
+	<tr>
+		<td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td>
+	</tr>
+	<tr>
+		<td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td>
+	</tr>
+	<tr>
+		<td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td id="today">21</td><td>22</td>
+	</tr>
+	<tr>
+		<td>23</td><td>24</td><td>25</td><td>26</td><td>27</td><td>28</td><td>29</td>
+	</tr>
+	<tr>
+		<td>30</td>
+		<td class="pad" colspan="6">&nbsp;</td>
+	</tr>
+	</tbody>
+	</table></div></li><li class="widget widget_categories"><h3>分类目录</h3>		<ul>
+	<li class="cat-item cat-item-7"><a href="../../category/c_cplusplus/index.html" title="查看 C/C++ 下的所有文章">C/C++</a>
+</li>
+	<li class="cat-item cat-item-24"><a href="../../category/ios-dev/index.html" title="查看 IOSDev 下的所有文章">IOSDev</a>
+</li>
+	<li class="cat-item cat-item-23"><a href="../../category/java/index.html" title="查看 Java 下的所有文章">Java</a>
+</li>
+	<li class="cat-item cat-item-5"><a href="../../category/lamp/index.html" title="查看 LAMP 下的所有文章">LAMP</a>
+</li>
+	<li class="cat-item cat-item-8"><a href="../../category/onthego/index.html" title="查看 OnTheGo 下的所有文章">OnTheGo</a>
+</li>
+	<li class="cat-item cat-item-1"><a href="../../category/other/index.html" title="查看 Other 下的所有文章">Other</a>
+</li>
+	<li class="cat-item cat-item-3"><a href="../../category/project/index.html" title="查看 Project 下的所有文章">Project</a>
+</li>
+	<li class="cat-item cat-item-4"><a href="../../category/rubytesting/index.html" title="查看 Ruby&amp;Testing 下的所有文章">Ruby&amp;Testing</a>
+</li>
+	<li class="cat-item cat-item-26"><a href="../../category/scriptlanguage/index.html" title="查看 脚本语言 下的所有文章">脚本语言</a>
+</li>
+		</ul>
+</li><li class="widget widget_text"><h3>Google Ads</h3>			<div class="textwidget"><script type="text/javascript"><!--
+google_ad_client = "ca-pub-7220882232307827";
+/* left_180x150, 创建于 09-2-19 */
+google_ad_slot = "1136501676";
+google_ad_width = 180;
+google_ad_height = 150;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+</div>
+		</li><li class="widget widget_tag_cloud"><h3>标签</h3><div class="tagcloud"><a href='../../tag/c/index.html' class='tag-link-9' title='4 个话题' style='font-size: 22pt;'>c</a>
+<a href='../../tag/dailhelper/index.html' class='tag-link-13' title='1 个话题' style='font-size: 8pt;'>dailhelper</a>
+<a href='../../tag/linux/index.html' class='tag-link-14' title='1 个话题' style='font-size: 8pt;'>linux</a>
+<a href='../../tag/ls/index.html' class='tag-link-10' title='1 个话题' style='font-size: 8pt;'>ls</a>
+<a href='../../tag/makefile/index.html' class='tag-link-17' title='1 个话题' style='font-size: 8pt;'>makefile</a>
+<a href='../../tag/netkeeper/index.html' class='tag-link-16' title='1 个话题' style='font-size: 8pt;'>Netkeeper</a>
+<a href='../../tag/pcap/index.html' class='tag-link-25' title='1 个话题' style='font-size: 8pt;'>pcap</a>
+<a href='../../tag/ruby/index.html' class='tag-link-12' title='1 个话题' style='font-size: 8pt;'>ruby</a>
+<a href='../../tag/slab/index.html' class='tag-link-20' title='1 个话题' style='font-size: 8pt;'>slab</a>
+<a href='../../tag/wget/index.html' class='tag-link-11' title='1 个话题' style='font-size: 8pt;'>wget</a>
+<a href='../../tag/系�%259F管�%2590%2586/index.html' class='tag-link-15' title='1 个话题' style='font-size: 8pt;'>系统管理</a></div>
+</li><li class="widget widget_links"><h3>链接表</h3>
+	<ul class='xoxo blogroll'>
+<li><a href="http://blog.csdn.net/Android_Tutor" rel="colleague" title="Android_Tutor的专栏" target="_blank">Android学习系列</a></li>
+<li><a href="http://ihower.tw/rails3/" title="Rails3学习,写得不错!">Rails3学习</a></li>
+<li><a href="http://wpotp.com" rel="me" title="食品找茬网" target="_blank">找茬网</a></li>
+<li><a href="http://www.sz95000.com/" title="深圳长途汽车网上订票，官方网站，这次不会忘记了。。。" target="_blank">深圳长途汽车网上订票</a></li>
+
+	</ul>
+</li>
+<li class="widget widget_meta"><h3>功能</h3>			<ul>
+			<li><a href="../../../wp-login.php?action=register">注册</a></li>			<li><a href="../../../wp-login.php">登录</a></li>
+			<li><a href="../../../feed/index.html" title="使用 RSS 2.0 订阅本站点内容">文章 <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<li><a href="../../../comments/feed/index.html" title="使用 RSS 订阅本站点的所有文章的近期评论">评论 <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<li><a href="http://cn.wordpress.org/" title="基于 WordPress，一个优美、先进的个人信息发布平台。">WordPress.org</a></li>
+						</ul>
+</li>		</ul>
+
+		<!-- showcase 2 -->
+		
+</div>
+<!-- sidebar END -->
+
+	<div class="fixed"></div>
+
+		<div id="bottom">
+			<div class="postnav">
+				<span class="alignleft">&laquo; <a href="../../20/index.html" rel="prev">递归列出目录下文件的全路径</a></span>
+				<span class="alignright"><a href="../../103/index.html" rel="next">[转]探索C++的秘密之详解extern &#8220;C&#8221;</a> &raquo;</span>
+				<div class="fixed"></div>
+			</div>
+
+			<div class="anchor">
+				<span><a href="index.html#" onclick="MGJS.goTop();return false;">置顶</a></span>
+			</div>
+			<div class="fixed"></div>
+			</div>
+		<div class="fixed"></div>
+	</div>
+</div>
+
+<!-- footer START -->
+<div id="footer">
+	<div class="inner">
+		<div class="content">
+			<p id="about">
+				版权所有 &copy; 2008-2012 Only For Sunshine~ | 基于 <a href="http://wordpress.org/">WordPress</a> | 主题由 <a href="http://www.neoease.com/">NeoEase</a> 提供			</p>
+
+			<ul id="admin">
+				<li><a href="../../../wp-login.php?action=register">注册</a></li>				<li><a href="../../../wp-login.php">登录</a></li>
+			</ul>
+
+			<div class="fixed"></div>
+		</div>
+	</div>
+</div><!-- footer END --><script type='text/javascript' src='http://s.gravatar.com/js/gprofiles.js?ver=2012Sepaa'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var WPGroHo = {"my_hash":""};
+/* ]]> */
+</script>
+<script type='text/javascript' src='../../../wp-content/plugins/jetpack/modules/wpgroho.js?ver=3.4.2'></script>
+	<div style="display:none">
+	</div>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var quicktagsL10n = {"wordLookup":"\u8f93\u5165\u5173\u952e\u8bcd\u4ee5\u67e5\u8be2\uff1a","dictionaryLookup":"\u67e5\u5b57\u5178","lookup":"\u67e5\u9605","closeAllOpenTags":"\u5173\u95ed\u6240\u6709\u6253\u5f00\u7684\u6807\u7b7e","closeTags":"\u5173\u95ed\u6807\u7b7e","enterURL":"\u8f93\u5165 URL","enterImageURL":"\u8f93\u5165\u56fe\u50cf URL","enterImageDescription":"\u4e3a\u56fe\u50cf\u8f93\u5165\u63cf\u8ff0","fullscreen":"\u5168\u5c4f","toggleFullscreen":"\u5207\u6362\u5168\u5c4f\u6a21\u5f0f","textdirection":"\u6587\u672c\u65b9\u5411","toggleTextdirection":"\u5207\u6362\u7f16\u8f91\u5668\u6587\u672c\u4e66\u5199\u65b9\u5411"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='../../../wp-includes/js/quicktags.js?ver=3.4.2'></script>
+<script type='text/javascript' src='../../../wp-content/plugins/crayon-syntax-highlighter/util/tag-editor/crayon_qt.js?ver=1.11'></script>
+<script type='text/javascript' src='http://s0.wp.com/wp-content/js/devicepx-jetpack.js?ver=201238'></script>
+
+	<script src="http://stats.wordpress.com/e-201238.js" type="text/javascript"></script>
+	<script type="text/javascript">
+	st_go({v:'ext',j:'1:1.7',blog:'17044931',post:'6'});
+	var load_cmc = function(){linktracker_init(17044931,6,2);};
+	if ( typeof addLoadEvent != 'undefined' ) addLoadEvent(load_cmc);
+	else load_cmc();
+	</script><script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-9565349-1']);
+  _gaq.push(['_setDomainName', 'imzc.net']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script> 
+</body>
+</html>
+
+<!-- Dynamic page generated in 0.605 seconds. -->
+<!-- Cached page generated by WP-Super-Cache on 2012-09-21 00:49:06 -->

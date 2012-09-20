@@ -3,8 +3,13 @@
 	<head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>Only For Sunshine~ &rsaquo; 登录</title>
-	<link rel='stylesheet' id='wp-admin-css'  href='wp-admin/css/wp-admin.css?ver=3.4.1' type='text/css' media='all' />
-<link rel='stylesheet' id='colors-fresh-css'  href='wp-admin/css/colors-fresh.css?ver=3.4.1' type='text/css' media='all' />
+	<link rel='stylesheet' id='wp-admin-css'  href='wp-admin/css/wp-admin.css?ver=3.4.2' type='text/css' media='all' />
+<link rel='stylesheet' id='colors-fresh-css'  href='wp-admin/css/colors-fresh.css?ver=3.4.2' type='text/css' media='all' />
+<script type="text/javascript">
+var duoshuoQuery = {"short_name":"imzc","sso":{"login":"http:\/\/imzc.net\/wp-login.php?action=duoshuo_login","logout":"http:\/\/imzc.net\/wp-login.php?action=logout&_wpnonce=079b4bd6ed"},"remote_auth":"W10= 5ea39e076c9aa89a7b7130f5468c053cac7d2708 1348159683"};
+duoshuoQuery.sso.login += '&redirect_to=' + encodeURIComponent(window.location.href);
+duoshuoQuery.sso.logout += '&redirect_to=' + encodeURIComponent(window.location.href);
+</script>
 <script type='text/javascript' src='wp-includes/js/jquery/jquery.js?ver=1.7.2'></script>
 <script type='text/javascript' src='wp-content/plugins/slimbox/javascript/jquery.slimbox.js?ver=2.03'></script>
 <script type='text/javascript' src='wp-includes/js/json2.js?ver=2011-02-23'></script>
@@ -13,8 +18,9 @@
 var live_blogging = {"ajaxurl":"http:\/\/imzc.net\/wp-admin\/admin-ajax.php","update_effect":"top"};
 /* ]]> */
 </script>
-<script type='text/javascript' src='wp-content/plugins/live-blogging/live-blogging.js?ver=3.4.1'></script>
-<script type="text/javascript" src="wp-content/plugins/si-captcha-for-wordpress/captcha/si_captcha.js?ver=1342113441"></script>
+<script type='text/javascript' src='wp-content/plugins/live-blogging/live-blogging.js?ver=3.4.2'></script>
+<script type='text/javascript' src='http://static.duoshuo.com/embed.js'></script>
+<script type="text/javascript" src="wp-content/plugins/si-captcha-for-wordpress/captcha/si_captcha.js?ver=1348159683"></script>
 <!-- begin SI CAPTCHA Anti-Spam - login/register form style -->
 <style type="text/css">
 div#captchaImgDiv { display:block; }
@@ -42,7 +48,7 @@ input#captcha_code { width:65px; }
 		<label for="user_pass">密码<br />
 		<input type="password" name="pwd" id="user_pass" class="input" value="" size="20" tabindex="20" /></label>
 	</p>
-<p class="cptch_block"><br />    OATH_OTP(441):<input type="text" name="cptch_number" tabindex="30" value="" maxlength="10" size="1" style="width:100px;margin-bottom:0;display:inline;" /><br />	<input type="hidden" name="cptch_result" value=" " /><input type="hidden" value="Version: 0.0.1" />
+<p class="cptch_block"><br />    OATH_OTP(683):<input type="text" name="cptch_number" tabindex="30" value="" maxlength="10" size="1" style="width:100px;margin-bottom:0;display:inline;" /><br />	<input type="hidden" name="cptch_result" value=" " /><input type="hidden" value="Version: 0.0.1" />
 	 
 </p>
 	<br />	<p class="forgetmenot"><label for="rememberme"><input name="rememberme" type="checkbox" id="rememberme" value="forever" tabindex="90" /> 记住我的登录信息</label></p>

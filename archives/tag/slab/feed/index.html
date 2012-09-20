@@ -13,11 +13,11 @@
 	<atom:link href="http://imzc.net/archives/tag/slab/feed/" rel="self" type="application/rss+xml" />
 	<link>http://imzc.net</link>
 	<description>-More Thinking,And Then Just do it~~~</description>
-	<lastBuildDate>Thu, 12 Jul 2012 17:15:18 +0000</lastBuildDate>
+	<lastBuildDate>Thu, 20 Sep 2012 16:40:36 +0000</lastBuildDate>
 	<language>zh-CN</language>
 	<sy:updatePeriod>hourly</sy:updatePeriod>
 	<sy:updateFrequency>1</sy:updateFrequency>
-	<generator>http://wordpress.org/?v=3.4.1</generator>
+	<generator>http://wordpress.org/?v=3.4.2</generator>
 		<item>
 		<title>[转]Linux slab 分配器剖析</title>
 		<link>http://imzc.net/archives/109/</link>
@@ -76,7 +76,7 @@ M. Tim Jones 是一名嵌入式软件工程师，他是 GNU/Linux Application Pr
 <tbody>
 <tr>
 <td>
-<pre>struct struct <strong>kmem_cache</strong> *my_cachep;</pre>
+<pre class="crayon-plain-tag">struct struct &lt;strong&gt;kmem_cache&lt;/strong&gt; *my_cachep;</pre>
 </td>
 </tr>
 </tbody>
@@ -88,8 +88,8 @@ M. Tim Jones 是一名嵌入式软件工程师，他是 GNU/Linux Application Pr
 <tbody>
 <tr>
 <td>
-<pre>struct kmem_cache *
-<strong>kmem_cache_create</strong>( const char *name, size_t size, size_t align,
+<pre class="crayon-plain-tag">struct kmem_cache *
+&lt;strong&gt;kmem_cache_create&lt;/strong&gt;( const char *name, size_t size, size_t align,
                        unsigned long flags;
                        void (*ctor)(void*, struct kmem_cache *, unsigned long),
                        void (*dtor)(void*, struct kmem_cache *, unsigned long));</pre>
@@ -127,7 +127,7 @@ M. Tim Jones 是一名嵌入式软件工程师，他是 GNU/Linux Application Pr
 <tbody>
 <tr>
 <td>
-<pre>void <strong>kmem_cache_destroy</strong>( struct kmem_cache *cachep );</pre>
+<pre class="crayon-plain-tag">void &lt;strong&gt;kmem_cache_destroy&lt;/strong&gt;( struct kmem_cache *cachep );</pre>
 </td>
 </tr>
 </tbody>
@@ -138,7 +138,7 @@ M. Tim Jones 是一名嵌入式软件工程师，他是 GNU/Linux Application Pr
 <tbody>
 <tr>
 <td>
-<pre>void <strong>kmem_cache_alloc</strong>( struct kmem_cache *cachep, gfp_t flags );</pre>
+<pre class="crayon-plain-tag">void &lt;strong&gt;kmem_cache_alloc&lt;/strong&gt;( struct kmem_cache *cachep, gfp_t flags );</pre>
 </td>
 </tr>
 </tbody>
@@ -177,7 +177,7 @@ M. Tim Jones 是一名嵌入式软件工程师，他是 GNU/Linux Application Pr
 <tbody>
 <tr>
 <td>
-<pre>void <strong>kmem_cache_free</strong>( struct kmem_cache *cachep, void *objp );</pre>
+<pre class="crayon-plain-tag">void &lt;strong&gt;kmem_cache_free&lt;/strong&gt;( struct kmem_cache *cachep, void *objp );</pre>
 </td>
 </tr>
 </tbody>
@@ -188,8 +188,8 @@ M. Tim Jones 是一名嵌入式软件工程师，他是 GNU/Linux Application Pr
 <tbody>
 <tr>
 <td>
-<pre>void *<strong>kmalloc</strong>( size_t size, int flags );
-void <strong>kfree</strong>( const void *objp );</pre>
+<pre class="crayon-plain-tag">void *&lt;strong&gt;kmalloc&lt;/strong&gt;( size_t size, int flags );
+void &lt;strong&gt;kfree&lt;/strong&gt;( const void *objp );</pre>
 </td>
 </tr>
 </tbody>
@@ -201,9 +201,9 @@ void <strong>kfree</strong>( const void *objp );</pre>
 <tbody>
 <tr>
 <td>
-<pre>unsigned int <strong>kmem_cache_size</strong>( struct kmem_cache *cachep );
-const char *<strong>kmem_cache_name</strong>( struct kmem_cache *cachep );
-int <strong>kmem_cache_shrink</strong>( struct kmem_cache *cachep );</pre>
+<pre class="crayon-plain-tag">unsigned int &lt;strong&gt;kmem_cache_size&lt;/strong&gt;( struct kmem_cache *cachep );
+const char *&lt;strong&gt;kmem_cache_name&lt;/strong&gt;( struct kmem_cache *cachep );
+int &lt;strong&gt;kmem_cache_shrink&lt;/strong&gt;( struct kmem_cache *cachep );</pre>
 </td>
 </tr>
 </tbody>
@@ -218,13 +218,13 @@ int <strong>kmem_cache_shrink</strong>( struct kmem_cache *cachep );</pre>
 <tbody>
 <tr>
 <td>
-<pre>static struct kmem_cache *my_cachep;
+<pre class="crayon-plain-tag">static struct kmem_cache *my_cachep;
 
 static void init_my_cache( void )
 {
 
-   my_cachep = <strong>kmem_cache_create</strong>(
-                  "my_cache",            /* Name */
+   my_cachep = &lt;strong&gt;kmem_cache_create&lt;/strong&gt;(
+                  &quot;my_cache&quot;,            /* Name */
                   32,                    /* Object Size */
                   0,                     /* Alignment */
                   SLAB_HWCACHE_ALIGN,    /* Flags */
@@ -242,18 +242,18 @@ static void init_my_cache( void )
 <tbody>
 <tr>
 <td>
-<pre>int slab_test( void )
+<pre class="crayon-plain-tag">int slab_test( void )
 {
   void *object;
 
-  printk( "Cache name is %s\n", <strong>kmem_cache_name</strong>( my_cachep ) );
-  printk( "Cache object size is %d\n", <strong>kmem_cache_size</strong>( my_cachep ) );
+  printk( &quot;Cache name is %s\n&quot;, &lt;strong&gt;kmem_cache_name&lt;/strong&gt;( my_cachep ) );
+  printk( &quot;Cache object size is %d\n&quot;, &lt;strong&gt;kmem_cache_size&lt;/strong&gt;( my_cachep ) );
 
-  object = <strong>kmem_cache_alloc</strong>( my_cachep, GFP_KERNEL );
+  object = &lt;strong&gt;kmem_cache_alloc&lt;/strong&gt;( my_cachep, GFP_KERNEL );
 
   if (object) {
 
-    <strong>kmem_cache_free</strong>( my_cachep, object );
+    &lt;strong&gt;kmem_cache_free&lt;/strong&gt;( my_cachep, object );
 
   }
 
@@ -269,10 +269,10 @@ static void init_my_cache( void )
 <tbody>
 <tr>
 <td>
-<pre>static void remove_my_cache( void )
+<pre class="crayon-plain-tag">static void remove_my_cache( void )
 {
 
-  if (my_cachep) <strong>kmem_cache_destroy</strong>( my_cachep );
+  if (my_cachep) &lt;strong&gt;kmem_cache_destroy&lt;/strong&gt;( my_cachep );
 
   return;
 }</pre>
@@ -290,7 +290,7 @@ static void init_my_cache( void )
 <tbody>
 <tr>
 <td>
-<pre># <strong>echo "my_cache 128 64 8" &gt; /proc/slabinfo</strong></pre>
+<pre class="crayon-plain-tag"># &lt;strong&gt;echo &quot;my_cache 128 64 8&quot; &amp;gt; /proc/slabinfo&lt;/strong&gt;</pre>
 </td>
 </tr>
 </tbody>

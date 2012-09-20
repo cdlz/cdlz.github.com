@@ -13,11 +13,11 @@
 	<atom:link href="http://imzc.net/archives/category/onthego/feed/" rel="self" type="application/rss+xml" />
 	<link>http://imzc.net</link>
 	<description>-More Thinking,And Then Just do it~~~</description>
-	<lastBuildDate>Thu, 12 Jul 2012 17:15:18 +0000</lastBuildDate>
+	<lastBuildDate>Thu, 20 Sep 2012 16:40:36 +0000</lastBuildDate>
 	<language>zh-CN</language>
 	<sy:updatePeriod>hourly</sy:updatePeriod>
 	<sy:updateFrequency>1</sy:updateFrequency>
-	<generator>http://wordpress.org/?v=3.4.1</generator>
+	<generator>http://wordpress.org/?v=3.4.2</generator>
 		<item>
 		<title>[转]一个10年的电子工程师告诉你电子业的真实现状</title>
 		<link>http://imzc.net/archives/118/</link>
@@ -253,26 +253,14 @@
 &#8211;></p>
 <p>最近学校启用了新的计费系统,看来电信还是动作大啊!移动的什么时候可以到来捏?虽然TD手机现在不好,至少你的上网资费还是要降一下撒!</p>
 <p>假设自己的IP是172.18.60.XX<br />
-则,DNS为172.18.60.1,手动的加路由表.将以下命令存为route.bat即可.</p>
-
-<div class="wp_syntax"><table><tr><td class="line_numbers"><pre>1
-2
-3
-4
-5
-6
-7
-8
-</pre></td><td class="code"><pre class="bash" style="font-family:monospace;">rem route.bat  
- <span style="color: #000000; font-weight: bold;">@</span><span style="color: #7a0874; font-weight: bold;">echo</span> off       
- rem  <span style="color: #000000;">202.202</span>开始的网段  
- route <span style="color: #660033;">-p</span> ADD 202.202.0.0 MASK 255.255.0.0 172.18.60.1          
- rem   <span style="color: #000000;">211.83</span>开始的网段                         
- route <span style="color: #660033;">-p</span> ADD 211.83.0.0 MASK 255.255.0.0 172.18.60.1               
- rem  <span style="color: #000000;">172</span>开始的网段段                                 
- route <span style="color: #660033;">-p</span> ADD 172.0.0.0 MASK 255.0.0.0 172.18.60.1</pre></td></tr></table></div>
-
-<p>如果为linux,忘记语法了,不过也可以很方便的弄出来的.</p>
+则,DNS为172.18.60.1,手动的加路由表.将以下命令存为route.bat即可.</p><pre class="crayon-plain-tag">rem route.bat &nbsp;
+ @echo off&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
+ rem&nbsp; 202.202开始的网段 &nbsp;
+ route -p ADD 202.202.0.0 MASK 255.255.0.0 172.18.60.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
+ rem&nbsp;&nbsp; 211.83开始的网段&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
+ route -p ADD 211.83.0.0 MASK 255.255.0.0 172.18.60.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
+ rem&nbsp; 172开始的网段段&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
+ route -p ADD 172.0.0.0 MASK 255.0.0.0 172.18.60.1</pre><p>如果为linux,忘记语法了,不过也可以很方便的弄出来的.</p>
 ]]></content:encoded>
 			<wfw:commentRss>http://imzc.net/archives/55/feed/</wfw:commentRss>
 		<slash:comments>293</slash:comments>

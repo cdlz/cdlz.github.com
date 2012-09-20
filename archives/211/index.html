@@ -41,7 +41,15 @@
 	<!-- javascript END -->
 
 		<link rel='stylesheet' id='jquery.slimbox-css'  href='../../wp-content/plugins/slimbox/stylesheets/jquery.slimbox.css?ver=2.03' type='text/css' media='all' />
+<link rel='stylesheet' id='crayon-style-css'  href='http://imzc.net/wp-content/plugins/crayon-syntax-highlighter/css/style.css?ver=1.10' type='text/css' media='all' />
+<link rel='stylesheet' id='crayon-theme-classic-css'  href='../../wp-content/plugins/crayon-syntax-highlighter/themes/classic/classic.css?ver=1.10' type='text/css' media='all' />
+<link rel='stylesheet' id='crayon-font-monaco-css'  href='../../wp-content/plugins/crayon-syntax-highlighter/fonts/monaco.css?ver=1.10' type='text/css' media='all' />
 <link rel='stylesheet' id='wp-pagenavi-css'  href='../../wp-content/themes/elegant-box/pagenavi-css.css?ver=2.70' type='text/css' media='all' />
+<script type="text/javascript">
+var duoshuoQuery = {"short_name":"imzc","sso":{"login":"http:\/\/imzc.net\/wp-login.php?action=duoshuo_login","logout":"http:\/\/imzc.net\/wp-login.php?action=logout&_wpnonce=7282ea8bf5"},"remote_auth":"W10= 1c122b53229a9947170f1c527d93196c72acef00 1345829060"};
+duoshuoQuery.sso.login += '&redirect_to=' + encodeURIComponent(window.location.href);
+duoshuoQuery.sso.logout += '&redirect_to=' + encodeURIComponent(window.location.href);
+</script>
 <script type='text/javascript' src='../../wp-includes/js/jquery/jquery.js?ver=1.7.2'></script>
 <script type='text/javascript' src='../../wp-content/plugins/slimbox/javascript/jquery.slimbox.js?ver=2.03'></script>
 <script type='text/javascript' src='../../wp-includes/js/json2.js?ver=2011-02-23'></script>
@@ -51,7 +59,11 @@ var live_blogging = {"ajaxurl":"http:\/\/imzc.net\/wp-admin\/admin-ajax.php","up
 /* ]]> */
 </script>
 <script type='text/javascript' src='../../wp-content/plugins/live-blogging/live-blogging.js?ver=3.4.1'></script>
+<script type='text/javascript' src='../../wp-content/plugins/crayon-syntax-highlighter/js/util.js?ver=1.10'></script>
+<script type='text/javascript' src='../../wp-content/plugins/crayon-syntax-highlighter/js/crayon.js?ver=1.10'></script>
+<script type='text/javascript' src='../../wp-content/plugins/crayon-syntax-highlighter/js/jquery.popup.js?ver=1.10'></script>
 <script type='text/javascript' src='../../wp-includes/js/comment-reply.js?ver=3.4.1'></script>
+<script type='text/javascript' src='http://static.duoshuo.com/embed.js'></script>
 <link rel="EditURI" type="application/rsd+xml" title="RSD" href="../../xmlrpc.php?rsd" />
 <link rel="wlwmanifest" type="application/wlwmanifest+xml" href="../../wp-includes/wlwmanifest.xml" /> 
 <link rel='prev' title='ruby+watir在搜狐微博上面发表微博' href='../206/index.html' />
@@ -59,7 +71,7 @@ var live_blogging = {"ajaxurl":"http:\/\/imzc.net\/wp-admin\/admin-ajax.php","up
 <meta name="generator" content="WordPress 3.4.1" />
 <link rel='shortlink' href='http://wp.me/p19waf-3p' />
 
-<!-- All in One SEO Pack 1.6.14.5 by Michael Torbert of Semper Fi Web Design[343,410] -->
+<!-- All in One SEO Pack 1.6.14.6 by Michael Torbert of Semper Fi Web Design[343,410] -->
 <meta name="description" content="window-based手动添加导航栏，UINavigationController，[self.window addSubview:nav.view];" />
 <meta name="keywords" content="window-based,uinavigationcontroller,导航栏" />
 <link rel="canonical" href="index.html" />
@@ -70,8 +82,6 @@ var live_blogging = {"ajaxurl":"http:\/\/imzc.net\/wp-admin\/admin-ajax.php","up
 		select.slimbox();
 	});
 </script>
-
-<link rel="stylesheet" href="../../wp-content/themes/elegant-box/wp-syntax.css" type="text/css" media="screen" />
 </head>
 
 
@@ -183,63 +193,52 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 </script>
 </div>
 <br />	
-					<p>xxxAppDelegate中改为：</p>
+					<p>xxxAppDelegate中改为：</p><!-- Crayon Syntax Highlighter v1.10 -->
 
-<div class="wp_syntax"><table><tr><td class="line_numbers"><pre>1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-</pre></td><td class="code"><pre class="c_mac" style="font-family:monospace;"><span style="color: #000000;">-</span> <span style="color: #000000;">&#40;</span>BOOL<span style="color: #000000;">&#41;</span>application<span style="color: #000000;">:</span><span style="color: #000000;">&#40;</span>UIApplication <span style="color: #000000;">*</span><span style="color: #000000;">&#41;</span>application didFinishLaunchingWithOptions<span style="color: #000000;">:</span><span style="color: #000000;">&#40;</span>NSDictionary <span style="color: #000000;">*</span><span style="color: #000000;">&#41;</span>launchOptions
-<span style="color: #000000;">&#123;</span>
-    <span style="color: #ff0000;">// Override point for customization after application launch.</span>
-	self.<span style="color: #00eeff;">window</span> <span style="color: #000000;">=</span> <span style="color: #000000;">&#91;</span><span style="color: #000000;">&#91;</span>UIWindow alloc<span style="color: #000000;">&#93;</span> initWithFrame<span style="color: #000000;">:</span><span style="color: #000000;">&#91;</span><span style="color: #000000;">&#91;</span>UIScreen mainScreen<span style="color: #000000;">&#93;</span> bounds<span style="color: #000000;">&#93;</span><span style="color: #000000;">&#93;</span>;
-&nbsp;
-<span style="color: #ff0000;">//	self.viewController =  [ [wordpress_otpViewController alloc] initWithNibName:@&quot;wordpress_otpViewController&quot; bundle:nil];</span>
-&nbsp;
-	UINavigationController <span style="color: #000000;">*</span> nav <span style="color: #000000;">=</span>  <span style="color: #000000;">&#91;</span><span style="color: #000000;">&#91;</span>UINavigationController alloc<span style="color: #000000;">&#93;</span>initWithRootViewController<span style="color: #000000;">:</span><span style="color: #000000;">&#91;</span><span style="color: #000000;">&#91;</span>wordpress_otpViewController alloc<span style="color: #000000;">&#93;</span> initWithNibName<span style="color: #000000;">:</span>@<span style="color: #666666;">&quot;wordpress_otpViewController&quot;</span> bundle<span style="color: #000000;">:</span>nil<span style="color: #000000;">&#93;</span><span style="color: #000000;">&#93;</span>;
-	<span style="color: #000000;">&#91;</span>self.<span style="color: #00eeff;">window</span> addSubview<span style="color: #000000;">:</span>nav.<span style="color: #00eeff;">view</span><span style="color: #000000;">&#93;</span>;
-&nbsp;
-	self.<span style="color: #00eeff;">window</span>.<span style="color: #00eeff;">rootViewController</span> <span style="color: #000000;">=</span> nav;<span style="color: #ff0000;">//self.viewController;</span>
-    <span style="color: #000000;">&#91;</span>self.<span style="color: #00eeff;">window</span> makeKeyAndVisible<span style="color: #000000;">&#93;</span>;
-    <span style="color: #0000ff;">return</span> YES;
-<span style="color: #000000;">&#125;</span>
-&nbsp;
-<span style="color: #ff0000;">//后续函数切换视图</span>
-	configViewController <span style="color: #000000;">*</span> mconfigViewController <span style="color: #000000;">=</span>  <span style="color: #000000;">&#91;</span><span style="color: #000000;">&#91;</span>configViewController alloc<span style="color: #000000;">&#93;</span> initWithNibName<span style="color: #000000;">:</span>@<span style="color: #666666;">&quot;configViewController&quot;</span> bundle<span style="color: #000000;">:</span><span style="color: #000000;">&#91;</span>NSBundle mainBundle<span style="color: #000000;">&#93;</span><span style="color: #000000;">&#93;</span>;
-	mconfigViewController<span style="color: #000000;">-</span>&gt;m_wpViewController <span style="color: #000000;">=</span> self;
-&nbsp;
-	<span style="color: #000000;">&#91;</span>mconfigViewController setShakeHandKeyCFGKey<span style="color: #000000;">:</span>blogname<span style="color: #000000;">&#93;</span>;
-&nbsp;
-<span style="color: #ff0000;">//一定要为根视图控制器，pushViewController才会生效，才能切换。 对应手动弹出，为popViewController</span>
-<span style="color: #ff0000;">//[self.navigationController popViewControllerAnimated:YES]</span>
-	<span style="color: #000000;">&#91;</span>self.<span style="color: #00eeff;">navigationController</span> pushViewController<span style="color: #000000;">:</span>mconfigViewController animated<span style="color: #000000;">:</span>YES<span style="color: #000000;">&#93;</span>;
-&nbsp;
-&nbsp;
-	<span style="color: #000000;">&#91;</span>mconfigViewController release<span style="color: #000000;">&#93;</span>;</pre></td></tr></table></div>
+		<div id="crayon-5037b8c436bac" class="crayon-syntax crayon-theme-classic crayon-font-monaco crayon-os-pc print-yes" data-settings=" scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; float: none; clear: both; ">
+		
+			<div class="crayon-toolbar" data-settings=" mouseover overlay hide delay" style="">
+			<div class="crayon-tools"><span class="crayon-mixed-highlight" title="含多种语言"></span><a class="crayon-nums-button crayon-button" title="显示/隐藏行编号"></a><a class="crayon-copy-button crayon-button" data-text="使用 %s 复制，使用 %s 粘贴。" title="复制代码"></a><a class="crayon-popup-button crayon-button" title="在新窗口中显示代码" onclick="return false;"></a><a class="crayon-plain-button crayon-button" title="纯文本显示代码"></a></div></div>
+			<div class="crayon-info" style=""></div>
+			<div class="crayon-plain-wrap"><textarea wrap="off" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; ">- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    // Override point for customization after application launch.
+	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+	
+//	self.viewController =  [ [wordpress_otpViewController alloc] initWithNibName:@"wordpress_otpViewController" bundle:nil];
 
+	UINavigationController * nav =  [[UINavigationController alloc]initWithRootViewController:[[wordpress_otpViewController alloc] initWithNibName:@"wordpress_otpViewController" bundle:nil]];
+	[self.window addSubview:nav.view];
+	
+	self.window.rootViewController = nav;//self.viewController;
+    [self.window makeKeyAndVisible];
+    return YES;
+}
+
+//后续函数切换视图
+	configViewController * mconfigViewController =  [[configViewController alloc] initWithNibName:@"configViewController" bundle:[NSBundle mainBundle]];
+	mconfigViewController-&gt;m_wpViewController = self;
+ 
+	[mconfigViewController setShakeHandKeyCFGKey:blogname];
+ 
+//一定要为根视图控制器，pushViewController才会生效，才能切换。 对应手动弹出，为popViewController
+//[self.navigationController popViewControllerAnimated:YES]
+	[self.navigationController pushViewController:mconfigViewController animated:YES];
+ 
+ 
+	[mconfigViewController release];</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show" style="">
+					<div class="crayon-nums-content"><div class="crayon-num" style="">1</div><div class="crayon-num crayon-striped-num" style="">2</div><div class="crayon-num" style="">3</div><div class="crayon-num crayon-striped-num" style="">4</div><div class="crayon-num" style="">5</div><div class="crayon-num crayon-striped-num" style="">6</div><div class="crayon-num" style="">7</div><div class="crayon-num crayon-striped-num" style="">8</div><div class="crayon-num" style="">9</div><div class="crayon-num crayon-striped-num" style="">10</div><div class="crayon-num" style="">11</div><div class="crayon-num crayon-striped-num" style="">12</div><div class="crayon-num" style="">13</div><div class="crayon-num crayon-striped-num" style="">14</div><div class="crayon-num" style="">15</div><div class="crayon-num crayon-striped-num" style="">16</div><div class="crayon-num" style="">17</div><div class="crayon-num crayon-striped-num" style="">18</div><div class="crayon-num" style="">19</div><div class="crayon-num crayon-striped-num" style="">20</div><div class="crayon-num" style="">21</div><div class="crayon-num crayon-striped-num" style="">22</div><div class="crayon-num" style="">23</div><div class="crayon-num crayon-striped-num" style="">24</div><div class="crayon-num" style="">25</div><div class="crayon-num crayon-striped-num" style="">26</div><div class="crayon-num" style="">27</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style=""><div class="crayon-line" id="crayon-5037b8c436bac-1" style=""><span class="o">-</span><span class="h"> </span><span class="sy">(</span><span class="t">BOOL</span><span class="sy">)</span><span class="i">application</span><span class="o">:</span><span class="sy">(</span><span class="e ">UIApplication *</span><span class="sy">)</span><span class="e">application </span><span class="i">didFinishLaunchingWithOptions</span><span class="o">:</span><span class="sy">(</span><span class="e ">NSDictionary *</span><span class="sy">)</span><span class="e">launchOptions</span></div><div class="crayon-line crayon-striped-line" id="crayon-5037b8c436bac-2" style=""><span class="sy">{</span></div><div class="crayon-line" id="crayon-5037b8c436bac-3" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="c">// Override point for customization after application launch.</span></div><div class="crayon-line crayon-striped-line" id="crayon-5037b8c436bac-4" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="r">self</span><span class="sy">.</span><span class="v">window</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="sy">[</span><span class="sy">[</span><span class="e">UIWindow </span><span class="i">alloc</span><span class="sy">]</span><span class="h"> </span><span class="i">initWithFrame</span><span class="o">:</span><span class="sy">[</span><span class="sy">[</span><span class="e">UIScreen </span><span class="i">mainScreen</span><span class="sy">]</span><span class="h"> </span><span class="i">bounds</span><span class="sy">]</span><span class="sy">]</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5037b8c436bac-5" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5037b8c436bac-6" style=""><span class="c">//&nbsp;&nbsp;&nbsp;&nbsp;self.viewController =&nbsp;&nbsp;[ [wordpress_otpViewController alloc] initWithNibName:@"wordpress_otpViewController" bundle:nil];</span></div><div class="crayon-line" id="crayon-5037b8c436bac-7" style=""></div><div class="crayon-line crayon-striped-line" id="crayon-5037b8c436bac-8" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="e ">UINavigationController *</span><span class="h"> </span><span class="i">nav</span><span class="h"> </span><span class="o">=</span><span class="h">&nbsp;&nbsp;</span><span class="sy">[</span><span class="sy">[</span><span class="e">UINavigationController </span><span class="i">alloc</span><span class="sy">]</span><span class="i">initWithRootViewController</span><span class="o">:</span><span class="sy">[</span><span class="sy">[</span><span class="e">wordpress_otpViewController </span><span class="i">alloc</span><span class="sy">]</span><span class="h"> </span><span class="i">initWithNibName</span><span class="o">:</span><span class="sy">@</span><span class="s">"wordpress_otpViewController"</span><span class="h"> </span><span class="i">bundle</span><span class="o">:</span><span class="i">nil</span><span class="sy">]</span><span class="sy">]</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5037b8c436bac-9" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">[</span><span class="r">self</span><span class="sy">.</span><span class="e">window </span><span class="i">addSubview</span><span class="o">:</span><span class="i">nav</span><span class="sy">.</span><span class="v">view</span><span class="sy">]</span><span class="sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5037b8c436bac-10" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line" id="crayon-5037b8c436bac-11" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="r">self</span><span class="sy">.</span><span class="v">window</span><span class="sy">.</span><span class="v">rootViewController</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="i">nav</span><span class="sy">;</span><span class="c">//self.viewController;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5037b8c436bac-12" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">[</span><span class="r">self</span><span class="sy">.</span><span class="e">window </span><span class="i">makeKeyAndVisible</span><span class="sy">]</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5037b8c436bac-13" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="st">return</span><span class="h"> </span><span class="i">YES</span><span class="sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5037b8c436bac-14" style=""><span class="sy">}</span></div><div class="crayon-line" id="crayon-5037b8c436bac-15" style=""></div><div class="crayon-line crayon-striped-line" id="crayon-5037b8c436bac-16" style=""><span class="c">//后续函数切换视图</span></div><div class="crayon-line" id="crayon-5037b8c436bac-17" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="e ">configViewController *</span><span class="h"> </span><span class="i">mconfigViewController</span><span class="h"> </span><span class="o">=</span><span class="h">&nbsp;&nbsp;</span><span class="sy">[</span><span class="sy">[</span><span class="e">configViewController </span><span class="i">alloc</span><span class="sy">]</span><span class="h"> </span><span class="i">initWithNibName</span><span class="o">:</span><span class="sy">@</span><span class="s">"configViewController"</span><span class="h"> </span><span class="i">bundle</span><span class="o">:</span><span class="sy">[</span><span class="e">NSBundle </span><span class="i">mainBundle</span><span class="sy">]</span><span class="sy">]</span><span class="sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5037b8c436bac-18" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="i">mconfigViewController</span><span class="o">-&gt;</span><span class="i">m_wpViewController</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="r">self</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5037b8c436bac-19" style=""><span class="h"> </span></div><div class="crayon-line crayon-striped-line" id="crayon-5037b8c436bac-20" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">[</span><span class="e">mconfigViewController </span><span class="i">setShakeHandKeyCFGKey</span><span class="o">:</span><span class="i">blogname</span><span class="sy">]</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5037b8c436bac-21" style=""><span class="h"> </span></div><div class="crayon-line crayon-striped-line" id="crayon-5037b8c436bac-22" style=""><span class="c">//一定要为根视图控制器，pushViewController才会生效，才能切换。 对应手动弹出，为popViewController</span></div><div class="crayon-line" id="crayon-5037b8c436bac-23" style=""><span class="c">//[self.navigationController popViewControllerAnimated:YES]</span></div><div class="crayon-line crayon-striped-line" id="crayon-5037b8c436bac-24" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">[</span><span class="r">self</span><span class="sy">.</span><span class="e">navigationController </span><span class="i">pushViewController</span><span class="o">:</span><span class="e">mconfigViewController </span><span class="i">animated</span><span class="o">:</span><span class="i">YES</span><span class="sy">]</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5037b8c436bac-25" style=""><span class="h"> </span></div><div class="crayon-line crayon-striped-line" id="crayon-5037b8c436bac-26" style=""><span class="h"> </span></div><div class="crayon-line" id="crayon-5037b8c436bac-27" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">[</span><span class="e">mconfigViewController </span><span class="i">release</span><span class="sy">]</span><span class="sy">;</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0127 seconds] -->
 <p>&nbsp;</p>
 					<div class="fixed"></div>
 				</div>
@@ -289,7 +288,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 		<ul id="widgets">
 
 <li class="widget widget_calendar"><h3>Archives</h3><div id="calendar_wrap"><table id="wp-calendar">
-	<caption>2012 年七月</caption>
+	<caption>2012 年八月</caption>
 	<thead>
 	<tr>
 		<th scope="col" title="星期日">日</th>
@@ -304,27 +303,28 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 
 	<tfoot>
 	<tr>
-		<td colspan="3" id="prev"><a href="../date/2012/05/index.html" title="查看 2012 年五月的文章">&laquo; 五</a></td>
+		<td colspan="3" id="prev"><a href="../date/2012/07/index.html" title="查看 2012 年七月的文章">&laquo; 七</a></td>
 		<td class="pad">&nbsp;</td>
 		<td colspan="3" id="next" class="pad">&nbsp;</td>
 	</tr>
 	</tfoot>
 
 	<tbody>
-	<tr><td>1</td><td><a href="../date/2012/07/02/index.html" title="六月随笔">2</a></td><td>3</td><td>4</td><td><a href="../date/2012/07/05/index.html" title="ruby Rspec测试框架cheetsheet">5</a></td><td>6</td><td>7</td>
+	<tr>
+		<td colspan="3" class="pad">&nbsp;</td><td><a href="../date/2012/08/01/index.html" title="配置vim rails集成开发环境">1</a></td><td><a href="../date/2012/08/02/index.html" title="安装ruby1.8.6后，gem错误的解决">2</a></td><td>3</td><td><a href="../date/2012/08/04/index.html" title="There was a problem installing &#8220;Mac OS X&#8221;.Try Reinstalling.">4</a></td>
 	</tr>
 	<tr>
-		<td>8</td><td><a href="../date/2012/07/09/index.html" title="linux下STAF执行失败时的处理">9</a></td><td>10</td><td>11</td><td>12</td><td id="today"><a href="../date/2012/07/13/index.html" title="镜像网站为静态页面到github中">13</a></td><td>14</td>
+		<td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td>
 	</tr>
 	<tr>
-		<td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td>
+		<td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td><a href="../date/2012/08/18/index.html" title="简单提取页面中所有迅雷下载资源链接">18</a></td>
 	</tr>
 	<tr>
-		<td>22</td><td>23</td><td>24</td><td>25</td><td>26</td><td>27</td><td>28</td>
+		<td>19</td><td>20</td><td>21</td><td>22</td><td><a href="../date/2012/08/23/index.html" title="使用python脚本简单切换hosts文件">23</a></td><td>24</td><td id="today">25</td>
 	</tr>
 	<tr>
-		<td>29</td><td>30</td><td>31</td>
-		<td class="pad" colspan="4">&nbsp;</td>
+		<td>26</td><td>27</td><td>28</td><td>29</td><td>30</td><td>31</td>
+		<td class="pad" colspan="1">&nbsp;</td>
 	</tr>
 	</tbody>
 	</table></div></li><li class="widget widget_categories"><h3>分类目录</h3>		<ul>
@@ -332,7 +332,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 </li>
 	<li class="cat-item cat-item-24"><a href="../category/ios-dev/index.html" title="查看 IOSDev 下的所有文章">IOSDev</a>
 </li>
-	<li class="cat-item cat-item-23"><a href="../category/java/index.html" title="查看 java 下的所有文章">java</a>
+	<li class="cat-item cat-item-23"><a href="../category/java/index.html" title="查看 Java 下的所有文章">Java</a>
 </li>
 	<li class="cat-item cat-item-5"><a href="../category/lamp/index.html" title="查看 LAMP 下的所有文章">LAMP</a>
 </li>
@@ -343,6 +343,8 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 	<li class="cat-item cat-item-3"><a href="../category/project/index.html" title="查看 Project 下的所有文章">Project</a>
 </li>
 	<li class="cat-item cat-item-4"><a href="../category/rubytesting/index.html" title="查看 Ruby&amp;Testing 下的所有文章">Ruby&amp;Testing</a>
+</li>
+	<li class="cat-item cat-item-26"><a href="../category/scriptlanguage/index.html" title="查看 脚本语言 下的所有文章">脚本语言</a>
 </li>
 		</ul>
 </li><li class="widget widget_text"><h3>Google Ads</h3>			<div class="textwidget"><script type="text/javascript"><!--
@@ -371,6 +373,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 </li><li class="widget widget_links"><h3>链接表</h3>
 	<ul class='xoxo blogroll'>
 <li><a href="http://blog.csdn.net/Android_Tutor" rel="colleague" title="Android_Tutor的专栏" target="_blank">Android学习系列</a></li>
+<li><a href="http://ihower.tw/rails3/" title="Rails3学习,写得不错!">Rails3学习</a></li>
 <li><a href="http://wpotp.com" rel="me" title="食品找茬网" target="_blank">找茬网</a></li>
 <li><a href="http://www.sz95000.com/" title="深圳长途汽车网上订票，官方网站，这次不会忘记了。。。" target="_blank">深圳长途汽车网上订票</a></li>
 
@@ -430,10 +433,11 @@ var WPGroHo = {"my_hash":""};
 <script type='text/javascript' src='../../wp-content/plugins/jetpack/modules/wpgroho.js?ver=3.4.1'></script>
 	<div style="display:none">
 	</div>
+<script type='text/javascript' src='http://s0.wp.com/wp-content/js/devicepx-jetpack.js?ver=201234'></script>
 
-	<script src="http://stats.wordpress.com/e-201228.js" type="text/javascript"></script>
+	<script src="http://stats.wordpress.com/e-201234.js" type="text/javascript"></script>
 	<script type="text/javascript">
-	st_go({v:'ext',j:'1:1.4.2',blog:'17044931',post:'211'});
+	st_go({v:'ext',j:'1:1.6.1',blog:'17044931',post:'211'});
 	var load_cmc = function(){linktracker_init(17044931,211,2);};
 	if ( typeof addLoadEvent != 'undefined' ) addLoadEvent(load_cmc);
 	else load_cmc();
@@ -453,3 +457,7 @@ var WPGroHo = {"my_hash":""};
 </script> 
 </body>
 </html>
+
+<!-- Dynamic page generated in 0.687 seconds. -->
+<!-- Cached page generated by WP-Super-Cache on 2012-08-25 01:24:20 -->
+<!-- super cache -->

@@ -42,7 +42,15 @@
 
 		<link rel="alternate" type="application/rss+xml" title="Only For Sunshine~ &raquo; C++部分内容练习(复习) 评论 Feed" href="feed/index.html" />
 <link rel='stylesheet' id='jquery.slimbox-css'  href='../../wp-content/plugins/slimbox/stylesheets/jquery.slimbox.css?ver=2.03' type='text/css' media='all' />
+<link rel='stylesheet' id='crayon-style-css'  href='http://imzc.net/wp-content/plugins/crayon-syntax-highlighter/css/style.css?ver=1.10' type='text/css' media='all' />
+<link rel='stylesheet' id='crayon-theme-classic-css'  href='../../wp-content/plugins/crayon-syntax-highlighter/themes/classic/classic.css?ver=1.10' type='text/css' media='all' />
+<link rel='stylesheet' id='crayon-font-monaco-css'  href='../../wp-content/plugins/crayon-syntax-highlighter/fonts/monaco.css?ver=1.10' type='text/css' media='all' />
 <link rel='stylesheet' id='wp-pagenavi-css'  href='../../wp-content/themes/elegant-box/pagenavi-css.css?ver=2.70' type='text/css' media='all' />
+<script type="text/javascript">
+var duoshuoQuery = {"short_name":"imzc","sso":{"login":"http:\/\/imzc.net\/wp-login.php?action=duoshuo_login","logout":"http:\/\/imzc.net\/wp-login.php?action=logout&_wpnonce=7282ea8bf5"},"remote_auth":"W10= f4f952e858c667c08eabc28087d3ef224e0fadb7 1345839413"};
+duoshuoQuery.sso.login += '&redirect_to=' + encodeURIComponent(window.location.href);
+duoshuoQuery.sso.logout += '&redirect_to=' + encodeURIComponent(window.location.href);
+</script>
 <script type='text/javascript' src='../../wp-includes/js/jquery/jquery.js?ver=1.7.2'></script>
 <script type='text/javascript' src='../../wp-content/plugins/slimbox/javascript/jquery.slimbox.js?ver=2.03'></script>
 <script type='text/javascript' src='../../wp-includes/js/json2.js?ver=2011-02-23'></script>
@@ -52,7 +60,11 @@ var live_blogging = {"ajaxurl":"http:\/\/imzc.net\/wp-admin\/admin-ajax.php","up
 /* ]]> */
 </script>
 <script type='text/javascript' src='../../wp-content/plugins/live-blogging/live-blogging.js?ver=3.4.1'></script>
+<script type='text/javascript' src='../../wp-content/plugins/crayon-syntax-highlighter/js/util.js?ver=1.10'></script>
+<script type='text/javascript' src='../../wp-content/plugins/crayon-syntax-highlighter/js/crayon.js?ver=1.10'></script>
+<script type='text/javascript' src='../../wp-content/plugins/crayon-syntax-highlighter/js/jquery.popup.js?ver=1.10'></script>
 <script type='text/javascript' src='../../wp-includes/js/comment-reply.js?ver=3.4.1'></script>
+<script type='text/javascript' src='http://static.duoshuo.com/embed.js'></script>
 <link rel="EditURI" type="application/rsd+xml" title="RSD" href="../../xmlrpc.php?rsd" />
 <link rel="wlwmanifest" type="application/wlwmanifest+xml" href="../../wp-includes/wlwmanifest.xml" /> 
 <link rel='prev' title='Makefile的编写' href='../72/index.html' />
@@ -60,7 +72,7 @@ var live_blogging = {"ajaxurl":"http:\/\/imzc.net\/wp-admin\/admin-ajax.php","up
 <meta name="generator" content="WordPress 3.4.1" />
 <link rel='shortlink' href='http://wp.me/p19waf-o' />
 
-<!-- All in One SEO Pack 1.6.14.5 by Michael Torbert of Semper Fi Web Design[343,406] -->
+<!-- All in One SEO Pack 1.6.14.6 by Michael Torbert of Semper Fi Web Design[343,406] -->
 <meta name="description" content="练习部分有:const关键字,函数指针,内部类,初始化列表, STL vector with iterator 和 for_each 算法." />
 <meta name="keywords" content="c" />
 <link rel="canonical" href="index.html" />
@@ -71,8 +83,6 @@ var live_blogging = {"ajaxurl":"http:\/\/imzc.net\/wp-admin\/admin-ajax.php","up
 		select.slimbox();
 	});
 </script>
-
-<link rel="stylesheet" href="../../wp-content/themes/elegant-box/wp-syntax.css" type="text/css" media="screen" />
 </head>
 
 
@@ -186,501 +196,272 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 <br />	
 					<p>练习部分有:const关键字,函数指针,内部类,初始化列表,</p>
 <p>STL vector with iterator 和 for_each 算法.</p>
-<p>直接看代码,注意看注释.</p>
+<p>直接看代码,注意看注释.</p><!-- Crayon Syntax Highlighter v1.10 -->
 
-<div class="wp_syntax"><table><tr><td class="line_numbers"><pre>1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53
-54
-55
-56
-57
-58
-59
-60
-61
-62
-63
-64
-65
-66
-67
-68
-69
-70
-71
-72
-73
-74
-75
-76
-77
-78
-79
-80
-81
-82
-83
-84
-85
-86
-87
-88
-89
-90
-91
-92
-93
-94
-95
-96
-97
-98
-99
-100
-101
-102
-103
-104
-105
-106
-107
-108
-109
-110
-111
-112
-113
-114
-115
-116
-117
-118
-119
-120
-121
-122
-123
-124
-125
-126
-127
-128
-129
-130
-131
-132
-133
-134
-135
-136
-137
-138
-139
-140
-141
-142
-143
-144
-145
-146
-147
-148
-149
-150
-151
-152
-153
-154
-155
-156
-157
-158
-159
-160
-161
-162
-163
-164
-165
-166
-167
-168
-169
-170
-171
-172
-173
-174
-175
-176
-177
-178
-179
-180
-181
-182
-183
-184
-185
-186
-187
-188
-189
-190
-191
-192
-193
-194
-195
-196
-197
-198
-199
-200
-201
-202
-203
-204
-205
-206
-207
-208
-209
-210
-211
-212
-213
-214
-215
-216
-217
-218
-219
-220
-221
-222
-223
-224
-225
-226
-227
-228
-229
-230
-231
-232
-233
-234
-235
-236
-237
-238
-239
-240
-241
-242
-243
-244
-245
-246
-</pre></td><td class="code"><pre class="c" style="font-family:monospace;"><span style="color: #666666; font-style: italic;">//VC2005,dev-cpp 4.9.9.2(gcc)下编译通过.</span>
-&nbsp;
-﻿<span style="color: #666666; font-style: italic;">//main.cpp  </span>
- <span style="color: #339933;">#include&lt;iostream&gt;  </span>
- <span style="color: #339933;">#include &lt;string&gt;  </span>
- <span style="color: #339933;">#include &lt;vector&gt;  </span>
- <span style="color: #339933;">#include &lt;algorithm&gt;//for_each  </span>
-&nbsp;
- using namespace std<span style="color: #339933;">;</span>  
-&nbsp;
- <span style="color: #993333;">void</span> prints<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- <span style="color: #993333;">void</span> copy<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- <span style="color: #993333;">void</span> <span style="color: #009900;">&#40;</span><span style="color: #339933;">*</span>pFun<span style="color: #009900;">&#91;</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #339933;">=</span> <span style="color: #009900;">&#123;</span>prints<span style="color: #339933;">,</span> copy<span style="color: #009900;">&#125;</span><span style="color: #339933;">;</span><span style="color: #666666; font-style: italic;">//定义一个函数指针数组  </span>
-&nbsp;
- <span style="color: #666666; font-style: italic;">//以下为for_each第三个参数的定义  </span>
- template<span style="color: #339933;">&lt;</span>class T<span style="color: #339933;">&gt;</span>  
+		<div id="crayon-5037e13505f25" class="crayon-syntax crayon-theme-classic crayon-font-monaco crayon-os-pc print-yes" data-settings=" scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; float: none; clear: both; ">
+		
+			<div class="crayon-toolbar" data-settings=" mouseover overlay hide delay" style="">
+			<div class="crayon-tools"><span class="crayon-mixed-highlight" title="含多种语言"></span><a class="crayon-nums-button crayon-button" title="显示/隐藏行编号"></a><a class="crayon-copy-button crayon-button" data-text="使用 %s 复制，使用 %s 粘贴。" title="复制代码"></a><a class="crayon-popup-button crayon-button" title="在新窗口中显示代码" onclick="return false;"></a><a class="crayon-plain-button crayon-button" title="纯文本显示代码"></a><span class="crayon-language">C</span></div></div>
+			<div class="crayon-info" style=""></div>
+			<div class="crayon-plain-wrap"><textarea wrap="off" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; ">//VC2005,dev-cpp 4.9.9.2(gcc)下编译通过.
+
+﻿//main.cpp  
+ #include&amp;lt;iostream&amp;gt;  
+ #include &amp;lt;string&amp;gt;  
+ #include &amp;lt;vector&amp;gt;  
+ #include &amp;lt;algorithm&amp;gt;//for_each  
+ 
+ using namespace std;  
+ 
+ void prints();  
+ void copy();  
+ void (*pFun[])() = {prints, copy};//定义一个函数指针数组  
+ 
+ //以下为for_each第三个参数的定义  
+ template&amp;lt;class T&amp;gt;  
  class mFun  
- <span style="color: #009900;">&#123;</span>  
- private<span style="color: #339933;">:</span>  
- T fa<span style="color: #339933;">;</span>  
- public<span style="color: #339933;">:</span>  
- mFun<span style="color: #009900;">&#40;</span><span style="color: #993333;">const</span> T <span style="color: #339933;">&amp;</span>name<span style="color: #009900;">&#41;</span><span style="color: #339933;">:</span>fa<span style="color: #009900;">&#40;</span>name<span style="color: #009900;">&#41;</span>  
- <span style="color: #009900;">&#123;</span> <span style="color: #009900;">&#125;</span>  
-&nbsp;
- <span style="color: #993333;">void</span> operator<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#40;</span>T <span style="color: #339933;">&amp;</span>name<span style="color: #009900;">&#41;</span><span style="color: #993333;">const</span>  
- <span style="color: #009900;">&#123;</span>  
- name<span style="color: #339933;">*=</span>fa<span style="color: #339933;">;</span>  
- <span style="color: #009900;">&#125;</span>  
- <span style="color: #009900;">&#125;</span><span style="color: #339933;">;</span>   
-&nbsp;
- <span style="color: #666666; font-style: italic;">//以下为双向链表的定义</span>
- <span style="color: #666666; font-style: italic;">//暂时只实现了简单的加入和删除,主要是体现一个思想. </span>
- template<span style="color: #339933;">&lt;</span>class Type<span style="color: #339933;">&gt;</span>  
+ {  
+ private:  
+ T fa;  
+ public:  
+ mFun(const T &amp;amp;name):fa(name)  
+ { }  
+ 
+ void operator()(T &amp;amp;name)const  
+ {  
+ name*=fa;  
+ }  
+ };   
+ 
+ //以下为双向链表的定义
+ //暂时只实现了简单的加入和删除,主要是体现一个思想. 
+ template&amp;lt;class Type&amp;gt;  
  class LIST  
- <span style="color: #009900;">&#123;</span>  
- public<span style="color: #339933;">:</span>  
- <span style="color: #666666; font-style: italic;">//无参数构造函数.  </span>
- LIST<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>  
- head <span style="color: #339933;">=</span> NULL<span style="color: #339933;">;</span>  
- tail <span style="color: #339933;">=</span>NULL<span style="color: #339933;">;</span>  
- count <span style="color: #339933;">=</span> <span style="color: #0000dd;">0</span><span style="color: #339933;">;</span>  
- <span style="color: #009900;">&#125;</span>  
-&nbsp;
- <span style="color: #666666; font-style: italic;">//前插入式双向链表  </span>
- <span style="color: #993333;">void</span> Add<span style="color: #009900;">&#40;</span>Type d<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>  
- <span style="color: #666666; font-style: italic;">//注意处理空链表和有数据的链表时添加结点的问题  </span>
- <span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span>head<span style="color: #339933;">==</span>NULL<span style="color: #009900;">&#41;</span>  
- <span style="color: #009900;">&#123;</span>  
- head <span style="color: #339933;">=</span> new _node<span style="color: #339933;">&lt;</span>Type<span style="color: #339933;">&gt;</span><span style="color: #009900;">&#40;</span>d<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- head<span style="color: #339933;">-&gt;</span>setNext<span style="color: #009900;">&#40;</span>head<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- head<span style="color: #339933;">-&gt;</span>setPrev<span style="color: #009900;">&#40;</span>head<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- tail <span style="color: #339933;">=</span> head<span style="color: #339933;">;</span>  
- <span style="color: #009900;">&#125;</span><span style="color: #b1b100;">else</span>  
- <span style="color: #009900;">&#123;</span>  
- _node<span style="color: #339933;">&lt;</span>Type<span style="color: #339933;">&gt;</span> <span style="color: #339933;">*</span> temp <span style="color: #339933;">=</span> new _node<span style="color: #339933;">&lt;</span>Type<span style="color: #339933;">&gt;</span><span style="color: #009900;">&#40;</span>d<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- temp<span style="color: #339933;">-&gt;</span>setPrev<span style="color: #009900;">&#40;</span>head<span style="color: #339933;">-&gt;</span>Prev<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- temp<span style="color: #339933;">-&gt;</span>setNext<span style="color: #009900;">&#40;</span>head<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- head<span style="color: #339933;">-&gt;</span>setPrev<span style="color: #009900;">&#40;</span>temp<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- tail<span style="color: #339933;">-&gt;</span>setNext<span style="color: #009900;">&#40;</span>temp<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- head <span style="color: #339933;">=</span> temp<span style="color: #339933;">;</span>  
- <span style="color: #009900;">&#125;</span>  
- count<span style="color: #339933;">++;</span>  
- <span style="color: #009900;">&#125;</span>  
-&nbsp;
- <span style="color: #666666; font-style: italic;">//删除数据为d的节点  </span>
- <span style="color: #993333;">void</span> Delete<span style="color: #009900;">&#40;</span>Type d<span style="color: #009900;">&#41;</span>  
- <span style="color: #009900;">&#123;</span>  
- <span style="color: #993333;">int</span> iPos<span style="color: #339933;">=</span>count<span style="color: #339933;">;</span>  
- <span style="color: #b1b100;">for</span><span style="color: #009900;">&#40;</span>_node<span style="color: #339933;">&lt;</span>Type<span style="color: #339933;">&gt;</span> <span style="color: #339933;">*</span> p <span style="color: #339933;">=</span> head<span style="color: #339933;">;</span> iPos<span style="color: #339933;">&gt;</span><span style="color: #0000dd;">0</span><span style="color: #339933;">;</span> p<span style="color: #339933;">=</span>p<span style="color: #339933;">-&gt;</span>Next<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span>  
- <span style="color: #009900;">&#123;</span>  
- <span style="color: #339933;">--</span>iPos<span style="color: #339933;">;</span>  
- <span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span>p<span style="color: #339933;">-&gt;</span>Data<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">==</span>d<span style="color: #009900;">&#41;</span>  
- <span style="color: #009900;">&#123;</span>  
- _node<span style="color: #339933;">&lt;</span>Type<span style="color: #339933;">&gt;</span> <span style="color: #339933;">*</span> tn<span style="color: #339933;">=</span> p<span style="color: #339933;">-&gt;</span>Next<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- _node<span style="color: #339933;">&lt;</span>Type<span style="color: #339933;">&gt;</span> <span style="color: #339933;">*</span> tp<span style="color: #339933;">=</span> p<span style="color: #339933;">-&gt;</span>Prev<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- tn<span style="color: #339933;">-&gt;</span>setPrev<span style="color: #009900;">&#40;</span>tp<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- tp<span style="color: #339933;">-&gt;</span>setNext<span style="color: #009900;">&#40;</span>tn<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- <span style="color: #666666; font-style: italic;">//如果是头结点,则还应该将头结点head移位  </span>
- <span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span>p<span style="color: #339933;">==</span>head<span style="color: #009900;">&#41;</span>  
- head<span style="color: #339933;">=</span>head<span style="color: #339933;">-&gt;</span>Next<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- count<span style="color: #339933;">--;</span>  
- delete p<span style="color: #339933;">;</span>  
- <span style="color: #b1b100;">return</span> <span style="color: #339933;">;</span>  
- <span style="color: #009900;">&#125;</span>  
- <span style="color: #009900;">&#125;</span><span style="color: #666666; font-style: italic;">//end for  </span>
-&nbsp;
- <span style="color: #009900;">&#125;</span>  
-&nbsp;
- <span style="color: #666666; font-style: italic;">//打印所有的节点  </span>
- <span style="color: #993333;">void</span> PrintAll<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #993333;">const</span>  
- <span style="color: #009900;">&#123;</span>  
- <span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span>head<span style="color: #339933;">!=</span>NULL<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>  
- cout<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;all data:&quot;</span><span style="color: #339933;">&lt;&lt;</span>endl<span style="color: #339933;">;</span>  
- <span style="color: #993333;">int</span> iPos<span style="color: #339933;">=</span>count<span style="color: #339933;">;</span>  
- <span style="color: #b1b100;">for</span><span style="color: #009900;">&#40;</span>_node<span style="color: #339933;">&lt;</span>Type<span style="color: #339933;">&gt;</span> <span style="color: #339933;">*</span> p <span style="color: #339933;">=</span> head<span style="color: #339933;">;</span>iPos<span style="color: #339933;">&gt;</span><span style="color: #0000dd;">0</span> <span style="color: #339933;">;</span>p<span style="color: #339933;">=</span> p<span style="color: #339933;">-&gt;</span>Next<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#41;</span>  
- <span style="color: #009900;">&#123;</span>  
- <span style="color: #339933;">--</span>iPos<span style="color: #339933;">;</span>  
- cout<span style="color: #339933;">&lt;&lt;</span>hex<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;0x&quot;</span><span style="color: #339933;">&lt;&lt;</span>p<span style="color: #339933;">-&gt;</span>Prev<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;-&lt;&quot;</span><span style="color: #339933;">&lt;&lt;</span>p<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;&gt;-&quot;</span><span style="color: #339933;">&lt;&lt;</span>p<span style="color: #339933;">-&gt;</span>Next<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;:&quot;</span><span style="color: #339933;">&lt;&lt;</span>dec<span style="color: #339933;">&lt;&lt;</span>p<span style="color: #339933;">-&gt;</span>Data<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">&lt;&lt;</span>endl<span style="color: #339933;">;</span>  
- <span style="color: #009900;">&#125;</span>  
- cout<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;-----end-----&quot;</span><span style="color: #339933;">&lt;&lt;</span>endl<span style="color: #339933;">;</span>  
- <span style="color: #009900;">&#125;</span>  
- <span style="color: #009900;">&#125;</span>  
- virtual ~LIST<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>  
- <span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span>head<span style="color: #339933;">!=</span>NULL<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>  
- <span style="color: #993333;">int</span> iPos <span style="color: #339933;">=</span> count<span style="color: #339933;">;</span>  
- <span style="color: #b1b100;">for</span><span style="color: #009900;">&#40;</span>_node<span style="color: #339933;">&lt;</span>Type<span style="color: #339933;">&gt;</span> <span style="color: #339933;">*</span> p <span style="color: #339933;">=</span> head<span style="color: #339933;">;</span>iPos<span style="color: #339933;">&gt;</span><span style="color: #0000dd;">0</span><span style="color: #339933;">;</span><span style="color: #009900;">&#41;</span>  
- <span style="color: #009900;">&#123;</span>  
- <span style="color: #339933;">--</span>iPos<span style="color: #339933;">;</span>  
- _node<span style="color: #339933;">&lt;</span>Type<span style="color: #339933;">&gt;</span> <span style="color: #339933;">*</span> t <span style="color: #339933;">=</span> p<span style="color: #339933;">;</span>  
- p<span style="color: #339933;">=</span> p<span style="color: #339933;">-&gt;</span>Next<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- delete t<span style="color: #339933;">;</span>  
- <span style="color: #009900;">&#125;</span>  
- head <span style="color: #339933;">=</span> NULL<span style="color: #339933;">;</span>  
- tail    <span style="color: #339933;">=</span> NULL<span style="color: #339933;">;</span>  
- count <span style="color: #339933;">=</span> <span style="color: #0000dd;">0</span><span style="color: #339933;">;</span>  
- <span style="color: #009900;">&#125;</span>  
- cout<span style="color: #339933;">&lt;&lt;</span>endl<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;list deleted!&quot;</span><span style="color: #339933;">&lt;&lt;</span>endl<span style="color: #339933;">;</span>  
- <span style="color: #009900;">&#125;</span>  
- protected<span style="color: #339933;">:</span>  
- private<span style="color: #339933;">:</span>  
- <span style="color: #666666; font-style: italic;">//内部类,由于_node仅仅在LIST类中使用,故无必要定义至外部;</span>
- <span style="color: #666666; font-style: italic;">//可以将_node所有成员设置为public,这样,便不必有成员函数了,</span>
- <span style="color: #666666; font-style: italic;">//在封装和暴露中间取个平衡点即可,不必死守规则.</span>
- template<span style="color: #339933;">&lt;</span>class T<span style="color: #339933;">&gt;</span>  
+ {  
+ public:  
+ //无参数构造函数.  
+ LIST(){  
+ head = NULL;  
+ tail =NULL;  
+ count = 0;  
+ }  
+ 
+ //前插入式双向链表  
+ void Add(Type d){  
+ //注意处理空链表和有数据的链表时添加结点的问题  
+ if(head==NULL)  
+ {  
+ head = new _node&amp;lt;Type&amp;gt;(d);  
+ head-&amp;gt;setNext(head);  
+ head-&amp;gt;setPrev(head);  
+ tail = head;  
+ }else  
+ {  
+ _node&amp;lt;Type&amp;gt; * temp = new _node&amp;lt;Type&amp;gt;(d);  
+ temp-&amp;gt;setPrev(head-&amp;gt;Prev());  
+ temp-&amp;gt;setNext(head);  
+ head-&amp;gt;setPrev(temp);  
+ tail-&amp;gt;setNext(temp);  
+ head = temp;  
+ }  
+ count++;  
+ }  
+ 
+ //删除数据为d的节点  
+ void Delete(Type d)  
+ {  
+ int iPos=count;  
+ for(_node&amp;lt;Type&amp;gt; * p = head; iPos&amp;gt;0; p=p-&amp;gt;Next())  
+ {  
+ --iPos;  
+ if(p-&amp;gt;Data()==d)  
+ {  
+ _node&amp;lt;Type&amp;gt; * tn= p-&amp;gt;Next();  
+ _node&amp;lt;Type&amp;gt; * tp= p-&amp;gt;Prev();  
+ tn-&amp;gt;setPrev(tp);  
+ tp-&amp;gt;setNext(tn);  
+ //如果是头结点,则还应该将头结点head移位  
+ if(p==head)  
+ head=head-&amp;gt;Next();  
+ count--;  
+ delete p;  
+ return ;  
+ }  
+ }//end for  
+ 
+ }  
+ 
+ //打印所有的节点  
+ void PrintAll()const  
+ {  
+ if(head!=NULL){  
+ cout&amp;lt;&amp;lt;"all data:"&amp;lt;&amp;lt;endl;  
+ int iPos=count;  
+ for(_node&amp;lt;Type&amp;gt; * p = head;iPos&amp;gt;0 ;p= p-&amp;gt;Next() )  
+ {  
+ --iPos;  
+ cout&amp;lt;&amp;lt;hex&amp;lt;&amp;lt;"0x"&amp;lt;&amp;lt;p-&amp;gt;Prev()&amp;lt;&amp;lt;"-&amp;lt;"&amp;lt;&amp;lt;p&amp;lt;&amp;lt;"&amp;gt;-"&amp;lt;&amp;lt;p-&amp;gt;Next()&amp;lt;&amp;lt;":"&amp;lt;&amp;lt;dec&amp;lt;&amp;lt;p-&amp;gt;Data()&amp;lt;&amp;lt;endl;  
+ }  
+ cout&amp;lt;&amp;lt;"-----end-----"&amp;lt;&amp;lt;endl;  
+ }  
+ }  
+ virtual ~LIST(){  
+ if(head!=NULL){  
+ int iPos = count;  
+ for(_node&amp;lt;Type&amp;gt; * p = head;iPos&amp;gt;0;)  
+ {  
+ --iPos;  
+ _node&amp;lt;Type&amp;gt; * t = p;  
+ p= p-&amp;gt;Next();  
+ delete t;  
+ }  
+ head = NULL;  
+ tail    = NULL;  
+ count = 0;  
+ }  
+ cout&amp;lt;&amp;lt;endl&amp;lt;&amp;lt;"list deleted!"&amp;lt;&amp;lt;endl;  
+ }  
+ protected:  
+ private:  
+ //内部类,由于_node仅仅在LIST类中使用,故无必要定义至外部;
+ //可以将_node所有成员设置为public,这样,便不必有成员函数了,
+ //在封装和暴露中间取个平衡点即可,不必死守规则.
+ template&amp;lt;class T&amp;gt;  
  class _node  
- <span style="color: #009900;">&#123;</span>  
- public<span style="color: #339933;">:</span>  
- _node<span style="color: #009900;">&#40;</span>T d<span style="color: #009900;">&#41;</span><span style="color: #339933;">:</span>_data<span style="color: #009900;">&#40;</span>d<span style="color: #009900;">&#41;</span>  
- <span style="color: #009900;">&#123;</span> 
- <span style="color: #666666; font-style: italic;">//通过初始化列表来初始化_data,这样效率高.</span>
- next <span style="color: #339933;">=</span> NULL<span style="color: #339933;">;</span>  
- prev <span style="color: #339933;">=</span> NULL<span style="color: #339933;">;</span>  
- <span style="color: #009900;">&#125;</span>  
- T <span style="color: #339933;">&amp;</span> Data<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>  
- <span style="color: #009900;">&#123;</span>  
- <span style="color: #b1b100;">return</span> _data<span style="color: #339933;">;</span>  
- <span style="color: #009900;">&#125;</span>  
-&nbsp;
- <span style="color: #993333;">void</span> setPrev<span style="color: #009900;">&#40;</span>_node <span style="color: #339933;">*</span> pr<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>  
- prev <span style="color: #339933;">=</span> pr<span style="color: #339933;">;</span>  
- <span style="color: #009900;">&#125;</span>  
-&nbsp;
- _node <span style="color: #339933;">*</span> Prev<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>  
- <span style="color: #009900;">&#123;</span>  
- <span style="color: #b1b100;">return</span> prev<span style="color: #339933;">;</span>  
- <span style="color: #009900;">&#125;</span>  
-&nbsp;
-&nbsp;
- <span style="color: #993333;">void</span> setNext<span style="color: #009900;">&#40;</span>_node <span style="color: #339933;">*</span> n<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>  
- next <span style="color: #339933;">=</span> n<span style="color: #339933;">;</span>  
- <span style="color: #009900;">&#125;</span>  
-&nbsp;
- _node <span style="color: #339933;">*</span> Next<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>  
- <span style="color: #009900;">&#123;</span>  
- <span style="color: #b1b100;">return</span> next<span style="color: #339933;">;</span>  
- <span style="color: #009900;">&#125;</span>  
-&nbsp;
-&nbsp;
- private<span style="color: #339933;">:</span>  
- _node <span style="color: #339933;">*</span> next<span style="color: #339933;">;</span>  
- _node <span style="color: #339933;">*</span> prev<span style="color: #339933;">;</span>  
- T _data<span style="color: #339933;">;</span>  
- <span style="color: #009900;">&#125;</span><span style="color: #339933;">;</span>  
- <span style="color: #993333;">unsigned</span> <span style="color: #993333;">int</span> count<span style="color: #339933;">;</span>  
- _node<span style="color: #339933;">&lt;</span>Type<span style="color: #339933;">&gt;</span> <span style="color: #339933;">*</span> head<span style="color: #339933;">;</span><span style="color: #666666; font-style: italic;">//头结点  </span>
- _node<span style="color: #339933;">&lt;</span>Type<span style="color: #339933;">&gt;</span> <span style="color: #339933;">*</span> tail<span style="color: #339933;">;</span><span style="color: #666666; font-style: italic;">//尾结点  </span>
- <span style="color: #009900;">&#125;</span><span style="color: #339933;">;</span>  
-&nbsp;
- <span style="color: #993333;">int</span> main<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>  
- <span style="color: #009900;">&#123;</span>     
- cout<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;----------------------------------------------------------------&quot;</span><span style="color: #339933;">&lt;&lt;</span>endl<span style="color: #339933;">;</span>   
- cout<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;const关键字练习:&quot;</span><span style="color: #339933;">&lt;&lt;</span>endl<span style="color: #339933;">;</span>   
- <span style="color: #993333;">const</span> <span style="color: #993333;">char</span> <span style="color: #339933;">*</span>p1  <span style="color: #339933;">=</span> <span style="color: #ff0000;">&quot;Hello,你好.&quot;</span><span style="color: #339933;">;</span><span style="color: #666666; font-style: italic;">//p1可以改变,字符串内容不可改变  </span>
- <span style="color: #993333;">char</span> <span style="color: #339933;">*</span> <span style="color: #993333;">const</span> p2 <span style="color: #339933;">=</span> <span style="color: #ff0000;">&quot;imzc&quot;</span><span style="color: #339933;">;</span><span style="color: #666666; font-style: italic;">//p2不可改变,但是字符串内容可以  </span>
- <span style="color: #993333;">const</span> <span style="color: #993333;">char</span> <span style="color: #339933;">*</span> <span style="color: #993333;">const</span> p3  <span style="color: #339933;">=</span> <span style="color: #ff0000;">&quot;this is p3.&quot;</span><span style="color: #339933;">;</span><span style="color: #666666; font-style: italic;">//都不可改变  </span>
- <span style="color: #993333;">char</span> <span style="color: #339933;">*</span> t <span style="color: #339933;">=</span> new <span style="color: #993333;">char</span><span style="color: #009900;">&#91;</span><span style="color: #0000dd;">30</span><span style="color: #009900;">&#93;</span><span style="color: #339933;">;</span> 
- <span style="color: #666666; font-style: italic;">//只有通过动态分配或者char p[30]这种形式的,指向的内容才可以改变 </span>
- strcpy<span style="color: #009900;">&#40;</span>t<span style="color: #339933;">,</span>p1<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- p1<span style="color: #339933;">++</span> <span style="color: #339933;">;</span>   
- t<span style="color: #009900;">&#91;</span><span style="color: #0000dd;">1</span><span style="color: #009900;">&#93;</span><span style="color: #339933;">=</span><span style="color: #ff0000;">'a'</span><span style="color: #339933;">;</span>  
- cout<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;p1:&quot;</span><span style="color: #339933;">&lt;&lt;</span>p1<span style="color: #339933;">&lt;&lt;</span>endl<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;p2:&quot;</span><span style="color: #339933;">&lt;&lt;</span>p2<span style="color: #339933;">&lt;&lt;</span>endl<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;p3:&quot;</span><span style="color: #339933;">&lt;&lt;</span>p3<span style="color: #339933;">&lt;&lt;</span>endl<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;t:&quot;</span><span style="color: #339933;">&lt;&lt;</span>t<span style="color: #339933;">&lt;&lt;</span>endl<span style="color: #339933;">;</span>  
- delete <span style="color: #009900;">&#91;</span><span style="color: #009900;">&#93;</span> t<span style="color: #339933;">;</span>  
- cout<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;----------------------------------------------------------------&quot;</span><span style="color: #339933;">&lt;&lt;</span>endl<span style="color: #339933;">;</span>  
- cout<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;函数指针练习:&quot;</span><span style="color: #339933;">&lt;&lt;</span>endl<span style="color: #339933;">;</span>   
- cout<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;&gt;&quot;</span><span style="color: #339933;">;</span>   
- <span style="color: #993333;">int</span> index<span style="color: #339933;">=</span><span style="color: #0000dd;">0</span><span style="color: #339933;">;</span>  
- cin <span style="color: #339933;">&gt;&gt;</span>index<span style="color: #339933;">;</span>  
- <span style="color: #b1b100;">do</span><span style="color: #009900;">&#123;</span>   
- <span style="color: #b1b100;">if</span><span style="color: #009900;">&#40;</span>index<span style="color: #339933;">&gt;</span><span style="color: #0000dd;">2</span><span style="color: #339933;">||</span>index<span style="color: #339933;">&lt;=</span><span style="color: #0000dd;">0</span><span style="color: #009900;">&#41;</span>  
- <span style="color: #009900;">&#123;</span>  
- cout<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;Only has two function!1,prints;2,copy.&quot;</span><span style="color: #339933;">&lt;&lt;</span>endl<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;&gt;&quot;</span><span style="color: #339933;">;</span>  
- cin<span style="color: #339933;">&gt;&gt;</span>index<span style="color: #339933;">;</span>  
- <span style="color: #009900;">&#125;</span>  
- <span style="color: #b1b100;">else</span>  
- <span style="color: #009900;">&#123;</span>  
- pFun<span style="color: #009900;">&#91;</span>index<span style="color: #339933;">-</span><span style="color: #0000dd;">1</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- cout<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;return to main.&quot;</span><span style="color: #339933;">&lt;&lt;</span>endl<span style="color: #339933;">;</span>  
- <span style="color: #009900;">&#125;</span>  
- <span style="color: #009900;">&#125;</span> <span style="color: #b1b100;">while</span> <span style="color: #009900;">&#40;</span>index<span style="color: #339933;">&gt;</span><span style="color: #0000dd;">2</span><span style="color: #339933;">||</span>index<span style="color: #339933;">&lt;=</span><span style="color: #0000dd;">0</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- cout<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;----------------------------------------------------------------&quot;</span><span style="color: #339933;">&lt;&lt;</span>endl<span style="color: #339933;">;</span>  
- cout<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;双向链表练习:&quot;</span><span style="color: #339933;">&lt;&lt;</span>endl<span style="color: #339933;">;</span>  
- LIST<span style="color: #339933;">&lt;</span>string<span style="color: #339933;">&gt;</span> li<span style="color: #339933;">;</span>  
- li.<span style="color: #202020;">Add</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;hello&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- li.<span style="color: #202020;">Add</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;see&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- li.<span style="color: #202020;">Add</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;yes&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- li.<span style="color: #202020;">Add</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;no&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- li.<span style="color: #202020;">Add</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;3qs&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- li.<span style="color: #202020;">PrintAll</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- cout<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;Delete: <span style="color: #000099; font-weight: bold;">\&quot;</span>no<span style="color: #000099; font-weight: bold;">\&quot;</span>string.&quot;</span><span style="color: #339933;">&lt;&lt;</span>endl<span style="color: #339933;">;</span>  
- li.<span style="color: #202020;">Delete</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;no&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- li.<span style="color: #202020;">PrintAll</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- cout<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;----------------------------------------------------------------&quot;</span><span style="color: #339933;">&lt;&lt;</span>endl<span style="color: #339933;">;</span>  
- cout<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;for_each 实例:&quot;</span><span style="color: #339933;">&lt;&lt;</span>endl<span style="color: #339933;">;</span>  
- vector<span style="color: #339933;">&lt;</span>int<span style="color: #339933;">&gt;</span> v<span style="color: #339933;">;</span>  
- v.<span style="color: #202020;">push_back</span><span style="color: #009900;">&#40;</span><span style="color: #0000dd;">12</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- <span style="color: #b1b100;">for</span> <span style="color: #009900;">&#40;</span><span style="color: #993333;">int</span> i<span style="color: #339933;">=</span><span style="color: #0000dd;">0</span><span style="color: #339933;">;</span>i<span style="color: #339933;">&lt;</span><span style="color: #0000dd;">100</span><span style="color: #339933;">;</span>i<span style="color: #339933;">+=</span><span style="color: #0000dd;">10</span><span style="color: #009900;">&#41;</span>  
- <span style="color: #009900;">&#123;</span>  
- v.<span style="color: #202020;">push_back</span><span style="color: #009900;">&#40;</span>i<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- <span style="color: #009900;">&#125;</span>  
- cout<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;原始向量:&quot;</span><span style="color: #339933;">;</span>  
- <span style="color: #b1b100;">for</span> <span style="color: #009900;">&#40;</span>vector<span style="color: #339933;">&lt;</span>int<span style="color: #339933;">&gt;::</span><span style="color: #202020;">iterator</span> v1<span style="color: #339933;">=</span>v.<span style="color: #202020;">begin</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>v1<span style="color: #339933;">!=</span>v.<span style="color: #202020;">end</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>v1<span style="color: #339933;">++</span><span style="color: #009900;">&#41;</span>  
- <span style="color: #009900;">&#123;</span>  
- cout<span style="color: #339933;">&lt;&lt;*</span><span style="color: #009900;">&#40;</span>v1<span style="color: #009900;">&#41;</span><span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot; &quot;</span><span style="color: #339933;">;</span>  
- <span style="color: #009900;">&#125;</span>  
- cout<span style="color: #339933;">&lt;&lt;</span>endl<span style="color: #339933;">;</span>  
- for_each <span style="color: #009900;">&#40;</span> v.<span style="color: #202020;">begin</span> <span style="color: #009900;">&#40;</span> <span style="color: #009900;">&#41;</span> <span style="color: #339933;">,</span> v.<span style="color: #202020;">end</span> <span style="color: #009900;">&#40;</span> <span style="color: #009900;">&#41;</span> <span style="color: #339933;">,</span> mFun<span style="color: #339933;">&lt;</span>int<span style="color: #339933;">&gt;</span> <span style="color: #009900;">&#40;</span> <span style="color: #0000dd;">12</span> <span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  
- cout<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;for_each-&gt;add(-2):&quot;</span><span style="color: #339933;">;</span>  
- <span style="color: #b1b100;">for</span> <span style="color: #009900;">&#40;</span>vector<span style="color: #339933;">&lt;</span>int<span style="color: #339933;">&gt;::</span><span style="color: #202020;">iterator</span> v1<span style="color: #339933;">=</span>v.<span style="color: #202020;">begin</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>v1<span style="color: #339933;">!=</span>v.<span style="color: #202020;">end</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>v1<span style="color: #339933;">++</span><span style="color: #009900;">&#41;</span>  
- <span style="color: #009900;">&#123;</span>  
- cout<span style="color: #339933;">&lt;&lt;*</span><span style="color: #009900;">&#40;</span>v1<span style="color: #009900;">&#41;</span><span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot; &quot;</span><span style="color: #339933;">;</span>  
- <span style="color: #009900;">&#125;</span>  
- cout<span style="color: #339933;">&lt;&lt;</span>endl<span style="color: #339933;">;</span>   
-&nbsp;
- <span style="color: #b1b100;">return</span> <span style="color: #0000dd;">0</span><span style="color: #339933;">;</span>  
-&nbsp;
- <span style="color: #009900;">&#125;</span>  
-&nbsp;
- <span style="color: #993333;">void</span> prints<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>  
- <span style="color: #009900;">&#123;</span>  
- cout<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;prints() function&quot;</span><span style="color: #339933;">&lt;&lt;</span>endl<span style="color: #339933;">;</span>  
- <span style="color: #009900;">&#125;</span>  
-&nbsp;
- <span style="color: #993333;">void</span> copy<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>  
- <span style="color: #009900;">&#123;</span>  
- cout<span style="color: #339933;">&lt;&lt;</span><span style="color: #ff0000;">&quot;copy function&quot;</span><span style="color: #339933;">&lt;&lt;</span>endl<span style="color: #339933;">;</span>  
- <span style="color: #009900;">&#125;</span></pre></td></tr></table></div>
-
+ {  
+ public:  
+ _node(T d):_data(d)  
+ { 
+ //通过初始化列表来初始化_data,这样效率高.
+ next = NULL;  
+ prev = NULL;  
+ }  
+ T &amp;amp; Data()  
+ {  
+ return _data;  
+ }  
+ 
+ void setPrev(_node * pr){  
+ prev = pr;  
+ }  
+ 
+ _node * Prev()  
+ {  
+ return prev;  
+ }  
+ 
+ 
+ void setNext(_node * n){  
+ next = n;  
+ }  
+ 
+ _node * Next()  
+ {  
+ return next;  
+ }  
+ 
+ 
+ private:  
+ _node * next;  
+ _node * prev;  
+ T _data;  
+ };  
+ unsigned int count;  
+ _node&amp;lt;Type&amp;gt; * head;//头结点  
+ _node&amp;lt;Type&amp;gt; * tail;//尾结点  
+ };  
+ 
+ int main()  
+ {     
+ cout&amp;lt;&amp;lt;"----------------------------------------------------------------"&amp;lt;&amp;lt;endl;   
+ cout&amp;lt;&amp;lt;"const关键字练习:"&amp;lt;&amp;lt;endl;   
+ const char *p1  = "Hello,你好.";//p1可以改变,字符串内容不可改变  
+ char * const p2 = "imzc";//p2不可改变,但是字符串内容可以  
+ const char * const p3  = "this is p3.";//都不可改变  
+ char * t = new char[30]; 
+ //只有通过动态分配或者char p[30]这种形式的,指向的内容才可以改变 
+ strcpy(t,p1);  
+ p1++ ;   
+ t[1]='a';  
+ cout&amp;lt;&amp;lt;"p1:"&amp;lt;&amp;lt;p1&amp;lt;&amp;lt;endl&amp;lt;&amp;lt;"p2:"&amp;lt;&amp;lt;p2&amp;lt;&amp;lt;endl&amp;lt;&amp;lt;"p3:"&amp;lt;&amp;lt;p3&amp;lt;&amp;lt;endl&amp;lt;&amp;lt;"t:"&amp;lt;&amp;lt;t&amp;lt;&amp;lt;endl;  
+ delete [] t;  
+ cout&amp;lt;&amp;lt;"----------------------------------------------------------------"&amp;lt;&amp;lt;endl;  
+ cout&amp;lt;&amp;lt;"函数指针练习:"&amp;lt;&amp;lt;endl;   
+ cout&amp;lt;&amp;lt;"&amp;gt;";   
+ int index=0;  
+ cin &amp;gt;&amp;gt;index;  
+ do{   
+ if(index&amp;gt;2||index&amp;lt;=0)  
+ {  
+ cout&amp;lt;&amp;lt;"Only has two function!1,prints;2,copy."&amp;lt;&amp;lt;endl&amp;lt;&amp;lt;"&amp;gt;";  
+ cin&amp;gt;&amp;gt;index;  
+ }  
+ else  
+ {  
+ pFun[index-1]();  
+ cout&amp;lt;&amp;lt;"return to main."&amp;lt;&amp;lt;endl;  
+ }  
+ } while (index&amp;gt;2||index&amp;lt;=0);  
+ cout&amp;lt;&amp;lt;"----------------------------------------------------------------"&amp;lt;&amp;lt;endl;  
+ cout&amp;lt;&amp;lt;"双向链表练习:"&amp;lt;&amp;lt;endl;  
+ LIST&amp;lt;string&amp;gt; li;  
+ li.Add("hello");  
+ li.Add("see");  
+ li.Add("yes");  
+ li.Add("no");  
+ li.Add("3qs");  
+ li.PrintAll();  
+ cout&amp;lt;&amp;lt;"Delete: \"no\"string."&amp;lt;&amp;lt;endl;  
+ li.Delete("no");  
+ li.PrintAll();  
+ cout&amp;lt;&amp;lt;"----------------------------------------------------------------"&amp;lt;&amp;lt;endl;  
+ cout&amp;lt;&amp;lt;"for_each 实例:"&amp;lt;&amp;lt;endl;  
+ vector&amp;lt;int&amp;gt; v;  
+ v.push_back(12);  
+ for (int i=0;i&amp;lt;100;i+=10)  
+ {  
+ v.push_back(i);  
+ }  
+ cout&amp;lt;&amp;lt;"原始向量:";  
+ for (vector&amp;lt;int&amp;gt;::iterator v1=v.begin();v1!=v.end();v1++)  
+ {  
+ cout&amp;lt;&amp;lt;*(v1)&amp;lt;&amp;lt;" ";  
+ }  
+ cout&amp;lt;&amp;lt;endl;  
+ for_each ( v.begin ( ) , v.end ( ) , mFun&amp;lt;int&amp;gt; ( 12 ) );  
+ cout&amp;lt;&amp;lt;"for_each-&amp;gt;add(-2):";  
+ for (vector&amp;lt;int&amp;gt;::iterator v1=v.begin();v1!=v.end();v1++)  
+ {  
+ cout&amp;lt;&amp;lt;*(v1)&amp;lt;&amp;lt;" ";  
+ }  
+ cout&amp;lt;&amp;lt;endl;   
+ 
+ return 0;  
+ 
+ }  
+ 
+ void prints()  
+ {  
+ cout&amp;lt;&amp;lt;"prints() function"&amp;lt;&amp;lt;endl;  
+ }  
+ 
+ void copy()  
+ {  
+ cout&amp;lt;&amp;lt;"copy function"&amp;lt;&amp;lt;endl;  
+ }</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show" style="">
+					<div class="crayon-nums-content"><div class="crayon-num" style="">1</div><div class="crayon-num crayon-striped-num" style="">2</div><div class="crayon-num" style="">3</div><div class="crayon-num crayon-striped-num" style="">4</div><div class="crayon-num" style="">5</div><div class="crayon-num crayon-striped-num" style="">6</div><div class="crayon-num" style="">7</div><div class="crayon-num crayon-striped-num" style="">8</div><div class="crayon-num" style="">9</div><div class="crayon-num crayon-striped-num" style="">10</div><div class="crayon-num" style="">11</div><div class="crayon-num crayon-striped-num" style="">12</div><div class="crayon-num" style="">13</div><div class="crayon-num crayon-striped-num" style="">14</div><div class="crayon-num" style="">15</div><div class="crayon-num crayon-striped-num" style="">16</div><div class="crayon-num" style="">17</div><div class="crayon-num crayon-striped-num" style="">18</div><div class="crayon-num" style="">19</div><div class="crayon-num crayon-striped-num" style="">20</div><div class="crayon-num" style="">21</div><div class="crayon-num crayon-striped-num" style="">22</div><div class="crayon-num" style="">23</div><div class="crayon-num crayon-striped-num" style="">24</div><div class="crayon-num" style="">25</div><div class="crayon-num crayon-striped-num" style="">26</div><div class="crayon-num" style="">27</div><div class="crayon-num crayon-striped-num" style="">28</div><div class="crayon-num" style="">29</div><div class="crayon-num crayon-striped-num" style="">30</div><div class="crayon-num" style="">31</div><div class="crayon-num crayon-striped-num" style="">32</div><div class="crayon-num" style="">33</div><div class="crayon-num crayon-striped-num" style="">34</div><div class="crayon-num" style="">35</div><div class="crayon-num crayon-striped-num" style="">36</div><div class="crayon-num" style="">37</div><div class="crayon-num crayon-striped-num" style="">38</div><div class="crayon-num" style="">39</div><div class="crayon-num crayon-striped-num" style="">40</div><div class="crayon-num" style="">41</div><div class="crayon-num crayon-striped-num" style="">42</div><div class="crayon-num" style="">43</div><div class="crayon-num crayon-striped-num" style="">44</div><div class="crayon-num" style="">45</div><div class="crayon-num crayon-striped-num" style="">46</div><div class="crayon-num" style="">47</div><div class="crayon-num crayon-striped-num" style="">48</div><div class="crayon-num" style="">49</div><div class="crayon-num crayon-striped-num" style="">50</div><div class="crayon-num" style="">51</div><div class="crayon-num crayon-striped-num" style="">52</div><div class="crayon-num" style="">53</div><div class="crayon-num crayon-striped-num" style="">54</div><div class="crayon-num" style="">55</div><div class="crayon-num crayon-striped-num" style="">56</div><div class="crayon-num" style="">57</div><div class="crayon-num crayon-striped-num" style="">58</div><div class="crayon-num" style="">59</div><div class="crayon-num crayon-striped-num" style="">60</div><div class="crayon-num" style="">61</div><div class="crayon-num crayon-striped-num" style="">62</div><div class="crayon-num" style="">63</div><div class="crayon-num crayon-striped-num" style="">64</div><div class="crayon-num" style="">65</div><div class="crayon-num crayon-striped-num" style="">66</div><div class="crayon-num" style="">67</div><div class="crayon-num crayon-striped-num" style="">68</div><div class="crayon-num" style="">69</div><div class="crayon-num crayon-striped-num" style="">70</div><div class="crayon-num" style="">71</div><div class="crayon-num crayon-striped-num" style="">72</div><div class="crayon-num" style="">73</div><div class="crayon-num crayon-striped-num" style="">74</div><div class="crayon-num" style="">75</div><div class="crayon-num crayon-striped-num" style="">76</div><div class="crayon-num" style="">77</div><div class="crayon-num crayon-striped-num" style="">78</div><div class="crayon-num" style="">79</div><div class="crayon-num crayon-striped-num" style="">80</div><div class="crayon-num" style="">81</div><div class="crayon-num crayon-striped-num" style="">82</div><div class="crayon-num" style="">83</div><div class="crayon-num crayon-striped-num" style="">84</div><div class="crayon-num" style="">85</div><div class="crayon-num crayon-striped-num" style="">86</div><div class="crayon-num" style="">87</div><div class="crayon-num crayon-striped-num" style="">88</div><div class="crayon-num" style="">89</div><div class="crayon-num crayon-striped-num" style="">90</div><div class="crayon-num" style="">91</div><div class="crayon-num crayon-striped-num" style="">92</div><div class="crayon-num" style="">93</div><div class="crayon-num crayon-striped-num" style="">94</div><div class="crayon-num" style="">95</div><div class="crayon-num crayon-striped-num" style="">96</div><div class="crayon-num" style="">97</div><div class="crayon-num crayon-striped-num" style="">98</div><div class="crayon-num" style="">99</div><div class="crayon-num crayon-striped-num" style="">100</div><div class="crayon-num" style="">101</div><div class="crayon-num crayon-striped-num" style="">102</div><div class="crayon-num" style="">103</div><div class="crayon-num crayon-striped-num" style="">104</div><div class="crayon-num" style="">105</div><div class="crayon-num crayon-striped-num" style="">106</div><div class="crayon-num" style="">107</div><div class="crayon-num crayon-striped-num" style="">108</div><div class="crayon-num" style="">109</div><div class="crayon-num crayon-striped-num" style="">110</div><div class="crayon-num" style="">111</div><div class="crayon-num crayon-striped-num" style="">112</div><div class="crayon-num" style="">113</div><div class="crayon-num crayon-striped-num" style="">114</div><div class="crayon-num" style="">115</div><div class="crayon-num crayon-striped-num" style="">116</div><div class="crayon-num" style="">117</div><div class="crayon-num crayon-striped-num" style="">118</div><div class="crayon-num" style="">119</div><div class="crayon-num crayon-striped-num" style="">120</div><div class="crayon-num" style="">121</div><div class="crayon-num crayon-striped-num" style="">122</div><div class="crayon-num" style="">123</div><div class="crayon-num crayon-striped-num" style="">124</div><div class="crayon-num" style="">125</div><div class="crayon-num crayon-striped-num" style="">126</div><div class="crayon-num" style="">127</div><div class="crayon-num crayon-striped-num" style="">128</div><div class="crayon-num" style="">129</div><div class="crayon-num crayon-striped-num" style="">130</div><div class="crayon-num" style="">131</div><div class="crayon-num crayon-striped-num" style="">132</div><div class="crayon-num" style="">133</div><div class="crayon-num crayon-striped-num" style="">134</div><div class="crayon-num" style="">135</div><div class="crayon-num crayon-striped-num" style="">136</div><div class="crayon-num" style="">137</div><div class="crayon-num crayon-striped-num" style="">138</div><div class="crayon-num" style="">139</div><div class="crayon-num crayon-striped-num" style="">140</div><div class="crayon-num" style="">141</div><div class="crayon-num crayon-striped-num" style="">142</div><div class="crayon-num" style="">143</div><div class="crayon-num crayon-striped-num" style="">144</div><div class="crayon-num" style="">145</div><div class="crayon-num crayon-striped-num" style="">146</div><div class="crayon-num" style="">147</div><div class="crayon-num crayon-striped-num" style="">148</div><div class="crayon-num" style="">149</div><div class="crayon-num crayon-striped-num" style="">150</div><div class="crayon-num" style="">151</div><div class="crayon-num crayon-striped-num" style="">152</div><div class="crayon-num" style="">153</div><div class="crayon-num crayon-striped-num" style="">154</div><div class="crayon-num" style="">155</div><div class="crayon-num crayon-striped-num" style="">156</div><div class="crayon-num" style="">157</div><div class="crayon-num crayon-striped-num" style="">158</div><div class="crayon-num" style="">159</div><div class="crayon-num crayon-striped-num" style="">160</div><div class="crayon-num" style="">161</div><div class="crayon-num crayon-striped-num" style="">162</div><div class="crayon-num" style="">163</div><div class="crayon-num crayon-striped-num" style="">164</div><div class="crayon-num" style="">165</div><div class="crayon-num crayon-striped-num" style="">166</div><div class="crayon-num" style="">167</div><div class="crayon-num crayon-striped-num" style="">168</div><div class="crayon-num" style="">169</div><div class="crayon-num crayon-striped-num" style="">170</div><div class="crayon-num" style="">171</div><div class="crayon-num crayon-striped-num" style="">172</div><div class="crayon-num" style="">173</div><div class="crayon-num crayon-striped-num" style="">174</div><div class="crayon-num" style="">175</div><div class="crayon-num crayon-striped-num" style="">176</div><div class="crayon-num" style="">177</div><div class="crayon-num crayon-striped-num" style="">178</div><div class="crayon-num" style="">179</div><div class="crayon-num crayon-striped-num" style="">180</div><div class="crayon-num" style="">181</div><div class="crayon-num crayon-striped-num" style="">182</div><div class="crayon-num" style="">183</div><div class="crayon-num crayon-striped-num" style="">184</div><div class="crayon-num" style="">185</div><div class="crayon-num crayon-striped-num" style="">186</div><div class="crayon-num" style="">187</div><div class="crayon-num crayon-striped-num" style="">188</div><div class="crayon-num" style="">189</div><div class="crayon-num crayon-striped-num" style="">190</div><div class="crayon-num" style="">191</div><div class="crayon-num crayon-striped-num" style="">192</div><div class="crayon-num" style="">193</div><div class="crayon-num crayon-striped-num" style="">194</div><div class="crayon-num" style="">195</div><div class="crayon-num crayon-striped-num" style="">196</div><div class="crayon-num" style="">197</div><div class="crayon-num crayon-striped-num" style="">198</div><div class="crayon-num" style="">199</div><div class="crayon-num crayon-striped-num" style="">200</div><div class="crayon-num" style="">201</div><div class="crayon-num crayon-striped-num" style="">202</div><div class="crayon-num" style="">203</div><div class="crayon-num crayon-striped-num" style="">204</div><div class="crayon-num" style="">205</div><div class="crayon-num crayon-striped-num" style="">206</div><div class="crayon-num" style="">207</div><div class="crayon-num crayon-striped-num" style="">208</div><div class="crayon-num" style="">209</div><div class="crayon-num crayon-striped-num" style="">210</div><div class="crayon-num" style="">211</div><div class="crayon-num crayon-striped-num" style="">212</div><div class="crayon-num" style="">213</div><div class="crayon-num crayon-striped-num" style="">214</div><div class="crayon-num" style="">215</div><div class="crayon-num crayon-striped-num" style="">216</div><div class="crayon-num" style="">217</div><div class="crayon-num crayon-striped-num" style="">218</div><div class="crayon-num" style="">219</div><div class="crayon-num crayon-striped-num" style="">220</div><div class="crayon-num" style="">221</div><div class="crayon-num crayon-striped-num" style="">222</div><div class="crayon-num" style="">223</div><div class="crayon-num crayon-striped-num" style="">224</div><div class="crayon-num" style="">225</div><div class="crayon-num crayon-striped-num" style="">226</div><div class="crayon-num" style="">227</div><div class="crayon-num crayon-striped-num" style="">228</div><div class="crayon-num" style="">229</div><div class="crayon-num crayon-striped-num" style="">230</div><div class="crayon-num" style="">231</div><div class="crayon-num crayon-striped-num" style="">232</div><div class="crayon-num" style="">233</div><div class="crayon-num crayon-striped-num" style="">234</div><div class="crayon-num" style="">235</div><div class="crayon-num crayon-striped-num" style="">236</div><div class="crayon-num" style="">237</div><div class="crayon-num crayon-striped-num" style="">238</div><div class="crayon-num" style="">239</div><div class="crayon-num crayon-striped-num" style="">240</div><div class="crayon-num" style="">241</div><div class="crayon-num crayon-striped-num" style="">242</div><div class="crayon-num" style="">243</div><div class="crayon-num crayon-striped-num" style="">244</div><div class="crayon-num" style="">245</div><div class="crayon-num crayon-striped-num" style="">246</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style=""><div class="crayon-line" id="crayon-5037e13505f25-1" style=""><span class="c">//VC2005,dev-cpp 4.9.9.2(gcc)下编译通过.</span></div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-2" style=""></div><div class="crayon-line" id="crayon-5037e13505f25-3" style="">﻿<span class="c">//main.cpp  </span></div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-4" style=""><span class="h"> </span><span class="p">#include&amp;lt;iostream&amp;gt;  </span></div><div class="crayon-line" id="crayon-5037e13505f25-5" style=""><span class="h"> </span><span class="p">#include &amp;lt;string&amp;gt;  </span></div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-6" style=""><span class="h"> </span><span class="p">#include &amp;lt;vector&amp;gt;  </span></div><div class="crayon-line" id="crayon-5037e13505f25-7" style=""><span class="h"> </span><span class="p">#include &amp;lt;algorithm&amp;gt;//for_each  </span></div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-8" style=""><span class="h"> </span></div><div class="crayon-line" id="crayon-5037e13505f25-9" style=""><span class="h"> </span><span class="e">using </span><span class="t">namespace</span><span class="h"> </span><span class="i">std</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-10" style=""><span class="h"> </span></div><div class="crayon-line" id="crayon-5037e13505f25-11" style=""><span class="h"> </span><span class="t">void</span><span class="h"> </span><span class="e">prints</span><span class="sy">(</span><span class="sy">)</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-12" style=""><span class="h"> </span><span class="t">void</span><span class="h"> </span><span class="e">copy</span><span class="sy">(</span><span class="sy">)</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-13" style=""><span class="h"> </span><span class="t">void</span><span class="h"> </span><span class="sy">(</span><span class="o">*</span><span class="i">pFun</span><span class="sy">[</span><span class="sy">]</span><span class="sy">)</span><span class="sy">(</span><span class="sy">)</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="sy">{</span><span class="i">prints</span><span class="sy">,</span><span class="h"> </span><span class="i">copy</span><span class="sy">}</span><span class="sy">;</span><span class="c">//定义一个函数指针数组  </span></div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-14" style=""><span class="h"> </span></div><div class="crayon-line" id="crayon-5037e13505f25-15" style=""><span class="h"> </span><span class="c">//以下为for_each第三个参数的定义  </span></div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-16" style=""><span class="h"> </span><span class="i">template</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="t">class</span><span class="h"> </span><span class="i">T</span><span class="o">&amp;</span><span class="i">gt</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-17" style=""><span class="h"> </span><span class="t">class</span><span class="h"> </span><span class="e">mFun</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-18" style=""><span class="h"> </span><span class="sy">{</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-19" style=""><span class="h"> </span><span class="m">private</span><span class="o">:</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-20" style=""><span class="h"> </span><span class="i">T</span><span class="h"> </span><span class="i">fa</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-21" style=""><span class="h"> </span><span class="m">public</span><span class="o">:</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-22" style=""><span class="h"> </span><span class="e">mFun</span><span class="sy">(</span><span class="r">const</span><span class="h"> </span><span class="i">T</span><span class="h"> </span><span class="o">&amp;</span><span class="i">amp</span><span class="sy">;</span><span class="i">name</span><span class="sy">)</span><span class="o">:</span><span class="e">fa</span><span class="sy">(</span><span class="i">name</span><span class="sy">)</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-23" style=""><span class="h"> </span><span class="sy">{</span><span class="h"> </span><span class="sy">}</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-24" style=""><span class="h"> </span></div><div class="crayon-line" id="crayon-5037e13505f25-25" style=""><span class="h"> </span><span class="t">void</span><span class="h"> </span><span class="e">operator</span><span class="sy">(</span><span class="sy">)</span><span class="sy">(</span><span class="i">T</span><span class="h"> </span><span class="o">&amp;</span><span class="i">amp</span><span class="sy">;</span><span class="i">name</span><span class="sy">)</span><span class="r">const</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-26" style=""><span class="h"> </span><span class="sy">{</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-27" style=""><span class="h"> </span><span class="i">name</span><span class="o">*=</span><span class="i">fa</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-28" style=""><span class="h"> </span><span class="sy">}</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-29" style=""><span class="h"> </span><span class="sy">}</span><span class="sy">;</span> <span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-30" style=""><span class="h"> </span></div><div class="crayon-line" id="crayon-5037e13505f25-31" style=""><span class="h"> </span><span class="c">//以下为双向链表的定义</span></div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-32" style=""><span class="h"> </span><span class="c">//暂时只实现了简单的加入和删除,主要是体现一个思想. </span></div><div class="crayon-line" id="crayon-5037e13505f25-33" style=""><span class="h"> </span><span class="i">template</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="t">class</span><span class="h"> </span><span class="i">Type</span><span class="o">&amp;</span><span class="i">gt</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-34" style=""><span class="h"> </span><span class="t">class</span><span class="h"> </span><span class="e">LIST</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-35" style=""><span class="h"> </span><span class="sy">{</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-36" style=""><span class="h"> </span><span class="m">public</span><span class="o">:</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-37" style=""><span class="h"> </span><span class="c">//无参数构造函数.  </span></div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-38" style=""><span class="h"> </span><span class="e">LIST</span><span class="sy">(</span><span class="sy">)</span><span class="sy">{</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-39" style=""><span class="h"> </span><span class="i">head</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="t">NULL</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-40" style=""><span class="h"> </span><span class="i">tail</span><span class="h"> </span><span class="o">=</span><span class="t">NULL</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-41" style=""><span class="h"> </span><span class="i">count</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="cn">0</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-42" style=""><span class="h"> </span><span class="sy">}</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-43" style=""><span class="h"> </span></div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-44" style=""><span class="h"> </span><span class="c">//前插入式双向链表  </span></div><div class="crayon-line" id="crayon-5037e13505f25-45" style=""><span class="h"> </span><span class="t">void</span><span class="h"> </span><span class="e">Add</span><span class="sy">(</span><span class="i">Type</span><span class="h"> </span><span class="i">d</span><span class="sy">)</span><span class="sy">{</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-46" style=""><span class="h"> </span><span class="c">//注意处理空链表和有数据的链表时添加结点的问题  </span></div><div class="crayon-line" id="crayon-5037e13505f25-47" style=""><span class="h"> </span><span class="st">if</span><span class="sy">(</span><span class="i">head</span><span class="o">==</span><span class="t">NULL</span><span class="sy">)</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-48" style=""><span class="h"> </span><span class="sy">{</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-49" style=""><span class="h"> </span><span class="i">head</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="r">new</span><span class="h"> </span><span class="i">_node</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="i">Type</span><span class="o">&amp;</span><span class="i">gt</span><span class="sy">;</span><span class="sy">(</span><span class="i">d</span><span class="sy">)</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-50" style=""><span class="h"> </span><span class="i">head</span><span class="o">-</span><span class="o">&amp;</span><span class="i">gt</span><span class="sy">;</span><span class="e">setNext</span><span class="sy">(</span><span class="i">head</span><span class="sy">)</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-51" style=""><span class="h"> </span><span class="i">head</span><span class="o">-</span><span class="o">&amp;</span><span class="i">gt</span><span class="sy">;</span><span class="e">setPrev</span><span class="sy">(</span><span class="i">head</span><span class="sy">)</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-52" style=""><span class="h"> </span><span class="i">tail</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="i">head</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-53" style=""><span class="h"> </span><span class="sy">}</span><span class="st">else</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-54" style=""><span class="h"> </span><span class="sy">{</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-55" style=""><span class="h"> </span><span class="i">_node</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="i">Type</span><span class="o">&amp;</span><span class="i">gt</span><span class="sy">;</span><span class="h"> </span><span class="o">*</span><span class="h"> </span><span class="i">temp</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="r">new</span><span class="h"> </span><span class="i">_node</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="i">Type</span><span class="o">&amp;</span><span class="i">gt</span><span class="sy">;</span><span class="sy">(</span><span class="i">d</span><span class="sy">)</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-56" style=""><span class="h"> </span><span class="i">temp</span><span class="o">-</span><span class="o">&amp;</span><span class="i">gt</span><span class="sy">;</span><span class="e">setPrev</span><span class="sy">(</span><span class="i">head</span><span class="o">-</span><span class="o">&amp;</span><span class="i">gt</span><span class="sy">;</span><span class="e">Prev</span><span class="sy">(</span><span class="sy">)</span><span class="sy">)</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-57" style=""><span class="h"> </span><span class="i">temp</span><span class="o">-</span><span class="o">&amp;</span><span class="i">gt</span><span class="sy">;</span><span class="e">setNext</span><span class="sy">(</span><span class="i">head</span><span class="sy">)</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-58" style=""><span class="h"> </span><span class="i">head</span><span class="o">-</span><span class="o">&amp;</span><span class="i">gt</span><span class="sy">;</span><span class="e">setPrev</span><span class="sy">(</span><span class="i">temp</span><span class="sy">)</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-59" style=""><span class="h"> </span><span class="i">tail</span><span class="o">-</span><span class="o">&amp;</span><span class="i">gt</span><span class="sy">;</span><span class="e">setNext</span><span class="sy">(</span><span class="i">temp</span><span class="sy">)</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-60" style=""><span class="h"> </span><span class="i">head</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="i">temp</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-61" style=""><span class="h"> </span><span class="sy">}</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-62" style=""><span class="h"> </span><span class="i">count</span><span class="o">++</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-63" style=""><span class="h"> </span><span class="sy">}</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-64" style=""><span class="h"> </span></div><div class="crayon-line" id="crayon-5037e13505f25-65" style=""><span class="h"> </span><span class="c">//删除数据为d的节点  </span></div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-66" style=""><span class="h"> </span><span class="t">void</span><span class="h"> </span><span class="e">Delete</span><span class="sy">(</span><span class="i">Type</span><span class="h"> </span><span class="i">d</span><span class="sy">)</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-67" style=""><span class="h"> </span><span class="sy">{</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-68" style=""><span class="h"> </span><span class="t">int</span><span class="h"> </span><span class="i">iPos</span><span class="o">=</span><span class="i">count</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-69" style=""><span class="h"> </span><span class="st">for</span><span class="sy">(</span><span class="i">_node</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="i">Type</span><span class="o">&amp;</span><span class="i">gt</span><span class="sy">;</span><span class="h"> </span><span class="o">*</span><span class="h"> </span><span class="i">p</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="i">head</span><span class="sy">;</span><span class="h"> </span><span class="i">iPos</span><span class="o">&amp;</span><span class="i">gt</span><span class="sy">;</span><span class="cn">0</span><span class="sy">;</span><span class="h"> </span><span class="i">p</span><span class="o">=</span><span class="i">p</span><span class="o">-</span><span class="o">&amp;</span><span class="i">gt</span><span class="sy">;</span><span class="e">Next</span><span class="sy">(</span><span class="sy">)</span><span class="sy">)</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-70" style=""><span class="h"> </span><span class="sy">{</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-71" style=""><span class="h"> </span><span class="o">--</span><span class="i">iPos</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-72" style=""><span class="h"> </span><span class="st">if</span><span class="sy">(</span><span class="i">p</span><span class="o">-</span><span class="o">&amp;</span><span class="i">gt</span><span class="sy">;</span><span class="e">Data</span><span class="sy">(</span><span class="sy">)</span><span class="o">==</span><span class="i">d</span><span class="sy">)</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-73" style=""><span class="h"> </span><span class="sy">{</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-74" style=""><span class="h"> </span><span class="i">_node</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="i">Type</span><span class="o">&amp;</span><span class="i">gt</span><span class="sy">;</span><span class="h"> </span><span class="o">*</span><span class="h"> </span><span class="i">tn</span><span class="o">=</span><span class="h"> </span><span class="i">p</span><span class="o">-</span><span class="o">&amp;</span><span class="i">gt</span><span class="sy">;</span><span class="e">Next</span><span class="sy">(</span><span class="sy">)</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-75" style=""><span class="h"> </span><span class="i">_node</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="i">Type</span><span class="o">&amp;</span><span class="i">gt</span><span class="sy">;</span><span class="h"> </span><span class="o">*</span><span class="h"> </span><span class="i">tp</span><span class="o">=</span><span class="h"> </span><span class="i">p</span><span class="o">-</span><span class="o">&amp;</span><span class="i">gt</span><span class="sy">;</span><span class="e">Prev</span><span class="sy">(</span><span class="sy">)</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-76" style=""><span class="h"> </span><span class="i">tn</span><span class="o">-</span><span class="o">&amp;</span><span class="i">gt</span><span class="sy">;</span><span class="e">setPrev</span><span class="sy">(</span><span class="i">tp</span><span class="sy">)</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-77" style=""><span class="h"> </span><span class="i">tp</span><span class="o">-</span><span class="o">&amp;</span><span class="i">gt</span><span class="sy">;</span><span class="e">setNext</span><span class="sy">(</span><span class="i">tn</span><span class="sy">)</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-78" style=""><span class="h"> </span><span class="c">//如果是头结点,则还应该将头结点head移位  </span></div><div class="crayon-line" id="crayon-5037e13505f25-79" style=""><span class="h"> </span><span class="st">if</span><span class="sy">(</span><span class="i">p</span><span class="o">==</span><span class="i">head</span><span class="sy">)</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-80" style=""><span class="h"> </span><span class="i">head</span><span class="o">=</span><span class="i">head</span><span class="o">-</span><span class="o">&amp;</span><span class="i">gt</span><span class="sy">;</span><span class="e">Next</span><span class="sy">(</span><span class="sy">)</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-81" style=""><span class="h"> </span><span class="i">count</span><span class="o">--</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-82" style=""><span class="h"> </span><span class="i">delete</span><span class="h"> </span><span class="i">p</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-83" style=""><span class="h"> </span><span class="st">return</span><span class="h"> </span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-84" style=""><span class="h"> </span><span class="sy">}</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-85" style=""><span class="h"> </span><span class="sy">}</span><span class="c">//end for  </span></div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-86" style=""><span class="h"> </span></div><div class="crayon-line" id="crayon-5037e13505f25-87" style=""><span class="h"> </span><span class="sy">}</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-88" style=""><span class="h"> </span></div><div class="crayon-line" id="crayon-5037e13505f25-89" style=""><span class="h"> </span><span class="c">//打印所有的节点  </span></div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-90" style=""><span class="h"> </span><span class="t">void</span><span class="h"> </span><span class="e">PrintAll</span><span class="sy">(</span><span class="sy">)</span><span class="r">const</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-91" style=""><span class="h"> </span><span class="sy">{</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-92" style=""><span class="h"> </span><span class="st">if</span><span class="sy">(</span><span class="i">head</span><span class="o">!=</span><span class="t">NULL</span><span class="sy">)</span><span class="sy">{</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-93" style=""><span class="h"> </span><span class="i">cout</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="s">"all data:"</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="i">endl</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-94" style=""><span class="h"> </span><span class="t">int</span><span class="h"> </span><span class="i">iPos</span><span class="o">=</span><span class="i">count</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-95" style=""><span class="h"> </span><span class="st">for</span><span class="sy">(</span><span class="i">_node</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="i">Type</span><span class="o">&amp;</span><span class="i">gt</span><span class="sy">;</span><span class="h"> </span><span class="o">*</span><span class="h"> </span><span class="i">p</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="i">head</span><span class="sy">;</span><span class="i">iPos</span><span class="o">&amp;</span><span class="i">gt</span><span class="sy">;</span><span class="cn">0</span><span class="h"> </span><span class="sy">;</span><span class="i">p</span><span class="o">=</span><span class="h"> </span><span class="i">p</span><span class="o">-</span><span class="o">&amp;</span><span class="i">gt</span><span class="sy">;</span><span class="e">Next</span><span class="sy">(</span><span class="sy">)</span><span class="h"> </span><span class="sy">)</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-96" style=""><span class="h"> </span><span class="sy">{</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-97" style=""><span class="h"> </span><span class="o">--</span><span class="i">iPos</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-98" style=""><span class="h"> </span><span class="i">cout</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="i">hex</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="s">"0x"</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="i">p</span><span class="o">-</span><span class="o">&amp;</span><span class="i">gt</span><span class="sy">;</span><span class="e">Prev</span><span class="sy">(</span><span class="sy">)</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="s">"-&amp;lt;"</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="i">p</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="s">"&amp;gt;-"</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="i">p</span><span class="o">-</span><span class="o">&amp;</span><span class="i">gt</span><span class="sy">;</span><span class="e">Next</span><span class="sy">(</span><span class="sy">)</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="s">":"</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="i">dec</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="i">p</span><span class="o">-</span><span class="o">&amp;</span><span class="i">gt</span><span class="sy">;</span><span class="e">Data</span><span class="sy">(</span><span class="sy">)</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="i">endl</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-99" style=""><span class="h"> </span><span class="sy">}</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-100" style=""><span class="h"> </span><span class="i">cout</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="s">"-----end-----"</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="i">endl</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-101" style=""><span class="h"> </span><span class="sy">}</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-102" style=""><span class="h"> </span><span class="sy">}</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-103" style=""><span class="h"> </span><span class="i">virtual</span><span class="h"> </span><span class="o">~</span><span class="e">LIST</span><span class="sy">(</span><span class="sy">)</span><span class="sy">{</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-104" style=""><span class="h"> </span><span class="st">if</span><span class="sy">(</span><span class="i">head</span><span class="o">!=</span><span class="t">NULL</span><span class="sy">)</span><span class="sy">{</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-105" style=""><span class="h"> </span><span class="t">int</span><span class="h"> </span><span class="i">iPos</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="i">count</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-106" style=""><span class="h"> </span><span class="st">for</span><span class="sy">(</span><span class="i">_node</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="i">Type</span><span class="o">&amp;</span><span class="i">gt</span><span class="sy">;</span><span class="h"> </span><span class="o">*</span><span class="h"> </span><span class="i">p</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="i">head</span><span class="sy">;</span><span class="i">iPos</span><span class="o">&amp;</span><span class="i">gt</span><span class="sy">;</span><span class="cn">0</span><span class="sy">;</span><span class="sy">)</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-107" style=""><span class="h"> </span><span class="sy">{</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-108" style=""><span class="h"> </span><span class="o">--</span><span class="i">iPos</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-109" style=""><span class="h"> </span><span class="i">_node</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="i">Type</span><span class="o">&amp;</span><span class="i">gt</span><span class="sy">;</span><span class="h"> </span><span class="o">*</span><span class="h"> </span><span class="i">t</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="i">p</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-110" style=""><span class="h"> </span><span class="i">p</span><span class="o">=</span><span class="h"> </span><span class="i">p</span><span class="o">-</span><span class="o">&amp;</span><span class="i">gt</span><span class="sy">;</span><span class="e">Next</span><span class="sy">(</span><span class="sy">)</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-111" style=""><span class="h"> </span><span class="i">delete</span><span class="h"> </span><span class="i">t</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-112" style=""><span class="h"> </span><span class="sy">}</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-113" style=""><span class="h"> </span><span class="i">head</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="t">NULL</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-114" style=""><span class="h"> </span><span class="i">tail</span>   <span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="t">NULL</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-115" style=""><span class="h"> </span><span class="i">count</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="cn">0</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-116" style=""><span class="h"> </span><span class="sy">}</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-117" style=""><span class="h"> </span><span class="i">cout</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="i">endl</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="s">"list deleted!"</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="i">endl</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-118" style=""><span class="h"> </span><span class="sy">}</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-119" style=""><span class="h"> </span><span class="m">protected</span><span class="o">:</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-120" style=""><span class="h"> </span><span class="m">private</span><span class="o">:</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-121" style=""><span class="h"> </span><span class="c">//内部类,由于_node仅仅在LIST类中使用,故无必要定义至外部;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-122" style=""><span class="h"> </span><span class="c">//可以将_node所有成员设置为public,这样,便不必有成员函数了,</span></div><div class="crayon-line" id="crayon-5037e13505f25-123" style=""><span class="h"> </span><span class="c">//在封装和暴露中间取个平衡点即可,不必死守规则.</span></div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-124" style=""><span class="h"> </span><span class="i">template</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="t">class</span><span class="h"> </span><span class="i">T</span><span class="o">&amp;</span><span class="i">gt</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-125" style=""><span class="h"> </span><span class="t">class</span><span class="h"> </span><span class="e">_node</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-126" style=""><span class="h"> </span><span class="sy">{</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-127" style=""><span class="h"> </span><span class="m">public</span><span class="o">:</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-128" style=""><span class="h"> </span><span class="e">_node</span><span class="sy">(</span><span class="i">T</span><span class="h"> </span><span class="i">d</span><span class="sy">)</span><span class="o">:</span><span class="e">_data</span><span class="sy">(</span><span class="i">d</span><span class="sy">)</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-129" style=""><span class="h"> </span><span class="sy">{</span><span class="h"> </span></div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-130" style=""><span class="h"> </span><span class="c">//通过初始化列表来初始化_data,这样效率高.</span></div><div class="crayon-line" id="crayon-5037e13505f25-131" style=""><span class="h"> </span><span class="i">next</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="t">NULL</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-132" style=""><span class="h"> </span><span class="i">prev</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="t">NULL</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-133" style=""><span class="h"> </span><span class="sy">}</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-134" style=""><span class="h"> </span><span class="i">T</span><span class="h"> </span><span class="o">&amp;</span><span class="i">amp</span><span class="sy">;</span><span class="h"> </span><span class="e">Data</span><span class="sy">(</span><span class="sy">)</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-135" style=""><span class="h"> </span><span class="sy">{</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-136" style=""><span class="h"> </span><span class="st">return</span><span class="h"> </span><span class="i">_data</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-137" style=""><span class="h"> </span><span class="sy">}</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-138" style=""><span class="h"> </span></div><div class="crayon-line" id="crayon-5037e13505f25-139" style=""><span class="h"> </span><span class="t">void</span><span class="h"> </span><span class="e">setPrev</span><span class="sy">(</span><span class="i">_node</span><span class="h"> </span><span class="o">*</span><span class="h"> </span><span class="i">pr</span><span class="sy">)</span><span class="sy">{</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-140" style=""><span class="h"> </span><span class="i">prev</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="i">pr</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-141" style=""><span class="h"> </span><span class="sy">}</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-142" style=""><span class="h"> </span></div><div class="crayon-line" id="crayon-5037e13505f25-143" style=""><span class="h"> </span><span class="i">_node</span><span class="h"> </span><span class="o">*</span><span class="h"> </span><span class="e">Prev</span><span class="sy">(</span><span class="sy">)</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-144" style=""><span class="h"> </span><span class="sy">{</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-145" style=""><span class="h"> </span><span class="st">return</span><span class="h"> </span><span class="i">prev</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-146" style=""><span class="h"> </span><span class="sy">}</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-147" style=""><span class="h"> </span></div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-148" style=""><span class="h"> </span></div><div class="crayon-line" id="crayon-5037e13505f25-149" style=""><span class="h"> </span><span class="t">void</span><span class="h"> </span><span class="e">setNext</span><span class="sy">(</span><span class="i">_node</span><span class="h"> </span><span class="o">*</span><span class="h"> </span><span class="i">n</span><span class="sy">)</span><span class="sy">{</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-150" style=""><span class="h"> </span><span class="i">next</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="i">n</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-151" style=""><span class="h"> </span><span class="sy">}</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-152" style=""><span class="h"> </span></div><div class="crayon-line" id="crayon-5037e13505f25-153" style=""><span class="h"> </span><span class="i">_node</span><span class="h"> </span><span class="o">*</span><span class="h"> </span><span class="e">Next</span><span class="sy">(</span><span class="sy">)</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-154" style=""><span class="h"> </span><span class="sy">{</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-155" style=""><span class="h"> </span><span class="st">return</span><span class="h"> </span><span class="i">next</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-156" style=""><span class="h"> </span><span class="sy">}</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-157" style=""><span class="h"> </span></div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-158" style=""><span class="h"> </span></div><div class="crayon-line" id="crayon-5037e13505f25-159" style=""><span class="h"> </span><span class="m">private</span><span class="o">:</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-160" style=""><span class="h"> </span><span class="i">_node</span><span class="h"> </span><span class="o">*</span><span class="h"> </span><span class="i">next</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-161" style=""><span class="h"> </span><span class="i">_node</span><span class="h"> </span><span class="o">*</span><span class="h"> </span><span class="i">prev</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-162" style=""><span class="h"> </span><span class="i">T</span><span class="h"> </span><span class="i">_data</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-163" style=""><span class="h"> </span><span class="sy">}</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-164" style=""><span class="h"> </span><span class="t">unsigned</span><span class="h"> </span><span class="t">int</span><span class="h"> </span><span class="i">count</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-165" style=""><span class="h"> </span><span class="i">_node</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="i">Type</span><span class="o">&amp;</span><span class="i">gt</span><span class="sy">;</span><span class="h"> </span><span class="o">*</span><span class="h"> </span><span class="i">head</span><span class="sy">;</span><span class="c">//头结点  </span></div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-166" style=""><span class="h"> </span><span class="i">_node</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="i">Type</span><span class="o">&amp;</span><span class="i">gt</span><span class="sy">;</span><span class="h"> </span><span class="o">*</span><span class="h"> </span><span class="i">tail</span><span class="sy">;</span><span class="c">//尾结点  </span></div><div class="crayon-line" id="crayon-5037e13505f25-167" style=""><span class="h"> </span><span class="sy">}</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-168" style=""><span class="h"> </span></div><div class="crayon-line" id="crayon-5037e13505f25-169" style=""><span class="h"> </span><span class="t">int</span><span class="h"> </span><span class="e">main</span><span class="sy">(</span><span class="sy">)</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-170" style=""><span class="h"> </span><span class="sy">{</span>   <span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-171" style=""><span class="h"> </span><span class="i">cout</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="s">"----------------------------------------------------------------"</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="i">endl</span><span class="sy">;</span> <span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-172" style=""><span class="h"> </span><span class="i">cout</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="s">"const关键字练习:"</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="i">endl</span><span class="sy">;</span> <span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-173" style=""><span class="h"> </span><span class="r">const</span><span class="h"> </span><span class="t">char</span><span class="h"> </span><span class="o">*</span><span class="i">p1</span> <span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="s">"Hello,你好."</span><span class="sy">;</span><span class="c">//p1可以改变,字符串内容不可改变  </span></div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-174" style=""><span class="h"> </span><span class="t">char</span><span class="h"> </span><span class="o">*</span><span class="h"> </span><span class="r">const</span><span class="h"> </span><span class="i">p2</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="s">"imzc"</span><span class="sy">;</span><span class="c">//p2不可改变,但是字符串内容可以  </span></div><div class="crayon-line" id="crayon-5037e13505f25-175" style=""><span class="h"> </span><span class="r">const</span><span class="h"> </span><span class="t">char</span><span class="h"> </span><span class="o">*</span><span class="h"> </span><span class="r">const</span><span class="h"> </span><span class="i">p3</span> <span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="s">"this is p3."</span><span class="sy">;</span><span class="c">//都不可改变  </span></div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-176" style=""><span class="h"> </span><span class="t">char</span><span class="h"> </span><span class="o">*</span><span class="h"> </span><span class="i">t</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="r">new</span><span class="h"> </span><span class="t">char</span><span class="sy">[</span><span class="cn">30</span><span class="sy">]</span><span class="sy">;</span><span class="h"> </span></div><div class="crayon-line" id="crayon-5037e13505f25-177" style=""><span class="h"> </span><span class="c">//只有通过动态分配或者char p[30]这种形式的,指向的内容才可以改变 </span></div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-178" style=""><span class="h"> </span><span class="e">strcpy</span><span class="sy">(</span><span class="i">t</span><span class="sy">,</span><span class="i">p1</span><span class="sy">)</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-179" style=""><span class="h"> </span><span class="i">p1</span><span class="o">++</span><span class="h"> </span><span class="sy">;</span> <span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-180" style=""><span class="h"> </span><span class="i">t</span><span class="sy">[</span><span class="cn">1</span><span class="sy">]</span><span class="o">=</span><span class="s">'a'</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-181" style=""><span class="h"> </span><span class="i">cout</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="s">"p1:"</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="i">p1</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="i">endl</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="s">"p2:"</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="i">p2</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="i">endl</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="s">"p3:"</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="i">p3</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="i">endl</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="s">"t:"</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="i">t</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="i">endl</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-182" style=""><span class="h"> </span><span class="i">delete</span><span class="h"> </span><span class="sy">[</span><span class="sy">]</span><span class="h"> </span><span class="i">t</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-183" style=""><span class="h"> </span><span class="i">cout</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="s">"----------------------------------------------------------------"</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="i">endl</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-184" style=""><span class="h"> </span><span class="i">cout</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="s">"函数指针练习:"</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="i">endl</span><span class="sy">;</span> <span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-185" style=""><span class="h"> </span><span class="i">cout</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="s">"&amp;gt;"</span><span class="sy">;</span> <span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-186" style=""><span class="h"> </span><span class="t">int</span><span class="h"> </span><span class="i">index</span><span class="o">=</span><span class="cn">0</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-187" style=""><span class="h"> </span><span class="i">cin</span><span class="h"> </span><span class="o">&amp;</span><span class="i">gt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">gt</span><span class="sy">;</span><span class="i">index</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-188" style=""><span class="h"> </span><span class="st">do</span><span class="sy">{</span> <span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-189" style=""><span class="h"> </span><span class="st">if</span><span class="sy">(</span><span class="i">index</span><span class="o">&amp;</span><span class="i">gt</span><span class="sy">;</span><span class="cn">2</span><span class="o">||</span><span class="i">index</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">=</span><span class="cn">0</span><span class="sy">)</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-190" style=""><span class="h"> </span><span class="sy">{</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-191" style=""><span class="h"> </span><span class="i">cout</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="s">"Only has two function!1,prints;2,copy."</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="i">endl</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="s">"&amp;gt;"</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-192" style=""><span class="h"> </span><span class="i">cin</span><span class="o">&amp;</span><span class="i">gt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">gt</span><span class="sy">;</span><span class="i">index</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-193" style=""><span class="h"> </span><span class="sy">}</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-194" style=""><span class="h"> </span><span class="st">else</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-195" style=""><span class="h"> </span><span class="sy">{</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-196" style=""><span class="h"> </span><span class="i">pFun</span><span class="sy">[</span><span class="i">index</span><span class="o">-</span><span class="cn">1</span><span class="sy">]</span><span class="sy">(</span><span class="sy">)</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-197" style=""><span class="h"> </span><span class="i">cout</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="s">"return to main."</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="i">endl</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-198" style=""><span class="h"> </span><span class="sy">}</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-199" style=""><span class="h"> </span><span class="sy">}</span><span class="h"> </span><span class="st">while</span><span class="h"> </span><span class="sy">(</span><span class="i">index</span><span class="o">&amp;</span><span class="i">gt</span><span class="sy">;</span><span class="cn">2</span><span class="o">||</span><span class="i">index</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">=</span><span class="cn">0</span><span class="sy">)</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-200" style=""><span class="h"> </span><span class="i">cout</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="s">"----------------------------------------------------------------"</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="i">endl</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-201" style=""><span class="h"> </span><span class="i">cout</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="s">"双向链表练习:"</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="i">endl</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-202" style=""><span class="h"> </span><span class="i">LIST</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="t">string</span><span class="o">&amp;</span><span class="i">gt</span><span class="sy">;</span><span class="h"> </span><span class="i">li</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-203" style=""><span class="h"> </span><span class="i">li</span><span class="sy">.</span><span class="e">Add</span><span class="sy">(</span><span class="s">"hello"</span><span class="sy">)</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-204" style=""><span class="h"> </span><span class="i">li</span><span class="sy">.</span><span class="e">Add</span><span class="sy">(</span><span class="s">"see"</span><span class="sy">)</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-205" style=""><span class="h"> </span><span class="i">li</span><span class="sy">.</span><span class="e">Add</span><span class="sy">(</span><span class="s">"yes"</span><span class="sy">)</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-206" style=""><span class="h"> </span><span class="i">li</span><span class="sy">.</span><span class="e">Add</span><span class="sy">(</span><span class="s">"no"</span><span class="sy">)</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-207" style=""><span class="h"> </span><span class="i">li</span><span class="sy">.</span><span class="e">Add</span><span class="sy">(</span><span class="s">"3qs"</span><span class="sy">)</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-208" style=""><span class="h"> </span><span class="i">li</span><span class="sy">.</span><span class="e">PrintAll</span><span class="sy">(</span><span class="sy">)</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-209" style=""><span class="h"> </span><span class="i">cout</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="s">"Delete: \"no\"string."</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="i">endl</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-210" style=""><span class="h"> </span><span class="i">li</span><span class="sy">.</span><span class="e">Delete</span><span class="sy">(</span><span class="s">"no"</span><span class="sy">)</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-211" style=""><span class="h"> </span><span class="i">li</span><span class="sy">.</span><span class="e">PrintAll</span><span class="sy">(</span><span class="sy">)</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-212" style=""><span class="h"> </span><span class="i">cout</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="s">"----------------------------------------------------------------"</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="i">endl</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-213" style=""><span class="h"> </span><span class="i">cout</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="s">"for_each 实例:"</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="i">endl</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-214" style=""><span class="h"> </span><span class="i">vector</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="t">int</span><span class="o">&amp;</span><span class="i">gt</span><span class="sy">;</span><span class="h"> </span><span class="i">v</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-215" style=""><span class="h"> </span><span class="i">v</span><span class="sy">.</span><span class="e">push_back</span><span class="sy">(</span><span class="cn">12</span><span class="sy">)</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-216" style=""><span class="h"> </span><span class="st">for</span><span class="h"> </span><span class="sy">(</span><span class="t">int</span><span class="h"> </span><span class="i">i</span><span class="o">=</span><span class="cn">0</span><span class="sy">;</span><span class="i">i</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="cn">100</span><span class="sy">;</span><span class="i">i</span><span class="o">+</span><span class="o">=</span><span class="cn">10</span><span class="sy">)</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-217" style=""><span class="h"> </span><span class="sy">{</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-218" style=""><span class="h"> </span><span class="i">v</span><span class="sy">.</span><span class="e">push_back</span><span class="sy">(</span><span class="i">i</span><span class="sy">)</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-219" style=""><span class="h"> </span><span class="sy">}</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-220" style=""><span class="h"> </span><span class="i">cout</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="s">"原始向量:"</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-221" style=""><span class="h"> </span><span class="st">for</span><span class="h"> </span><span class="sy">(</span><span class="i">vector</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="t">int</span><span class="o">&amp;</span><span class="i">gt</span><span class="sy">;</span><span class="o">::</span><span class="e">iterator </span><span class="i">v1</span><span class="o">=</span><span class="i">v</span><span class="sy">.</span><span class="e">begin</span><span class="sy">(</span><span class="sy">)</span><span class="sy">;</span><span class="i">v1</span><span class="o">!=</span><span class="i">v</span><span class="sy">.</span><span class="st">end</span><span class="sy">(</span><span class="sy">)</span><span class="sy">;</span><span class="i">v1</span><span class="o">++</span><span class="sy">)</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-222" style=""><span class="h"> </span><span class="sy">{</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-223" style=""><span class="h"> </span><span class="i">cout</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">*</span><span class="sy">(</span><span class="i">v1</span><span class="sy">)</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="s">" "</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-224" style=""><span class="h"> </span><span class="sy">}</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-225" style=""><span class="h"> </span><span class="i">cout</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="i">endl</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-226" style=""><span class="h"> </span><span class="e">for_each</span><span class="h"> </span><span class="sy">(</span><span class="h"> </span><span class="i">v</span><span class="sy">.</span><span class="e">begin</span><span class="h"> </span><span class="sy">(</span><span class="h"> </span><span class="sy">)</span><span class="h"> </span><span class="sy">,</span><span class="h"> </span><span class="i">v</span><span class="sy">.</span><span class="st">end</span><span class="h"> </span><span class="sy">(</span><span class="h"> </span><span class="sy">)</span><span class="h"> </span><span class="sy">,</span><span class="h"> </span><span class="i">mFun</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="t">int</span><span class="o">&amp;</span><span class="i">gt</span><span class="sy">;</span><span class="h"> </span><span class="sy">(</span><span class="h"> </span><span class="cn">12</span><span class="h"> </span><span class="sy">)</span><span class="h"> </span><span class="sy">)</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-227" style=""><span class="h"> </span><span class="i">cout</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="s">"for_each-&amp;gt;add(-2):"</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-228" style=""><span class="h"> </span><span class="st">for</span><span class="h"> </span><span class="sy">(</span><span class="i">vector</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="t">int</span><span class="o">&amp;</span><span class="i">gt</span><span class="sy">;</span><span class="o">::</span><span class="e">iterator </span><span class="i">v1</span><span class="o">=</span><span class="i">v</span><span class="sy">.</span><span class="e">begin</span><span class="sy">(</span><span class="sy">)</span><span class="sy">;</span><span class="i">v1</span><span class="o">!=</span><span class="i">v</span><span class="sy">.</span><span class="st">end</span><span class="sy">(</span><span class="sy">)</span><span class="sy">;</span><span class="i">v1</span><span class="o">++</span><span class="sy">)</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-229" style=""><span class="h"> </span><span class="sy">{</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-230" style=""><span class="h"> </span><span class="i">cout</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">*</span><span class="sy">(</span><span class="i">v1</span><span class="sy">)</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="s">" "</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-231" style=""><span class="h"> </span><span class="sy">}</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-232" style=""><span class="h"> </span><span class="i">cout</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="i">endl</span><span class="sy">;</span> <span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-233" style=""><span class="h"> </span></div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-234" style=""><span class="h"> </span><span class="st">return</span><span class="h"> </span><span class="cn">0</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-235" style=""><span class="h"> </span></div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-236" style=""><span class="h"> </span><span class="sy">}</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-237" style=""><span class="h"> </span></div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-238" style=""><span class="h"> </span><span class="t">void</span><span class="h"> </span><span class="e">prints</span><span class="sy">(</span><span class="sy">)</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-239" style=""><span class="h"> </span><span class="sy">{</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-240" style=""><span class="h"> </span><span class="i">cout</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="s">"prints() function"</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="i">endl</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-241" style=""><span class="h"> </span><span class="sy">}</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-242" style=""><span class="h"> </span></div><div class="crayon-line" id="crayon-5037e13505f25-243" style=""><span class="h"> </span><span class="t">void</span><span class="h"> </span><span class="e">copy</span><span class="sy">(</span><span class="sy">)</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-244" style=""><span class="h"> </span><span class="sy">{</span><span class="h"> </span> </div><div class="crayon-line" id="crayon-5037e13505f25-245" style=""><span class="h"> </span><span class="i">cout</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="s">"copy function"</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="o">&amp;</span><span class="i">lt</span><span class="sy">;</span><span class="i">endl</span><span class="sy">;</span><span class="h"> </span> </div><div class="crayon-line crayon-striped-line" id="crayon-5037e13505f25-246" style=""><span class="h"> </span><span class="sy">}</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.1381 seconds] -->
+<p></p>
 					<div class="fixed"></div>
 				</div>
 
@@ -729,7 +510,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 		<ul id="widgets">
 
 <li class="widget widget_calendar"><h3>Archives</h3><div id="calendar_wrap"><table id="wp-calendar">
-	<caption>2012 年七月</caption>
+	<caption>2012 年八月</caption>
 	<thead>
 	<tr>
 		<th scope="col" title="星期日">日</th>
@@ -744,27 +525,28 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 
 	<tfoot>
 	<tr>
-		<td colspan="3" id="prev"><a href="../date/2012/05/index.html" title="查看 2012 年五月的文章">&laquo; 五</a></td>
+		<td colspan="3" id="prev"><a href="../date/2012/07/index.html" title="查看 2012 年七月的文章">&laquo; 七</a></td>
 		<td class="pad">&nbsp;</td>
 		<td colspan="3" id="next" class="pad">&nbsp;</td>
 	</tr>
 	</tfoot>
 
 	<tbody>
-	<tr><td>1</td><td><a href="../date/2012/07/02/index.html" title="六月随笔">2</a></td><td>3</td><td>4</td><td><a href="../date/2012/07/05/index.html" title="ruby Rspec测试框架cheetsheet">5</a></td><td>6</td><td>7</td>
+	<tr>
+		<td colspan="3" class="pad">&nbsp;</td><td><a href="../date/2012/08/01/index.html" title="配置vim rails集成开发环境">1</a></td><td><a href="../date/2012/08/02/index.html" title="安装ruby1.8.6后，gem错误的解决">2</a></td><td>3</td><td><a href="../date/2012/08/04/index.html" title="There was a problem installing &#8220;Mac OS X&#8221;.Try Reinstalling.">4</a></td>
 	</tr>
 	<tr>
-		<td>8</td><td><a href="../date/2012/07/09/index.html" title="linux下STAF执行失败时的处理">9</a></td><td>10</td><td>11</td><td>12</td><td id="today"><a href="../date/2012/07/13/index.html" title="镜像网站为静态页面到github中">13</a></td><td>14</td>
+		<td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td>
 	</tr>
 	<tr>
-		<td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td>
+		<td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td><a href="../date/2012/08/18/index.html" title="简单提取页面中所有迅雷下载资源链接">18</a></td>
 	</tr>
 	<tr>
-		<td>22</td><td>23</td><td>24</td><td>25</td><td>26</td><td>27</td><td>28</td>
+		<td>19</td><td>20</td><td>21</td><td>22</td><td><a href="../date/2012/08/23/index.html" title="使用python脚本简单切换hosts文件">23</a></td><td>24</td><td id="today">25</td>
 	</tr>
 	<tr>
-		<td>29</td><td>30</td><td>31</td>
-		<td class="pad" colspan="4">&nbsp;</td>
+		<td>26</td><td>27</td><td>28</td><td>29</td><td>30</td><td>31</td>
+		<td class="pad" colspan="1">&nbsp;</td>
 	</tr>
 	</tbody>
 	</table></div></li><li class="widget widget_categories"><h3>分类目录</h3>		<ul>
@@ -772,7 +554,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 </li>
 	<li class="cat-item cat-item-24"><a href="../category/ios-dev/index.html" title="查看 IOSDev 下的所有文章">IOSDev</a>
 </li>
-	<li class="cat-item cat-item-23"><a href="../category/java/index.html" title="查看 java 下的所有文章">java</a>
+	<li class="cat-item cat-item-23"><a href="../category/java/index.html" title="查看 Java 下的所有文章">Java</a>
 </li>
 	<li class="cat-item cat-item-5"><a href="../category/lamp/index.html" title="查看 LAMP 下的所有文章">LAMP</a>
 </li>
@@ -783,6 +565,8 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 	<li class="cat-item cat-item-3"><a href="../category/project/index.html" title="查看 Project 下的所有文章">Project</a>
 </li>
 	<li class="cat-item cat-item-4"><a href="../category/rubytesting/index.html" title="查看 Ruby&amp;Testing 下的所有文章">Ruby&amp;Testing</a>
+</li>
+	<li class="cat-item cat-item-26"><a href="../category/scriptlanguage/index.html" title="查看 脚本语言 下的所有文章">脚本语言</a>
 </li>
 		</ul>
 </li><li class="widget widget_text"><h3>Google Ads</h3>			<div class="textwidget"><script type="text/javascript"><!--
@@ -811,6 +595,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 </li><li class="widget widget_links"><h3>链接表</h3>
 	<ul class='xoxo blogroll'>
 <li><a href="http://blog.csdn.net/Android_Tutor" rel="colleague" title="Android_Tutor的专栏" target="_blank">Android学习系列</a></li>
+<li><a href="http://ihower.tw/rails3/" title="Rails3学习,写得不错!">Rails3学习</a></li>
 <li><a href="http://wpotp.com" rel="me" title="食品找茬网" target="_blank">找茬网</a></li>
 <li><a href="http://www.sz95000.com/" title="深圳长途汽车网上订票，官方网站，这次不会忘记了。。。" target="_blank">深圳长途汽车网上订票</a></li>
 
@@ -870,10 +655,11 @@ var WPGroHo = {"my_hash":""};
 <script type='text/javascript' src='../../wp-content/plugins/jetpack/modules/wpgroho.js?ver=3.4.1'></script>
 	<div style="display:none">
 	</div>
+<script type='text/javascript' src='http://s0.wp.com/wp-content/js/devicepx-jetpack.js?ver=201234'></script>
 
-	<script src="http://stats.wordpress.com/e-201228.js" type="text/javascript"></script>
+	<script src="http://stats.wordpress.com/e-201234.js" type="text/javascript"></script>
 	<script type="text/javascript">
-	st_go({v:'ext',j:'1:1.4.2',blog:'17044931',post:'24'});
+	st_go({v:'ext',j:'1:1.6.1',blog:'17044931',post:'24'});
 	var load_cmc = function(){linktracker_init(17044931,24,2);};
 	if ( typeof addLoadEvent != 'undefined' ) addLoadEvent(load_cmc);
 	else load_cmc();
@@ -893,3 +679,7 @@ var WPGroHo = {"my_hash":""};
 </script> 
 </body>
 </html>
+
+<!-- Dynamic page generated in 0.806 seconds. -->
+<!-- Cached page generated by WP-Super-Cache on 2012-08-25 04:16:53 -->
+<!-- super cache -->

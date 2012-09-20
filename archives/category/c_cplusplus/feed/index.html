@@ -13,11 +13,11 @@
 	<atom:link href="http://imzc.net/archives/category/c_cplusplus/feed/" rel="self" type="application/rss+xml" />
 	<link>http://imzc.net</link>
 	<description>-More Thinking,And Then Just do it~~~</description>
-	<lastBuildDate>Thu, 12 Jul 2012 17:15:18 +0000</lastBuildDate>
+	<lastBuildDate>Thu, 20 Sep 2012 16:40:36 +0000</lastBuildDate>
 	<language>zh-CN</language>
 	<sy:updatePeriod>hourly</sy:updatePeriod>
 	<sy:updateFrequency>1</sy:updateFrequency>
-	<generator>http://wordpress.org/?v=3.4.1</generator>
+	<generator>http://wordpress.org/?v=3.4.2</generator>
 		<item>
 		<title>使用windows api实现屏幕截图并复制到剪贴板</title>
 		<link>http://imzc.net/archives/253/</link>
@@ -29,18 +29,15 @@
 
 		<guid isPermaLink="false">http://imzc.net/?p=253</guid>
 		<description><![CDATA[最新自动化项目需要使用屏幕截图功能,本来通过autoit发送printscreen键,然后从剪贴板copy出来 [...]]]></description>
-			<content:encoded><![CDATA[<p>最新自动化项目需要使用屏幕截图功能,本来通过autoit发送printscreen键,然后从剪贴板copy出来即可.</p>
-
-<div class="wp_syntax"><div class="code"><pre class="ruby" style="font-family:monospace;">    <span style="color:#CC0066; font-weight:bold;">require</span> <span style="color:#996600;">&quot;win32ole&quot;</span>
-    t = WIN32OLE.<span style="color:#9900CC;">new</span><span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#996600;">&quot;AutoItX3.Control&quot;</span><span style="color:#006600; font-weight:bold;">&#41;</span>
-    t.<span style="color:#9900CC;">Send</span><span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#996600;">&quot;{PRINTSCREEN}&quot;</span><span style="color:#006600; font-weight:bold;">&#41;</span>   
-	<span style="color:#CC0066; font-weight:bold;">sleep</span> <span style="color:#006666;">1</span>
-	picture=<span style="color:#6666ff; font-weight:bold;">Win32::Clipboard</span>.<span style="color:#9900CC;">data</span><span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#6666ff; font-weight:bold;">Win32::Clipboard::DIB</span><span style="color:#006600; font-weight:bold;">&#41;</span> 
-	<span style="color:#6666ff; font-weight:bold;">ATT::KeyLog</span>.<span style="color:#9900CC;">info</span> <span style="color:#996600;">&quot;pictrue:#{picture.slice(0..10)}&quot;</span> 
-	<span style="color:#CC00FF; font-weight:bold;">File</span>.<span style="color:#CC0066; font-weight:bold;">open</span><span style="color:#006600; font-weight:bold;">&#40;</span><span style="color:#996600;">&quot;xxx.bmp&quot;</span>,<span style="color:#996600;">&quot;wb&quot;</span><span style="color:#006600; font-weight:bold;">&#41;</span><span style="color:#9966CC; font-weight:bold;">do</span> <span style="color:#006600; font-weight:bold;">|</span>f<span style="color:#006600; font-weight:bold;">|</span>
-    f.<span style="color:#9900CC;">write</span><span style="color:#006600; font-weight:bold;">&#40;</span>picture<span style="color:#006600; font-weight:bold;">&#41;</span>
-	<span style="color:#9966CC; font-weight:bold;">end</span></pre></div></div>
-
+			<content:encoded><![CDATA[<p>最新自动化项目需要使用屏幕截图功能,本来通过autoit发送printscreen键,然后从剪贴板copy出来即可.</p><pre class="crayon-plain-tag">require &quot;win32ole&quot;
+    t = WIN32OLE.new(&quot;AutoItX3.Control&quot;)
+    t.Send(&quot;{PRINTSCREEN}&quot;)   
+	sleep 1
+	picture=Win32::Clipboard.data(Win32::Clipboard::DIB) 
+	ATT::KeyLog.info &quot;pictrue:#{picture.slice(0..10)}&quot; 
+	File.open(&quot;xxx.bmp&quot;,&quot;wb&quot;)do |f|
+    f.write(picture)
+	end</pre><p></p>
 <p>&nbsp;</p>
 <p>但是此方法有一定风险,比如在远程桌面连入时,很容易和外部PC的剪贴板混乱.<br />
  因此有了使用原始API截图保存的需求.<br />
@@ -48,87 +45,84 @@
 下面是源码:<br />
 带参数时,保存到对应路径,同时复制到剪贴板.<br />
 不带参数时,仅复制到剪贴板.</p>
+<p></p><pre class="crayon-plain-tag">&amp;nbsp;
+// cap.cpp : 定义控制台应用程序的入口点。
+//
 
-<div class="wp_syntax"><div class="code"><pre class="cpp" style="font-family:monospace;"><span style="color: #000040;">&amp;</span>nbsp<span style="color: #008080;">;</span>
-<span style="color: #666666;">// cap.cpp : 定义控制台应用程序的入口点。</span>
-<span style="color: #666666;">//</span>
-&nbsp;
-<span style="color: #339900;">#include &quot;stdafx.h&quot;  </span>
-&nbsp;
-<span style="color: #339900;">#include &lt;windows.h&gt;  </span>
-<span style="color: #339900;">#include &lt;atlimage.h&gt;  </span>
-&nbsp;
-&nbsp;
-CString GetSuffix<span style="color: #008000;">&#40;</span>CString strFileName<span style="color: #008000;">&#41;</span> 
-<span style="color: #008000;">&#123;</span> 
-	<span style="color: #0000ff;">return</span> strFileName.<span style="color: #007788;">Right</span><span style="color: #008000;">&#40;</span>strFileName.<span style="color: #007788;">GetLength</span><span style="color: #008000;">&#40;</span><span style="color: #008000;">&#41;</span><span style="color: #000040;">-</span>strFileName.<span style="color: #007788;">ReverseFind</span><span style="color: #008000;">&#40;</span><span style="color: #FF0000;">'.'</span><span style="color: #008000;">&#41;</span><span style="color: #000040;">-</span><span style="color: #0000dd;">1</span><span style="color: #008000;">&#41;</span><span style="color: #008080;">;</span> 
-<span style="color: #008000;">&#125;</span>
-&nbsp;
-&nbsp;
-<span style="color: #0000ff;">int</span> _tmain<span style="color: #008000;">&#40;</span><span style="color: #0000ff;">int</span> argc, _TCHAR<span style="color: #000040;">*</span> argv<span style="color: #008000;">&#91;</span><span style="color: #008000;">&#93;</span><span style="color: #008000;">&#41;</span>
-<span style="color: #008000;">&#123;</span>
-&nbsp;
-		wprintf<span style="color: #008000;">&#40;</span>_T<span style="color: #008000;">&#40;</span><span style="color: #FF0000;">&quot;Useage:<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\
-</span>1.capture.exe  jpg_path (Save bmp and copy  to clipboard.)<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\
-</span>2.capture.exe (Only copy bmp to your current clipboard.)<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\
-</span>@zc,2012.4.21.&quot;</span><span style="color: #008000;">&#41;</span><span style="color: #008000;">&#41;</span><span style="color: #008080;">;</span>
-&nbsp;
-&nbsp;
-&nbsp;
-&nbsp;
-		HWND hwnd <span style="color: #000080;">=</span> <span style="color: #008080;">::</span><span style="color: #007788;">GetDesktopWindow</span><span style="color: #008000;">&#40;</span><span style="color: #008000;">&#41;</span><span style="color: #008080;">;</span>  
-		HDC hDC <span style="color: #000080;">=</span> <span style="color: #008080;">::</span><span style="color: #007788;">GetDC</span><span style="color: #008000;">&#40;</span>hwnd<span style="color: #008000;">&#41;</span><span style="color: #008080;">;</span> <span style="color: #666666;">//根据窗口来确定截图的大概位置</span>
-&nbsp;
-		RECT rect<span style="color: #008080;">;</span>  
-		<span style="color: #008080;">::</span><span style="color: #007788;">GetClientRect</span><span style="color: #008000;">&#40;</span>hwnd, <span style="color: #000040;">&amp;</span>rect<span style="color: #008000;">&#41;</span><span style="color: #008080;">;</span>  
-		HDC hDCMem <span style="color: #000080;">=</span> <span style="color: #008080;">::</span><span style="color: #007788;">CreateCompatibleDC</span><span style="color: #008000;">&#40;</span>hDC<span style="color: #008000;">&#41;</span><span style="color: #008080;">;</span>   
-&nbsp;
-		HBITMAP hBitMap <span style="color: #000080;">=</span> <span style="color: #008080;">::</span><span style="color: #007788;">CreateCompatibleBitmap</span><span style="color: #008000;">&#40;</span>hDC, rect.<span style="color: #007788;">right</span>, rect.<span style="color: #007788;">bottom</span><span style="color: #008000;">&#41;</span><span style="color: #008080;">;</span>  
-		HBITMAP hOldMap <span style="color: #000080;">=</span> <span style="color: #008000;">&#40;</span>HBITMAP<span style="color: #008000;">&#41;</span><span style="color: #008080;">::</span><span style="color: #007788;">SelectObject</span><span style="color: #008000;">&#40;</span>hDCMem, hBitMap<span style="color: #008000;">&#41;</span><span style="color: #008080;">;</span>  
-&nbsp;
-		<span style="color: #008080;">::</span><span style="color: #007788;">BitBlt</span><span style="color: #008000;">&#40;</span>hDCMem, <span style="color: #0000dd;">0</span>, <span style="color: #0000dd;">0</span>, rect.<span style="color: #007788;">right</span>, rect.<span style="color: #007788;">bottom</span>, hDC, <span style="color: #0000dd;">0</span>, <span style="color: #0000dd;">0</span>, SRCCOPY<span style="color: #008000;">&#41;</span><span style="color: #008080;">;</span> <span style="color: #666666;">//红色部分确定图片的大小位置</span>
-&nbsp;
-		CImage image<span style="color: #008080;">;</span>  
-		image.<span style="color: #007788;">Attach</span><span style="color: #008000;">&#40;</span>hBitMap<span style="color: #008000;">&#41;</span><span style="color: #008080;">;</span>  
-&nbsp;
-		<span style="color: #0000ff;">if</span> <span style="color: #008000;">&#40;</span>argc<span style="color: #000080;">==</span><span style="color: #0000dd;">2</span><span style="color: #008000;">&#41;</span><span style="color: #008000;">&#123;</span>
-			GUID imageFormat <span style="color: #000080;">=</span> Gdiplus<span style="color: #008080;">::</span><span style="color: #007788;">ImageFormatBMP</span><span style="color: #008080;">;</span>
-			CString suffix <span style="color: #000080;">=</span> GetSuffix<span style="color: #008000;">&#40;</span>argv<span style="color: #008000;">&#91;</span><span style="color: #0000dd;">1</span><span style="color: #008000;">&#93;</span><span style="color: #008000;">&#41;</span>.<span style="color: #007788;">MakeLower</span><span style="color: #008000;">&#40;</span><span style="color: #008000;">&#41;</span><span style="color: #008080;">;</span>
-			<span style="color: #0000ff;">if</span> <span style="color: #008000;">&#40;</span>suffix.<span style="color: #007788;">Compare</span><span style="color: #008000;">&#40;</span>_T<span style="color: #008000;">&#40;</span><span style="color: #FF0000;">&quot;jpg&quot;</span><span style="color: #008000;">&#41;</span><span style="color: #008000;">&#41;</span><span style="color: #000080;">==</span><span style="color: #0000dd;">0</span><span style="color: #008000;">&#41;</span>
-			<span style="color: #008000;">&#123;</span>
-				imageFormat<span style="color: #000080;">=</span> Gdiplus<span style="color: #008080;">::</span><span style="color: #007788;">ImageFormatJPEG</span><span style="color: #008080;">;</span> 
-				wprintf<span style="color: #008000;">&#40;</span>_T<span style="color: #008000;">&#40;</span><span style="color: #FF0000;">&quot;img type:jpg&quot;</span><span style="color: #008000;">&#41;</span><span style="color: #008000;">&#41;</span><span style="color: #008080;">;</span> 
-			<span style="color: #008000;">&#125;</span><span style="color: #0000ff;">else</span> <span style="color: #0000ff;">if</span> <span style="color: #008000;">&#40;</span>suffix.<span style="color: #007788;">Compare</span><span style="color: #008000;">&#40;</span>_T<span style="color: #008000;">&#40;</span><span style="color: #FF0000;">&quot;png&quot;</span><span style="color: #008000;">&#41;</span><span style="color: #008000;">&#41;</span><span style="color: #000080;">==</span><span style="color: #0000dd;">0</span><span style="color: #008000;">&#41;</span>
-			<span style="color: #008000;">&#123;</span>
-				imageFormat<span style="color: #000080;">=</span> Gdiplus<span style="color: #008080;">::</span><span style="color: #007788;">ImageFormatPNG</span><span style="color: #008080;">;</span>
-				wprintf<span style="color: #008000;">&#40;</span>_T<span style="color: #008000;">&#40;</span><span style="color: #FF0000;">&quot;img type:png&quot;</span><span style="color: #008000;">&#41;</span><span style="color: #008000;">&#41;</span><span style="color: #008080;">;</span> 
-			<span style="color: #008000;">&#125;</span><span style="color: #0000ff;">else</span>  
-			<span style="color: #008000;">&#123;</span>
-				imageFormat<span style="color: #000080;">=</span> Gdiplus<span style="color: #008080;">::</span><span style="color: #007788;">ImageFormatBMP</span><span style="color: #008080;">;</span>
-				wprintf<span style="color: #008000;">&#40;</span>_T<span style="color: #008000;">&#40;</span><span style="color: #FF0000;">&quot;img type:bmp&quot;</span><span style="color: #008000;">&#41;</span><span style="color: #008000;">&#41;</span><span style="color: #008080;">;</span> 
-			<span style="color: #008000;">&#125;</span>
-&nbsp;
-			image.<span style="color: #007788;">Save</span><span style="color: #008000;">&#40;</span>argv<span style="color: #008000;">&#91;</span><span style="color: #0000dd;">1</span><span style="color: #008000;">&#93;</span>,imageFormat<span style="color: #008000;">&#41;</span><span style="color: #008080;">;</span>  
-		<span style="color: #008000;">&#125;</span>
-&nbsp;
-		<span style="color: #0000ff;">if</span> <span style="color: #008000;">&#40;</span>OpenClipboard<span style="color: #008000;">&#40;</span><span style="color: #0000ff;">NULL</span><span style="color: #008000;">&#41;</span><span style="color: #008000;">&#41;</span> 
-		<span style="color: #008000;">&#123;</span> 
-			EmptyClipboard<span style="color: #008000;">&#40;</span><span style="color: #008000;">&#41;</span><span style="color: #008080;">;</span> 
-			SetClipboardData<span style="color: #008000;">&#40;</span>CF_BITMAP, image<span style="color: #008000;">&#41;</span><span style="color: #008080;">;</span> 
-			CloseClipboard<span style="color: #008000;">&#40;</span><span style="color: #008000;">&#41;</span><span style="color: #008080;">;</span> 
-		<span style="color: #008000;">&#125;</span> 
-		<span style="color: #666666;">//::PostMessage(hwnd, WM_KEYDOWN,44 , 0L); //发送 VK_PRINTSCREEN按下的键盘消息   </span>
-&nbsp;
-		image.<span style="color: #007788;">Detach</span><span style="color: #008000;">&#40;</span><span style="color: #008000;">&#41;</span><span style="color: #008080;">;</span>   
-		<span style="color: #008080;">::</span><span style="color: #007788;">SelectObject</span><span style="color: #008000;">&#40;</span>hDCMem, hOldMap<span style="color: #008000;">&#41;</span><span style="color: #008080;">;</span>  
-		<span style="color: #008080;">::</span><span style="color: #007788;">DeleteObject</span><span style="color: #008000;">&#40;</span>hBitMap<span style="color: #008000;">&#41;</span><span style="color: #008080;">;</span>  
-		<span style="color: #008080;">::</span><span style="color: #007788;">DeleteDC</span><span style="color: #008000;">&#40;</span>hDCMem<span style="color: #008000;">&#41;</span><span style="color: #008080;">;</span>  
-		<span style="color: #008080;">::</span><span style="color: #007788;">DeleteDC</span><span style="color: #008000;">&#40;</span>hDC<span style="color: #008000;">&#41;</span><span style="color: #008080;">;</span>  
-&nbsp;
-	<span style="color: #0000ff;">return</span> <span style="color: #0000dd;">0</span><span style="color: #008080;">;</span>
-<span style="color: #008000;">&#125;</span></pre></div></div>
+#include &quot;stdafx.h&quot;  
 
-<p>&nbsp;<br />
+#include &lt;windows.h&gt;  
+#include &lt;atlimage.h&gt;  
+ 
+
+CString GetSuffix(CString strFileName) 
+{ 
+	return strFileName.Right(strFileName.GetLength()-strFileName.ReverseFind('.')-1); 
+}
+
+
+int _tmain(int argc, _TCHAR* argv[])
+{
+  
+		wprintf(_T(&quot;Useage:\n\
+1.capture.exe  jpg_path (Save bmp and copy  to clipboard.)\n\
+2.capture.exe (Only copy bmp to your current clipboard.)\n\
+@zc,2012.4.21.&quot;));
+		
+ 
+ 
+
+		HWND hwnd = ::GetDesktopWindow();  
+		HDC hDC = ::GetDC(hwnd); //根据窗口来确定截图的大概位置
+
+		RECT rect;  
+		::GetClientRect(hwnd, &amp;rect);  
+		HDC hDCMem = ::CreateCompatibleDC(hDC);   
+
+		HBITMAP hBitMap = ::CreateCompatibleBitmap(hDC, rect.right, rect.bottom);  
+		HBITMAP hOldMap = (HBITMAP)::SelectObject(hDCMem, hBitMap);  
+
+		::BitBlt(hDCMem, 0, 0, rect.right, rect.bottom, hDC, 0, 0, SRCCOPY); //红色部分确定图片的大小位置
+
+		CImage image;  
+		image.Attach(hBitMap);  
+
+		if (argc==2){
+			GUID imageFormat = Gdiplus::ImageFormatBMP;
+			CString suffix = GetSuffix(argv[1]).MakeLower();
+			if (suffix.Compare(_T(&quot;jpg&quot;))==0)
+			{
+				imageFormat= Gdiplus::ImageFormatJPEG; 
+				wprintf(_T(&quot;img type:jpg&quot;)); 
+			}else if (suffix.Compare(_T(&quot;png&quot;))==0)
+			{
+				imageFormat= Gdiplus::ImageFormatPNG;
+				wprintf(_T(&quot;img type:png&quot;)); 
+			}else  
+			{
+				imageFormat= Gdiplus::ImageFormatBMP;
+				wprintf(_T(&quot;img type:bmp&quot;)); 
+			}
+
+			image.Save(argv[1],imageFormat);  
+		}
+		 
+		if (OpenClipboard(NULL)) 
+		{ 
+			EmptyClipboard(); 
+			SetClipboardData(CF_BITMAP, image); 
+			CloseClipboard(); 
+		} 
+		//::PostMessage(hwnd, WM_KEYDOWN,44 , 0L); //发送 VK_PRINTSCREEN按下的键盘消息   
+ 
+		image.Detach();   
+		::SelectObject(hDCMem, hOldMap);  
+		::DeleteObject(hBitMap);  
+		::DeleteDC(hDCMem);  
+		::DeleteDC(hDC);  
+ 
+	return 0;
+}</pre><p>&nbsp;<br />
 附件下载:<a href='http://imzc.net/wp-content/uploads/2012/04/cap_src_vs2005.rar'>cap_src_vs2005</a></p>
 ]]></content:encoded>
 			<wfw:commentRss>http://imzc.net/archives/253/feed/</wfw:commentRss>
@@ -186,93 +180,22 @@ CString GetSuffix<span style="color: #008000;">&#40;</span>CString strFileName<s
 <div>===========================</div>
 <div>我的实现：</div>
 <div>
+<pre class="crayon-plain-tag">//
+//  pcap.h
+//  pcaptest
+//
+//  Created by zc on 12-1-24.
+//  Copyright 2012年 __MyCompanyName__. All rights reserved.
+//
 
-<div class="wp_syntax"><table><tr><td class="line_numbers"><pre>1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53
-54
-55
-56
-57
-58
-59
-60
-61
-62
-63
-64
-65
-66
-67
-68
-69
-70
-</pre></td><td class="code"><pre class="c" style="font-family:monospace;"><span style="color: #666666; font-style: italic;">//</span>
-<span style="color: #666666; font-style: italic;">//  pcap.h</span>
-<span style="color: #666666; font-style: italic;">//  pcaptest</span>
-<span style="color: #666666; font-style: italic;">//</span>
-<span style="color: #666666; font-style: italic;">//  Created by zc on 12-1-24.</span>
-<span style="color: #666666; font-style: italic;">//  Copyright 2012年 __MyCompanyName__. All rights reserved.</span>
-<span style="color: #666666; font-style: italic;">//</span>
-&nbsp;
-<span style="color: #339933;">#ifndef pcaptest_pcap_h</span>
-<span style="color: #339933;">#define pcaptest_pcap_h</span>
-&nbsp;
-<span style="color: #993333;">typedef</span> <span style="color: #993333;">unsigned</span> <span style="color: #993333;">int</span>  bpf_u_int32<span style="color: #339933;">;</span>
-<span style="color: #993333;">typedef</span> <span style="color: #993333;">unsigned</span> <span style="color: #993333;">short</span>  u_short<span style="color: #339933;">;</span>
-<span style="color: #993333;">typedef</span> <span style="color: #993333;">int</span> bpf_int32<span style="color: #339933;">;</span>
-&nbsp;
-<span style="color: #808080; font-style: italic;">/*
+#ifndef pcaptest_pcap_h
+#define pcaptest_pcap_h
+
+typedef unsigned int  bpf_u_int32;
+typedef unsigned short  u_short;
+typedef int bpf_int32;
+
+/*
  Pcap文件头24B各字段说明：
  Magic：4B：0x1A 2B 3C 4D:用来标示文件的开始
  Major：2B，0x02 00:当前文件主要的版本号     
@@ -288,18 +211,18 @@ CString GetSuffix<span style="color: #008000;">&#40;</span>CString strFileName<s
  7            ARCnet
  8            SLIP
  9            PPP
- */</span>
-<span style="color: #993333;">typedef</span> <span style="color: #993333;">struct</span> pcap_file_header <span style="color: #009900;">&#123;</span>
-	bpf_u_int32 magic<span style="color: #339933;">;</span>
-	u_short version_major<span style="color: #339933;">;</span>
-	u_short version_minor<span style="color: #339933;">;</span>
-	bpf_int32 thiszone<span style="color: #339933;">;</span>    
-	bpf_u_int32 sigfigs<span style="color: #339933;">;</span>   
-	bpf_u_int32 snaplen<span style="color: #339933;">;</span>   
-	bpf_u_int32 linktype<span style="color: #339933;">;</span>  
-<span style="color: #009900;">&#125;</span>pcap_file_header<span style="color: #339933;">;</span>
-&nbsp;
-<span style="color: #808080; font-style: italic;">/*
+ */
+typedef struct pcap_file_header {
+	bpf_u_int32 magic;
+	u_short version_major;
+	u_short version_minor;
+	bpf_int32 thiszone;    
+	bpf_u_int32 sigfigs;   
+	bpf_u_int32 snaplen;   
+	bpf_u_int32 linktype;  
+}pcap_file_header;
+
+/*
  Packet 包头和Packet数据组成
  字段说明：
  Timestamp：时间戳高位，精确到seconds     
@@ -307,420 +230,220 @@ CString GetSuffix<span style="color: #008000;">&#40;</span>CString strFileName<s
  Caplen：当前数据区的长度，即抓取到的数据帧长度，由此可以得到下一个数据帧的位置。
  Len：离线数据长度：网络中实际数据帧的长度，一般不大于caplen，多数情况下和Caplen数值相等。
  Packet 数据：即 Packet（通常就是链路层的数据帧）具体内容，长度就是Caplen，这个长度的后面，就是当前PCAP文件中存放的下一个Packet数据包，也就 是说：PCAP文件里面并没有规定捕获的Packet数据包之间有什么间隔字符串，下一组数据在文件中的起始位置。我们需要靠第一个Packet包确定。
- */</span>
-&nbsp;
-<span style="color: #993333;">typedef</span> <span style="color: #993333;">struct</span>  timestamp<span style="color: #009900;">&#123;</span>
-	bpf_u_int32 timestamp_s<span style="color: #339933;">;</span>
-	bpf_u_int32 timestamp_ms<span style="color: #339933;">;</span>
-<span style="color: #009900;">&#125;</span>timestamp<span style="color: #339933;">;</span>
-&nbsp;
-<span style="color: #993333;">typedef</span> <span style="color: #993333;">struct</span> pcap_header<span style="color: #009900;">&#123;</span>
-	timestamp ts<span style="color: #339933;">;</span>
-	bpf_u_int32 capture_len<span style="color: #339933;">;</span>
-	bpf_u_int32 len<span style="color: #339933;">;</span>
-&nbsp;
-<span style="color: #009900;">&#125;</span>pcap_header<span style="color: #339933;">;</span>
-&nbsp;
-&nbsp;
-<span style="color: #993333;">void</span> prinfPcapFileHeader<span style="color: #009900;">&#40;</span>pcap_file_header <span style="color: #339933;">*</span>pfh<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<span style="color: #993333;">void</span> printfPcapHeader<span style="color: #009900;">&#40;</span>pcap_header <span style="color: #339933;">*</span>ph<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<span style="color: #993333;">void</span> printPcap<span style="color: #009900;">&#40;</span><span style="color: #993333;">void</span> <span style="color: #339933;">*</span> data<span style="color: #339933;">,</span>size_t size<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-&nbsp;
-<span style="color: #339933;">#endif</span></pre></td></tr></table></div>
+ */
+
+typedef struct  timestamp{
+	bpf_u_int32 timestamp_s;
+	bpf_u_int32 timestamp_ms;
+}timestamp;
+
+typedef struct pcap_header{
+	timestamp ts;
+	bpf_u_int32 capture_len;
+	bpf_u_int32 len;
+	
+}pcap_header;
 
 
-<div class="wp_syntax"><table><tr><td class="line_numbers"><pre>1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53
-54
-55
-56
-57
-58
-59
-60
-61
-62
-63
-64
-65
-66
-67
-68
-69
-70
-71
-72
-73
-74
-75
-76
-77
-78
-79
-80
-81
-82
-83
-84
-85
-86
-87
-88
-</pre></td><td class="code"><pre class="c" style="font-family:monospace;"><span style="color: #666666; font-style: italic;">//</span>
-<span style="color: #666666; font-style: italic;">//  pcap.c</span>
-<span style="color: #666666; font-style: italic;">//  pcaptest</span>
-<span style="color: #666666; font-style: italic;">//</span>
-<span style="color: #666666; font-style: italic;">//  Created by zc on 12-1-24.</span>
-<span style="color: #666666; font-style: italic;">//  Copyright 2012年 __MyCompanyName__. All rights reserved.</span>
-<span style="color: #666666; font-style: italic;">//</span>
-&nbsp;
-<span style="color: #339933;">#include &lt;stdio.h&gt;</span>
-<span style="color: #339933;">#include &quot;pcap.h&quot;</span>
-&nbsp;
-<span style="color: #993333;">void</span> prinfPcapFileHeader<span style="color: #009900;">&#40;</span>pcap_file_header <span style="color: #339933;">*</span>pfh<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
-	<span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span>pfh<span style="color: #339933;">==</span>NULL<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-		<span style="color: #b1b100;">return</span><span style="color: #339933;">;</span>
-	<span style="color: #009900;">&#125;</span>
-	<span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;=====================<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span>
-		   <span style="color: #ff0000;">&quot;magic:0x%0x<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span>
-		   <span style="color: #ff0000;">&quot;version_major:%u<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span>
-		   <span style="color: #ff0000;">&quot;version_minor:%u<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span>
-		   <span style="color: #ff0000;">&quot;thiszone:%d<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span>
-		   <span style="color: #ff0000;">&quot;sigfigs:%u<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span>
-		   <span style="color: #ff0000;">&quot;snaplen:%u<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span>
-		   <span style="color: #ff0000;">&quot;linktype:%u<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span>
-		   <span style="color: #ff0000;">&quot;=====================<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #339933;">,</span>
-		   pfh<span style="color: #339933;">-&gt;</span>magic<span style="color: #339933;">,</span>
-		   pfh<span style="color: #339933;">-&gt;</span>version_major<span style="color: #339933;">,</span>
-		   pfh<span style="color: #339933;">-&gt;</span>version_minor<span style="color: #339933;">,</span>
-		   pfh<span style="color: #339933;">-&gt;</span>thiszone<span style="color: #339933;">,</span>
-		   pfh<span style="color: #339933;">-&gt;</span>sigfigs<span style="color: #339933;">,</span>
-		   pfh<span style="color: #339933;">-&gt;</span>snaplen<span style="color: #339933;">,</span>
-		   pfh<span style="color: #339933;">-&gt;</span>linktype<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<span style="color: #009900;">&#125;</span>
-&nbsp;
-<span style="color: #993333;">void</span> printfPcapHeader<span style="color: #009900;">&#40;</span>pcap_header <span style="color: #339933;">*</span>ph<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
-	<span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span>ph<span style="color: #339933;">==</span>NULL<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-		<span style="color: #b1b100;">return</span><span style="color: #339933;">;</span>
-	<span style="color: #009900;">&#125;</span>
-	<span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;=====================<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span>
-		   <span style="color: #ff0000;">&quot;ts.timestamp_s:%u<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span>
-		   <span style="color: #ff0000;">&quot;ts.timestamp_ms:%u<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span>
-		   <span style="color: #ff0000;">&quot;capture_len:%u<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span>
-		   <span style="color: #ff0000;">&quot;len:%d<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span>
-		   <span style="color: #ff0000;">&quot;=====================<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #339933;">,</span>
-		   ph<span style="color: #339933;">-&gt;</span>ts.<span style="color: #202020;">timestamp_s</span><span style="color: #339933;">,</span>
-		   ph<span style="color: #339933;">-&gt;</span>ts.<span style="color: #202020;">timestamp_ms</span><span style="color: #339933;">,</span>
-		   ph<span style="color: #339933;">-&gt;</span>capture_len<span style="color: #339933;">,</span>
-		   ph<span style="color: #339933;">-&gt;</span>len<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-&nbsp;
-&nbsp;
-<span style="color: #009900;">&#125;</span>
-&nbsp;
-<span style="color: #993333;">void</span> printPcap<span style="color: #009900;">&#40;</span><span style="color: #993333;">void</span> <span style="color: #339933;">*</span> data<span style="color: #339933;">,</span>size_t size<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
-	<span style="color: #993333;">unsigned</span>  <span style="color: #993333;">short</span> iPos <span style="color: #339933;">=</span> <span style="color: #0000dd;">0</span><span style="color: #339933;">;</span>
-	<span style="color: #666666; font-style: italic;">//int * p = (int *)data;</span>
-	<span style="color: #666666; font-style: italic;">//unsigned short* p = (unsigned short *)data;</span>
-	<span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span>data<span style="color: #339933;">==</span>NULL<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-		<span style="color: #b1b100;">return</span><span style="color: #339933;">;</span>
-	<span style="color: #009900;">&#125;</span>
-&nbsp;
-	<span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;<span style="color: #000099; font-weight: bold;">\n</span>==data:0x%x,len:%lu=========&quot;</span><span style="color: #339933;">,</span>data<span style="color: #339933;">,</span>size<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-&nbsp;
-	<span style="color: #b1b100;">for</span> <span style="color: #009900;">&#40;</span>iPos<span style="color: #339933;">=</span><span style="color: #0000dd;">0</span><span style="color: #339933;">;</span> iPos <span style="color: #339933;">&lt;</span> size<span style="color: #339933;">/</span><span style="color: #993333;">sizeof</span><span style="color: #009900;">&#40;</span><span style="color: #993333;">unsigned</span> <span style="color: #993333;">short</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span> iPos<span style="color: #339933;">++</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-		<span style="color: #666666; font-style: italic;">//printf(&quot; %x &quot;,(int)( * (p+iPos) ));</span>
-		<span style="color: #666666; font-style: italic;">//unsigned short a = ntohs(p[iPos]);</span>
-&nbsp;
-		<span style="color: #993333;">unsigned</span> <span style="color: #993333;">short</span> a <span style="color: #339933;">=</span> ntohs<span style="color: #009900;">&#40;</span> <span style="color: #339933;">*</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#40;</span><span style="color: #993333;">unsigned</span> <span style="color: #993333;">short</span> <span style="color: #339933;">*</span><span style="color: #009900;">&#41;</span>data <span style="color: #339933;">+</span> iPos <span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-		<span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span>iPos<span style="color: #339933;">%</span><span style="color:#800080;">8</span><span style="color: #339933;">==</span><span style="color: #0000dd;">0</span><span style="color: #009900;">&#41;</span> <span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-		<span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span>iPos<span style="color: #339933;">%</span><span style="color:#800080;">4</span><span style="color: #339933;">==</span><span style="color: #0000dd;">0</span><span style="color: #009900;">&#41;</span> <span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot; &quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-&nbsp;
-		<span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;%04x&quot;</span><span style="color: #339933;">,</span>a<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-&nbsp;
-&nbsp;
-	<span style="color: #009900;">&#125;</span>
-	<span style="color: #808080; font-style: italic;">/*
+void prinfPcapFileHeader(pcap_file_header *pfh);
+void printfPcapHeader(pcap_header *ph);
+void printPcap(void * data,size_t size);
+
+#endif</pre><br />
+<pre class="crayon-plain-tag">//
+//  pcap.c
+//  pcaptest
+//
+//  Created by zc on 12-1-24.
+//  Copyright 2012年 __MyCompanyName__. All rights reserved.
+//
+
+#include &lt;stdio.h&gt;
+#include &quot;pcap.h&quot;
+
+void prinfPcapFileHeader(pcap_file_header *pfh){
+	if (pfh==NULL) {
+		return;
+	}
+	printf(&quot;=====================\n&quot;
+		   &quot;magic:0x%0x\n&quot;
+		   &quot;version_major:%u\n&quot;
+		   &quot;version_minor:%u\n&quot;
+		   &quot;thiszone:%d\n&quot;
+		   &quot;sigfigs:%u\n&quot;
+		   &quot;snaplen:%u\n&quot;
+		   &quot;linktype:%u\n&quot;
+		   &quot;=====================\n&quot;,
+		   pfh-&gt;magic,
+		   pfh-&gt;version_major,
+		   pfh-&gt;version_minor,
+		   pfh-&gt;thiszone,
+		   pfh-&gt;sigfigs,
+		   pfh-&gt;snaplen,
+		   pfh-&gt;linktype);
+}
+
+void printfPcapHeader(pcap_header *ph){
+	if (ph==NULL) {
+		return;
+	}
+	printf(&quot;=====================\n&quot;
+		   &quot;ts.timestamp_s:%u\n&quot;
+		   &quot;ts.timestamp_ms:%u\n&quot;
+		   &quot;capture_len:%u\n&quot;
+		   &quot;len:%d\n&quot;
+		   &quot;=====================\n&quot;,
+		   ph-&gt;ts.timestamp_s,
+		   ph-&gt;ts.timestamp_ms,
+		   ph-&gt;capture_len,
+		   ph-&gt;len);
+	
+	
+}
+
+void printPcap(void * data,size_t size){
+	unsigned  short iPos = 0;
+	//int * p = (int *)data;
+	//unsigned short* p = (unsigned short *)data;
+	if (data==NULL) {
+		return;
+	}
+	
+	printf(&quot;\n==data:0x%x,len:%lu=========&quot;,data,size);
+	
+	for (iPos=0; iPos &lt; size/sizeof(unsigned short); iPos++) {
+		//printf(&quot; %x &quot;,(int)( * (p+iPos) ));
+		//unsigned short a = ntohs(p[iPos]);
+		 		
+		unsigned short a = ntohs( *((unsigned short *)data + iPos ) );
+		if (iPos%8==0) printf(&quot;\n&quot;);
+		if (iPos%4==0) printf(&quot; &quot;);
+		
+		printf(&quot;%04x&quot;,a);
+		
+		
+	}
+	/*
 	 for (iPos=0; iPos &lt;= size/sizeof(int); iPos++) {
 		//printf(&quot; %x &quot;,(int)( * (p+iPos) ));
 		int a = ntohl(p[iPos]);
-&nbsp;
+		
 		//int a = ntohl( *((int *)data + iPos ) );
 		if (iPos %4==0) printf(&quot;\n&quot;);
-&nbsp;
+	 
 		printf(&quot;%08x &quot;,a);
-&nbsp;
-&nbsp;
+		
+		
 	}
-	 */</span>
-	<span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;<span style="color: #000099; font-weight: bold;">\n</span>============<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<span style="color: #009900;">&#125;</span></pre></td></tr></table></div>
+	 */
+	printf(&quot;\n============\n&quot;);
+}</pre><br />
+<pre class="crayon-plain-tag">//
+//  main.c
+//  pcaptest
+//
+//  Created by zc on 12-1-24.
+//  Copyright 2012年 __MyCompanyName__. All rights reserved.
+//
+
+#include &lt;stdio.h&gt;
+#include &lt;arpa/inet.h&gt;
+#include &quot;pcap.h&quot;
+
+#define PCAP_FILE &quot;ping.pcap&quot;
+#define MAX_ETH_FRAME 1514
+#define ERROR_FILE_OPEN_FAILED -1
+#define ERROR_MEM_ALLOC_FAILED -2
+#define ERROR_PCAP_PARSE_FAILED -3
 
 
-<div class="wp_syntax"><table><tr><td class="line_numbers"><pre>1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53
-54
-55
-56
-57
-58
-59
-60
-61
-62
-63
-64
-65
-66
-67
-68
-69
-70
-71
-72
-73
-74
-75
-76
-77
-78
-79
-80
-81
-82
-83
-84
-85
-86
-87
-88
-89
-90
-91
-92
-93
-94
-</pre></td><td class="code"><pre class="c" style="font-family:monospace;"><span style="color: #666666; font-style: italic;">//</span>
-<span style="color: #666666; font-style: italic;">//  main.c</span>
-<span style="color: #666666; font-style: italic;">//  pcaptest</span>
-<span style="color: #666666; font-style: italic;">//</span>
-<span style="color: #666666; font-style: italic;">//  Created by zc on 12-1-24.</span>
-<span style="color: #666666; font-style: italic;">//  Copyright 2012年 __MyCompanyName__. All rights reserved.</span>
-<span style="color: #666666; font-style: italic;">//</span>
-&nbsp;
-<span style="color: #339933;">#include &lt;stdio.h&gt;</span>
-<span style="color: #339933;">#include &lt;arpa/inet.h&gt;</span>
-<span style="color: #339933;">#include &quot;pcap.h&quot;</span>
-&nbsp;
-<span style="color: #339933;">#define PCAP_FILE &quot;ping.pcap&quot;</span>
-<span style="color: #339933;">#define MAX_ETH_FRAME 1514</span>
-<span style="color: #339933;">#define ERROR_FILE_OPEN_FAILED -1</span>
-<span style="color: #339933;">#define ERROR_MEM_ALLOC_FAILED -2</span>
-<span style="color: #339933;">#define ERROR_PCAP_PARSE_FAILED -3</span>
-&nbsp;
-&nbsp;
-<span style="color: #993333;">int</span> main <span style="color: #009900;">&#40;</span><span style="color: #993333;">int</span> argc<span style="color: #339933;">,</span> <span style="color: #993333;">const</span> <span style="color: #993333;">char</span> <span style="color: #339933;">*</span> argv<span style="color: #009900;">&#91;</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span>
-<span style="color: #009900;">&#123;</span>
-&nbsp;
-	<span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;sizeof:int %lu,unsigned int %lu,char %lu,unsigned char %lu,short:%lu,unsigned short:%lu<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #339933;">,</span>
-		    <span style="color: #993333;">sizeof</span><span style="color: #009900;">&#40;</span><span style="color: #993333;">int</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">,</span><span style="color: #993333;">sizeof</span><span style="color: #009900;">&#40;</span><span style="color: #993333;">unsigned</span> <span style="color: #993333;">int</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">,</span><span style="color: #993333;">sizeof</span><span style="color: #009900;">&#40;</span><span style="color: #993333;">char</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">,</span><span style="color: #993333;">sizeof</span><span style="color: #009900;">&#40;</span><span style="color: #993333;">unsigned</span> <span style="color: #993333;">char</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">,</span><span style="color: #993333;">sizeof</span><span style="color: #009900;">&#40;</span><span style="color: #993333;">short</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">,</span><span style="color: #993333;">sizeof</span><span style="color: #009900;">&#40;</span><span style="color: #993333;">unsigned</span> <span style="color: #993333;">short</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-&nbsp;
-	pcap_file_header  pfh<span style="color: #339933;">;</span>
-	pcap_header  ph<span style="color: #339933;">;</span>
-	<span style="color: #993333;">int</span> count<span style="color: #339933;">=</span><span style="color: #0000dd;">0</span><span style="color: #339933;">;</span>
-	<span style="color: #993333;">void</span> <span style="color: #339933;">*</span> buff <span style="color: #339933;">=</span> NULL<span style="color: #339933;">;</span>
-	<span style="color: #993333;">int</span> readSize<span style="color: #339933;">=</span><span style="color: #0000dd;">0</span><span style="color: #339933;">;</span>
-	<span style="color: #993333;">int</span> ret <span style="color: #339933;">=</span> <span style="color: #0000dd;">0</span><span style="color: #339933;">;</span>
-&nbsp;
-	FILE <span style="color: #339933;">*</span>fp <span style="color: #339933;">=</span> fopen<span style="color: #009900;">&#40;</span>PCAP_FILE<span style="color: #339933;">,</span> <span style="color: #ff0000;">&quot;rw&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-&nbsp;
-	<span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span>fp<span style="color: #339933;">==</span>NULL<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-		fprintf<span style="color: #009900;">&#40;</span>stderr<span style="color: #339933;">,</span> <span style="color: #ff0000;">&quot;Open file %s error.&quot;</span><span style="color: #339933;">,</span>PCAP_FILE<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-		ret <span style="color: #339933;">=</span> ERROR_FILE_OPEN_FAILED<span style="color: #339933;">;</span>
-		<span style="color: #b1b100;">goto</span> ERROR<span style="color: #339933;">;</span>
-	<span style="color: #009900;">&#125;</span>
-&nbsp;
-	fread<span style="color: #009900;">&#40;</span><span style="color: #339933;">&amp;</span>pfh<span style="color: #339933;">,</span> <span style="color: #993333;">sizeof</span><span style="color: #009900;">&#40;</span>pcap_file_header<span style="color: #009900;">&#41;</span><span style="color: #339933;">,</span> <span style="color: #0000dd;">1</span><span style="color: #339933;">,</span> fp<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>	
-	prinfPcapFileHeader<span style="color: #009900;">&#40;</span><span style="color: #339933;">&amp;</span>pfh<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-	<span style="color: #666666; font-style: italic;">//fseek(fp, 0, sizeof(pcap_file_header));</span>
-&nbsp;
-	buff <span style="color: #339933;">=</span> <span style="color: #009900;">&#40;</span><span style="color: #993333;">void</span> <span style="color: #339933;">*</span><span style="color: #009900;">&#41;</span>malloc<span style="color: #009900;">&#40;</span>MAX_ETH_FRAME<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-	<span style="color: #b1b100;">for</span> <span style="color: #009900;">&#40;</span>count<span style="color: #339933;">=</span><span style="color: #0000dd;">1</span><span style="color: #339933;">;</span> <span style="color: #339933;">;</span> count<span style="color: #339933;">++</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-		memset<span style="color: #009900;">&#40;</span>buff<span style="color: #339933;">,</span><span style="color: #0000dd;">0</span><span style="color: #339933;">,</span>MAX_ETH_FRAME<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-		<span style="color: #666666; font-style: italic;">//read pcap header to get a packet</span>
-		<span style="color: #666666; font-style: italic;">//get only a pcap head count .</span>
-		readSize<span style="color: #339933;">=</span>fread<span style="color: #009900;">&#40;</span><span style="color: #339933;">&amp;</span>ph<span style="color: #339933;">,</span> <span style="color: #993333;">sizeof</span><span style="color: #009900;">&#40;</span>pcap_header<span style="color: #009900;">&#41;</span><span style="color: #339933;">,</span> <span style="color: #0000dd;">1</span><span style="color: #339933;">,</span> fp<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-		<span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span>readSize<span style="color: #339933;">&lt;=</span><span style="color: #0000dd;">0</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-			<span style="color: #000000; font-weight: bold;">break</span><span style="color: #339933;">;</span>
-		<span style="color: #009900;">&#125;</span>
-		printfPcapHeader<span style="color: #009900;">&#40;</span><span style="color: #339933;">&amp;</span>ph<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-&nbsp;
-&nbsp;
-		<span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span>buff<span style="color: #339933;">==</span>NULL<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-			fprintf<span style="color: #009900;">&#40;</span>stderr<span style="color: #339933;">,</span> <span style="color: #ff0000;">&quot;malloc memory failed.<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-			ret <span style="color: #339933;">=</span> ERROR_MEM_ALLOC_FAILED<span style="color: #339933;">;</span>
-			<span style="color: #b1b100;">goto</span> ERROR<span style="color: #339933;">;</span>
-		<span style="color: #009900;">&#125;</span>
-&nbsp;
-		<span style="color: #666666; font-style: italic;">//get a packet contents.</span>
-		<span style="color: #666666; font-style: italic;">//read ph.capture_len bytes.</span>
-		readSize<span style="color: #339933;">=</span>fread<span style="color: #009900;">&#40;</span>buff<span style="color: #339933;">,</span><span style="color: #0000dd;">1</span><span style="color: #339933;">,</span>ph.<span style="color: #202020;">capture_len</span><span style="color: #339933;">,</span> fp<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-		<span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span>readSize <span style="color: #339933;">!=</span> ph.<span style="color: #202020;">capture_len</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-			free<span style="color: #009900;">&#40;</span>buff<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-			fprintf<span style="color: #009900;">&#40;</span>stderr<span style="color: #339933;">,</span> <span style="color: #ff0000;">&quot;pcap file parse error.<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-			ret <span style="color: #339933;">=</span> ERROR_PCAP_PARSE_FAILED<span style="color: #339933;">;</span>
-			<span style="color: #b1b100;">goto</span> ERROR<span style="color: #339933;">;</span>
-		<span style="color: #009900;">&#125;</span>
-		printPcap<span style="color: #009900;">&#40;</span>buff<span style="color: #339933;">,</span> ph.<span style="color: #202020;">capture_len</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-&nbsp;
-&nbsp;
-		<span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;===count:%d,readSize:%d===<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #339933;">,</span>count<span style="color: #339933;">,</span>readSize<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-&nbsp;
-		<span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span>feof<span style="color: #009900;">&#40;</span>fp<span style="color: #009900;">&#41;</span> <span style="color: #339933;">||</span> readSize <span style="color: #339933;">&lt;=</span><span style="color: #0000dd;">0</span> <span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span> 
-			<span style="color: #000000; font-weight: bold;">break</span><span style="color: #339933;">;</span>
-		<span style="color: #009900;">&#125;</span>
-	<span style="color: #009900;">&#125;</span>
-&nbsp;
-ERROR<span style="color: #339933;">:</span>
-	<span style="color: #666666; font-style: italic;">//free</span>
-	<span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span>buff<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-		free<span style="color: #009900;">&#40;</span>buff<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-		buff<span style="color: #339933;">=</span>NULL<span style="color: #339933;">;</span>
-	<span style="color: #009900;">&#125;</span> 
-	<span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span>fp<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-		fclose<span style="color: #009900;">&#40;</span>fp<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-		fp<span style="color: #339933;">=</span>NULL<span style="color: #339933;">;</span>
-	<span style="color: #009900;">&#125;</span>	
-&nbsp;
-    <span style="color: #b1b100;">return</span> ret<span style="color: #339933;">;</span>
-<span style="color: #009900;">&#125;</span></pre></td></tr></table></div>
+int main (int argc, const char * argv[])
+{
+ 
+	printf(&quot;sizeof:int %lu,unsigned int %lu,char %lu,unsigned char %lu,short:%lu,unsigned short:%lu\n&quot;,
+		    sizeof(int),sizeof(unsigned int),sizeof(char),sizeof(unsigned char),sizeof(short),sizeof(unsigned short));
+	
+	pcap_file_header  pfh;
+	pcap_header  ph;
+	int count=0;
+	void * buff = NULL;
+	int readSize=0;
+	int ret = 0;
+	
+	FILE *fp = fopen(PCAP_FILE, &quot;rw&quot;);
+	
+	if (fp==NULL) {
+		fprintf(stderr, &quot;Open file %s error.&quot;,PCAP_FILE);
+		ret = ERROR_FILE_OPEN_FAILED;
+		goto ERROR;
+	}
+	
+	fread(&amp;pfh, sizeof(pcap_file_header), 1, fp);	
+	prinfPcapFileHeader(&amp;pfh);
+	//fseek(fp, 0, sizeof(pcap_file_header));
+	
+	buff = (void *)malloc(MAX_ETH_FRAME);
+	for (count=1; ; count++) {
+		memset(buff,0,MAX_ETH_FRAME);
+		//read pcap header to get a packet
+		//get only a pcap head count .
+		readSize=fread(&amp;ph, sizeof(pcap_header), 1, fp);
+		if (readSize&lt;=0) {
+			break;
+		}
+		printfPcapHeader(&amp;ph);
+				
+		
+		if (buff==NULL) {
+			fprintf(stderr, &quot;malloc memory failed.\n&quot;);
+			ret = ERROR_MEM_ALLOC_FAILED;
+			goto ERROR;
+		}
+		
+		//get a packet contents.
+		//read ph.capture_len bytes.
+		readSize=fread(buff,1,ph.capture_len, fp);
+		if (readSize != ph.capture_len) {
+			free(buff);
+			fprintf(stderr, &quot;pcap file parse error.\n&quot;);
+			ret = ERROR_PCAP_PARSE_FAILED;
+			goto ERROR;
+		}
+		printPcap(buff, ph.capture_len);
+		
+		
+		printf(&quot;===count:%d,readSize:%d===\n&quot;,count,readSize);
+		
+		if (feof(fp) || readSize &lt;=0 ) { 
+			break;
+		}
+	}
+	
+ERROR:
+	//free
+	if (buff) {
+		free(buff);
+		buff=NULL;
+	} 
+	if (fp) {
+		fclose(fp);
+		fp=NULL;
+	}	
+	
+    return ret;
+}</pre><br />
+Makefile:<br />
+<pre class="crayon-plain-tag">objects = main.o pcap.o
 
-<p>Makefile:</p>
+pcaptest : $(objects)
+	gcc -o pcaptest  $(objects)
 
-<div class="wp_syntax"><table><tr><td class="line_numbers"><pre>1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-</pre></td><td class="code"><pre class="c" style="font-family:monospace;">objects <span style="color: #339933;">=</span> main.<span style="color: #202020;">o</span> pcap.<span style="color: #202020;">o</span>
-&nbsp;
-pcaptest <span style="color: #339933;">:</span> $<span style="color: #009900;">&#40;</span>objects<span style="color: #009900;">&#41;</span>
-	gcc <span style="color: #339933;">-</span>o pcaptest  $<span style="color: #009900;">&#40;</span>objects<span style="color: #009900;">&#41;</span>
-&nbsp;
-main.<span style="color: #202020;">o</span><span style="color: #339933;">:</span>pcap.<span style="color: #202020;">h</span>
-pcap.<span style="color: #202020;">o</span><span style="color: #339933;">:</span>pcap.<span style="color: #202020;">h</span>
-&nbsp;
-.<span style="color: #202020;">PHONY</span> <span style="color: #339933;">:</span> clean
-clean <span style="color: #339933;">:</span>
-	rm pcaptest  $<span style="color: #009900;">&#40;</span>objects<span style="color: #009900;">&#41;</span></pre></td></tr></table></div>
+main.o:pcap.h
+pcap.o:pcap.h
 
+.PHONY : clean
+clean :
+	rm pcaptest  $(objects)</pre>
 </div>
 ]]></content:encoded>
 			<wfw:commentRss>http://imzc.net/archives/181/feed/</wfw:commentRss>
@@ -735,143 +458,74 @@ clean <span style="color: #339933;">:</span>
 				<category><![CDATA[C/C++]]></category>
 
 		<guid isPermaLink="false">http://imzc.net/?p=179</guid>
-		<description><![CDATA[使用GetTickCount()函数即可，注意单位是毫秒。DWORD可保存。 &#160; 1 2 3 4 5 [...]]]></description>
+		<description><![CDATA[使用GetTickCount()函数即可，注意单位是毫秒。DWORD可保存。 &#160; [crayon-5 [...]]]></description>
 			<content:encoded><![CDATA[<p>使用GetTickCount()函数即可，注意单位是毫秒。DWORD可保存。</p>
-<p>&nbsp;</p>
+<p>&nbsp;</p><pre class="crayon-plain-tag">// uptime_c.cpp : 定义控制台应用程序的入口点。
+//
 
-<div class="wp_syntax"><table><tr><td class="line_numbers"><pre>1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53
-54
-55
-56
-57
-58
-59
-60
-61
-62
-63
-64
-65
-66
-</pre></td><td class="code"><pre class="cpp" style="font-family:monospace;"><span style="color: #666666;">// uptime_c.cpp : 定义控制台应用程序的入口点。</span>
-<span style="color: #666666;">//</span>
-&nbsp;
-<span style="color: #339900;">#include &quot;stdafx.h&quot;</span>
-<span style="color: #339900;">#include &quot;uptime_c.h&quot;</span>
-&nbsp;
-<span style="color: #339900;">#ifdef _DEBUG</span>
-<span style="color: #339900;">#define new DEBUG_NEW</span>
-<span style="color: #339900;">#endif</span>
-&nbsp;
-<span style="color: #666666;">// 唯一的应用程序对象</span>
-&nbsp;
-CWinApp theApp<span style="color: #008080;">;</span>
-&nbsp;
-<span style="color: #0000ff;">using</span> <span style="color: #0000ff;">namespace</span> std<span style="color: #008080;">;</span>
-&nbsp;
-CString formatTime<span style="color: #008000;">&#40;</span>DWORD timeStamp<span style="color: #008000;">&#41;</span>
-<span style="color: #008000;">&#123;</span>
-	DWORD minute <span style="color: #000080;">=</span> timeStamp<span style="color: #000040;">/</span><span style="color: #0000dd;">60</span><span style="color: #008080;">;</span>
-	DWORD second  <span style="color: #000080;">=</span> timeStamp <span style="color: #000040;">-</span> minute<span style="color: #000040;">*</span><span style="color: #0000dd;">60</span> <span style="color: #008080;">;</span>
-	DWORD hour <span style="color: #000080;">=</span> minute <span style="color: #000040;">/</span> <span style="color: #0000dd;">60</span> <span style="color: #008080;">;</span>
-	minute <span style="color: #000080;">=</span> minute <span style="color: #000040;">-</span> hour <span style="color: #000040;">*</span> <span style="color: #0000dd;">60</span><span style="color: #008080;">;</span>
-	CString csTime <span style="color: #008080;">;</span>
-	csTime.<span style="color: #007788;">Format</span><span style="color: #008000;">&#40;</span>_T<span style="color: #008000;">&#40;</span><span style="color: #FF0000;">&quot;%u:%02u:%02u&quot;</span><span style="color: #008000;">&#41;</span>,hour,minute,second<span style="color: #008000;">&#41;</span><span style="color: #008080;">;</span>
-	<span style="color: #0000ff;">return</span> csTime<span style="color: #008080;">;</span>
-<span style="color: #008000;">&#125;</span>
-&nbsp;
-<span style="color: #0000ff;">int</span> _tmain<span style="color: #008000;">&#40;</span><span style="color: #0000ff;">int</span> argc, TCHAR<span style="color: #000040;">*</span> argv<span style="color: #008000;">&#91;</span><span style="color: #008000;">&#93;</span>, TCHAR<span style="color: #000040;">*</span> envp<span style="color: #008000;">&#91;</span><span style="color: #008000;">&#93;</span><span style="color: #008000;">&#41;</span>
-<span style="color: #008000;">&#123;</span>
-	<span style="color: #0000ff;">int</span> nRetCode <span style="color: #000080;">=</span> <span style="color: #0000dd;">0</span><span style="color: #008080;">;</span>
-&nbsp;
-	HMODULE hModule <span style="color: #000080;">=</span> <span style="color: #008080;">::</span><span style="color: #007788;">GetModuleHandle</span><span style="color: #008000;">&#40;</span><span style="color: #0000ff;">NULL</span><span style="color: #008000;">&#41;</span><span style="color: #008080;">;</span>
-&nbsp;
-	<span style="color: #0000ff;">if</span> <span style="color: #008000;">&#40;</span>hModule <span style="color: #000040;">!</span><span style="color: #000080;">=</span> <span style="color: #0000ff;">NULL</span><span style="color: #008000;">&#41;</span>
-	<span style="color: #008000;">&#123;</span>
-		<span style="color: #666666;">// 初始化 MFC 并在失败时显示错误</span>
-		<span style="color: #0000ff;">if</span> <span style="color: #008000;">&#40;</span><span style="color: #000040;">!</span>AfxWinInit<span style="color: #008000;">&#40;</span>hModule, <span style="color: #0000ff;">NULL</span>, <span style="color: #008080;">::</span><span style="color: #007788;">GetCommandLine</span><span style="color: #008000;">&#40;</span><span style="color: #008000;">&#41;</span>, <span style="color: #0000dd;">0</span><span style="color: #008000;">&#41;</span><span style="color: #008000;">&#41;</span>
-		<span style="color: #008000;">&#123;</span>
-			<span style="color: #666666;">// TODO: 更改错误代码以符合您的需要</span>
-			_tprintf<span style="color: #008000;">&#40;</span>_T<span style="color: #008000;">&#40;</span><span style="color: #FF0000;">&quot;错误: MFC 初始化失败<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #008000;">&#41;</span><span style="color: #008000;">&#41;</span><span style="color: #008080;">;</span>
-			nRetCode <span style="color: #000080;">=</span> <span style="color: #0000dd;">1</span><span style="color: #008080;">;</span>
-		<span style="color: #008000;">&#125;</span>
-		<span style="color: #0000ff;">else</span>
-		<span style="color: #008000;">&#123;</span>
-			<span style="color: #666666;">// TODO: 在此处为应用程序的行为编写代码。  </span>
-			<span style="color: #0000ff;">if</span> <span style="color: #008000;">&#40;</span>argc<span style="color: #000040;">!</span><span style="color: #000080;">=</span><span style="color: #0000dd;">1</span><span style="color: #008000;">&#41;</span>
-			<span style="color: #008000;">&#123;</span><span style="color: #666666;">//有任意参数，则输出时间戳。</span>
-				_tprintf<span style="color: #008000;">&#40;</span>_T<span style="color: #008000;">&#40;</span><span style="color: #FF0000;">&quot;%u&quot;</span><span style="color: #008000;">&#41;</span>, GetTickCount<span style="color: #008000;">&#40;</span><span style="color: #008000;">&#41;</span><span style="color: #000040;">/</span><span style="color: #0000dd;">1000</span><span style="color: #008000;">&#41;</span><span style="color: #008080;">;</span>
-			<span style="color: #008000;">&#125;</span> 
-			<span style="color: #0000ff;">else</span>
-			<span style="color: #008000;">&#123;</span>
-				CString   csStartToNow<span style="color: #008000;">&#40;</span>formatTime<span style="color: #008000;">&#40;</span> GetTickCount<span style="color: #008000;">&#40;</span><span style="color: #008000;">&#41;</span><span style="color: #000040;">/</span><span style="color: #0000dd;">1000</span><span style="color: #008000;">&#41;</span><span style="color: #008000;">&#41;</span><span style="color: #008080;">;</span>
-				_tprintf<span style="color: #008000;">&#40;</span>_T<span style="color: #008000;">&#40;</span><span style="color: #FF0000;">&quot;%s&quot;</span><span style="color: #008000;">&#41;</span>,csStartToNow<span style="color: #008000;">&#41;</span><span style="color: #008080;">;</span>
-			<span style="color: #008000;">&#125;</span>
-&nbsp;
-		<span style="color: #008000;">&#125;</span>
-	<span style="color: #008000;">&#125;</span>
-	<span style="color: #0000ff;">else</span>
-	<span style="color: #008000;">&#123;</span>
-		<span style="color: #666666;">// TODO: 更改错误代码以符合您的需要</span>
-		_tprintf<span style="color: #008000;">&#40;</span>_T<span style="color: #008000;">&#40;</span><span style="color: #FF0000;">&quot;错误: GetModuleHandle 失败<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #008000;">&#41;</span><span style="color: #008000;">&#41;</span><span style="color: #008080;">;</span>
-		nRetCode <span style="color: #000080;">=</span> <span style="color: #0000dd;">1</span><span style="color: #008080;">;</span>
-	<span style="color: #008000;">&#125;</span>
-&nbsp;
-	<span style="color: #0000ff;">return</span> nRetCode<span style="color: #008080;">;</span>
-<span style="color: #008000;">&#125;</span></pre></td></tr></table></div>
+#include &quot;stdafx.h&quot;
+#include &quot;uptime_c.h&quot;
 
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#endif
+
+// 唯一的应用程序对象
+
+CWinApp theApp;
+
+using namespace std;
+
+CString formatTime(DWORD timeStamp)
+{
+	DWORD minute = timeStamp/60;
+	DWORD second  = timeStamp - minute*60 ;
+	DWORD hour = minute / 60 ;
+	minute = minute - hour * 60;
+	CString csTime ;
+	csTime.Format(_T(&quot;%u:%02u:%02u&quot;),hour,minute,second);
+	return csTime;
+}
+
+int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
+{
+	int nRetCode = 0;
+
+	HMODULE hModule = ::GetModuleHandle(NULL);
+
+	if (hModule != NULL)
+	{
+		// 初始化 MFC 并在失败时显示错误
+		if (!AfxWinInit(hModule, NULL, ::GetCommandLine(), 0))
+		{
+			// TODO: 更改错误代码以符合您的需要
+			_tprintf(_T(&quot;错误: MFC 初始化失败\n&quot;));
+			nRetCode = 1;
+		}
+		else
+		{
+			// TODO: 在此处为应用程序的行为编写代码。  
+			if (argc!=1)
+			{//有任意参数，则输出时间戳。
+				_tprintf(_T(&quot;%u&quot;), GetTickCount()/1000);
+			} 
+			else
+			{
+				CString   csStartToNow(formatTime( GetTickCount()/1000));
+				_tprintf(_T(&quot;%s&quot;),csStartToNow);
+			}
+
+		}
+	}
+	else
+	{
+		// TODO: 更改错误代码以符合您的需要
+		_tprintf(_T(&quot;错误: GetModuleHandle 失败\n&quot;));
+		nRetCode = 1;
+	}
+
+	return nRetCode;
+}</pre><p></p>
 ]]></content:encoded>
 			<wfw:commentRss>http://imzc.net/archives/179/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
@@ -1057,15 +711,15 @@ CString formatTime<span style="color: #008000;">&#40;</span>DWORD timeStamp<span
 			<content:encoded><![CDATA[<p>练手的,可能转换过程麻烦了一点.初步验证了下,功能应该是没有问题的.<br />
 ipv6地址格式介绍:</p>
 <p>http://zh.wikipedia.org/wiki/IPv6</p>
-<pre>#include &lt;iostream &gt;
-#include&lt;cstdio &gt;
-#include &lt;cstring &gt;
-#include &lt;cassert &gt;
+<p></p><pre class="crayon-plain-tag">#include &amp;lt;iostream &amp;gt;
+#include&amp;lt;cstdio &amp;gt;
+#include &amp;lt;cstring &amp;gt;
+#include &amp;lt;cassert &amp;gt;
 using namespace std;
 
 
-#define  H(x)  ((unsigned char *) &amp; (x) )[0]
-#define  L(x)  ((unsigned char *) &amp; (x) )[1]
+#define  H(x)  ((unsigned char *) &amp;amp; (x) )[0]
+#define  L(x)  ((unsigned char *) &amp;amp; (x) )[1]
 
 //char * abbr, ipv6字符串
 //unsigned char * ret_buff,返回和引用的buff
@@ -1076,67 +730,67 @@ unsigned char *  ipv6_to_u (char * abbr,unsigned char * ret_buff){
        int  two_colon = -1;
        int  ipv6_char_len = strlen(abbr);
 
-       assert(abbr!=NULL &amp;&amp; ret_buff!=NULL);
+       assert(abbr!=NULL &amp;amp;&amp;amp; ret_buff!=NULL);
        //查找是否有缩写的情况
-    //   two_colon=abbr.find_first_of("::");
-    if( (ipv6_char_len&lt;3 )  \
-         ||(abbr[0] ==':' &amp;&amp; abbr[1]!=':') \
-         ||(abbr[ipv6_char_len-1]==':' &amp;&amp; abbr[ipv6_char_len-2]!=':' ) ){
-                        printf("\nInvalid ipv6 addr[%s]!\n",abbr);
+    //   two_colon=abbr.find_first_of(&quot;::&quot;);
+    if( (ipv6_char_len&amp;lt;3 )  \
+         ||(abbr[0] ==':' &amp;amp;&amp;amp; abbr[1]!=':') \
+         ||(abbr[ipv6_char_len-1]==':' &amp;amp;&amp;amp; abbr[ipv6_char_len-2]!=':' ) ){
+                        printf(&quot;\nInvalid ipv6 addr[%s]!\n&quot;,abbr);
                       return 0;
     }
 
-       for(int i=0,j=0;i&lt;ipv6_char_len;i++){
+       for(int i=0,j=0;i&amp;lt;ipv6_char_len;i++){
            if(abbr[i]!=':'){
                 j++;
            }else{
                 j=0;
             }
-            if(abbr[i] == ':' &amp;&amp; abbr[i+1] == ':'){
+            if(abbr[i] == ':' &amp;amp;&amp;amp; abbr[i+1] == ':'){
                 if(two_colon == -1){
                     two_colon =i;
                 }else{
-                      printf("\nInvalid ipv6 addr[%s],:: appears once!\n",abbr);
+                      printf(&quot;\nInvalid ipv6 addr[%s],:: appears once!\n&quot;,abbr);
                       return 0;
                 }
             }
-            if(j&gt;4){
-                      printf("\nInvalid ipv6 addr[%s], every 2Bytes not more than 4 chars!\n",abbr);
+            if(j&amp;gt;4){
+                      printf(&quot;\nInvalid ipv6 addr[%s], every 2Bytes not more than 4 chars!\n&quot;,abbr);
                       return 0;
             }
         }
 
 //处理缩写的情况.
-       if(two_colon&gt;=0){
+       if(two_colon&amp;gt;=0){
            int pos = 0;
            int start_colon_num = 0;
            int end_colon_num = 0;
            int  add_colon_num = 0;
            //找:: 前面:的个数
-             for(int i=0;i&lt;two_colon;i++){
+             for(int i=0;i&amp;lt;two_colon;i++){
                 if(abbr[i] == ':' ){
                    start_colon_num ++;
                 }
             }
             //找:: 后面:的个数
-             for(int i=two_colon+2;i&lt;ipv6_char_len;i++){
+             for(int i=two_colon+2;i&amp;lt;ipv6_char_len;i++){
                 if(abbr[i] == ':' ){
                    end_colon_num ++;
                 }
             }
-            //计算需要添加 "0:" 的个数,总共只有7个冒号.
+            //计算需要添加 &quot;0:&quot; 的个数,总共只有7个冒号.
             add_colon_num = 7 - start_colon_num - end_colon_num ;
-            for(pos =0;pos &lt;two_colon;pos ++){
+            for(pos =0;pos &amp;lt;two_colon;pos ++){
                     buff[pos] = abbr[pos];
             }
 
-           while(add_colon_num&gt;0){
+           while(add_colon_num&amp;gt;0){
                  buff[pos++] =':';
                 add_colon_num --;
                 if(add_colon_num!=0)
                  buff[pos++] ='0';
            }
-            for(int i=two_colon+2; i&lt;ipv6_char_len; ){
+            for(int i=two_colon+2; i&amp;lt;ipv6_char_len; ){
                     buff[pos++] = abbr[i++];
             }
              buff[pos] = '\0';
@@ -1146,21 +800,21 @@ unsigned char *  ipv6_to_u (char * abbr,unsigned char * ret_buff){
            strncpy(buff,abbr,ipv6_char_len);
        }
 
-    //   printf("%s\n",buff);
-        int colon_num = sscanf (buff,"%4x:%4x:%4x:%4x:%4x:%4x:%4x:%4x",&amp;ipv6_int[0],&amp;ipv6_int[1],&amp;ipv6_int[2],&amp;ipv6_int[3],\
-                                                                                                              &amp;ipv6_int[4],&amp;ipv6_int[5],&amp;ipv6_int[6],&amp;ipv6_int[7]);
-        if(colon_num&lt;=0 || (two_colon==-1 &amp;&amp; colon_num !=8 )  ){
-            printf("Invalid ipv6 addr [%s] format!\n",abbr);
+    //   printf(&quot;%s\n&quot;,buff);
+        int colon_num = sscanf (buff,&quot;%4x:%4x:%4x:%4x:%4x:%4x:%4x:%4x&quot;,&amp;amp;ipv6_int[0],&amp;amp;ipv6_int[1],&amp;amp;ipv6_int[2],&amp;amp;ipv6_int[3],\
+                                                                                                              &amp;amp;ipv6_int[4],&amp;amp;ipv6_int[5],&amp;amp;ipv6_int[6],&amp;amp;ipv6_int[7]);
+        if(colon_num&amp;lt;=0 || (two_colon==-1 &amp;amp;&amp;amp; colon_num !=8 )  ){
+            printf(&quot;Invalid ipv6 addr [%s] format!\n&quot;,abbr);
            return 0 ;
         }
         #if 0
-       printf("colon_num:%d,two_colon:%d\n",colon_num,two_colon);
-        for(int k=0;k&lt;8;k++){
-              printf("%3d,",ipv6_int[k]);
+       printf(&quot;colon_num:%d,two_colon:%d\n&quot;,colon_num,two_colon);
+        for(int k=0;k&amp;lt;8;k++){
+              printf(&quot;%3d,&quot;,ipv6_int[k]);
        }
        #endif
        //获取标准化后的值
-        for(int i=0;i&lt;8;i++){
+        for(int i=0;i&amp;lt;8;i++){
             ret_buff[i*2] = L(ipv6_int[i]);
             ret_buff[i*2+1] = H(ipv6_int[i]);
 
@@ -1173,15 +827,15 @@ unsigned char *  ipv6_to_u (char * abbr,unsigned char * ret_buff){
 void print_ipv6_buff(const char * ipv6_str, unsigned char *ipv6_std_buf){
         if(ipv6_str==NULL || ipv6_std_buf==NULL)
             return;
-        printf("ipv6 string[%s]:\n",ipv6_str);
-        for(int i=0;i&lt;15;i++){
-           printf("%02d-",i);
+        printf(&quot;ipv6 string[%s]:\n&quot;,ipv6_str);
+        for(int i=0;i&amp;lt;15;i++){
+           printf(&quot;%02d-&quot;,i);
         }
-        printf("15\n");
-        for(int i=0;i&lt;16;i++){
-           printf("%02x ",ipv6_std_buf[i]);
+        printf(&quot;15\n&quot;);
+        for(int i=0;i&amp;lt;16;i++){
+           printf(&quot;%02x &quot;,ipv6_std_buf[i]);
         }
-        printf("\n\n");
+        printf(&quot;\n\n&quot;);
 }
 
 int main(int argc,char ** argv)
@@ -1189,19 +843,19 @@ int main(int argc,char ** argv)
     unsigned char ipv6_long_buf[16]={0};
 
     if(argc!=2){
-     printf("Useage:prog  \"ipv6_addr\"\n");
+     printf(&quot;Useage:prog  \&quot;ipv6_addr\&quot;\n&quot;);
     /*
-    char ipv6_l[] =  "fe80:1:0:0:c05:4fc6:bb33:9d8f";
+    char ipv6_l[] =  &quot;fe80:1:0:0:c05:4fc6:bb33:9d8f&quot;;
 
-    char ipv6_s1[] =  "fe80:1::c05:4fc6:bb33:9d8f";
-    char ipv6_s2[] =  "::c05:4fc6:bb33:9d8f";
-    char ipv6_s3[] =  "f8:1::c05:0:0:9d8f";
-    char ipv6_s4[] =  "fe80:1:c05:4fc6:bb33:9d8f::";
+    char ipv6_s1[] =  &quot;fe80:1::c05:4fc6:bb33:9d8f&quot;;
+    char ipv6_s2[] =  &quot;::c05:4fc6:bb33:9d8f&quot;;
+    char ipv6_s3[] =  &quot;f8:1::c05:0:0:9d8f&quot;;
+    char ipv6_s4[] =  &quot;fe80:1:c05:4fc6:bb33:9d8f::&quot;;
 
-    char ipv6_s5[] =  "fe80::1::fc6:bb33:9d8f::";
-    char ipv6_s6[] =  "fe80::::fc6:bb33:9d8f::";
-    char ipv6_s7[] =  "fe80:fc6:bb33:9d8f:";
-    char ipv6_s8[] =  ":fe80:fc6:bb33:9d8f";
+    char ipv6_s5[] =  &quot;fe80::1::fc6:bb33:9d8f::&quot;;
+    char ipv6_s6[] =  &quot;fe80::::fc6:bb33:9d8f::&quot;;
+    char ipv6_s7[] =  &quot;fe80:fc6:bb33:9d8f:&quot;;
+    char ipv6_s8[] =  &quot;:fe80:fc6:bb33:9d8f&quot;;
    //std
    print_ipv6_buff(ipv6_l,ipv6_to_u (ipv6_l,ipv6_long_buf));
    //abbr
@@ -1219,12 +873,10 @@ int main(int argc,char ** argv)
           print_ipv6_buff(argv[1],ipv6_to_u (argv[1],ipv6_long_buf));
     }
     return 0;
-}</pre>
-<p>运行截图:</p>
-<pre>~/programming/ipv6test$ ./ip "aaa1:aaa2:aaa3:aaa4:aaa5:aaa6:aaa7:aaa8"
+}</pre><p>运行截图:</p><pre class="crayon-plain-tag">~/programming/ipv6test$ ./ip &quot;aaa1:aaa2:aaa3:aaa4:aaa5:aaa6:aaa7:aaa8&quot;
 ipv6 string[aaa1:aaa2:aaa3:aaa4:aaa5:aaa6:aaa7:aaa8]:
 00-01-02-03-04-05-06-07-08-09-10-11-12-13-14-15
-aa a1 aa a2 aa a3 aa a4 aa a5 aa a6 aa a7 aa a8</pre>
+aa a1 aa a2 aa a3 aa a4 aa a5 aa a6 aa a7 aa a8</pre><p></p>
 ]]></content:encoded>
 			<wfw:commentRss>http://imzc.net/archives/151/feed/</wfw:commentRss>
 		<slash:comments>291</slash:comments>
@@ -1246,27 +898,15 @@ aa a1 aa a2 aa a3 aa a4 aa a5 aa a6 aa a7 aa a8</pre>
 step1. sudo -s -H<br />
 step2. export LD_LIBRARY_PATH=/pwd_dirname/:$LD_LIBRARY_PATH<br />
 将当前目录导入到环境变量，以保证优先搜索本地目录。<br />
-step3. make</p>
-
-<div class="wp_syntax"><table><tr><td class="line_numbers"><pre>1
-2
-3
-4
-5
-6
-7
-8
-9
-</pre></td><td class="code"><pre class="c" style="font-family:monospace;"><span style="color: #339933;">#include&lt;stdio.h&gt;</span>
-<span style="color: #339933;">#include&lt;dlfcn.h&gt;</span>
-<span style="color: #993333;">typedef</span> <span style="color: #993333;">int</span> <span style="color: #009900;">&#40;</span><span style="color: #339933;">*</span>f<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#40;</span><span style="color: #993333;">char</span> <span style="color: #339933;">*</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<span style="color: #993333;">int</span> o_lib_function <span style="color: #009900;">&#40;</span><span style="color: #993333;">char</span> <span style="color: #339933;">*</span> msg<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
-<span style="color: #993333;">void</span> <span style="color: #339933;">*</span> hl <span style="color: #339933;">=</span> dlopen<span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;/lib/libfunc.so&quot;</span><span style="color: #339933;">,</span>RTLD_NOW<span style="color: #339933;">|</span>RTLD_GLOBAL<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-f old_lib_function <span style="color: #339933;">=</span> <span style="color: #009900;">&#40;</span>f<span style="color: #009900;">&#41;</span> dlsym<span style="color: #009900;">&#40;</span>hl<span style="color: #339933;">,</span> <span style="color: #ff0000;">&quot;o_lib_function&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;call in injected function. <span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<span style="color: #b1b100;">return</span> <span style="color: #009900;">&#40;</span><span style="color: #339933;">*</span> old_lib_function<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#40;</span>msg<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<span style="color: #009900;">&#125;</span></pre></td></tr></table></div>
-
+step3. make</p><pre class="crayon-plain-tag">#include&lt;stdio.h&gt;
+#include&lt;dlfcn.h&gt;
+typedef int (*f) (char * );
+int o_lib_function (char * msg){
+void * hl = dlopen(&quot;/lib/libfunc.so&quot;,RTLD_NOW|RTLD_GLOBAL);
+f old_lib_function = (f) dlsym(hl, &quot;o_lib_function&quot;);
+printf(&quot;call in injected function. \n&quot;);
+return (* old_lib_function)(msg);
+}</pre><p></p>
 <p>其余函数见附件。<br />
 <a href="http://imzc.net/archives/134/linux_inject_test-tar" rel="attachment wp-att-135">linux_inject_test.tar</a></p>
 ]]></content:encoded>
@@ -1429,80 +1069,77 @@ set solib-search-path YOUR_CROSS_COMPILE_PATH<br />
 set solib-search-path YOUR_DEVELOPER_TOOLS_LIB_PATH<br />
 handle SIG32 nostop noprint pass</p>
 <p>注意：待调试的可执行文件，在编译的时候需要加-g，core文件才能正常显示出错信息！有时候core信息很大，超出了开发板的空间限制，生成的core信息会残缺不全而无法使用，可以通过挂载到PC的方式来规避这一点。</p>
-<p>还有一个,可以通过execinfo.h中相关函数实现,转一个cu上面的例子:</p>
-
-<div class="wp_syntax"><div class="code"><pre class="c" style="font-family:monospace;"><span style="color: #666666; font-style: italic;">//内存越界获取堆栈地方法 </span>
-<span style="color: #666666; font-style: italic;">//这个函数打出信息比较详细</span>
-&nbsp;
-<span style="color: #339933;">#include &lt;stdio.h&gt;</span>
-<span style="color: #339933;">#include &lt;signal.h&gt;</span>
-<span style="color: #339933;">#include &lt;execinfo.h&gt;</span>
-&nbsp;
-<span style="color: #993333;">void</span> bt_sighandler<span style="color: #009900;">&#40;</span><span style="color: #993333;">int</span> sig<span style="color: #339933;">,</span> <span style="color: #993333;">struct</span> sigcontext ctx<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-&nbsp;
- <span style="color: #993333;">void</span> <span style="color: #339933;">*</span>trace<span style="color: #009900;">&#91;</span><span style="color: #0000dd;">16</span><span style="color: #009900;">&#93;</span><span style="color: #339933;">;</span>
- <span style="color: #993333;">char</span> <span style="color: #339933;">**</span>messages <span style="color: #339933;">=</span> <span style="color: #009900;">&#40;</span><span style="color: #993333;">char</span> <span style="color: #339933;">**</span><span style="color: #009900;">&#41;</span>NULL<span style="color: #339933;">;</span>
- <span style="color: #993333;">int</span> i<span style="color: #339933;">,</span> trace_size <span style="color: #339933;">=</span> <span style="color: #0000dd;">0</span><span style="color: #339933;">;</span>
-&nbsp;
- <span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span>sig <span style="color: #339933;">==</span> SIGSEGV<span style="color: #009900;">&#41;</span>
-<span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;Got signal %d, faulty address is %p, &quot;</span>
-  <span style="color: #ff0000;">&quot;from %p<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #339933;">,</span> sig<span style="color: #339933;">,</span> ctx.<span style="color: #202020;">cr2</span><span style="color: #339933;">,</span> ctx.<span style="color: #202020;">eip</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
- <span style="color: #b1b100;">else</span>
-<span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;Got signal %d<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #339933;">,</span> sig<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-&nbsp;
- trace_size <span style="color: #339933;">=</span> backtrace<span style="color: #009900;">&#40;</span>trace<span style="color: #339933;">,</span> <span style="color: #0000dd;">16</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
- <span style="color: #808080; font-style: italic;">/* overwrite sigaction with caller's address */</span>
- trace<span style="color: #009900;">&#91;</span><span style="color: #0000dd;">1</span><span style="color: #009900;">&#93;</span> <span style="color: #339933;">=</span> <span style="color: #009900;">&#40;</span><span style="color: #993333;">void</span> <span style="color: #339933;">*</span><span style="color: #009900;">&#41;</span>ctx.<span style="color: #202020;">eip</span><span style="color: #339933;">;</span>
- messages <span style="color: #339933;">=</span> backtrace_symbols<span style="color: #009900;">&#40;</span>trace<span style="color: #339933;">,</span> trace_size<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
- <span style="color: #808080; font-style: italic;">/* skip first stack frame (points here) */</span>
- <span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;[bt] Execution path:<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
- <span style="color: #b1b100;">for</span> <span style="color: #009900;">&#40;</span>i<span style="color: #339933;">=</span><span style="color: #0000dd;">1</span><span style="color: #339933;">;</span> i<span style="color: #339933;">&lt;</span>trace_size<span style="color: #339933;">;</span> <span style="color: #339933;">++</span>i<span style="color: #009900;">&#41;</span>
-<span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;[bt] %s<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #339933;">,</span> messages<span style="color: #009900;">&#91;</span>i<span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-&nbsp;
- exit<span style="color: #009900;">&#40;</span><span style="color: #0000dd;">0</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<span style="color: #009900;">&#125;</span>
-&nbsp;
-&nbsp;
-<span style="color: #993333;">int</span> func_a<span style="color: #009900;">&#40;</span><span style="color: #993333;">int</span> a<span style="color: #339933;">,</span> <span style="color: #993333;">char</span> b<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-&nbsp;
- <span style="color: #993333;">char</span> <span style="color: #339933;">*</span>p <span style="color: #339933;">=</span> <span style="color: #009900;">&#40;</span><span style="color: #993333;">char</span> <span style="color: #339933;">*</span><span style="color: #009900;">&#41;</span><span style="color: #208080;">0xdeadbeef</span><span style="color: #339933;">;</span>
-&nbsp;
- a <span style="color: #339933;">=</span> a <span style="color: #339933;">+</span> b<span style="color: #339933;">;</span>
- <span style="color: #339933;">*</span>p <span style="color: #339933;">=</span> <span style="color: #0000dd;">10</span><span style="color: #339933;">;</span> <span style="color: #808080; font-style: italic;">/* CRASH here!! */</span>
-&nbsp;
- <span style="color: #b1b100;">return</span> <span style="color: #0000dd;">2</span><span style="color: #339933;">*</span>a<span style="color: #339933;">;</span>
-<span style="color: #009900;">&#125;</span>
-&nbsp;
-&nbsp;
-<span style="color: #993333;">int</span> func_b<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-&nbsp;
- <span style="color: #993333;">int</span> res<span style="color: #339933;">,</span> a <span style="color: #339933;">=</span> <span style="color: #0000dd;">5</span><span style="color: #339933;">;</span>
-&nbsp;
- res <span style="color: #339933;">=</span> <span style="color: #0000dd;">5</span> <span style="color: #339933;">+</span> func_a<span style="color: #009900;">&#40;</span>a<span style="color: #339933;">,</span> <span style="color: #ff0000;">'t'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-&nbsp;
- <span style="color: #b1b100;">return</span> res<span style="color: #339933;">;</span>
-<span style="color: #009900;">&#125;</span>
-&nbsp;
-&nbsp;
-<span style="color: #993333;">int</span> main<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-&nbsp;
- <span style="color: #808080; font-style: italic;">/* Install our signal handler */</span>
- <span style="color: #993333;">struct</span> sigaction sa<span style="color: #339933;">;</span>
-&nbsp;
- sa.<span style="color: #202020;">sa_handler</span> <span style="color: #339933;">=</span> <span style="color: #009900;">&#40;</span><span style="color: #993333;">void</span> <span style="color: #339933;">*</span><span style="color: #009900;">&#41;</span>bt_sighandler<span style="color: #339933;">;</span>
- sigemptyset<span style="color: #009900;">&#40;</span><span style="color: #339933;">&amp;</span>sa.<span style="color: #202020;">sa_mask</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
- sa.<span style="color: #202020;">sa_flags</span> <span style="color: #339933;">=</span> SA_RESTART<span style="color: #339933;">;</span>
-&nbsp;
- sigaction<span style="color: #009900;">&#40;</span>SIGSEGV<span style="color: #339933;">,</span> <span style="color: #339933;">&amp;</span>sa<span style="color: #339933;">,</span> NULL<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
- sigaction<span style="color: #009900;">&#40;</span>SIGUSR1<span style="color: #339933;">,</span> <span style="color: #339933;">&amp;</span>sa<span style="color: #339933;">,</span> NULL<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
- <span style="color: #808080; font-style: italic;">/* ... add any other signal here */</span>
-&nbsp;
- <span style="color: #808080; font-style: italic;">/* Do something */</span>
- <span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;%d<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #339933;">,</span> func_b<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-&nbsp;
-&nbsp;
-<span style="color: #009900;">&#125;</span></pre></div></div>
-
+<p>还有一个,可以通过execinfo.h中相关函数实现,转一个cu上面的例子:</p><pre class="crayon-plain-tag">//内存越界获取堆栈地方法 
+//这个函数打出信息比较详细
+ 
+#include &lt;stdio.h&gt;
+#include &lt;signal.h&gt;
+#include &lt;execinfo.h&gt;
+ 
+void bt_sighandler(int sig, struct sigcontext ctx) {
+ 
+ void *trace[16];
+ char **messages = (char **)NULL;
+ int i, trace_size = 0;
+ 
+ if (sig == SIGSEGV)
+printf(&quot;Got signal %d, faulty address is %p, &quot;
+  &quot;from %p\n&quot;, sig, ctx.cr2, ctx.eip);
+ else
+printf(&quot;Got signal %d\n&quot;, sig);
+ 
+ trace_size = backtrace(trace, 16);
+ /* overwrite sigaction with caller's address */
+ trace[1] = (void *)ctx.eip;
+ messages = backtrace_symbols(trace, trace_size);
+ /* skip first stack frame (points here) */
+ printf(&quot;[bt] Execution path:\n&quot;);
+ for (i=1; i&lt;trace_size; ++i)
+printf(&quot;[bt] %s\n&quot;, messages[i]);
+ 
+ exit(0);
+}
+ 
+ 
+int func_a(int a, char b) {
+ 
+ char *p = (char *)0xdeadbeef;
+ 
+ a = a + b;
+ *p = 10; /* CRASH here!! */
+ 
+ return 2*a;
+}
+ 
+ 
+int func_b() {
+  
+ int res, a = 5;
+ 
+ res = 5 + func_a(a, 't');
+ 
+ return res;
+}
+ 
+ 
+int main() {
+ 
+ /* Install our signal handler */
+ struct sigaction sa;
+ 
+ sa.sa_handler = (void *)bt_sighandler;
+ sigemptyset(&amp;sa.sa_mask);
+ sa.sa_flags = SA_RESTART;
+ 
+ sigaction(SIGSEGV, &amp;sa, NULL);
+ sigaction(SIGUSR1, &amp;sa, NULL);
+ /* ... add any other signal here */
+ 
+ /* Do something */
+ printf(&quot;%d\n&quot;, func_b());
+  
+ 
+}</pre><p></p>
 ]]></content:encoded>
 			<wfw:commentRss>http://imzc.net/archives/119/feed/</wfw:commentRss>
 		<slash:comments>2</slash:comments>
@@ -2351,7 +1988,7 @@ M. Tim Jones 是一名嵌入式软件工程师，他是 GNU/Linux Application Pr
 <tbody>
 <tr>
 <td>
-<pre>struct struct <strong>kmem_cache</strong> *my_cachep;</pre>
+<pre class="crayon-plain-tag">struct struct &lt;strong&gt;kmem_cache&lt;/strong&gt; *my_cachep;</pre>
 </td>
 </tr>
 </tbody>
@@ -2363,8 +2000,8 @@ M. Tim Jones 是一名嵌入式软件工程师，他是 GNU/Linux Application Pr
 <tbody>
 <tr>
 <td>
-<pre>struct kmem_cache *
-<strong>kmem_cache_create</strong>( const char *name, size_t size, size_t align,
+<pre class="crayon-plain-tag">struct kmem_cache *
+&lt;strong&gt;kmem_cache_create&lt;/strong&gt;( const char *name, size_t size, size_t align,
                        unsigned long flags;
                        void (*ctor)(void*, struct kmem_cache *, unsigned long),
                        void (*dtor)(void*, struct kmem_cache *, unsigned long));</pre>
@@ -2402,7 +2039,7 @@ M. Tim Jones 是一名嵌入式软件工程师，他是 GNU/Linux Application Pr
 <tbody>
 <tr>
 <td>
-<pre>void <strong>kmem_cache_destroy</strong>( struct kmem_cache *cachep );</pre>
+<pre class="crayon-plain-tag">void &lt;strong&gt;kmem_cache_destroy&lt;/strong&gt;( struct kmem_cache *cachep );</pre>
 </td>
 </tr>
 </tbody>
@@ -2413,7 +2050,7 @@ M. Tim Jones 是一名嵌入式软件工程师，他是 GNU/Linux Application Pr
 <tbody>
 <tr>
 <td>
-<pre>void <strong>kmem_cache_alloc</strong>( struct kmem_cache *cachep, gfp_t flags );</pre>
+<pre class="crayon-plain-tag">void &lt;strong&gt;kmem_cache_alloc&lt;/strong&gt;( struct kmem_cache *cachep, gfp_t flags );</pre>
 </td>
 </tr>
 </tbody>
@@ -2452,7 +2089,7 @@ M. Tim Jones 是一名嵌入式软件工程师，他是 GNU/Linux Application Pr
 <tbody>
 <tr>
 <td>
-<pre>void <strong>kmem_cache_free</strong>( struct kmem_cache *cachep, void *objp );</pre>
+<pre class="crayon-plain-tag">void &lt;strong&gt;kmem_cache_free&lt;/strong&gt;( struct kmem_cache *cachep, void *objp );</pre>
 </td>
 </tr>
 </tbody>
@@ -2463,8 +2100,8 @@ M. Tim Jones 是一名嵌入式软件工程师，他是 GNU/Linux Application Pr
 <tbody>
 <tr>
 <td>
-<pre>void *<strong>kmalloc</strong>( size_t size, int flags );
-void <strong>kfree</strong>( const void *objp );</pre>
+<pre class="crayon-plain-tag">void *&lt;strong&gt;kmalloc&lt;/strong&gt;( size_t size, int flags );
+void &lt;strong&gt;kfree&lt;/strong&gt;( const void *objp );</pre>
 </td>
 </tr>
 </tbody>
@@ -2476,9 +2113,9 @@ void <strong>kfree</strong>( const void *objp );</pre>
 <tbody>
 <tr>
 <td>
-<pre>unsigned int <strong>kmem_cache_size</strong>( struct kmem_cache *cachep );
-const char *<strong>kmem_cache_name</strong>( struct kmem_cache *cachep );
-int <strong>kmem_cache_shrink</strong>( struct kmem_cache *cachep );</pre>
+<pre class="crayon-plain-tag">unsigned int &lt;strong&gt;kmem_cache_size&lt;/strong&gt;( struct kmem_cache *cachep );
+const char *&lt;strong&gt;kmem_cache_name&lt;/strong&gt;( struct kmem_cache *cachep );
+int &lt;strong&gt;kmem_cache_shrink&lt;/strong&gt;( struct kmem_cache *cachep );</pre>
 </td>
 </tr>
 </tbody>
@@ -2493,13 +2130,13 @@ int <strong>kmem_cache_shrink</strong>( struct kmem_cache *cachep );</pre>
 <tbody>
 <tr>
 <td>
-<pre>static struct kmem_cache *my_cachep;
+<pre class="crayon-plain-tag">static struct kmem_cache *my_cachep;
 
 static void init_my_cache( void )
 {
 
-   my_cachep = <strong>kmem_cache_create</strong>(
-                  "my_cache",            /* Name */
+   my_cachep = &lt;strong&gt;kmem_cache_create&lt;/strong&gt;(
+                  &quot;my_cache&quot;,            /* Name */
                   32,                    /* Object Size */
                   0,                     /* Alignment */
                   SLAB_HWCACHE_ALIGN,    /* Flags */
@@ -2517,18 +2154,18 @@ static void init_my_cache( void )
 <tbody>
 <tr>
 <td>
-<pre>int slab_test( void )
+<pre class="crayon-plain-tag">int slab_test( void )
 {
   void *object;
 
-  printk( "Cache name is %s\n", <strong>kmem_cache_name</strong>( my_cachep ) );
-  printk( "Cache object size is %d\n", <strong>kmem_cache_size</strong>( my_cachep ) );
+  printk( &quot;Cache name is %s\n&quot;, &lt;strong&gt;kmem_cache_name&lt;/strong&gt;( my_cachep ) );
+  printk( &quot;Cache object size is %d\n&quot;, &lt;strong&gt;kmem_cache_size&lt;/strong&gt;( my_cachep ) );
 
-  object = <strong>kmem_cache_alloc</strong>( my_cachep, GFP_KERNEL );
+  object = &lt;strong&gt;kmem_cache_alloc&lt;/strong&gt;( my_cachep, GFP_KERNEL );
 
   if (object) {
 
-    <strong>kmem_cache_free</strong>( my_cachep, object );
+    &lt;strong&gt;kmem_cache_free&lt;/strong&gt;( my_cachep, object );
 
   }
 
@@ -2544,10 +2181,10 @@ static void init_my_cache( void )
 <tbody>
 <tr>
 <td>
-<pre>static void remove_my_cache( void )
+<pre class="crayon-plain-tag">static void remove_my_cache( void )
 {
 
-  if (my_cachep) <strong>kmem_cache_destroy</strong>( my_cachep );
+  if (my_cachep) &lt;strong&gt;kmem_cache_destroy&lt;/strong&gt;( my_cachep );
 
   return;
 }</pre>
@@ -2565,7 +2202,7 @@ static void init_my_cache( void )
 <tbody>
 <tr>
 <td>
-<pre># <strong>echo "my_cache 128 64 8" &gt; /proc/slabinfo</strong></pre>
+<pre class="crayon-plain-tag"># &lt;strong&gt;echo &quot;my_cache 128 64 8&quot; &amp;gt; /proc/slabinfo&lt;/strong&gt;</pre>
 </td>
 </tr>
 </tbody>
