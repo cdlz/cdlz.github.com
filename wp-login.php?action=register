@@ -6,7 +6,7 @@
 	<link rel='stylesheet' id='wp-admin-css'  href='wp-admin/css/wp-admin.css?ver=3.4.2' type='text/css' media='all' />
 <link rel='stylesheet' id='colors-fresh-css'  href='wp-admin/css/colors-fresh.css?ver=3.4.2' type='text/css' media='all' />
 <script type="text/javascript">
-var duoshuoQuery = {"short_name":"imzc","sso":{"login":"http:\/\/imzc.net\/wp-login.php?action=duoshuo_login","logout":"http:\/\/imzc.net\/wp-login.php?action=logout&_wpnonce=079b4bd6ed"},"remote_auth":"W10= 5ea39e076c9aa89a7b7130f5468c053cac7d2708 1348159683"};
+var duoshuoQuery = {"short_name":"imzc","sso":{"login":"http:\/\/imzc.net\/wp-login.php?action=duoshuo_login","logout":"http:\/\/imzc.net\/wp-login.php?action=logout&_wpnonce=079b4bd6ed"},"remote_auth":"W10= 96a6b9b12c4139f49a7a9d228ccb3025a5934209 1348159854"};
 duoshuoQuery.sso.login += '&redirect_to=' + encodeURIComponent(window.location.href);
 duoshuoQuery.sso.logout += '&redirect_to=' + encodeURIComponent(window.location.href);
 </script>
@@ -20,7 +20,7 @@ var live_blogging = {"ajaxurl":"http:\/\/imzc.net\/wp-admin\/admin-ajax.php","up
 </script>
 <script type='text/javascript' src='wp-content/plugins/live-blogging/live-blogging.js?ver=3.4.2'></script>
 <script type='text/javascript' src='http://static.duoshuo.com/embed.js'></script>
-<script type="text/javascript" src="wp-content/plugins/si-captcha-for-wordpress/captcha/si_captcha.js?ver=1348159683"></script>
+<script type="text/javascript" src="wp-content/plugins/si-captcha-for-wordpress/captcha/si_captcha.js?ver=1348159854"></script>
 <!-- begin SI CAPTCHA Anti-Spam - login/register form style -->
 <style type="text/css">
 div#captchaImgDiv { display:block; }
@@ -51,8 +51,8 @@ input#captcha_code { width:65px; }
 	</p>
 
 <br />
-<div class="captchaSizeDivLarge"><img id="si_image_reg" class="si-captcha" src="wp-content/plugins/si-captcha-for-wordpress/captcha/securimage_show.php?si_form_id=reg&amp;prefix=m6XQslJC2ZKITvVM" width="175" height="60" alt="验证图片" title="验证图片" />
-    <input id="si_code_reg" name="si_code_reg" type="hidden"  value="m6XQslJC2ZKITvVM" />
+<div class="captchaSizeDivLarge"><img id="si_image_reg" class="si-captcha" src="wp-content/plugins/si-captcha-for-wordpress/captcha/securimage_show.php?si_form_id=reg&amp;prefix=1MRRTiMU5QIrBBhJ" width="175" height="60" alt="验证图片" title="验证图片" />
+    <input id="si_code_reg" name="si_code_reg" type="hidden"  value="1MRRTiMU5QIrBBhJ" />
     <div id="si_refresh_reg">
 <a href="wp-login.php?action=register#" rel="nofollow" title="刷新验证码" onclick="si_captcha_refresh('si_image_reg','reg','/wp-content/plugins/si-captcha-for-wordpress/captcha','http://imzc.net/wp-content/plugins/si-captcha-for-wordpress/captcha/securimage_show.php?si_form_id=reg&amp;prefix='); return false;">
       <img class="captchaImgRefresh" src="wp-content/plugins/si-captcha-for-wordpress/captcha/images/refresh.png" width="22" height="20" alt="刷新验证码" onclick="this.blur();" /></a>
