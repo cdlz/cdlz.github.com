@@ -13,7 +13,7 @@
 	<atom:link href="http://imzc.net/archives/category/scriptlanguage/feed/" rel="self" type="application/rss+xml" />
 	<link>http://imzc.net</link>
 	<description>-More Thinking,And Then Just do it~~~</description>
-	<lastBuildDate>Thu, 20 Sep 2012 16:40:36 +0000</lastBuildDate>
+	<lastBuildDate>Sun, 30 Sep 2012 01:45:09 +0000</lastBuildDate>
 	<language>zh-CN</language>
 	<sy:updatePeriod>hourly</sy:updatePeriod>
 	<sy:updateFrequency>1</sy:updateFrequency>
@@ -36,32 +36,32 @@ import glob
 import shutil
 
 def format_file_list(files):
-        all_files_str = &quot;&quot;
+        all_files_str = ""
         for i in range(len(files)):
-                all_files_str +=  str(i)+&quot;:&quot;+files[i]+&quot;\n&quot;
+                all_files_str +=  str(i)+":"+files[i]+"\n"
         return all_files_str
         
-hosts_path = &quot;C:\\Windows\\System32\\drivers\\etc&quot;
+hosts_path = "C:\\Windows\\System32\\drivers\\etc"
 files =  os.listdir(hosts_path)
 os.chdir(hosts_path)
 
 if os.getcwd() != hosts_path:
-        print(&quot;Switch Dir to System32 Error,check permission!\npwd:&quot;+os.getcwd())
+        print("Switch Dir to System32 Error,check permission!\npwd:"+os.getcwd())
         exit()
         
-hosts_files = glob.glob(&quot;host*&quot;)
-choosed_file_idx = int(input(&quot;Choose Hosts File Index:\n&quot;+format_file_list(hosts_files)))
+hosts_files = glob.glob("host*")
+choosed_file_idx = int(input("Choose Hosts File Index:\n"+format_file_list(hosts_files)))
 files_num = len(hosts_files)
 
-if (choosed_file_idx &amp;lt; 0 or choosed_file_idx &amp;gt;= files_num) :
-        print(&quot;Please choose a file in the lists!&quot;)
+if (choosed_file_idx &lt; 0 or choosed_file_idx &gt;= files_num) :
+        print("Please choose a file in the lists!")
         exit()
     
-print(&quot;Choosed idx:{0},file:{1}.&quot;.format(choosed_file_idx,hosts_files[choosed_file_idx]))
-shutil.copy(&quot;hosts&quot;,&quot;hosts.bak&quot;)
-shutil.copy(hosts_files[choosed_file_idx],&quot;hosts&quot;)
-print(&quot;Copy ok,then flush dns...&quot;)
-os.system(&quot;ipconfig /flushdns&quot;)</pre><p> </p>
+print("Choosed idx:{0},file:{1}.".format(choosed_file_idx,hosts_files[choosed_file_idx]))
+shutil.copy("hosts","hosts.bak")
+shutil.copy(hosts_files[choosed_file_idx],"hosts")
+print("Copy ok,then flush dns...")
+os.system("ipconfig /flushdns")</pre><p> </p>
 ]]></content:encoded>
 			<wfw:commentRss>http://imzc.net/archives/288/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>

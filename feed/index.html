@@ -13,11 +13,29 @@
 	<atom:link href="http://imzc.net/feed/" rel="self" type="application/rss+xml" />
 	<link>http://imzc.net</link>
 	<description>-More Thinking,And Then Just do it~~~</description>
-	<lastBuildDate>Thu, 20 Sep 2012 16:40:36 +0000</lastBuildDate>
+	<lastBuildDate>Sun, 30 Sep 2012 01:45:09 +0000</lastBuildDate>
 	<language>zh-CN</language>
 	<sy:updatePeriod>hourly</sy:updatePeriod>
 	<sy:updateFrequency>1</sy:updateFrequency>
 	<generator>http://wordpress.org/?v=3.4.2</generator>
+		<item>
+		<title>站点迁移中。。。</title>
+		<link>http://imzc.net/archives/292/</link>
+		<comments>http://imzc.net/archives/292/#comments</comments>
+		<pubDate>Sun, 30 Sep 2012 01:45:09 +0000</pubDate>
+		<dc:creator>imzc</dc:creator>
+				<category><![CDATA[OnTheGo]]></category>
+
+		<guid isPermaLink="false">http://imzc.net/?p=292</guid>
+		<description><![CDATA[由于访问速度问题，决定将本站转移到国内； 新的域名 http://www.devzc.com; 域名正在备案中 [...]]]></description>
+			<content:encoded><![CDATA[<p>由于访问速度问题，决定将本站转移到国内；<br />
+新的域名 <a href="http://www.devzc.com" target="_blank">http://www.devzc.com</a>;<br />
+域名正在备案中，此站将跳转到github静态页面。<br />
+多谢~</p>
+]]></content:encoded>
+			<wfw:commentRss>http://imzc.net/archives/292/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
 		<item>
 		<title>使用python脚本简单切换hosts文件</title>
 		<link>http://imzc.net/archives/288/</link>
@@ -36,32 +54,32 @@ import glob
 import shutil
 
 def format_file_list(files):
-        all_files_str = &quot;&quot;
+        all_files_str = ""
         for i in range(len(files)):
-                all_files_str +=  str(i)+&quot;:&quot;+files[i]+&quot;\n&quot;
+                all_files_str +=  str(i)+":"+files[i]+"\n"
         return all_files_str
         
-hosts_path = &quot;C:\\Windows\\System32\\drivers\\etc&quot;
+hosts_path = "C:\\Windows\\System32\\drivers\\etc"
 files =  os.listdir(hosts_path)
 os.chdir(hosts_path)
 
 if os.getcwd() != hosts_path:
-        print(&quot;Switch Dir to System32 Error,check permission!\npwd:&quot;+os.getcwd())
+        print("Switch Dir to System32 Error,check permission!\npwd:"+os.getcwd())
         exit()
         
-hosts_files = glob.glob(&quot;host*&quot;)
-choosed_file_idx = int(input(&quot;Choose Hosts File Index:\n&quot;+format_file_list(hosts_files)))
+hosts_files = glob.glob("host*")
+choosed_file_idx = int(input("Choose Hosts File Index:\n"+format_file_list(hosts_files)))
 files_num = len(hosts_files)
 
-if (choosed_file_idx &amp;lt; 0 or choosed_file_idx &amp;gt;= files_num) :
-        print(&quot;Please choose a file in the lists!&quot;)
+if (choosed_file_idx &lt; 0 or choosed_file_idx &gt;= files_num) :
+        print("Please choose a file in the lists!")
         exit()
     
-print(&quot;Choosed idx:{0},file:{1}.&quot;.format(choosed_file_idx,hosts_files[choosed_file_idx]))
-shutil.copy(&quot;hosts&quot;,&quot;hosts.bak&quot;)
-shutil.copy(hosts_files[choosed_file_idx],&quot;hosts&quot;)
-print(&quot;Copy ok,then flush dns...&quot;)
-os.system(&quot;ipconfig /flushdns&quot;)</pre><p> </p>
+print("Choosed idx:{0},file:{1}.".format(choosed_file_idx,hosts_files[choosed_file_idx]))
+shutil.copy("hosts","hosts.bak")
+shutil.copy(hosts_files[choosed_file_idx],"hosts")
+print("Copy ok,then flush dns...")
+os.system("ipconfig /flushdns")</pre><p> </p>
 ]]></content:encoded>
 			<wfw:commentRss>http://imzc.net/archives/288/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
@@ -468,179 +486,6 @@ export PATH</p>
 <p>（2）将JSTAF.jar添加到CLASSPATH中。</p></blockquote>
 ]]></content:encoded>
 			<wfw:commentRss>http://imzc.net/archives/268/feed/</wfw:commentRss>
-		<slash:comments>0</slash:comments>
-		</item>
-		<item>
-		<title>ruby Rspec测试框架cheetsheet</title>
-		<link>http://imzc.net/archives/267/</link>
-		<comments>http://imzc.net/archives/267/#comments</comments>
-		<pubDate>Wed, 04 Jul 2012 16:57:39 +0000</pubDate>
-		<dc:creator>imzc</dc:creator>
-				<category><![CDATA[Ruby&Testing]]></category>
-
-		<guid isPermaLink="false">http://imzc.net/?p=267</guid>
-		<description><![CDATA[项目使用Rspec测试框架,一堆should等等方法容易忘记,这里收集了下: INSTALL =======  [...]]]></description>
-			<content:encoded><![CDATA[<p>项目使用Rspec测试框架,一堆should等等方法容易忘记,这里收集了下:<br />
-INSTALL<br />
-=======</p>
-<p>$ gem install rspec</p>
-<p>RSPEC-RAILS<br />
-===========</p>
-<p>  RAILS-3<br />
-  =======</p>
-<p>    CONFIGURE THE GEMFILE<br />
-    ======================<br />
-    group :development, :test do<br />
-      gem &#8220;rspec-rails&#8221;, &#8220;~> 2.0&#8243;<br />
-    end</p>
-<p>    INSTALL THE BUNDLE<br />
-    ===============================<br />
-    $ bundle install</p>
-<p>    BOOTSTRAP THE APP<br />
-    =================<br />
-    $ ./script/rails generate rspec:install<br />
-          create  .rspec<br />
-          create  spec<br />
-          create  spec/spec_helper.rb<br />
-          create  autotest<br />
-          create  autotest/discover.rb</p>
-<p>  RAILS-2<br />
-  =======</p>
-<p>    INSTALL<br />
-    =======<br />
-    $ gem install rspec-rails -v 1.3.3</p>
-<p>    BOOTSTRAP THE APP<br />
-    =================<br />
-    $ ./script/generate rspec<br />
-        create  spec<br />
-        create  spec/spec_helper.rb<br />
-        create  spec/spec.opts<br />
-        create  previous_failures.txt<br />
-        create  script/spec_server<br />
-        create  script/spec</p>
-<p>HOW TO USE<br />
-==========</p>
-<p>  COMMAND LINE<br />
-  =============<br />
-rspec &#8211;color &#8211;format doc spec/widget_spec.rb</p>
-<p>  RAILS 3 (RSPEC 2)<br />
-  =============<br />
-./rails/generate model User<br />
-rake -T spec # lists all rspec rake tasks<br />
-rake spec # run all specs<br />
-rake spec/models/mymodel_spec.rb # run a single spec file<br />
-rake spec/models/mymodel_spec.rb:27 # run a single example or group on line 27</p>
-<p>  RAILS 2 (RSPEC 1)<br />
-  =============<br />
-./script/generate rspec_model User<br />
-rake -T spec # lists all rspec rake tasks<br />
-rake spec # run all specs<br />
-rake spec SPEC=spec/models/mymodel_spec.rb SPEC_OPTS=&#8221;-e \&#8221;should do<br />
-something\&#8221;" #run a single spec</p>
-<p></p><pre class="crayon-plain-tag">module UserSpecHelper
-  def valid_user_attributes
-    { :email =&gt; &quot;joe@bloggs.com&quot;,
-      :username =&gt; &quot;joebloggs&quot;,
-      :password =&gt; &quot;abcdefg&quot;}
-  end
-end
-
-
-describe &quot;A User (in general)&quot; do
-  include UserSpecHelper
-
-  before(:each) do
-    @user = User.new
-  end
-
-  it &quot;should be invalid without a username&quot; do
-    pending &quot;some other thing we depend on&quot;
-    @user.attributes = valid_user_attributes.except(:username)
-    @user.should_not be_valid
-    @user.should have(1).error_on(:username)
-    @user.errors.on(:username).should == &quot;is required&quot;
-    @user.username = &quot;someusername&quot;
-    @user.should be_valid
-  end
-end</pre><p>EXPECTATIONS<br />
-=====================</p><pre class="crayon-plain-tag">target.should satisfy {|arg| ...}
-target.should_not satisfy {|arg| ...}
-
-target.should equal &lt;value&gt;
-target.should_not equal &lt;value&gt;
-
-target.should be_close &lt;value&gt;, &lt;tolerance&gt;
-target.should_not be_close &lt;value&gt;, &lt;tolerance&gt;
-
-target.should be &lt;value&gt;
-target.should_not be &lt;value&gt;
-
-target.should predicate [optional args]
-target.should be_predicate [optional args]
-target.should_not predicate [optional args]
-target.should_not be_predicate [optional args]
-
-target.should be &lt; 6
-target.should == 5
-target.should be_between(1, 10)
-target.should_not == 'Samantha'
-
-target.should match &lt;regex&gt;
-target.should_not match &lt;regex&gt;
-
-target.should be_an_instance_of &lt;class&gt;
-target.should_not be_an_instance_of &lt;class&gt;
-
-target.should be_a_kind_of &lt;class&gt;
-target.should_not be_a_kind_of &lt;class&gt;
-
-target.should respond_to &lt;symbol&gt;
-target.should_not respond_to &lt;symbol&gt;
-
-lambda {a_call}.should raise_error
-lambda {a_call}.should raise_error(&lt;exception&gt; [, message])
-lambda {a_call}.should_not raise_error
-lambda {a_call}.should_not raise_error(&lt;exception&gt; [, message])
-lambda {a_call}.should change(instance, method).from(number).to(number)
-
-proc.should throw &lt;symbol&gt;
-proc.should_not throw &lt;symbol&gt;
-
-target.should include &lt;object&gt;
-target.should_not include &lt;object&gt;
-
-target.should have(&lt;number&gt;).things
-target.should have_at_least(&lt;number&gt;).things
-target.should have_at_most(&lt;number&gt;).things
-
-target.should have(&lt;number&gt;).errors_on(:field)
-
-expect { thing.approve! }.to change(thing, :status).
-    from(Status::AWAITING_APPROVAL).
-    to(Status::APPROVED)
-
-expect { thing.destroy }.to change(Thing, :count).by(-1)</pre><p>Mocks and Stubs(打桩)<br />
-===============</p><pre class="crayon-plain-tag">user_mock = mock &quot;User&quot;
-user_mock.should_receive(:authenticate).with(&quot;password&quot;).and_return(true)
-user_mock.should_receive(:coffee).exactly(3).times.and_return(:americano)
-user_mock.should_receive(:coffee).exactly(5).times.and_raise(NotEnoughCoffeeExcep
-ion)
-
-people_stub = mock &quot;people&quot;
-people_stub.stub!(:each).and_yield(mock_user)
-people_stub.stub!(:bad_method).and_raise(RuntimeError)
-
-user_stub = mock_model(&quot;User&quot;, :id =&gt; 23, :username =&gt; &quot;pat&quot;, :email =&gt;
-&quot;pat@example.com&quot;)
-
-my_instance.stub!(:msg).and_return(value)
-MyClass.stub!(:msg).and_return(value)</pre><p>Examples (in the real world)</p>
-<p>============================</p>
-<p>http://madhatted.com/2008/7/10/rspec-real-world-testing</p>
-<p>presentation: http://kerryb.github.com/iprug-rspec-presentation/#31<br />
-&nbsp;</p>
-]]></content:encoded>
-			<wfw:commentRss>http://imzc.net/archives/267/feed/</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		</item>
 	</channel>

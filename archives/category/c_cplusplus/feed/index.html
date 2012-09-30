@@ -13,7 +13,7 @@
 	<atom:link href="http://imzc.net/archives/category/c_cplusplus/feed/" rel="self" type="application/rss+xml" />
 	<link>http://imzc.net</link>
 	<description>-More Thinking,And Then Just do it~~~</description>
-	<lastBuildDate>Thu, 20 Sep 2012 16:40:36 +0000</lastBuildDate>
+	<lastBuildDate>Sun, 30 Sep 2012 01:45:09 +0000</lastBuildDate>
 	<language>zh-CN</language>
 	<sy:updatePeriod>hourly</sy:updatePeriod>
 	<sy:updateFrequency>1</sy:updateFrequency>
@@ -2009,7 +2009,7 @@ M. Tim Jones 是一名嵌入式软件工程师，他是 GNU/Linux Application Pr
 </tr>
 </tbody>
 </table>
-<p><code>name</code> 参数定义了缓存名称，proc 文件系统（在 /proc/slabinfo 中）使用它标识这个缓存。         <code>size</code> 参数指定了为这个缓存创建的对象的大小， <code>align</code> 参数定义了每个对象必需的对齐。         <code>flags</code> 参数指定了为缓存启用的选项。这些标志如表 1 所示。<br />
+<p>name</code> 参数定义了缓存名称，proc 文件系统（在 /proc/slabinfo 中）使用它标识这个缓存。         <code>size</code> 参数指定了为这个缓存创建的对象的大小， <code>align</code> 参数定义了每个对象必需的对齐。         <code>flags</code> 参数指定了为缓存启用的选项。这些标志如表 1 所示。<br />
 <a name="table1"><strong>表 1.           kmem_cache_create 的部分选项（在 flags 参数中指定）</strong></a></p>
 <table border="0" cellspacing="0" cellpadding="0" width="80%" summary="表 1.           kmem_cache_create 的部分选项（在 flags 参数中指定）">
 <tbody>
@@ -2031,7 +2031,7 @@ M. Tim Jones 是一名嵌入式软件工程师，他是 GNU/Linux Application Pr
 </tr>
 </tbody>
 </table>
-<p><code>ctor</code> 和 <code>dtor</code> 参数定义了一个可选的对象构造器和析构器。构造器和析构器是用户提供的回调函数。当从缓存中分配新对象时，可以通过构造器进行初始化。</p>
+<p>ctor</code> 和 <code>dtor</code> 参数定义了一个可选的对象构造器和析构器。构造器和析构器是用户提供的回调函数。当从缓存中分配新对象时，可以通过构造器进行初始化。</p>
 <p>在创建缓存之后，          <code>kmem_cache_create</code> 函数会返回对它的引用。注意这个函数并没有向缓存分配任何内存。相反，在试图从缓存（最初为空）分配对象时，<strong>refill</strong> 操作将内存分配给它。当所有对象都被使用掉时，也可以通过相同的操作向缓存添加内存。</p>
 <p><a name="N101BE">kmem_cache_destroy</a></p>
 <p>内核函数 <code>kmem_cache_destroy</code> 用来销毁缓存。这个调用是由内核模块在被卸载时执行的。在调用这个函数时，缓存必须为空。</p>
@@ -2207,7 +2207,7 @@ static void init_my_cache( void )
 </tr>
 </tbody>
 </table>
-<p><code>limit</code> 字段表示每个 CPU 可以缓存的对象的最大数量。         <code>batchcount</code> 字段是当缓存为空时转换到每个 CPU 缓存中全局缓存对象的最大数量。         <code>shared</code> 参数说明了对称多处理器（Symmetric MultiProcessing，SMP）系统的共享行为。</p>
+<p>limit</code> 字段表示每个 CPU 可以缓存的对象的最大数量。         <code>batchcount</code> 字段是当缓存为空时转换到每个 CPU 缓存中全局缓存对象的最大数量。         <code>shared</code> 参数说明了对称多处理器（Symmetric MultiProcessing，SMP）系统的共享行为。</p>
 <p>注意您必须具有超级用户的特权才能在 proc 文件系统中为 slab 缓存调优参数。</p>
 <div>
 <hr /></div>
