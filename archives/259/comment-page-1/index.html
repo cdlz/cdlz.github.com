@@ -1,664 +1,0 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head profile="http://gmpg.org/xfn/11">
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
-
-	<title>ios5实现访问通话记录(需越狱) | Only For Sunshine~</title>
-	<link rel="alternate" type="application/rss+xml" title="RSS 2.0 - 所有文章" href="../../../feed/index.html" />
-	<link rel="alternate" type="application/rss+xml" title="RSS 2.0 - 所有评论" href="../../../comments/feed/index.html" />
-	<link rel="pingback" href="../../../xmlrpc.php" />
-
-	<!-- style START -->
-	<link rel="stylesheet" href="../../../wp-content/themes/elegant-box/style.css" type="text/css" media="screen" />
-			<link rel="stylesheet" href="../../../wp-content/themes/elegant-box/chinese.css" type="text/css" media="screen" />
-		<!--[if IE]>
-		<link rel="stylesheet" href="http://imzc.net/wp-content/themes/elegant-box/ie.css" type="text/css" media="screen" />
-	<![endif]-->
-
-	<!-- default style -->
-			<link rel="stylesheet" href="../../../wp-content/themes/elegant-box/styles/blue/default.css" type="text/css" media="screen" title="blue" />
-		<link rel="stylesheet" href="../../../wp-content/themes/elegant-box/styles/blue/global.css" type="text/css" media="screen" />
-	
-	<!-- others styles -->
-	<link rel="stylesheet" href="../../../wp-content/themes/elegant-box/styles/green/default.css" type="text/css" media="screen" title="green" />
-	<link rel="stylesheet" href="../../../wp-content/themes/elegant-box/styles/green/global.css" type="text/css" media="screen" />
-	<link rel="stylesheet" href="../../../wp-content/themes/elegant-box/styles/purple/default.css" type="text/css" media="screen" title="purple" />
-	<link rel="stylesheet" href="../../../wp-content/themes/elegant-box/styles/purple/global.css" type="text/css" media="screen" />
-	<link rel="stylesheet" href="../../../wp-content/themes/elegant-box/styles/brown/default.css" type="text/css" media="screen" title="brown" />
-	<link rel="stylesheet" href="../../../wp-content/themes/elegant-box/styles/brown/global.css" type="text/css" media="screen" />
-	<link rel="stylesheet" href="../../../wp-content/themes/elegant-box/styles/white/default.css" type="text/css" media="screen" title="white" />
-	<link rel="stylesheet" href="../../../wp-content/themes/elegant-box/styles/white/global.css" type="text/css" media="screen" />
-	<link rel="stylesheet" href="../../../wp-content/themes/elegant-box/styles/black/default.css" type="text/css" media="screen" title="black" />
-	<link rel="stylesheet" href="../../../wp-content/themes/elegant-box/styles/black/global.css" type="text/css" media="screen" />
-	<!-- style END -->
-
-	<!-- javascript START -->
-			<script type="text/javascript" src="../../../wp-content/themes/elegant-box/js/styleswitcher.js"></script>
-		<script type="text/javascript" src="../../../wp-content/themes/elegant-box/js/base.js"></script>
-	<script type="text/javascript" src="../../../wp-content/themes/elegant-box/js/menu.js"></script>
-	<!-- javascript END -->
-
-		<link rel="alternate" type="application/rss+xml" title="Only For Sunshine~ &raquo; ios5实现访问通话记录(需越狱) 评论 Feed" href="../feed/index.html" />
-<link rel='stylesheet' id='jquery.slimbox-css'  href='../../../wp-content/plugins/slimbox/stylesheets/jquery.slimbox.css?ver=2.03' type='text/css' media='all' />
-<link rel='stylesheet' id='crayon-style-css'  href='http://imzc.net/wp-content/plugins/crayon-syntax-highlighter/css/style.css?ver=1.10' type='text/css' media='all' />
-<link rel='stylesheet' id='crayon-theme-classic-css'  href='../../../wp-content/plugins/crayon-syntax-highlighter/themes/classic/classic.css?ver=1.10' type='text/css' media='all' />
-<link rel='stylesheet' id='crayon-font-monaco-css'  href='../../../wp-content/plugins/crayon-syntax-highlighter/fonts/monaco.css?ver=1.10' type='text/css' media='all' />
-<link rel='stylesheet' id='wp-pagenavi-css'  href='../../../wp-content/themes/elegant-box/pagenavi-css.css?ver=2.70' type='text/css' media='all' />
-<script type="text/javascript">
-var duoshuoQuery = {"short_name":"imzc","sso":{"login":"http:\/\/imzc.net\/wp-login.php?action=duoshuo_login","logout":"http:\/\/imzc.net\/wp-login.php?action=logout&_wpnonce=a3b20a42a9"},"remote_auth":"W10= 6c333d116134c08f5ccbd2ca01527d814d9f75b0 1347669519"};
-duoshuoQuery.sso.login += '&redirect_to=' + encodeURIComponent(window.location.href);
-duoshuoQuery.sso.logout += '&redirect_to=' + encodeURIComponent(window.location.href);
-</script>
-<script type='text/javascript' src='../../../wp-includes/js/jquery/jquery.js?ver=1.7.2'></script>
-<script type='text/javascript' src='../../../wp-content/plugins/slimbox/javascript/jquery.slimbox.js?ver=2.03'></script>
-<script type='text/javascript' src='../../../wp-includes/js/json2.js?ver=2011-02-23'></script>
-<script type='text/javascript'>
-/* <![CDATA[ */
-var live_blogging = {"ajaxurl":"http:\/\/imzc.net\/wp-admin\/admin-ajax.php","update_effect":"top"};
-/* ]]> */
-</script>
-<script type='text/javascript' src='../../../wp-content/plugins/live-blogging/live-blogging.js?ver=3.4.1'></script>
-<script type='text/javascript' src='../../../wp-content/plugins/crayon-syntax-highlighter/js/util.js?ver=1.10'></script>
-<script type='text/javascript' src='../../../wp-content/plugins/crayon-syntax-highlighter/js/crayon.js?ver=1.10'></script>
-<script type='text/javascript' src='../../../wp-content/plugins/crayon-syntax-highlighter/js/jquery.popup.js?ver=1.10'></script>
-<script type='text/javascript' src='../../../wp-includes/js/comment-reply.js?ver=3.4.1'></script>
-<script type='text/javascript' src='http://static.duoshuo.com/embed.js'></script>
-<link rel="EditURI" type="application/rsd+xml" title="RSD" href="../../../xmlrpc.php?rsd" />
-<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="../../../wp-includes/wlwmanifest.xml" /> 
-<link rel='prev' title='使用windows api实现屏幕截图并复制到剪贴板' href='../../253/index.html' />
-<link rel='next' title='六月随笔' href='../../265/index.html' />
-<meta name="generator" content="WordPress 3.4.1" />
-<link rel='shortlink' href='http://wp.me/p19waf-4b' />
-
-<!-- All in One SEO Pack 1.6.14.6 by Michael Torbert of Semper Fi Web Design[343,416] -->
-<meta name="description" content="ios5实现访问通话记录(需越狱)，ios5_accessing_call_history_db" />
-<meta name="keywords" content="ios5,call history,来电归属地" />
-<link rel="canonical" href="../index.html" />
-<!-- /all in one seo pack -->
-<script type="text/javascript">
-	jQuery(document).ready(function($){	
-	    var select = $('a[href$=".bmp"],a[href$=".gif"],a[href$=".jpg"],a[href$=".jpeg"], a[href$=".png"],a[href$=".BMP"],a[href$=".GIF"],a[href$=".JPG"],a[href$=".JPEG"],a[href$=".PNG"]');
-		select.slimbox();
-	});
-</script>
-</head>
-
-
-<body>
-	<!-- header START -->
-	<div id="header">
-		<div class="inner">
-			<div class="content">
-				<div class="caption">
-					<h1 id="title"><a href="../../../index.html" title="-More Thinking,And Then Just do it~~~">Only For Sunshine~</a></h1>
-					<div id="tagline">-More Thinking,And Then Just do it~~~</div>
-				</div>
-
-				<!-- search box -->
-									<form action="http://www.google.com/cse" id="search_box" method="get">
-						<div id="searchbox">
-							<input type="text" id="searchtxt" class="textfield" name="q" size="24" />
-							<input type="hidden" name="cx" value="007838838681523399853:u4canb53vle" />
-							<input type="hidden" name="ie" value="UTF-8" />
-						</div>
-					</form>
-				<script type="text/javascript">
-//<![CDATA[
-	var searchbox = document.getElementById("searchbox");
-	var searchtxt = document.getElementById("searchtxt");
-	var tiptext = "请输入关键字...";
-	if(searchtxt.value == "" || searchtxt.value == tiptext) {
-		searchtxt.className += " searchtip";
-		searchtxt.value = tiptext;
-	}
-	searchtxt.onfocus = function(e) {
-		if(searchtxt.value == tiptext) {
-			searchtxt.value = "";
-			searchtxt.className = searchtxt.className.replace(" searchtip", "");
-		}
-	}
-	searchtxt.onblur = function(e) {
-		if(searchtxt.value == "") {
-			searchtxt.className += " searchtip";
-			searchtxt.value = tiptext;
-		}
-	}
-//]]>
-</script>
-
-				<!-- navigation START -->
-				<ul id="navigation">
-
-					<li class="page_item"><a href="../../../index.html">首页</a></li>
-					<li class="page_item page-item-260"><a href="../../../ios/index.html">IOS_PROJ</a></li>
-<li class="page_item page-item-164"><a href="../../../wp_otp/index.html">WP_OTP</a></li>
-<li class="page_item page-item-180"><a href="../../../vps-recommended/index.html">vps推荐</a></li>
-<li class="page_item page-item-139"><a href="../../../mysites/index.html">我的站点</a></li>
-<li class="page_item page-item-2"><a href="../../../aboutme/index.html">关于</a></li>
-					<li id="subscribe">
-						<a rel="external nofollow" title="订阅这个博客的文章" id="feed" href="../../../feed/index.html"><img src="../../../wp-content/themes/elegant-box/images/transparent.gif" alt="RSS 订阅" /></a>
-													<ul>
-								<li class="first"><a rel="external nofollow" title="订阅到有道" href="http://reader.youdao.com/b.do?url=http://imzc.net/feed/"> 有道</a></li>
-								<li><a rel="external nofollow" title="订阅到鲜果" href="http://www.xianguo.com/subscribe.php?url=http://imzc.net/feed/"> 鲜果</a></li>
-								<li><a rel="external nofollow" title="订阅到抓虾" href="http://www.zhuaxia.com/add_channel.php?url=http://imzc.net/feed/"> 抓虾</a></li>
-								<li><a rel="external nofollow" title="订阅到 Google" href="http://fusion.google.com/add?feedurl=http://imzc.net/feed/">  Google</a></li>
-								<li><a rel="external nofollow" title="订阅到 My Yahoo!" href="http://add.my.yahoo.com/rss?url=http://imzc.net/feed/">  My Yahoo!</a></li>
-								<li><a rel="external nofollow" title="订阅到 newsgator" href="http://www.newsgator.com/ngs/subscriber/subfext.aspx?url=http://imzc.net/feed/">  newsgator</a></li>
-								<li><a rel="external nofollow" title="订阅到 Bloglines" href="http://www.bloglines.com/sub/http://imzc.net/feed/">  Bloglines</a></li>
-								<li><a rel="external nofollow" title="订阅到 哪吒" href="http://inezha.com/add?url=http://imzc.net/feed/">  哪吒</a></li>
-							</ul>
-											</li>
-
-				</ul>
-				<!-- navigation END -->
-
-			</div>
-		</div>
-	</div>
-	<!-- header END -->
-
-	<div id="container">
-		<div id="content">
-			<div id="main">
-
-		
-			<div class="post">
-				<div class="title">
-					<h2>ios5实现访问通话记录(需越狱)</h2>
-					<div class="fixed"></div>
-				</div>
-
-				<div class="info">
-					
-					<span>2012年5月6日</span>
-											<span> | 分类: <a href="../../category/ios-dev/index.html" title="查看 IOSDev 中的全部文章" rel="category tag">IOSDev</a></span>
-																<span> | 标签: </span>
-					
-					<div class="fixed"></div>
-				</div>
-
-				<div class="content">
-<div style=”padding:3px 0″>
-<script type="text/javascript"><!--
-google_ad_client = "pub-7220882232307827";
-/* blog_468x15, Created @09-2-19 */
-google_ad_slot = "1127450986";
-google_ad_width = 468;
-google_ad_height = 15;
-//-->
-</script>
-<script type="text/javascript"
-src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-</script>
-</div>
-<br />	
-					<p>ios5的通话记录都保存在一个sqlite db文件中:</p>
-<p>可以用下面代码测试，能否访问到对应的db：</p><!-- Crayon Syntax Highlighter v1.10 -->
-
-		<div id="crayon-5053ce0f290b9" class="crayon-syntax crayon-theme-classic crayon-font-monaco crayon-os-pc print-yes" data-settings=" scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; float: none; clear: both; ">
-		
-			<div class="crayon-toolbar" data-settings=" mouseover overlay hide delay" style="">
-			<div class="crayon-tools"><span class="crayon-mixed-highlight" title="含多种语言"></span><a class="crayon-nums-button crayon-button" title="显示/隐藏行编号"></a><a class="crayon-copy-button crayon-button" data-text="使用 %s 复制，使用 %s 粘贴。" title="复制代码"></a><a class="crayon-popup-button crayon-button" title="在新窗口中显示代码" onclick="return false;"></a><a class="crayon-plain-button crayon-button" title="纯文本显示代码"></a></div></div>
-			<div class="crayon-info" style=""></div>
-			<div class="crayon-plain-wrap"><textarea wrap="off" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; ">-(IBAction)checkDBClick:(id)sender{
-	NSFileManager *fileManager = [NSFileManager defaultManager]; 
-	NSDirectoryEnumerator *dirnum = [[NSFileManager defaultManager] enumeratorAtPath: @"/private/"]; 
-	NSString *nextItem = [NSString string]; 
-	NSUInteger pos = 0;		
-	uTextView.text  = @"checkDBClick";	
-	while( (nextItem = [dirnum nextObject])) {
-		if ([[nextItem pathExtension] isEqualToString: @"db"] || 
-			[[nextItem pathExtension] isEqualToString: @"sqlitedb"]) { 
-			if ([fileManager isReadableFileAtPath:nextItem]) { 
-				NSLog(@"%@", nextItem); 
-				pos++;
-				NSString * tmp = [[NSString alloc] initWithFormat:@"%@\nnext(%d):%@",uTextView.text,pos,nextItem];
-				uTextView.text = tmp;
-				
-				[tmp release];
-			} 
-		} 
-	}
-}</textarea></div>
-			<div class="crayon-main" style="">
-				<table class="crayon-table">
-					<tr class="crayon-row">
-				<td class="crayon-nums " data-settings="show" style="">
-					<div class="crayon-nums-content"><div class="crayon-num" style="">1</div><div class="crayon-num crayon-striped-num" style="">2</div><div class="crayon-num" style="">3</div><div class="crayon-num crayon-striped-num" style="">4</div><div class="crayon-num" style="">5</div><div class="crayon-num crayon-striped-num" style="">6</div><div class="crayon-num" style="">7</div><div class="crayon-num crayon-striped-num" style="">8</div><div class="crayon-num" style="">9</div><div class="crayon-num crayon-striped-num" style="">10</div><div class="crayon-num" style="">11</div><div class="crayon-num crayon-striped-num" style="">12</div><div class="crayon-num" style="">13</div><div class="crayon-num crayon-striped-num" style="">14</div><div class="crayon-num" style="">15</div><div class="crayon-num crayon-striped-num" style="">16</div><div class="crayon-num" style="">17</div><div class="crayon-num crayon-striped-num" style="">18</div><div class="crayon-num" style="">19</div><div class="crayon-num crayon-striped-num" style="">20</div></div>
-				</td>
-						<td class="crayon-code"><div class="crayon-pre" style=""><div class="crayon-line" id="crayon-5053ce0f290b9-1" style=""><span class="o">-</span><span class="sy">(</span><span class="i">IBAction</span><span class="sy">)</span><span class="i">checkDBClick</span><span class="o">:</span><span class="sy">(</span><span class="i">id</span><span class="sy">)</span><span class="e">sender</span><span class="sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f290b9-2" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="e ">NSFileManager *</span><span class="i">fileManager</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="sy">[</span><span class="e">NSFileManager </span><span class="i">defaultManager</span><span class="sy">]</span><span class="sy">;</span><span class="h"> </span></div><div class="crayon-line" id="crayon-5053ce0f290b9-3" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="e ">NSDirectoryEnumerator *</span><span class="i">dirnum</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="sy">[</span><span class="sy">[</span><span class="e">NSFileManager </span><span class="i">defaultManager</span><span class="sy">]</span><span class="h"> </span><span class="i">enumeratorAtPath</span><span class="o">:</span><span class="h"> </span><span class="sy">@</span><span class="s">"/private/"</span><span class="sy">]</span><span class="sy">;</span><span class="h"> </span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f290b9-4" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="e ">NSString *</span><span class="i">nextItem</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="sy">[</span><span class="e">NSString </span><span class="t">string</span><span class="sy">]</span><span class="sy">;</span><span class="h"> </span></div><div class="crayon-line" id="crayon-5053ce0f290b9-5" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="e">NSUInteger </span><span class="i">pos</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="cn">0</span><span class="sy">;</span><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f290b9-6" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="i">uTextView</span><span class="sy">.</span><span class="v">text</span><span class="h">&nbsp;&nbsp;</span><span class="o">=</span><span class="h"> </span><span class="sy">@</span><span class="s">"checkDBClick"</span><span class="sy">;</span><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line" id="crayon-5053ce0f290b9-7" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="st">while</span><span class="sy">(</span><span class="h"> </span><span class="sy">(</span><span class="i">nextItem</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="sy">[</span><span class="e">dirnum </span><span class="i">nextObject</span><span class="sy">]</span><span class="sy">)</span><span class="sy">)</span><span class="h"> </span><span class="sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f290b9-8" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="st">if</span><span class="h"> </span><span class="sy">(</span><span class="sy">[</span><span class="sy">[</span><span class="e">nextItem </span><span class="i">pathExtension</span><span class="sy">]</span><span class="h"> </span><span class="i">isEqualToString</span><span class="o">:</span><span class="h"> </span><span class="sy">@</span><span class="s">"db"</span><span class="sy">]</span><span class="h"> </span><span class="o">||</span><span class="h"> </span></div><div class="crayon-line" id="crayon-5053ce0f290b9-9" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">[</span><span class="sy">[</span><span class="e">nextItem </span><span class="i">pathExtension</span><span class="sy">]</span><span class="h"> </span><span class="i">isEqualToString</span><span class="o">:</span><span class="h"> </span><span class="sy">@</span><span class="s">"sqlitedb"</span><span class="sy">]</span><span class="sy">)</span><span class="h"> </span><span class="sy">{</span><span class="h"> </span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f290b9-10" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="st">if</span><span class="h"> </span><span class="sy">(</span><span class="sy">[</span><span class="e">fileManager </span><span class="i">isReadableFileAtPath</span><span class="o">:</span><span class="i">nextItem</span><span class="sy">]</span><span class="sy">)</span><span class="h"> </span><span class="sy">{</span><span class="h"> </span></div><div class="crayon-line" id="crayon-5053ce0f290b9-11" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="e">NSLog</span><span class="sy">(</span><span class="sy">@</span><span class="s">"%@"</span><span class="sy">,</span><span class="h"> </span><span class="i">nextItem</span><span class="sy">)</span><span class="sy">;</span><span class="h"> </span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f290b9-12" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="i">pos</span><span class="o">++</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5053ce0f290b9-13" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="e ">NSString *</span><span class="h"> </span><span class="i">tmp</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="sy">[</span><span class="sy">[</span><span class="e">NSString </span><span class="i">alloc</span><span class="sy">]</span><span class="h"> </span><span class="i">initWithFormat</span><span class="o">:</span><span class="sy">@</span><span class="s">"%@\nnext(%d):%@"</span><span class="sy">,</span><span class="i">uTextView</span><span class="sy">.</span><span class="v">text</span><span class="sy">,</span><span class="i">pos</span><span class="sy">,</span><span class="i">nextItem</span><span class="sy">]</span><span class="sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f290b9-14" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="i">uTextView</span><span class="sy">.</span><span class="v">text</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="i">tmp</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5053ce0f290b9-15" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f290b9-16" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">[</span><span class="e">tmp </span><span class="i">release</span><span class="sy">]</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5053ce0f290b9-17" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">}</span><span class="h"> </span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f290b9-18" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">}</span><span class="h"> </span></div><div class="crayon-line" id="crayon-5053ce0f290b9-19" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">}</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f290b9-20" style=""><span class="sy">}</span></div></div></td>
-					</tr>
-				</table>
-			</div>
-		</div>
-<!-- [Format Time: 0.0160 seconds] -->
-<p>&nbsp;</p>
-<p>ios5中，位于目录： /private/var/wireless/Library/CallHistory/call_history.db 下。由于ios5以后，所有程序运行在沙盒下，仅能访问程序自己的目录，以及有限的几个目录，故，在不越狱的情况下，是访问不到对应的数据的。程序中用到的telocation.db，来电归属地数据库，请直接google得到。<br />
-PS：有谁能在不越狱的基础上，利用私有API或者其他方式获取到手机号的话，麻烦email我一下方法，多谢~~~<br />
-假定已经获得了手机号码，可通过下述代码获取，并得到对应的归属地：</p><!-- Crayon Syntax Highlighter v1.10 -->
-
-		<div id="crayon-5053ce0f2914f" class="crayon-syntax crayon-theme-classic crayon-font-monaco crayon-os-pc print-yes" data-settings=" scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; float: none; clear: both; ">
-		
-			<div class="crayon-toolbar" data-settings=" mouseover overlay hide delay" style="">
-			<div class="crayon-tools"><span class="crayon-mixed-highlight" title="含多种语言"></span><a class="crayon-nums-button crayon-button" title="显示/隐藏行编号"></a><a class="crayon-copy-button crayon-button" data-text="使用 %s 复制，使用 %s 粘贴。" title="复制代码"></a><a class="crayon-popup-button crayon-button" title="在新窗口中显示代码" onclick="return false;"></a><a class="crayon-plain-button crayon-button" title="纯文本显示代码"></a></div></div>
-			<div class="crayon-info" style=""></div>
-			<div class="crayon-plain-wrap"><textarea wrap="off" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; ">-(NSString *)getPhoneNumberLocation: (NSString * )phoneNum{
-	//call area 
-	
-	NSString *teLocationDatabasePath = [[NSString alloc] initWithFormat:@"%@/%@",[[NSBundle mainBundle] resourcePath], @"telocation.db"];
-	BOOL dbFileExist = FALSE;
-	NSMutableString * area = [[[NSMutableString alloc] autorelease] initWithString:@""];
-	
-	NSFileManager *fileManager = [NSFileManager defaultManager]; 
-	dbFileExist = [fileManager fileExistsAtPath:teLocationDatabasePath];
-	[fileManager release]; 
-	
-	NSLog(@"teLocationDatabasePath:%@",teLocationDatabasePath);
-	
-	if(dbFileExist) {
-		if ([fileManager isReadableFileAtPath:teLocationDatabasePath]) {
-			sqlite3 *database;
-			if(sqlite3_open([teLocationDatabasePath UTF8String], &amp;database) == SQLITE_OK) {
-				sqlite3_stmt *compiledStatement;
-				NSString *sqlStatement = [NSString stringWithFormat:@"SELECT * FROM mob_location WHERE _id='%@';",[phoneNum substringToIndex:7]];
-				NSLog(@"sql:%@",sqlStatement);
-								
-				
-				int errorCode = sqlite3_prepare_v2(database, [sqlStatement UTF8String], -1, 
-												   &amp;compiledStatement, NULL);
-				if( errorCode == SQLITE_OK) {
-					int count = 1;
-					
-					while(sqlite3_step(compiledStatement) == SQLITE_ROW) {
-						// Read the data from the result row
-						int numberOfColumns = sqlite3_column_count(compiledStatement);
-						NSString *data;
-						NSString *columnName;
-						
-						for (int i = 0; i &lt; numberOfColumns; i++) {
-							columnName = [[NSString alloc] initWithUTF8String:
-										  (char *)sqlite3_column_name(compiledStatement, i)];
-							data = [[NSString alloc] initWithUTF8String:
-									(char *)sqlite3_column_text(compiledStatement, i)];
-							
-							
-							
-							if ([columnName isEqualToString:@"location"]) { 
-								[area appendString:data];
-								
-								NSLog(@"%d:%@=&gt;%@",count,columnName,data);
-							}
-							[columnName release];
-							[data release];
-						}  
-						count++;
-					}
-					
-				}
-				else {
-					NSLog(@"Failed to retrieve table");
-					NSLog(@"Error Code: %d", errorCode);
-				}
-				sqlite3_finalize(compiledStatement);
-			}
-		}
-		
-	}
-	[teLocationDatabasePath release];
-	NSLog(@"area:%@",area);
-	return area;
-}
-
--(IBAction)getInfoClick:(id)sender{
-	
-#define DB_FILE  [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"call_history.db"]
-	
-	NSLog(@"getInfoClick:%@",DB_FILE);
-	uTextView.text = @"getInfoClick:"; 
-	
-	NSFileManager *fileManager = [NSFileManager defaultManager]; 	
-	NSString *callHisoryDatabasePath = DB_FILE;//@"/private/var/wireless/Library/CallHistory/call_history.db";
-	BOOL callHistoryFileExist = FALSE;
-	callHistoryFileExist = [fileManager fileExistsAtPath:callHisoryDatabasePath];
-	//	[fileManager release];
-	NSMutableArray *callHistory = [[NSMutableArray alloc] init];
-	
-	
-	if(callHistoryFileExist) {
-		NSLog(@"path is exists...");
-		if ([fileManager isReadableFileAtPath:callHisoryDatabasePath]) {
-			NSLog(@"path can read...");
-			sqlite3 *database;
-			if(sqlite3_open([callHisoryDatabasePath UTF8String], &amp;database) == SQLITE_OK) {
-				sqlite3_stmt *compiledStatement;
-				NSString *sqlStatement = [NSString stringWithString:@"SELECT * FROM call;"];
-				
-				int errorCode = sqlite3_prepare_v2(database, [sqlStatement UTF8String], -1, 
-												   &amp;compiledStatement, NULL);
-				if( errorCode == SQLITE_OK) {
-					int count = 1;
-					
-					while(sqlite3_step(compiledStatement) == SQLITE_ROW) {
-						// Read the data from the result row
-						NSMutableDictionary *callHistoryItem = [[NSMutableDictionary alloc] init];
-						int numberOfColumns = sqlite3_column_count(compiledStatement);
-						NSString *data;
-						NSString *columnName;
-						
-						for (int i = 0; i &lt; numberOfColumns; i++) {
-							columnName = [[NSString alloc] initWithUTF8String:
-										  (char *)sqlite3_column_name(compiledStatement, i)];
-							data = [[NSString alloc] initWithUTF8String:
-									(char *)sqlite3_column_text(compiledStatement, i)];
-							
-							
-							if (![columnName isEqualToString:@"date"]) {
-								[callHistoryItem setObject:data forKey:columnName];
-							}
-							else {
-								
-								NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
-								[dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-								[dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"H"]];
-								NSDate *currentDate = [NSDate dateWithTimeIntervalSince1970:[data intValue]]; 
-								
-								[callHistoryItem setObject: [dateFormatter stringFromDate:currentDate] forKey:columnName];
-								
-							}
-							
-						
-							if ([columnName isEqualToString:@"address"]) {
-								[callHistoryItem  setObject:[self getPhoneNumberLocation:data] forKey:@"area" ];
-								
-							}
-							
-							//[callHistoryItem setObject:data forKey:columnName];
-							
-							[columnName release];
-							[data release];
-						}
-						[callHistory addObject:callHistoryItem];
-						[callHistoryItem release];
-						count++;
-					}//end while
-					NSMutableString * 	tmp = [[NSMutableString alloc] initWithString:uTextView.text];
-					for (NSUInteger i=0; i&lt;callHistory.count; i++) {
-						//NSLog(@"%d:%@",i,[callHistory objectAtIndex:i]);
-						NSMutableDictionary * data = [callHistory objectAtIndex:i]; 
-						[tmp appendFormat:@"%d:%@=&gt;%@\n",i,[data objectForKey:@"address"],[data objectForKey:@"area"]]; 
-					}
-					
-					uTextView.text = tmp;
-					[tmp release];
-					
-				}
-				else {
-					NSLog(@"Failed to retrieve table");
-					NSLog(@"Error Code: %d", errorCode);
-				}
-				sqlite3_finalize(compiledStatement);
-			}
-		}
-		
-	}
-	
-	
-	
-}</textarea></div>
-			<div class="crayon-main" style="">
-				<table class="crayon-table">
-					<tr class="crayon-row">
-				<td class="crayon-nums " data-settings="show" style="">
-					<div class="crayon-nums-content"><div class="crayon-num" style="">1</div><div class="crayon-num crayon-striped-num" style="">2</div><div class="crayon-num" style="">3</div><div class="crayon-num crayon-striped-num" style="">4</div><div class="crayon-num" style="">5</div><div class="crayon-num crayon-striped-num" style="">6</div><div class="crayon-num" style="">7</div><div class="crayon-num crayon-striped-num" style="">8</div><div class="crayon-num" style="">9</div><div class="crayon-num crayon-striped-num" style="">10</div><div class="crayon-num" style="">11</div><div class="crayon-num crayon-striped-num" style="">12</div><div class="crayon-num" style="">13</div><div class="crayon-num crayon-striped-num" style="">14</div><div class="crayon-num" style="">15</div><div class="crayon-num crayon-striped-num" style="">16</div><div class="crayon-num" style="">17</div><div class="crayon-num crayon-striped-num" style="">18</div><div class="crayon-num" style="">19</div><div class="crayon-num crayon-striped-num" style="">20</div><div class="crayon-num" style="">21</div><div class="crayon-num crayon-striped-num" style="">22</div><div class="crayon-num" style="">23</div><div class="crayon-num crayon-striped-num" style="">24</div><div class="crayon-num" style="">25</div><div class="crayon-num crayon-striped-num" style="">26</div><div class="crayon-num" style="">27</div><div class="crayon-num crayon-striped-num" style="">28</div><div class="crayon-num" style="">29</div><div class="crayon-num crayon-striped-num" style="">30</div><div class="crayon-num" style="">31</div><div class="crayon-num crayon-striped-num" style="">32</div><div class="crayon-num" style="">33</div><div class="crayon-num crayon-striped-num" style="">34</div><div class="crayon-num" style="">35</div><div class="crayon-num crayon-striped-num" style="">36</div><div class="crayon-num" style="">37</div><div class="crayon-num crayon-striped-num" style="">38</div><div class="crayon-num" style="">39</div><div class="crayon-num crayon-striped-num" style="">40</div><div class="crayon-num" style="">41</div><div class="crayon-num crayon-striped-num" style="">42</div><div class="crayon-num" style="">43</div><div class="crayon-num crayon-striped-num" style="">44</div><div class="crayon-num" style="">45</div><div class="crayon-num crayon-striped-num" style="">46</div><div class="crayon-num" style="">47</div><div class="crayon-num crayon-striped-num" style="">48</div><div class="crayon-num" style="">49</div><div class="crayon-num crayon-striped-num" style="">50</div><div class="crayon-num" style="">51</div><div class="crayon-num crayon-striped-num" style="">52</div><div class="crayon-num" style="">53</div><div class="crayon-num crayon-striped-num" style="">54</div><div class="crayon-num" style="">55</div><div class="crayon-num crayon-striped-num" style="">56</div><div class="crayon-num" style="">57</div><div class="crayon-num crayon-striped-num" style="">58</div><div class="crayon-num" style="">59</div><div class="crayon-num crayon-striped-num" style="">60</div><div class="crayon-num" style="">61</div><div class="crayon-num crayon-striped-num" style="">62</div><div class="crayon-num" style="">63</div><div class="crayon-num crayon-striped-num" style="">64</div><div class="crayon-num" style="">65</div><div class="crayon-num crayon-striped-num" style="">66</div><div class="crayon-num" style="">67</div><div class="crayon-num crayon-striped-num" style="">68</div><div class="crayon-num" style="">69</div><div class="crayon-num crayon-striped-num" style="">70</div><div class="crayon-num" style="">71</div><div class="crayon-num crayon-striped-num" style="">72</div><div class="crayon-num" style="">73</div><div class="crayon-num crayon-striped-num" style="">74</div><div class="crayon-num" style="">75</div><div class="crayon-num crayon-striped-num" style="">76</div><div class="crayon-num" style="">77</div><div class="crayon-num crayon-striped-num" style="">78</div><div class="crayon-num" style="">79</div><div class="crayon-num crayon-striped-num" style="">80</div><div class="crayon-num" style="">81</div><div class="crayon-num crayon-striped-num" style="">82</div><div class="crayon-num" style="">83</div><div class="crayon-num crayon-striped-num" style="">84</div><div class="crayon-num" style="">85</div><div class="crayon-num crayon-striped-num" style="">86</div><div class="crayon-num" style="">87</div><div class="crayon-num crayon-striped-num" style="">88</div><div class="crayon-num" style="">89</div><div class="crayon-num crayon-striped-num" style="">90</div><div class="crayon-num" style="">91</div><div class="crayon-num crayon-striped-num" style="">92</div><div class="crayon-num" style="">93</div><div class="crayon-num crayon-striped-num" style="">94</div><div class="crayon-num" style="">95</div><div class="crayon-num crayon-striped-num" style="">96</div><div class="crayon-num" style="">97</div><div class="crayon-num crayon-striped-num" style="">98</div><div class="crayon-num" style="">99</div><div class="crayon-num crayon-striped-num" style="">100</div><div class="crayon-num" style="">101</div><div class="crayon-num crayon-striped-num" style="">102</div><div class="crayon-num" style="">103</div><div class="crayon-num crayon-striped-num" style="">104</div><div class="crayon-num" style="">105</div><div class="crayon-num crayon-striped-num" style="">106</div><div class="crayon-num" style="">107</div><div class="crayon-num crayon-striped-num" style="">108</div><div class="crayon-num" style="">109</div><div class="crayon-num crayon-striped-num" style="">110</div><div class="crayon-num" style="">111</div><div class="crayon-num crayon-striped-num" style="">112</div><div class="crayon-num" style="">113</div><div class="crayon-num crayon-striped-num" style="">114</div><div class="crayon-num" style="">115</div><div class="crayon-num crayon-striped-num" style="">116</div><div class="crayon-num" style="">117</div><div class="crayon-num crayon-striped-num" style="">118</div><div class="crayon-num" style="">119</div><div class="crayon-num crayon-striped-num" style="">120</div><div class="crayon-num" style="">121</div><div class="crayon-num crayon-striped-num" style="">122</div><div class="crayon-num" style="">123</div><div class="crayon-num crayon-striped-num" style="">124</div><div class="crayon-num" style="">125</div><div class="crayon-num crayon-striped-num" style="">126</div><div class="crayon-num" style="">127</div><div class="crayon-num crayon-striped-num" style="">128</div><div class="crayon-num" style="">129</div><div class="crayon-num crayon-striped-num" style="">130</div><div class="crayon-num" style="">131</div><div class="crayon-num crayon-striped-num" style="">132</div><div class="crayon-num" style="">133</div><div class="crayon-num crayon-striped-num" style="">134</div><div class="crayon-num" style="">135</div><div class="crayon-num crayon-striped-num" style="">136</div><div class="crayon-num" style="">137</div><div class="crayon-num crayon-striped-num" style="">138</div><div class="crayon-num" style="">139</div><div class="crayon-num crayon-striped-num" style="">140</div><div class="crayon-num" style="">141</div><div class="crayon-num crayon-striped-num" style="">142</div><div class="crayon-num" style="">143</div><div class="crayon-num crayon-striped-num" style="">144</div><div class="crayon-num" style="">145</div><div class="crayon-num crayon-striped-num" style="">146</div><div class="crayon-num" style="">147</div><div class="crayon-num crayon-striped-num" style="">148</div><div class="crayon-num" style="">149</div><div class="crayon-num crayon-striped-num" style="">150</div><div class="crayon-num" style="">151</div><div class="crayon-num crayon-striped-num" style="">152</div><div class="crayon-num" style="">153</div><div class="crayon-num crayon-striped-num" style="">154</div><div class="crayon-num" style="">155</div><div class="crayon-num crayon-striped-num" style="">156</div><div class="crayon-num" style="">157</div><div class="crayon-num crayon-striped-num" style="">158</div><div class="crayon-num" style="">159</div><div class="crayon-num crayon-striped-num" style="">160</div><div class="crayon-num" style="">161</div><div class="crayon-num crayon-striped-num" style="">162</div><div class="crayon-num" style="">163</div></div>
-				</td>
-						<td class="crayon-code"><div class="crayon-pre" style=""><div class="crayon-line" id="crayon-5053ce0f2914f-1" style=""><span class="o">-</span><span class="sy">(</span><span class="e ">NSString *</span><span class="sy">)</span><span class="i">getPhoneNumberLocation</span><span class="o">:</span><span class="h"> </span><span class="sy">(</span><span class="e ">NSString *</span><span class="h"> </span><span class="sy">)</span><span class="e">phoneNum</span><span class="sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-2" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="c">//call area </span></div><div class="crayon-line" id="crayon-5053ce0f2914f-3" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-4" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="e ">NSString *</span><span class="i">teLocationDatabasePath</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="sy">[</span><span class="sy">[</span><span class="e">NSString </span><span class="i">alloc</span><span class="sy">]</span><span class="h"> </span><span class="i">initWithFormat</span><span class="o">:</span><span class="sy">@</span><span class="s">"%@/%@"</span><span class="sy">,</span><span class="sy">[</span><span class="sy">[</span><span class="e">NSBundle </span><span class="i">mainBundle</span><span class="sy">]</span><span class="h"> </span><span class="i">resourcePath</span><span class="sy">]</span><span class="sy">,</span><span class="h"> </span><span class="sy">@</span><span class="s">"telocation.db"</span><span class="sy">]</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-5" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="t">BOOL</span><span class="h"> </span><span class="i">dbFileExist</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="t">FALSE</span><span class="sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-6" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="e ">NSMutableString *</span><span class="h"> </span><span class="i">area</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="sy">[</span><span class="sy">[</span><span class="sy">[</span><span class="e">NSMutableString </span><span class="i">alloc</span><span class="sy">]</span><span class="h"> </span><span class="i">autorelease</span><span class="sy">]</span><span class="h"> </span><span class="i">initWithString</span><span class="o">:</span><span class="sy">@</span><span class="s">""</span><span class="sy">]</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-7" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-8" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="e ">NSFileManager *</span><span class="i">fileManager</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="sy">[</span><span class="e">NSFileManager </span><span class="i">defaultManager</span><span class="sy">]</span><span class="sy">;</span><span class="h"> </span></div><div class="crayon-line" id="crayon-5053ce0f2914f-9" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="i">dbFileExist</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="sy">[</span><span class="e">fileManager </span><span class="i">fileExistsAtPath</span><span class="o">:</span><span class="i">teLocationDatabasePath</span><span class="sy">]</span><span class="sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-10" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">[</span><span class="e">fileManager </span><span class="i">release</span><span class="sy">]</span><span class="sy">;</span><span class="h"> </span></div><div class="crayon-line" id="crayon-5053ce0f2914f-11" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-12" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="e">NSLog</span><span class="sy">(</span><span class="sy">@</span><span class="s">"teLocationDatabasePath:%@"</span><span class="sy">,</span><span class="i">teLocationDatabasePath</span><span class="sy">)</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-13" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-14" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="st">if</span><span class="sy">(</span><span class="i">dbFileExist</span><span class="sy">)</span><span class="h"> </span><span class="sy">{</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-15" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="st">if</span><span class="h"> </span><span class="sy">(</span><span class="sy">[</span><span class="e">fileManager </span><span class="i">isReadableFileAtPath</span><span class="o">:</span><span class="i">teLocationDatabasePath</span><span class="sy">]</span><span class="sy">)</span><span class="h"> </span><span class="sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-16" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="e ">sqlite3 *</span><span class="i">database</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-17" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="st">if</span><span class="sy">(</span><span class="e">sqlite3_open</span><span class="sy">(</span><span class="sy">[</span><span class="e">teLocationDatabasePath </span><span class="i">UTF8String</span><span class="sy">]</span><span class="sy">,</span><span class="h"> </span><span class="o">&amp;</span><span class="i">database</span><span class="sy">)</span><span class="h"> </span><span class="o">==</span><span class="h"> </span><span class="i">SQLITE_OK</span><span class="sy">)</span><span class="h"> </span><span class="sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-18" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="e ">sqlite3_stmt *</span><span class="i">compiledStatement</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-19" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="e ">NSString *</span><span class="i">sqlStatement</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="sy">[</span><span class="e">NSString </span><span class="i">stringWithFormat</span><span class="o">:</span><span class="sy">@</span><span class="s">"SELECT * FROM mob_location WHERE _id='%@';"</span><span class="sy">,</span><span class="sy">[</span><span class="e">phoneNum </span><span class="i">substringToIndex</span><span class="o">:</span><span class="cn">7</span><span class="sy">]</span><span class="sy">]</span><span class="sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-20" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="e">NSLog</span><span class="sy">(</span><span class="sy">@</span><span class="s">"sql:%@"</span><span class="sy">,</span><span class="i">sqlStatement</span><span class="sy">)</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-21" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-22" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-23" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="t">int</span><span class="h"> </span><span class="i">errorCode</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="e">sqlite3_prepare_v2</span><span class="sy">(</span><span class="i">database</span><span class="sy">,</span><span class="h"> </span><span class="sy">[</span><span class="e">sqlStatement </span><span class="i">UTF8String</span><span class="sy">]</span><span class="sy">,</span><span class="h"> </span><span class="o">-</span><span class="cn">1</span><span class="sy">,</span><span class="h"> </span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-24" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span class="o">&amp;</span><span class="i">compiledStatement</span><span class="sy">,</span><span class="h"> </span><span class="t">NULL</span><span class="sy">)</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-25" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="st">if</span><span class="sy">(</span><span class="h"> </span><span class="i">errorCode</span><span class="h"> </span><span class="o">==</span><span class="h"> </span><span class="i">SQLITE_OK</span><span class="sy">)</span><span class="h"> </span><span class="sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-26" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="t">int</span><span class="h"> </span><span class="i">count</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="cn">1</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-27" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-28" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="st">while</span><span class="sy">(</span><span class="e">sqlite3_step</span><span class="sy">(</span><span class="i">compiledStatement</span><span class="sy">)</span><span class="h"> </span><span class="o">==</span><span class="h"> </span><span class="i">SQLITE_ROW</span><span class="sy">)</span><span class="h"> </span><span class="sy">{</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-29" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="c">// Read the data from the result row</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-30" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="t">int</span><span class="h"> </span><span class="i">numberOfColumns</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="e">sqlite3_column_count</span><span class="sy">(</span><span class="i">compiledStatement</span><span class="sy">)</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-31" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="e ">NSString *</span><span class="i">data</span><span class="sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-32" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="e ">NSString *</span><span class="i">columnName</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-33" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-34" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="st">for</span><span class="h"> </span><span class="sy">(</span><span class="t">int</span><span class="h"> </span><span class="i">i</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="cn">0</span><span class="sy">;</span><span class="h"> </span><span class="i">i</span><span class="h"> </span><span class="o">&lt;</span><span class="h"> </span><span class="i">numberOfColumns</span><span class="sy">;</span><span class="h"> </span><span class="i">i</span><span class="o">++</span><span class="sy">)</span><span class="h"> </span><span class="sy">{</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-35" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="i">columnName</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="sy">[</span><span class="sy">[</span><span class="e">NSString </span><span class="i">alloc</span><span class="sy">]</span><span class="h"> </span><span class="i">initWithUTF8String</span><span class="o">:</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-36" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">(</span><span class="t">char</span><span class="h"> </span><span class="o">*</span><span class="sy">)</span><span class="e">sqlite3_column_name</span><span class="sy">(</span><span class="i">compiledStatement</span><span class="sy">,</span><span class="h"> </span><span class="i">i</span><span class="sy">)</span><span class="sy">]</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-37" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="i">data</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="sy">[</span><span class="sy">[</span><span class="e">NSString </span><span class="i">alloc</span><span class="sy">]</span><span class="h"> </span><span class="i">initWithUTF8String</span><span class="o">:</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-38" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">(</span><span class="t">char</span><span class="h"> </span><span class="o">*</span><span class="sy">)</span><span class="e">sqlite3_column_text</span><span class="sy">(</span><span class="i">compiledStatement</span><span class="sy">,</span><span class="h"> </span><span class="i">i</span><span class="sy">)</span><span class="sy">]</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-39" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-40" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-41" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-42" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="st">if</span><span class="h"> </span><span class="sy">(</span><span class="sy">[</span><span class="e">columnName </span><span class="i">isEqualToString</span><span class="o">:</span><span class="sy">@</span><span class="s">"location"</span><span class="sy">]</span><span class="sy">)</span><span class="h"> </span><span class="sy">{</span><span class="h"> </span></div><div class="crayon-line" id="crayon-5053ce0f2914f-43" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">[</span><span class="e">area </span><span class="i">appendString</span><span class="o">:</span><span class="i">data</span><span class="sy">]</span><span class="sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-44" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-45" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="e">NSLog</span><span class="sy">(</span><span class="sy">@</span><span class="s">"%d:%@=&gt;%@"</span><span class="sy">,</span><span class="i">count</span><span class="sy">,</span><span class="i">columnName</span><span class="sy">,</span><span class="i">data</span><span class="sy">)</span><span class="sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-46" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">}</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-47" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">[</span><span class="e">columnName </span><span class="i">release</span><span class="sy">]</span><span class="sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-48" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">[</span><span class="e">data </span><span class="i">release</span><span class="sy">]</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-49" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">}</span><span class="h">&nbsp;&nbsp;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-50" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="i">count</span><span class="o">++</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-51" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">}</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-52" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-53" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">}</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-54" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="st">else</span><span class="h"> </span><span class="sy">{</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-55" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="e">NSLog</span><span class="sy">(</span><span class="sy">@</span><span class="s">"Failed to retrieve table"</span><span class="sy">)</span><span class="sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-56" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="e">NSLog</span><span class="sy">(</span><span class="sy">@</span><span class="s">"Error Code: %d"</span><span class="sy">,</span><span class="h"> </span><span class="i">errorCode</span><span class="sy">)</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-57" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">}</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-58" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="e">sqlite3_finalize</span><span class="sy">(</span><span class="i">compiledStatement</span><span class="sy">)</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-59" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">}</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-60" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">}</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-61" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-62" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">}</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-63" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">[</span><span class="e">teLocationDatabasePath </span><span class="i">release</span><span class="sy">]</span><span class="sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-64" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="e">NSLog</span><span class="sy">(</span><span class="sy">@</span><span class="s">"area:%@"</span><span class="sy">,</span><span class="i">area</span><span class="sy">)</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-65" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="st">return</span><span class="h"> </span><span class="i">area</span><span class="sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-66" style=""><span class="sy">}</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-67" style=""></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-68" style=""><span class="o">-</span><span class="sy">(</span><span class="i">IBAction</span><span class="sy">)</span><span class="i">getInfoClick</span><span class="o">:</span><span class="sy">(</span><span class="i">id</span><span class="sy">)</span><span class="e">sender</span><span class="sy">{</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-69" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-70" style=""><span class="p">#define DB_FILE&nbsp;&nbsp;[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"call_history.db"]</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-71" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-72" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="e">NSLog</span><span class="sy">(</span><span class="sy">@</span><span class="s">"getInfoClick:%@"</span><span class="sy">,</span><span class="i">DB_FILE</span><span class="sy">)</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-73" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="i">uTextView</span><span class="sy">.</span><span class="v">text</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="sy">@</span><span class="s">"getInfoClick:"</span><span class="sy">;</span><span class="h"> </span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-74" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-75" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="e ">NSFileManager *</span><span class="i">fileManager</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="sy">[</span><span class="e">NSFileManager </span><span class="i">defaultManager</span><span class="sy">]</span><span class="sy">;</span><span class="h"> &nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-76" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="e ">NSString *</span><span class="i">callHisoryDatabasePath</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="i">DB_FILE</span><span class="sy">;</span><span class="c">//@"/private/var/wireless/Library/CallHistory/call_history.db";</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-77" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="t">BOOL</span><span class="h"> </span><span class="i">callHistoryFileExist</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="t">FALSE</span><span class="sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-78" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="i">callHistoryFileExist</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="sy">[</span><span class="e">fileManager </span><span class="i">fileExistsAtPath</span><span class="o">:</span><span class="i">callHisoryDatabasePath</span><span class="sy">]</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-79" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="c">//&nbsp;&nbsp;&nbsp;&nbsp;[fileManager release];</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-80" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="e ">NSMutableArray *</span><span class="i">callHistory</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="sy">[</span><span class="sy">[</span><span class="e">NSMutableArray </span><span class="i">alloc</span><span class="sy">]</span><span class="h"> </span><span class="i">init</span><span class="sy">]</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-81" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-82" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-83" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="st">if</span><span class="sy">(</span><span class="i">callHistoryFileExist</span><span class="sy">)</span><span class="h"> </span><span class="sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-84" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="e">NSLog</span><span class="sy">(</span><span class="sy">@</span><span class="s">"path is exists..."</span><span class="sy">)</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-85" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="st">if</span><span class="h"> </span><span class="sy">(</span><span class="sy">[</span><span class="e">fileManager </span><span class="i">isReadableFileAtPath</span><span class="o">:</span><span class="i">callHisoryDatabasePath</span><span class="sy">]</span><span class="sy">)</span><span class="h"> </span><span class="sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-86" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="e">NSLog</span><span class="sy">(</span><span class="sy">@</span><span class="s">"path can read..."</span><span class="sy">)</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-87" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="e ">sqlite3 *</span><span class="i">database</span><span class="sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-88" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="st">if</span><span class="sy">(</span><span class="e">sqlite3_open</span><span class="sy">(</span><span class="sy">[</span><span class="e">callHisoryDatabasePath </span><span class="i">UTF8String</span><span class="sy">]</span><span class="sy">,</span><span class="h"> </span><span class="o">&amp;</span><span class="i">database</span><span class="sy">)</span><span class="h"> </span><span class="o">==</span><span class="h"> </span><span class="i">SQLITE_OK</span><span class="sy">)</span><span class="h"> </span><span class="sy">{</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-89" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="e ">sqlite3_stmt *</span><span class="i">compiledStatement</span><span class="sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-90" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="e ">NSString *</span><span class="i">sqlStatement</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="sy">[</span><span class="e">NSString </span><span class="i">stringWithString</span><span class="o">:</span><span class="sy">@</span><span class="s">"SELECT * FROM call;"</span><span class="sy">]</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-91" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-92" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="t">int</span><span class="h"> </span><span class="i">errorCode</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="e">sqlite3_prepare_v2</span><span class="sy">(</span><span class="i">database</span><span class="sy">,</span><span class="h"> </span><span class="sy">[</span><span class="e">sqlStatement </span><span class="i">UTF8String</span><span class="sy">]</span><span class="sy">,</span><span class="h"> </span><span class="o">-</span><span class="cn">1</span><span class="sy">,</span><span class="h"> </span></div><div class="crayon-line" id="crayon-5053ce0f2914f-93" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span class="o">&amp;</span><span class="i">compiledStatement</span><span class="sy">,</span><span class="h"> </span><span class="t">NULL</span><span class="sy">)</span><span class="sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-94" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="st">if</span><span class="sy">(</span><span class="h"> </span><span class="i">errorCode</span><span class="h"> </span><span class="o">==</span><span class="h"> </span><span class="i">SQLITE_OK</span><span class="sy">)</span><span class="h"> </span><span class="sy">{</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-95" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="t">int</span><span class="h"> </span><span class="i">count</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="cn">1</span><span class="sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-96" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-97" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="st">while</span><span class="sy">(</span><span class="e">sqlite3_step</span><span class="sy">(</span><span class="i">compiledStatement</span><span class="sy">)</span><span class="h"> </span><span class="o">==</span><span class="h"> </span><span class="i">SQLITE_ROW</span><span class="sy">)</span><span class="h"> </span><span class="sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-98" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="c">// Read the data from the result row</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-99" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="e ">NSMutableDictionary *</span><span class="i">callHistoryItem</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="sy">[</span><span class="sy">[</span><span class="e">NSMutableDictionary </span><span class="i">alloc</span><span class="sy">]</span><span class="h"> </span><span class="i">init</span><span class="sy">]</span><span class="sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-100" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="t">int</span><span class="h"> </span><span class="i">numberOfColumns</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="e">sqlite3_column_count</span><span class="sy">(</span><span class="i">compiledStatement</span><span class="sy">)</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-101" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="e ">NSString *</span><span class="i">data</span><span class="sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-102" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="e ">NSString *</span><span class="i">columnName</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-103" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-104" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="st">for</span><span class="h"> </span><span class="sy">(</span><span class="t">int</span><span class="h"> </span><span class="i">i</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="cn">0</span><span class="sy">;</span><span class="h"> </span><span class="i">i</span><span class="h"> </span><span class="o">&lt;</span><span class="h"> </span><span class="i">numberOfColumns</span><span class="sy">;</span><span class="h"> </span><span class="i">i</span><span class="o">++</span><span class="sy">)</span><span class="h"> </span><span class="sy">{</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-105" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="i">columnName</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="sy">[</span><span class="sy">[</span><span class="e">NSString </span><span class="i">alloc</span><span class="sy">]</span><span class="h"> </span><span class="i">initWithUTF8String</span><span class="o">:</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-106" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">(</span><span class="t">char</span><span class="h"> </span><span class="o">*</span><span class="sy">)</span><span class="e">sqlite3_column_name</span><span class="sy">(</span><span class="i">compiledStatement</span><span class="sy">,</span><span class="h"> </span><span class="i">i</span><span class="sy">)</span><span class="sy">]</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-107" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="i">data</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="sy">[</span><span class="sy">[</span><span class="e">NSString </span><span class="i">alloc</span><span class="sy">]</span><span class="h"> </span><span class="i">initWithUTF8String</span><span class="o">:</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-108" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">(</span><span class="t">char</span><span class="h"> </span><span class="o">*</span><span class="sy">)</span><span class="e">sqlite3_column_text</span><span class="sy">(</span><span class="i">compiledStatement</span><span class="sy">,</span><span class="h"> </span><span class="i">i</span><span class="sy">)</span><span class="sy">]</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-109" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-110" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-111" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="st">if</span><span class="h"> </span><span class="sy">(</span><span class="o">!</span><span class="sy">[</span><span class="e">columnName </span><span class="i">isEqualToString</span><span class="o">:</span><span class="sy">@</span><span class="s">"date"</span><span class="sy">]</span><span class="sy">)</span><span class="h"> </span><span class="sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-112" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">[</span><span class="e">callHistoryItem </span><span class="i">setObject</span><span class="o">:</span><span class="e">data </span><span class="i">forKey</span><span class="o">:</span><span class="i">columnName</span><span class="sy">]</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-113" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">}</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-114" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="st">else</span><span class="h"> </span><span class="sy">{</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-115" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-116" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="e ">NSDateFormatter*</span><span class="h"> </span><span class="i">dateFormatter</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="sy">[</span><span class="sy">[</span><span class="e">NSDateFormatter </span><span class="i">alloc</span><span class="sy">]</span><span class="h"> </span><span class="i">init</span><span class="sy">]</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-117" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">[</span><span class="e">dateFormatter </span><span class="i">setDateFormat</span><span class="o">:</span><span class="sy">@</span><span class="s">"yyyy-MM-dd HH:mm:ss"</span><span class="sy">]</span><span class="sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-118" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">[</span><span class="e">dateFormatter </span><span class="i">setTimeZone</span><span class="o">:</span><span class="sy">[</span><span class="e">NSTimeZone </span><span class="i">timeZoneWithAbbreviation</span><span class="o">:</span><span class="sy">@</span><span class="s">"H"</span><span class="sy">]</span><span class="sy">]</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-119" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="e ">NSDate *</span><span class="i">currentDate</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="sy">[</span><span class="e">NSDate </span><span class="i">dateWithTimeIntervalSince1970</span><span class="o">:</span><span class="sy">[</span><span class="e">data </span><span class="i">intValue</span><span class="sy">]</span><span class="sy">]</span><span class="sy">;</span><span class="h"> </span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-120" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-121" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">[</span><span class="e">callHistoryItem </span><span class="i">setObject</span><span class="o">:</span><span class="h"> </span><span class="sy">[</span><span class="e">dateFormatter </span><span class="i">stringFromDate</span><span class="o">:</span><span class="i">currentDate</span><span class="sy">]</span><span class="h"> </span><span class="i">forKey</span><span class="o">:</span><span class="i">columnName</span><span class="sy">]</span><span class="sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-122" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-123" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">}</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-124" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-125" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-126" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="st">if</span><span class="h"> </span><span class="sy">(</span><span class="sy">[</span><span class="e">columnName </span><span class="i">isEqualToString</span><span class="o">:</span><span class="sy">@</span><span class="s">"address"</span><span class="sy">]</span><span class="sy">)</span><span class="h"> </span><span class="sy">{</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-127" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">[</span><span class="e">callHistoryItem&nbsp;&nbsp;</span><span class="i">setObject</span><span class="o">:</span><span class="sy">[</span><span class="r">self</span><span class="h"> </span><span class="i">getPhoneNumberLocation</span><span class="o">:</span><span class="i">data</span><span class="sy">]</span><span class="h"> </span><span class="i">forKey</span><span class="o">:</span><span class="sy">@</span><span class="s">"area"</span><span class="h"> </span><span class="sy">]</span><span class="sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-128" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-129" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">}</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-130" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-131" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="c">//[callHistoryItem setObject:data forKey:columnName];</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-132" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-133" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">[</span><span class="e">columnName </span><span class="i">release</span><span class="sy">]</span><span class="sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-134" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">[</span><span class="e">data </span><span class="i">release</span><span class="sy">]</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-135" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">}</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-136" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">[</span><span class="e">callHistory </span><span class="i">addObject</span><span class="o">:</span><span class="i">callHistoryItem</span><span class="sy">]</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-137" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">[</span><span class="e">callHistoryItem </span><span class="i">release</span><span class="sy">]</span><span class="sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-138" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="i">count</span><span class="o">++</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-139" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">}</span><span class="c">//end while</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-140" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="e ">NSMutableString *</span><span class="h"> &nbsp;&nbsp;&nbsp;&nbsp;</span><span class="i">tmp</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="sy">[</span><span class="sy">[</span><span class="e">NSMutableString </span><span class="i">alloc</span><span class="sy">]</span><span class="h"> </span><span class="i">initWithString</span><span class="o">:</span><span class="i">uTextView</span><span class="sy">.</span><span class="v">text</span><span class="sy">]</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-141" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="st">for</span><span class="h"> </span><span class="sy">(</span><span class="i">NSUInteger</span><span class="h"> </span><span class="i">i</span><span class="o">=</span><span class="cn">0</span><span class="sy">;</span><span class="h"> </span><span class="i">i</span><span class="o">&lt;</span><span class="i">callHistory</span><span class="sy">.</span><span class="v">count</span><span class="sy">;</span><span class="h"> </span><span class="i">i</span><span class="o">++</span><span class="sy">)</span><span class="h"> </span><span class="sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-142" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="c">//NSLog(@"%d:%@",i,[callHistory objectAtIndex:i]);</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-143" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="e ">NSMutableDictionary *</span><span class="h"> </span><span class="i">data</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="sy">[</span><span class="e">callHistory </span><span class="i">objectAtIndex</span><span class="o">:</span><span class="i">i</span><span class="sy">]</span><span class="sy">;</span><span class="h"> </span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-144" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">[</span><span class="e">tmp </span><span class="i">appendFormat</span><span class="o">:</span><span class="sy">@</span><span class="s">"%d:%@=&gt;%@\n"</span><span class="sy">,</span><span class="i">i</span><span class="sy">,</span><span class="sy">[</span><span class="e">data </span><span class="i">objectForKey</span><span class="o">:</span><span class="sy">@</span><span class="s">"address"</span><span class="sy">]</span><span class="sy">,</span><span class="sy">[</span><span class="e">data </span><span class="i">objectForKey</span><span class="o">:</span><span class="sy">@</span><span class="s">"area"</span><span class="sy">]</span><span class="sy">]</span><span class="sy">;</span><span class="h"> </span></div><div class="crayon-line" id="crayon-5053ce0f2914f-145" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">}</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-146" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-147" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="i">uTextView</span><span class="sy">.</span><span class="v">text</span><span class="h"> </span><span class="o">=</span><span class="h"> </span><span class="i">tmp</span><span class="sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-148" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">[</span><span class="e">tmp </span><span class="i">release</span><span class="sy">]</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-149" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-150" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">}</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-151" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="st">else</span><span class="h"> </span><span class="sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-152" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="e">NSLog</span><span class="sy">(</span><span class="sy">@</span><span class="s">"Failed to retrieve table"</span><span class="sy">)</span><span class="sy">;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-153" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="e">NSLog</span><span class="sy">(</span><span class="sy">@</span><span class="s">"Error Code: %d"</span><span class="sy">,</span><span class="h"> </span><span class="i">errorCode</span><span class="sy">)</span><span class="sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-154" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">}</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-155" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="e">sqlite3_finalize</span><span class="sy">(</span><span class="i">compiledStatement</span><span class="sy">)</span><span class="sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-156" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">}</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-157" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">}</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-158" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-159" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="sy">}</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-160" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-161" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5053ce0f2914f-162" style=""><span class="h">&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line" id="crayon-5053ce0f2914f-163" style=""><span class="sy">}</span></div></div></td>
-					</tr>
-				</table>
-			</div>
-		</div>
-<!-- [Format Time: 0.0895 seconds] -->
-<p></p>
-					<div class="fixed"></div>
-				</div>
-
-				<div class="comments comments_single">
-					<a href="index.html#respond">发表评论</a>
-									</div>
-
-				<!-- related posts START -->
-								<!-- related posts END -->
-			</div>
-
-<a name="comments"></a>
-
-<div class="ds-thread" data-thread-key="259" data-author-key="1" data-title="ios5实现访问通话记录(需越狱)" data-url="http://imzc.net/archives/259/"></div>
-
-<script type="text/javascript">
-	if (typeof DUOSHUO !== 'undefined')
-		DUOSHUO.EmbedThread('.ds-thread');
-</script>
-	<div id="ds-ssr">
-
-		
-            <ol id="commentlist">
-                		<li class="comment byuser comment-author-admin bypostauthor even thread-even depth-1" id="li-comment-22472">
-			<article id="comment-22472" class="comment">
-				<footer class="comment-meta">
-					<cite class="comment-author vcard">
-						<span class="fn"><a href='../../../index.html' rel='external nofollow' class='url'>richardhc</a></span> on <a rel="nofollow" href="index.html#comment-22472"><time pubdate datetime="2012-06-29T15:44:03+00:00">2012/06/29 at 15:44</time></a> <span class="says">said:</span>					</cite><!-- .comment-author .vcard -->
-				</footer>
-	
-				<div class="comment-content"><p>测试下 IntenseDebate 评论系统,感觉不错~ </p>
-</div>
-				
-			</article><!-- #comment-## -->
-		</li>
-            </ol>
-
-		            
-    </div>
-			
-
-	</div>
-
-	<!-- sidebar START -->
-<div id="sidebar">
-
-<!-- Style Switcher START -->
-<div class="widget">
-	<div id="styleswitcher">
-		<span id="style-text">主题风格: </span>
-			<span id="style-green" class="color"><a onclick="TSS.setActiveStyleSheet('green');" href="javascript:void(0);" title="将主题风格更换为green"><img src="../../../wp-content/themes/elegant-box/images/transparent.gif" alt="" /></a></span>
-			<span id="style-purple" class="color"><a onclick="TSS.setActiveStyleSheet('purple');" href="javascript:void(0);" title="将主题风格更换为purple"><img src="../../../wp-content/themes/elegant-box/images/transparent.gif" alt="" /></a></span>
-			<span id="style-brown" class="color"><a onclick="TSS.setActiveStyleSheet('brown');" href="javascript:void(0);" title="将主题风格更换为brown"><img src="../../../wp-content/themes/elegant-box/images/transparent.gif" alt="" /></a></span>
-			<span id="style-blue" class="color"><a onclick="TSS.setActiveStyleSheet('blue');" href="javascript:void(0);" title="将主题风格更换为blue"><img src="../../../wp-content/themes/elegant-box/images/transparent.gif" alt="" /></a></span>
-			<span id="style-white" class="color"><a onclick="TSS.setActiveStyleSheet('white');" href="javascript:void(0);" title="将主题风格更换为white"><img src="../../../wp-content/themes/elegant-box/images/transparent.gif" alt="" /></a></span>
-			<span id="style-black" class="color"><a onclick="TSS.setActiveStyleSheet('black');" href="javascript:void(0);" title="将主题风格更换为black"><img src="../../../wp-content/themes/elegant-box/images/transparent.gif" alt="" /></a></span>
-		<div class="fixed"></div>
-	</div>
-</div>
-<!-- Style Switcher END -->
-
-		<!-- showcase -->
-		
-		<ul id="widgets">
-
-<li class="widget widget_calendar"><h3>Archives</h3><div id="calendar_wrap"><table id="wp-calendar">
-	<caption>2012 年九月</caption>
-	<thead>
-	<tr>
-		<th scope="col" title="星期日">日</th>
-		<th scope="col" title="星期一">一</th>
-		<th scope="col" title="星期二">二</th>
-		<th scope="col" title="星期三">三</th>
-		<th scope="col" title="星期四">四</th>
-		<th scope="col" title="星期五">五</th>
-		<th scope="col" title="星期六">六</th>
-	</tr>
-	</thead>
-
-	<tfoot>
-	<tr>
-		<td colspan="3" id="prev"><a href="../../date/2012/08/index.html" title="查看 2012 年八月的文章">&laquo; 八</a></td>
-		<td class="pad">&nbsp;</td>
-		<td colspan="3" id="next" class="pad">&nbsp;</td>
-	</tr>
-	</tfoot>
-
-	<tbody>
-	<tr>
-		<td colspan="6" class="pad">&nbsp;</td><td>1</td>
-	</tr>
-	<tr>
-		<td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td>
-	</tr>
-	<tr>
-		<td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td id="today">15</td>
-	</tr>
-	<tr>
-		<td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td><td>22</td>
-	</tr>
-	<tr>
-		<td>23</td><td>24</td><td>25</td><td>26</td><td>27</td><td>28</td><td>29</td>
-	</tr>
-	<tr>
-		<td>30</td>
-		<td class="pad" colspan="6">&nbsp;</td>
-	</tr>
-	</tbody>
-	</table></div></li><li class="widget widget_categories"><h3>分类目录</h3>		<ul>
-	<li class="cat-item cat-item-7"><a href="../../category/c_cplusplus/index.html" title="查看 C/C++ 下的所有文章">C/C++</a>
-</li>
-	<li class="cat-item cat-item-24"><a href="../../category/ios-dev/index.html" title="查看 IOSDev 下的所有文章">IOSDev</a>
-</li>
-	<li class="cat-item cat-item-23"><a href="../../category/java/index.html" title="查看 Java 下的所有文章">Java</a>
-</li>
-	<li class="cat-item cat-item-5"><a href="../../category/lamp/index.html" title="查看 LAMP 下的所有文章">LAMP</a>
-</li>
-	<li class="cat-item cat-item-8"><a href="../../category/onthego/index.html" title="查看 OnTheGo 下的所有文章">OnTheGo</a>
-</li>
-	<li class="cat-item cat-item-1"><a href="../../category/other/index.html" title="查看 Other 下的所有文章">Other</a>
-</li>
-	<li class="cat-item cat-item-3"><a href="../../category/project/index.html" title="查看 Project 下的所有文章">Project</a>
-</li>
-	<li class="cat-item cat-item-4"><a href="../../category/rubytesting/index.html" title="查看 Ruby&amp;Testing 下的所有文章">Ruby&amp;Testing</a>
-</li>
-	<li class="cat-item cat-item-26"><a href="../../category/scriptlanguage/index.html" title="查看 脚本语言 下的所有文章">脚本语言</a>
-</li>
-		</ul>
-</li><li class="widget widget_text"><h3>Google Ads</h3>			<div class="textwidget"><script type="text/javascript"><!--
-google_ad_client = "ca-pub-7220882232307827";
-/* left_180x150, 创建于 09-2-19 */
-google_ad_slot = "1136501676";
-google_ad_width = 180;
-google_ad_height = 150;
-//-->
-</script>
-<script type="text/javascript"
-src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-</script>
-</div>
-		</li><li class="widget widget_tag_cloud"><h3>标签</h3><div class="tagcloud"><a href='../../tag/c/index.html' class='tag-link-9' title='4 个话题' style='font-size: 22pt;'>c</a>
-<a href='../../tag/dailhelper/index.html' class='tag-link-13' title='1 个话题' style='font-size: 8pt;'>dailhelper</a>
-<a href='../../tag/linux/index.html' class='tag-link-14' title='1 个话题' style='font-size: 8pt;'>linux</a>
-<a href='../../tag/ls/index.html' class='tag-link-10' title='1 个话题' style='font-size: 8pt;'>ls</a>
-<a href='../../tag/makefile/index.html' class='tag-link-17' title='1 个话题' style='font-size: 8pt;'>makefile</a>
-<a href='../../tag/netkeeper/index.html' class='tag-link-16' title='1 个话题' style='font-size: 8pt;'>Netkeeper</a>
-<a href='../../tag/pcap/index.html' class='tag-link-25' title='1 个话题' style='font-size: 8pt;'>pcap</a>
-<a href='../../tag/ruby/index.html' class='tag-link-12' title='1 个话题' style='font-size: 8pt;'>ruby</a>
-<a href='../../tag/slab/index.html' class='tag-link-20' title='1 个话题' style='font-size: 8pt;'>slab</a>
-<a href='../../tag/wget/index.html' class='tag-link-11' title='1 个话题' style='font-size: 8pt;'>wget</a>
-<a href='../../tag/系�%259F管�%2590%2586/index.html' class='tag-link-15' title='1 个话题' style='font-size: 8pt;'>系统管理</a></div>
-</li><li class="widget widget_links"><h3>链接表</h3>
-	<ul class='xoxo blogroll'>
-<li><a href="http://blog.csdn.net/Android_Tutor" rel="colleague" title="Android_Tutor的专栏" target="_blank">Android学习系列</a></li>
-<li><a href="http://ihower.tw/rails3/" title="Rails3学习,写得不错!">Rails3学习</a></li>
-<li><a href="http://wpotp.com" rel="me" title="食品找茬网" target="_blank">找茬网</a></li>
-<li><a href="http://www.sz95000.com/" title="深圳长途汽车网上订票，官方网站，这次不会忘记了。。。" target="_blank">深圳长途汽车网上订票</a></li>
-
-	</ul>
-</li>
-<li class="widget widget_meta"><h3>功能</h3>			<ul>
-			<li><a href="../../../wp-login.php?action=register">注册</a></li>			<li><a href="../../../wp-login.php">登录</a></li>
-			<li><a href="../../../feed/index.html" title="使用 RSS 2.0 订阅本站点内容">文章 <abbr title="Really Simple Syndication">RSS</abbr></a></li>
-			<li><a href="../../../comments/feed/index.html" title="使用 RSS 订阅本站点的所有文章的近期评论">评论 <abbr title="Really Simple Syndication">RSS</abbr></a></li>
-			<li><a href="http://cn.wordpress.org/" title="基于 WordPress，一个优美、先进的个人信息发布平台。">WordPress.org</a></li>
-						</ul>
-</li>		</ul>
-
-		<!-- showcase 2 -->
-		
-</div>
-<!-- sidebar END -->
-
-	<div class="fixed"></div>
-
-		<div id="bottom">
-			<div class="postnav">
-				<span class="alignleft">&laquo; <a href="../../253/index.html" rel="prev">使用windows api实现屏幕截图并复制到剪贴板</a></span>
-				<span class="alignright"><a href="../../265/index.html" rel="next">六月随笔</a> &raquo;</span>
-				<div class="fixed"></div>
-			</div>
-
-			<div class="anchor">
-				<span><a href="index.html#" onclick="MGJS.goTop();return false;">置顶</a></span>
-			</div>
-			<div class="fixed"></div>
-			</div>
-		<div class="fixed"></div>
-	</div>
-</div>
-
-<!-- footer START -->
-<div id="footer">
-	<div class="inner">
-		<div class="content">
-			<p id="about">
-				版权所有 &copy; 2008-2012 Only For Sunshine~ | 基于 <a href="http://wordpress.org/">WordPress</a> | 主题由 <a href="http://www.neoease.com/">NeoEase</a> 提供			</p>
-
-			<ul id="admin">
-				<li><a href="../../../wp-login.php?action=register">注册</a></li>				<li><a href="../../../wp-login.php">登录</a></li>
-			</ul>
-
-			<div class="fixed"></div>
-		</div>
-	</div>
-</div><!-- footer END --><script type='text/javascript' src='http://s.gravatar.com/js/gprofiles.js?aa&#038;ver=3.4.1'></script>
-<script type='text/javascript'>
-/* <![CDATA[ */
-var WPGroHo = {"my_hash":""};
-/* ]]> */
-</script>
-<script type='text/javascript' src='../../../wp-content/plugins/jetpack/modules/wpgroho.js?ver=3.4.1'></script>
-	<div style="display:none">
-	</div>
-<script type='text/javascript' src='http://s0.wp.com/wp-content/js/devicepx-jetpack.js?ver=201237'></script>
-
-	<script src="http://stats.wordpress.com/e-201237.js" type="text/javascript"></script>
-	<script type="text/javascript">
-	st_go({v:'ext',j:'1:1.6.1',blog:'17044931',post:'259'});
-	var load_cmc = function(){linktracker_init(17044931,259,2);};
-	if ( typeof addLoadEvent != 'undefined' ) addLoadEvent(load_cmc);
-	else load_cmc();
-	</script><script type="text/javascript">
-
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-9565349-1']);
-  _gaq.push(['_setDomainName', 'imzc.net']);
-  _gaq.push(['_trackPageview']);
-
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
-</script> 
-</body>
-</html>
-
-<!-- Dynamic page generated in 0.935 seconds. -->
-<!-- Cached page generated by WP-Super-Cache on 2012-09-15 08:38:39 -->
-<!-- super cache -->
